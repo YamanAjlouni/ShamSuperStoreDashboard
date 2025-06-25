@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import './Sidebar.scss'
 
-const Sidebar = () => {
+const Sidebar = ({ isCollapsed, isMobile, isOpen }) => {
     const location = useLocation()
-    const [isCollapsed, setIsCollapsed] = useState(false)
+    const navigate = useNavigate()
 
     const menuItems = [
         {
@@ -24,7 +24,8 @@ const Sidebar = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
             ),
-            label: 'Products'
+            label: 'Products',
+            active: location.pathname.includes('/products')
         },
         {
             path: '/coupons',
@@ -33,7 +34,8 @@ const Sidebar = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 11-1-4V7a2 2 0 00-2-2H5z" />
                 </svg>
             ),
-            label: 'Coupons'
+            label: 'Coupons',
+            active: location.pathname.includes('/coupons')
         },
         {
             path: '/orders',
@@ -42,7 +44,8 @@ const Sidebar = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5L17 18" />
                 </svg>
             ),
-            label: 'Orders'
+            label: 'Orders',
+            active: location.pathname.includes('/orders')
         },
         {
             path: '/payments',
@@ -51,7 +54,8 @@ const Sidebar = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                 </svg>
             ),
-            label: 'Payments'
+            label: 'Payments',
+            active: location.pathname.includes('/payments')
         },
         {
             path: '/refund',
@@ -60,18 +64,9 @@ const Sidebar = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
                 </svg>
             ),
-            label: 'Refund'
+            label: 'Refund',
+            active: location.pathname.includes('/refund')
         },
-        // {
-        //     path: '/support',
-        //     icon: (
-        //         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        //             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-        //         </svg>
-        //     ),
-        //     label: 'Support'
-        // },
-
         {
             path: '/settings',
             icon: (
@@ -80,48 +75,45 @@ const Sidebar = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
             ),
-            label: 'Settings'
-        },
-        {
-            path: '/logout',
-            icon: (
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-            ),
-            label: 'Logout'
+            label: 'Settings',
+            active: location.pathname.includes('/settings')
         }
     ]
 
     const handleLogout = () => {
         // Add logout logic here
         console.log('Logout clicked')
+        // You can add actual logout logic like clearing localStorage, redirecting, etc.
+        navigate('/login')
     }
 
     return (
-        <aside className={`sidebar ${isCollapsed ? 'sidebar--collapsed' : ''}`}>
+        <aside className={`sidebar ${isCollapsed ? 'sidebar--collapsed' : ''} ${isMobile ? 'sidebar--mobile' : ''} ${isMobile && isOpen ? 'sidebar--open' : ''}`}>
             <div className="sidebar-content">
                 {menuItems.map((item, index) => (
-                    <div key={index}>
-                        {item.path === '/logout' ? (
-                            <button
-                                className="sidebar-item sidebar-item--logout"
-                                onClick={handleLogout}
-                            >
-                                <span className="sidebar-icon">{item.icon}</span>
-                                <span className="sidebar-label">{item.label}</span>
-                            </button>
-                        ) : (
-                            <Link
-                                to={item.path}
-                                className={`sidebar-item ${item.active ? 'sidebar-item--active' : ''}`}
-                            >
-                                <span className="sidebar-icon">{item.icon}</span>
-                                <span className="sidebar-label">{item.label}</span>
-                            </Link>
-                        )}
-                    </div>
+                    <Link
+                        key={index}
+                        to={item.path}
+                        className={`sidebar-item ${item.active ? 'sidebar-item--active' : ''}`}
+                        title={isCollapsed ? item.label : ''}
+                    >
+                        <span className="sidebar-icon">{item.icon}</span>
+                        <span className="sidebar-label">{item.label}</span>
+                    </Link>
                 ))}
+                
+                <button
+                    className="sidebar-item sidebar-item--logout"
+                    onClick={handleLogout}
+                    title={isCollapsed ? 'Logout' : ''}
+                >
+                    <span className="sidebar-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                    </span>
+                    <span className="sidebar-label">Logout</span>
+                </button>
             </div>
         </aside>
     )

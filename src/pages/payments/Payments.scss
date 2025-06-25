@@ -284,6 +284,213 @@
             }
         }
 
+        .payment-schedule-section {
+            background: $white;
+            border-radius: $radius-xl;
+            padding: 2rem;
+            box-shadow: $shadow-sm;
+            border: 1px solid $gray-200;
+            margin-bottom: 2rem;
+
+            .section-header {
+                margin-bottom: 2rem;
+
+                h3 {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    color: $text-dark;
+                    margin: 0 0 0.5rem 0;
+                }
+
+                p {
+                    color: $text-light;
+                    font-size: 0.875rem;
+                    margin: 0;
+                }
+            }
+
+            .schedule-options-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 1.5rem;
+
+                .schedule-option-card {
+                    position: relative;
+                    background: $gray-50;
+                    border: 2px solid $gray-200;
+                    border-radius: $radius-xl;
+                    padding: 1.5rem;
+                    cursor: pointer;
+                    transition: $transition-all;
+                    overflow: hidden;
+
+                    &:hover {
+                        border-color: $primary-color;
+                        transform: translateY(-2px);
+                        box-shadow: $shadow-lg;
+                    }
+
+                    &.selected {
+                        border-color: $primary-color;
+                        background: $primary-blue-light;
+                        box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                    }
+
+                    .schedule-header {
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 1rem;
+                        margin-bottom: 1rem;
+
+                        .schedule-icon {
+                            width: 50px;
+                            height: 50px;
+                            background: $white;
+                            border-radius: $radius-lg;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: $primary-color;
+                            box-shadow: $shadow-sm;
+                            flex-shrink: 0;
+                        }
+
+                        .schedule-info {
+                            flex: 1;
+
+                            .schedule-title {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.75rem;
+                                margin-bottom: 0.5rem;
+
+                                h4 {
+                                    font-size: 1.125rem;
+                                    font-weight: 600;
+                                    color: $text-dark;
+                                    margin: 0;
+                                }
+
+                                .recommended-badge {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.25rem;
+                                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                                    color: $white;
+                                    padding: 0.25rem 0.5rem;
+                                    border-radius: $radius-sm;
+                                    font-size: 0.625rem;
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.5px;
+
+                                    svg {
+                                        width: 10px;
+                                        height: 10px;
+                                    }
+                                }
+                            }
+
+                            .schedule-description {
+                                color: $text-light;
+                                font-size: 0.875rem;
+                                margin: 0 0 0.5rem 0;
+                                line-height: 1.4;
+                            }
+
+                            .schedule-frequency {
+                                color: $primary-color;
+                                font-size: 0.75rem;
+                                font-weight: 600;
+                                background: rgba(66, 103, 178, 0.1);
+                                padding: 0.25rem 0.5rem;
+                                border-radius: $radius-sm;
+                                display: inline-block;
+                            }
+                        }
+                    }
+
+                    .schedule-benefits {
+                        background: rgba(255, 255, 255, 0.7);
+                        border-radius: $radius-md;
+                        padding: 1rem;
+
+                        h5 {
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            color: $text-dark;
+                            margin: 0 0 0.75rem 0;
+                        }
+
+                        ul {
+                            margin: 0;
+                            padding-left: 1rem;
+
+                            li {
+                                color: $text-light;
+                                font-size: 0.75rem;
+                                line-height: 1.4;
+                                margin-bottom: 0.5rem;
+
+                                &:last-child {
+                                    margin-bottom: 0;
+                                }
+
+                                &::marker {
+                                    color: $primary-color;
+                                }
+                            }
+                        }
+                    }
+
+                    .schedule-selected-indicator {
+                        position: absolute;
+                        top: 1rem;
+                        right: 1rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        background: $primary-color;
+                        color: $white;
+                        padding: 0.5rem 0.75rem;
+                        border-radius: $radius-md;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                        animation: slideInRight 0.3s ease-out;
+
+                        svg {
+                            width: 14px;
+                            height: 14px;
+                        }
+                    }
+                }
+            }
+
+            .schedule-info-note {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                background: rgba(66, 103, 178, 0.05);
+                color: $primary-color;
+                padding: 1rem 1.5rem;
+                border-radius: $radius-lg;
+                border: 1px solid rgba(66, 103, 178, 0.1);
+
+                svg {
+                    flex-shrink: 0;
+                    width: 16px;
+                    height: 16px;
+                }
+
+                span {
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    line-height: 1.4;
+                }
+            }
+        }
+
         .payment-info-section {
             margin-bottom: 2rem;
 
@@ -453,6 +660,12 @@
                 }
             }
 
+            .payment-schedule-section {
+                .schedule-options-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+
             .payment-info-section {
                 .info-cards-grid {
                     grid-template-columns: 1fr;
@@ -505,6 +718,39 @@
                 }
             }
 
+            .payment-schedule-section {
+                padding: 1.5rem;
+
+                .schedule-options-grid {
+                    grid-template-columns: 1fr;
+
+                    .schedule-option-card {
+                        padding: 1rem;
+
+                        .schedule-header {
+                            .schedule-info {
+                                .schedule-title {
+                                    flex-direction: column;
+                                    align-items: flex-start;
+                                    gap: 0.5rem;
+                                }
+                            }
+                        }
+
+                        .schedule-selected-indicator {
+                            position: static;
+                            margin-top: 1rem;
+                            justify-content: center;
+                        }
+                    }
+                }
+
+                .schedule-info-note {
+                    padding: 0.75rem 1rem;
+                    text-align: center;
+                }
+            }
+
             .payment-info-section {
                 .info-cards-grid {
                     .info-card {
@@ -550,6 +796,56 @@
                             width: 50px;
                             height: 50px;
                         }
+                    }
+                }
+            }
+
+            .payment-schedule-section {
+                padding: 1rem;
+
+                .section-header h3 {
+                    font-size: 1.25rem;
+                }
+
+                .schedule-options-grid {
+                    .schedule-option-card {
+                        padding: 0.75rem;
+
+                        .schedule-header {
+                            .schedule-icon {
+                                width: 40px;
+                                height: 40px;
+                            }
+
+                            .schedule-info {
+                                .schedule-title {
+                                    h4 {
+                                        font-size: 1rem;
+                                    }
+
+                                    .recommended-badge {
+                                        font-size: 0.5rem;
+                                        padding: 0.125rem 0.375rem;
+                                    }
+                                }
+                            }
+                        }
+
+                        .schedule-benefits {
+                            padding: 0.75rem;
+
+                            ul li {
+                                font-size: 0.7rem;
+                            }
+                        }
+                    }
+                }
+
+                .schedule-info-note {
+                    padding: 0.75rem;
+
+                    span {
+                        font-size: 0.75rem;
                     }
                 }
             }

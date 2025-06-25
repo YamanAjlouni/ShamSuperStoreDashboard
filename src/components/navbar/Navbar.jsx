@@ -1,70 +1,138 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import './Navbar.scss'
 
-const Navbar = () => {
-    const [notifications] = useState(1)
-    const [orders] = useState(1)
-    const [messages] = useState(1)
+const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
+    const navigate = useNavigate()
+    const location = useLocation()
+    const [orders] = useState(5)
+    const [products] = useState({ current: 7, total: 10 })
+    const [isProfileOpen, setIsProfileOpen] = useState(false)
+    const profileRef = useRef(null)
+
+    // Close profile dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (profileRef.current && !profileRef.current.contains(event.target)) {
+                setIsProfileOpen(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [])
+
+    // Get current page name from location
+    const getCurrentPageName = () => {
+        const path = location.pathname
+        if (path === '/') return 'Dashboard'
+        if (path.includes('/products')) return 'Products'
+        if (path.includes('/coupons')) return 'Coupons'
+        if (path.includes('/orders')) return 'Orders'
+        if (path.includes('/payments')) return 'Payments'
+        if (path.includes('/refund')) return 'Refund'
+        if (path.includes('/settings')) return 'Settings'
+        return 'Dashboard'
+    }
+
+    const handleCartClick = () => {
+        navigate('/orders')
+    }
+
+    const handleProfileClick = () => {
+        setIsProfileOpen(!isProfileOpen)
+    }
+
+    const handleSettingsClick = () => {
+        navigate('/settings')
+        setIsProfileOpen(false)
+    }
+
+    const handleLogout = () => {
+        // Add logout logic here
+        console.log('Logout clicked')
+        setIsProfileOpen(false)
+        // You can add actual logout logic like clearing localStorage, etc.
+    }
 
     return (
         <nav className="navbar">
             <div className="navbar-left">
+                <button
+                    className="sidebar-toggle"
+                    onClick={onToggleSidebar}
+                    title={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                >
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
                 <div className="navbar-brand">
                     <div className="brand-icon">SHA</div>
                     <span className="brand-text">My Store</span>
                 </div>
+
                 <div className="navbar-breadcrumb">
                     <svg className="breadcrumb-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
-                    <span className="breadcrumb-text">Dashboard</span>
+                    <span className="breadcrumb-text">{getCurrentPageName()}</span>
                 </div>
             </div>
 
             <div className="navbar-right">
                 <div className="navbar-stats">
                     <div className="stat-item">
-                        <span className="stat-value">0</span>
-                        <span className="stat-label">/ ∞</span>
-                    </div>
-                    <div className="stat-item">
-                        <span className="stat-value">0 MB</span>
-                        <span className="stat-label">/ ∞</span>
+                        <span className="stat-value">{products.current}</span>
+                        <span className="stat-label">/ {products.total} Products</span>
                     </div>
                 </div>
 
                 <div className="navbar-actions">
-                    <button className="action-btn">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM7 7h10v10H7V7z" />
-                        </svg>
-                        {notifications > 0 && <span className="badge">{notifications}</span>}
-                    </button>
-
-                    <button className="action-btn">
+                    {/* Cart/Orders */}
+                    <button
+                        className="action-btn cart-btn"
+                        onClick={handleCartClick}
+                        title="Click to go to orders page"
+                    >
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5L17 18" />
                         </svg>
                         {orders > 0 && <span className="badge">{orders}</span>}
                     </button>
 
-                    <button className="action-btn">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                        </svg>
-                        {messages > 0 && <span className="badge">{messages}</span>}
-                    </button>
+                    {/* User Profile */}
+                    <div className="user-profile" ref={profileRef}>
+                        <button className="user-avatar" onClick={handleProfileClick}>
+                            <img
+                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                alt="User Avatar"
+                            />
+                        </button>
 
-                    <button className="action-btn">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </button>
-
-                    <div className="user-profile">
-                        <div className="user-avatar">
-                            <img src="https://via.placeholder.com/40" alt="User" />
-                        </div>
+                        {isProfileOpen && (
+                            <div className="profile-dropdown">
+                                <button
+                                    className="dropdown-item"
+                                    onClick={handleSettingsClick}
+                                >
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                    Profile
+                                </button>
+                                <button
+                                    className="dropdown-item dropdown-item--logout"
+                                    onClick={handleLogout}
+                                >
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                    </svg>
+                                    Logout
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

@@ -2,12 +2,14 @@ import { useState } from 'react'
 import {
     DollarSign, CreditCard, Wallet, Check,
     Clock, ArrowRight, Shield, Info,
-    AlertCircle, CheckCircle, Save
+    AlertCircle, CheckCircle, Save, Calendar,
+    Zap, TrendingUp, RotateCcw, Timer
 } from 'lucide-react'
 import './Payments.scss'
 
 const Payments = () => {
     const [selectedMethod, setSelectedMethod] = useState('cash')
+    const [selectedSchedule, setSelectedSchedule] = useState('every_order')
     const [showSuccessMessage, setShowSuccessMessage] = useState(false)
 
     // Payment methods data
@@ -44,6 +46,46 @@ const Payments = () => {
         }
     ]
 
+    // Payment schedule options for cash payments
+    const paymentSchedules = [
+        {
+            id: 'every_order',
+            name: 'Every Order',
+            description: 'Receive payment immediately with each order',
+            icon: <Zap size={20} />,
+            frequency: 'Immediate',
+            benefits: ['Instant cash flow', 'No waiting period', 'Perfect for daily operations'],
+            recommended: true
+        },
+        {
+            id: 'every_2_weeks',
+            name: 'Every 2 Weeks',
+            description: 'Collect payments bi-weekly',
+            icon: <Calendar size={20} />,
+            frequency: 'Bi-weekly',
+            benefits: ['Regular income', 'Less frequent collections', 'Good cash management'],
+            recommended: false
+        },
+        {
+            id: 'every_month',
+            name: 'Every Month',
+            description: 'Receive payments monthly',
+            icon: <RotateCcw size={20} />,
+            frequency: 'Monthly',
+            benefits: ['Monthly income cycle', 'Easier accounting', 'Less collection effort'],
+            recommended: false
+        },
+        {
+            id: 'every_3_months',
+            name: 'Every 3 Months',
+            description: 'Quarterly payment collection',
+            icon: <Timer size={20} />,
+            frequency: 'Quarterly',
+            benefits: ['Large payment amounts', 'Minimal collection effort', 'Long-term planning'],
+            recommended: false
+        }
+    ]
+
     // Mock earnings data
     const earningsData = {
         totalEarnings: 2847.50,
@@ -55,6 +97,7 @@ const Payments = () => {
 
     const handleSaveSettings = () => {
         console.log('Selected payment method:', selectedMethod)
+        console.log('Selected payment schedule:', selectedSchedule)
         setShowSuccessMessage(true)
         setTimeout(() => setShowSuccessMessage(false), 3000)
     }
@@ -171,6 +214,66 @@ const Payments = () => {
                     </div>
                 </div>
 
+                {/* Payment Schedule Selection - Only show for cash payments */}
+                {selectedMethod === 'cash' && (
+                    <div className="payment-schedule-section">
+                        <div className="section-header">
+                            <h3>Payment Schedule</h3>
+                            <p>Choose when you want to collect your cash payments</p>
+                        </div>
+
+                        <div className="schedule-options-grid">
+                            {paymentSchedules.map(schedule => (
+                                <div
+                                    key={schedule.id}
+                                    className={`schedule-option-card ${selectedSchedule === schedule.id ? 'selected' : ''}`}
+                                    onClick={() => setSelectedSchedule(schedule.id)}
+                                >
+                                    <div className="schedule-header">
+                                        <div className="schedule-icon">
+                                            {schedule.icon}
+                                        </div>
+                                        <div className="schedule-info">
+                                            <div className="schedule-title">
+                                                <h4>{schedule.name}</h4>
+                                                {schedule.recommended && (
+                                                    <span className="recommended-badge">
+                                                        <TrendingUp size={12} />
+                                                        Recommended
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <p className="schedule-description">{schedule.description}</p>
+                                            <span className="schedule-frequency">Frequency: {schedule.frequency}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="schedule-benefits">
+                                        <h5>Benefits:</h5>
+                                        <ul>
+                                            {schedule.benefits.map((benefit, index) => (
+                                                <li key={index}>{benefit}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+
+                                    {selectedSchedule === schedule.id && (
+                                        <div className="schedule-selected-indicator">
+                                            <Check size={16} />
+                                            <span>Selected Schedule</span>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="schedule-info-note">
+                            <Info size={16} />
+                            <span>You can change your payment schedule at any time. Changes will apply to future orders.</span>
+                        </div>
+                    </div>
+                )}
+
                 {/* Payment Information */}
                 <div className="payment-info-section">
                     <div className="info-cards-grid">
@@ -209,6 +312,9 @@ const Payments = () => {
                                 <li>You can change your payment method at any time</li>
                                 <li>New payment methods may require verification</li>
                                 <li>Processing times may vary during holidays</li>
+                                {selectedMethod === 'cash' && (
+                                    <li>Payment schedule affects when you collect cash from completed orders</li>
+                                )}
                             </ul>
                         </div>
                     </div>
@@ -219,7 +325,7 @@ const Payments = () => {
                     <button
                         className="save-btn"
                         onClick={handleSaveSettings}
-                        disabled={!selectedMethod}
+                        disabled={!selectedMethod || (selectedMethod === 'cash' && !selectedSchedule)}
                     >
                         <Save size={16} />
                         Save Payment Settings
