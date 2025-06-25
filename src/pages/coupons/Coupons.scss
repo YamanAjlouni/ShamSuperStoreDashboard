@@ -1,0 +1,603 @@
+@use '../../assets/styles/vars.scss' as *;
+
+.coupons-page {
+    padding: 2rem;
+    background: $gray-50;
+    min-height: calc(100vh - 70px);
+
+    .coupons-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: $text-dark;
+            margin: 0;
+        }
+
+        .add-coupon-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, $primary-color 0%, $primary-blue-hover 100%);
+            color: $white;
+            border: none;
+            border-radius: $radius-lg;
+            padding: 0.875rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: $transition-all;
+            box-shadow: $shadow-sm;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: $shadow-lg;
+            }
+
+            &:active {
+                transform: translateY(0);
+            }
+        }
+    }
+
+    .coupons-filters {
+        background: $white;
+        border-radius: $radius-xl;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: $shadow-sm;
+        border: 1px solid $gray-200;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 2rem;
+        align-items: center;
+
+        .filters-left {
+            .coupons-count {
+                color: $text-light;
+                font-size: 0.875rem;
+                font-weight: 500;
+            }
+        }
+
+        .filters-center {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+
+            .filter-group {
+                position: relative;
+
+                .filter-select {
+                    appearance: none;
+                    background: $gray-50;
+                    border: 1px solid $gray-200;
+                    border-radius: $radius-md;
+                    padding: 0.75rem 2.5rem 0.75rem 1rem;
+                    font-size: 0.875rem;
+                    color: $text-dark;
+                    cursor: pointer;
+                    transition: $transition-all;
+                    min-width: 140px;
+
+                    &:focus {
+                        outline: none;
+                        border-color: $primary-color;
+                        box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                    }
+
+                    &:hover {
+                        border-color: $gray-300;
+                    }
+                }
+
+                .select-icon {
+                    position: absolute;
+                    right: 0.75rem;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: $text-light;
+                    pointer-events: none;
+                }
+            }
+        }
+
+        .filters-right {
+            .search-wrapper {
+                position: relative;
+
+                .search-icon {
+                    position: absolute;
+                    left: 1rem;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: $text-light;
+                }
+
+                .search-input {
+                    background: $gray-50;
+                    border: 1px solid $gray-200;
+                    border-radius: $radius-md;
+                    padding: 0.75rem 1rem 0.75rem 2.5rem;
+                    font-size: 0.875rem;
+                    width: 250px;
+                    transition: $transition-all;
+
+                    &:focus {
+                        outline: none;
+                        border-color: $primary-color;
+                        box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                        background: $white;
+                    }
+
+                    &::placeholder {
+                        color: $text-light;
+                    }
+                }
+            }
+        }
+    }
+
+    .coupons-table-container {
+        background: $white;
+        border-radius: $radius-xl;
+        overflow: hidden;
+        box-shadow: $shadow-sm;
+        border: 1px solid $gray-200;
+        margin-bottom: 1.5rem;
+
+        .coupons-table {
+            width: 100%;
+            border-collapse: collapse;
+
+            thead {
+                background: $gray-50;
+
+                th {
+                    padding: 1rem;
+                    text-align: left;
+                    font-weight: 600;
+                    color: $text-dark;
+                    font-size: 0.875rem;
+                    border-bottom: 1px solid $gray-200;
+                    white-space: nowrap;
+
+                    &.select-column {
+                        width: 50px;
+                        text-align: center;
+                    }
+                }
+            }
+
+            tbody {
+                .coupon-row {
+                    transition: $transition-all;
+
+                    &:hover {
+                        background: $gray-50;
+                    }
+
+                    td {
+                        padding: 1rem;
+                        border-bottom: 1px solid $gray-100;
+                        vertical-align: middle;
+
+                        &.select-column {
+                            text-align: center;
+                            width: 50px;
+
+                            .select-btn {
+                                background: none;
+                                border: none;
+                                cursor: pointer;
+                                color: $text-light;
+                                transition: $transition-all;
+
+                                &:hover {
+                                    color: $primary-color;
+                                }
+                            }
+                        }
+
+                        &.code-column {
+                            min-width: 200px;
+
+                            .coupon-code {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 0.25rem;
+
+                                .code {
+                                    font-weight: 600;
+                                    color: $text-dark;
+                                    font-family: monospace;
+                                    font-size: 0.875rem;
+                                    background: $gray-100;
+                                    padding: 0.25rem 0.5rem;
+                                    border-radius: $radius-sm;
+                                    display: inline-block;
+                                    width: fit-content;
+                                }
+
+                                .description {
+                                    color: $text-light;
+                                    font-size: 0.75rem;
+                                }
+
+                                .free-shipping-badge {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.25rem;
+                                    background: rgba(16, 185, 129, 0.1);
+                                    color: #059669;
+                                    padding: 0.125rem 0.5rem;
+                                    border-radius: $radius-sm;
+                                    font-size: 0.6875rem;
+                                    font-weight: 600;
+                                    width: fit-content;
+                                    text-transform: uppercase;
+                                }
+                            }
+                        }
+
+                        &.type-column {
+                            .discount-type-badge {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.25rem;
+                                padding: 0.25rem 0.75rem;
+                                border-radius: $radius-sm;
+                                font-size: 0.75rem;
+                                font-weight: 600;
+
+                                &.type--percentage {
+                                    background: rgba(245, 158, 11, 0.1);
+                                    color: #d97706;
+                                }
+
+                                &.type--fixed {
+                                    background: rgba(16, 185, 129, 0.1);
+                                    color: #059669;
+                                }
+                            }
+                        }
+
+                        &.amount-column {
+                            .amount {
+                                font-weight: 600;
+                                color: $primary-color;
+                                font-size: 1rem;
+                            }
+                        }
+
+                        &.store-column {
+                            color: $text-light;
+                            font-size: 0.875rem;
+                        }
+
+                        &.usage-column {
+                            .usage-badge {
+                                padding: 0.25rem 0.75rem;
+                                border-radius: $radius-sm;
+                                font-size: 0.75rem;
+                                font-weight: 600;
+
+                                &.usage--low {
+                                    background: rgba(16, 185, 129, 0.1);
+                                    color: #059669;
+                                }
+
+                                &.usage--medium {
+                                    background: rgba(245, 158, 11, 0.1);
+                                    color: #d97706;
+                                }
+
+                                &.usage--high {
+                                    background: rgba(239, 68, 68, 0.1);
+                                    color: #dc2626;
+                                }
+                            }
+                        }
+
+                        &.expire-column {
+                            .expire-badge {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.25rem;
+                                padding: 0.25rem 0.75rem;
+                                border-radius: $radius-sm;
+                                font-size: 0.75rem;
+                                font-weight: 600;
+
+                                &.expire--normal {
+                                    background: rgba(156, 163, 175, 0.1);
+                                    color: #6b7280;
+                                }
+
+                                &.expire--warning {
+                                    background: rgba(245, 158, 11, 0.1);
+                                    color: #d97706;
+                                }
+
+                                &.expire--expired {
+                                    background: rgba(239, 68, 68, 0.1);
+                                    color: #dc2626;
+                                }
+                            }
+                        }
+
+                        &.actions-column {
+                            .actions {
+                                display: flex;
+                                gap: 0.5rem;
+
+                                .action-btn {
+                                    background: none;
+                                    border: none;
+                                    padding: 0.5rem;
+                                    border-radius: $radius-sm;
+                                    cursor: pointer;
+                                    transition: $transition-all;
+
+                                    &.edit-btn {
+                                        color: $primary-color;
+
+                                        &:hover {
+                                            background: rgba(66, 103, 178, 0.1);
+                                        }
+                                    }
+
+                                    &.delete-btn {
+                                        color: #ef4444;
+
+                                        &:hover {
+                                            background: rgba(239, 68, 68, 0.1);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: $white;
+        border-radius: $radius-lg;
+        padding: 1rem 1.5rem;
+        box-shadow: $shadow-sm;
+        border: 1px solid $gray-200;
+
+        .pagination-info {
+            .items-per-page {
+                background: $gray-50;
+                border: 1px solid $gray-200;
+                border-radius: $radius-md;
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+                cursor: pointer;
+
+                &:focus {
+                    outline: none;
+                    border-color: $primary-color;
+                }
+            }
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .pagination-btn {
+                background: $gray-50;
+                border: 1px solid $gray-200;
+                border-radius: $radius-md;
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+                cursor: pointer;
+                transition: $transition-all;
+
+                &:hover:not(:disabled) {
+                    background: $gray-100;
+                    border-color: $gray-300;
+                }
+
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+            }
+
+            .page-info {
+                color: $text-light;
+                font-size: 0.875rem;
+            }
+        }
+    }
+
+    // Modal Styles
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+
+        .modal {
+            background: $white;
+            border-radius: $radius-xl;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: $shadow-2xl;
+
+            h3 {
+                margin: 0 0 1rem 0;
+                color: $text-dark;
+                font-size: 1.25rem;
+                font-weight: 600;
+            }
+
+            p {
+                margin: 0 0 2rem 0;
+                color: $text-light;
+                line-height: 1.5;
+            }
+
+            .modal-actions {
+                display: flex;
+                gap: 1rem;
+                justify-content: flex-end;
+
+                .cancel-btn {
+                    background: $gray-100;
+                    color: $text-dark;
+                    border: none;
+                    border-radius: $radius-md;
+                    padding: 0.75rem 1.5rem;
+                    font-size: 0.875rem;
+                    cursor: pointer;
+                    transition: $transition-all;
+
+                    &:hover {
+                        background: $gray-200;
+                    }
+                }
+
+                .delete-btn {
+                    background: #ef4444;
+                    color: $white;
+                    border: none;
+                    border-radius: $radius-md;
+                    padding: 0.75rem 1.5rem;
+                    font-size: 0.875rem;
+                    cursor: pointer;
+                    transition: $transition-all;
+
+                    &:hover {
+                        background: #dc2626;
+                    }
+                }
+            }
+        }
+    }
+
+    .select-all-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: $text-light;
+        transition: $transition-all;
+
+        &:hover {
+            color: $primary-color;
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+    .coupons-page {
+        .coupons-filters {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+
+            .filters-center {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+        }
+
+        .coupons-table-container {
+            overflow-x: auto;
+
+            .coupons-table {
+                min-width: 1000px;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .coupons-page {
+        padding: 1rem;
+
+        .coupons-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: stretch;
+
+            .add-coupon-btn {
+                justify-content: center;
+            }
+        }
+
+        .coupons-filters {
+            padding: 1rem;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+
+            .filters-center {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+
+                .filter-group .filter-select {
+                    min-width: auto;
+                    flex: 1;
+                }
+            }
+
+            .filters-right .search-wrapper .search-input {
+                width: 100%;
+            }
+        }
+
+        .pagination {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .coupons-page {
+        padding: 0.5rem;
+
+        .coupons-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .coupons-filters {
+            padding: 0.75rem;
+        }
+
+        .coupons-table-container .coupons-table {
+            font-size: 0.75rem;
+
+            th,
+            td {
+                padding: 0.5rem;
+            }
+
+            .coupon-code .code {
+                font-size: 0.75rem;
+            }
+        }
+    }
+}

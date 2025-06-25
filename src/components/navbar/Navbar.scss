@@ -1,0 +1,205 @@
+@use '../../assets/styles/vars.scss' as *;
+
+.navbar {
+    height: 70px;
+    background: $dark-blue-color;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    box-shadow: $shadow-md;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    .navbar-left {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+
+            .brand-icon {
+                width: 40px;
+                height: 40px;
+                background: linear-gradient(135deg, $primary-color 0%, $primary-blue-hover 100%);
+                border-radius: $radius-md;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $white;
+                font-weight: 700;
+                font-size: 0.875rem;
+                letter-spacing: 1px;
+            }
+
+            .brand-text {
+                color: $white;
+                font-size: 1.125rem;
+                font-weight: 600;
+            }
+        }
+
+        .navbar-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+
+            .breadcrumb-icon {
+                width: 16px;
+                height: 16px;
+            }
+
+            .breadcrumb-text {
+                color: $white;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .navbar-right {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+
+        .navbar-stats {
+            display: flex;
+            gap: 1rem;
+
+            .stat-item {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 0.875rem;
+
+                .stat-value {
+                    color: $white;
+                    font-weight: 600;
+                }
+
+                .stat-label {
+                    color: rgba(255, 255, 255, 0.6);
+                }
+            }
+        }
+
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            .action-btn {
+                position: relative;
+                width: 40px;
+                height: 40px;
+                background: rgba(255, 255, 255, 0.1);
+                border: none;
+                border-radius: $radius-md;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: rgba(255, 255, 255, 0.8);
+                cursor: pointer;
+                transition: $transition-all;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.15);
+                    color: $white;
+                    transform: translateY(-1px);
+                }
+
+                svg {
+                    width: 18px;
+                    height: 18px;
+                }
+
+                .badge {
+                    position: absolute;
+                    top: -2px;
+                    right: -2px;
+                    background: #ef4444;
+                    color: $white;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    width: 18px;
+                    height: 18px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 2px solid $dark-blue-color;
+                }
+            }
+
+            .user-profile {
+                margin-left: 0.5rem;
+
+                .user-avatar {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    border: 2px solid rgba(255, 255, 255, 0.2);
+                    cursor: pointer;
+                    transition: $transition-all;
+
+                    &:hover {
+                        border-color: $primary-color;
+                        transform: scale(1.05);
+                    }
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 1rem;
+
+        .navbar-left {
+            gap: 1rem;
+
+            .navbar-breadcrumb {
+                display: none;
+            }
+        }
+
+        .navbar-right {
+            gap: 1rem;
+
+            .navbar-stats {
+                display: none;
+            }
+
+            .navbar-actions {
+                gap: 0.25rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0 0.75rem;
+
+        .navbar-left {
+            .brand-text {
+                display: none;
+            }
+        }
+    }
+}

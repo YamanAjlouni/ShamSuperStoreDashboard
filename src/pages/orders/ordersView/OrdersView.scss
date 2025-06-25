@@ -1,0 +1,619 @@
+@use '../../../assets/styles/vars.scss' as *;
+
+.orders-view-page {
+    padding: 2rem;
+    background: $gray-50;
+    min-height: calc(100vh - 70px);
+
+    .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50vh;
+        color: $text-light;
+        font-size: 1.125rem;
+    }
+
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: $white;
+        border-radius: $radius-xl;
+        padding: 1.5rem 2rem;
+        box-shadow: $shadow-sm;
+        border: 1px solid $gray-200;
+        margin-bottom: 2rem;
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .back-btn {
+                background: $gray-100;
+                border: none;
+                border-radius: $radius-md;
+                padding: 0.75rem;
+                cursor: pointer;
+                transition: $transition-all;
+                color: $text-dark;
+
+                &:hover {
+                    background: $gray-200;
+                    transform: translateX(-2px);
+                }
+            }
+
+            .order-info {
+                h1 {
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: $text-dark;
+                    margin: 0 0 0.5rem 0;
+                }
+
+                .order-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    flex-wrap: wrap;
+
+                    .status-badge {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.25rem;
+                        padding: 0.25rem 0.75rem;
+                        border-radius: $radius-sm;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+
+                        &.status--pending {
+                            background: rgba(245, 158, 11, 0.1);
+                            color: #d97706;
+                        }
+
+                        &.status--completed {
+                            background: rgba(16, 185, 129, 0.1);
+                            color: #059669;
+                        }
+
+                        &.status--processing {
+                            background: rgba(59, 130, 246, 0.1);
+                            color: #2563eb;
+                        }
+
+                        &.status--rejected {
+                            background: rgba(239, 68, 68, 0.1);
+                            color: #dc2626;
+                        }
+                    }
+
+                    .order-date,
+                    .store-name {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.25rem;
+                        color: $text-light;
+                        font-size: 0.875rem;
+
+                        svg {
+                            color: $text-light;
+                        }
+                    }
+                }
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+
+            .action-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                border: none;
+                border-radius: $radius-lg;
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: $transition-all;
+                white-space: nowrap;
+
+                &.accept-btn {
+                    background: #10b981;
+                    color: $white;
+
+                    &:hover {
+                        background: #059669;
+                        transform: translateY(-1px);
+                    }
+                }
+
+                &.reject-btn {
+                    background: #ef4444;
+                    color: $white;
+
+                    &:hover {
+                        background: #dc2626;
+                        transform: translateY(-1px);
+                    }
+                }
+
+                &.secondary-btn {
+                    background: $gray-100;
+                    color: $text-dark;
+
+                    &:hover {
+                        background: $gray-200;
+                    }
+                }
+            }
+        }
+    }
+
+    .order-content {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 2rem;
+
+        .section {
+            background: $white;
+            border-radius: $radius-xl;
+            padding: 1.5rem;
+            box-shadow: $shadow-sm;
+            border: 1px solid $gray-200;
+            margin-bottom: 1.5rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            h3 {
+                font-size: 1.125rem;
+                font-weight: 600;
+                color: $text-dark;
+                margin: 0 0 1rem 0;
+                padding-bottom: 0.75rem;
+                border-bottom: 1px solid $gray-200;
+            }
+        }
+
+        .order-details {
+            .order-items {
+                .items-list {
+                    .item-row {
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        padding: 1rem 0;
+                        border-bottom: 1px solid $gray-100;
+
+                        &:last-child {
+                            border-bottom: none;
+                        }
+
+                        .item-image {
+                            img {
+                                width: 60px;
+                                height: 60px;
+                                object-fit: cover;
+                                border-radius: $radius-md;
+                                border: 1px solid $gray-200;
+                            }
+                        }
+
+                        .item-details {
+                            flex: 1;
+
+                            h4 {
+                                font-size: 0.875rem;
+                                font-weight: 600;
+                                color: $text-dark;
+                                margin: 0 0 0.25rem 0;
+                            }
+
+                            .sku {
+                                color: $text-light;
+                                font-size: 0.75rem;
+                                margin: 0 0 0.5rem 0;
+                                font-family: monospace;
+                            }
+
+                            .quantity-price {
+                                display: flex;
+                                gap: 1rem;
+                                font-size: 0.75rem;
+
+                                .quantity {
+                                    color: $text-light;
+                                }
+
+                                .price {
+                                    color: $text-dark;
+                                    font-weight: 500;
+                                }
+                            }
+                        }
+
+                        .item-total {
+                            font-weight: 600;
+                            color: $primary-color;
+                        }
+                    }
+                }
+            }
+
+            .addresses {
+                .address-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 1.5rem;
+
+                    .address-card {
+                        background: $gray-50;
+                        border-radius: $radius-lg;
+                        padding: 1rem;
+
+                        h4 {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            color: $text-dark;
+                            margin: 0 0 0.75rem 0;
+
+                            svg {
+                                color: $primary-color;
+                            }
+                        }
+
+                        .address-format {
+                            .street,
+                            .city-state,
+                            .country {
+                                color: $text-dark;
+                                font-size: 0.875rem;
+                                line-height: 1.4;
+                                margin-bottom: 0.25rem;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .order-timeline {
+                .timeline {
+                    .timeline-item {
+                        display: flex;
+                        gap: 1rem;
+                        padding: 1rem 0;
+
+                        &:not(:last-child) {
+                            border-bottom: 1px solid $gray-100;
+                        }
+
+                        .timeline-icon {
+                            width: 40px;
+                            height: 40px;
+                            background: $primary-blue-light;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: $primary-color;
+                            flex-shrink: 0;
+                        }
+
+                        .timeline-content {
+                            flex: 1;
+                            padding-top: 0.5rem;
+
+                            .timeline-description {
+                                color: $text-dark;
+                                font-weight: 500;
+                                margin: 0 0 0.25rem 0;
+                            }
+
+                            .timeline-date {
+                                color: $text-light;
+                                font-size: 0.75rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .order-sidebar {
+            .payment-summary {
+                .payment-method {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.75rem;
+                    background: $gray-50;
+                    border-radius: $radius-md;
+                    margin-bottom: 1rem;
+
+                    svg {
+                        color: $primary-color;
+                    }
+                }
+
+                .payment-breakdown {
+                    .line-item {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 0.5rem 0;
+                        border-bottom: 1px solid $gray-100;
+
+                        &:last-child {
+                            border-bottom: none;
+                        }
+
+                        &.discount {
+                            color: #10b981;
+                        }
+
+                        &.total {
+                            font-weight: 600;
+                            font-size: 1.125rem;
+                            color: $primary-color;
+                            border-top: 2px solid $gray-200;
+                            padding-top: 1rem;
+                            margin-top: 0.5rem;
+                        }
+
+                        &.admin-fee {
+                            color: $text-light;
+                            font-size: 0.875rem;
+                        }
+                    }
+                }
+            }
+
+            .shipping-info {
+                .shipping-details {
+                    .shipping-method {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        padding: 0.75rem;
+                        background: $gray-50;
+                        border-radius: $radius-md;
+                        margin-bottom: 1rem;
+
+                        svg {
+                            color: $primary-color;
+                        }
+                    }
+
+                    .shipping-carrier,
+                    .tracking-number,
+                    .delivery-date {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 0.5rem 0;
+                        border-bottom: 1px solid $gray-100;
+
+                        &:last-child {
+                            border-bottom: none;
+                        }
+
+                        .label {
+                            color: $text-light;
+                            font-size: 0.875rem;
+                        }
+
+                        .tracking {
+                            font-family: monospace;
+                            font-weight: 500;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Modal Styles
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+
+        .modal {
+            background: $white;
+            border-radius: $radius-xl;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: $shadow-2xl;
+
+            h3 {
+                margin: 0 0 1rem 0;
+                color: $text-dark;
+                font-size: 1.25rem;
+                font-weight: 600;
+            }
+
+            p {
+                margin: 0 0 2rem 0;
+                color: $text-light;
+                line-height: 1.5;
+            }
+
+            .modal-actions {
+                display: flex;
+                gap: 1rem;
+                justify-content: flex-end;
+
+                .cancel-btn {
+                    background: $gray-100;
+                    color: $text-dark;
+                    border: none;
+                    border-radius: $radius-md;
+                    padding: 0.75rem 1.5rem;
+                    font-size: 0.875rem;
+                    cursor: pointer;
+                    transition: $transition-all;
+
+                    &:hover {
+                        background: $gray-200;
+                    }
+                }
+
+                .accept-btn {
+                    background: #10b981;
+                    color: $white;
+                    border: none;
+                    border-radius: $radius-md;
+                    padding: 0.75rem 1.5rem;
+                    font-size: 0.875rem;
+                    cursor: pointer;
+                    transition: $transition-all;
+
+                    &:hover {
+                        background: #059669;
+                    }
+                }
+
+                .reject-btn {
+                    background: #ef4444;
+                    color: $white;
+                    border: none;
+                    border-radius: $radius-md;
+                    padding: 0.75rem 1.5rem;
+                    font-size: 0.875rem;
+                    cursor: pointer;
+                    transition: $transition-all;
+
+                    &:hover {
+                        background: #dc2626;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+    .orders-view-page {
+        .order-content {
+            grid-template-columns: 1fr;
+
+            .order-sidebar {
+                order: -1;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .orders-view-page {
+        padding: 1rem;
+
+        .order-header {
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem;
+
+            .header-left {
+                align-self: flex-start;
+                width: 100%;
+            }
+
+            .header-actions {
+                align-self: stretch;
+                justify-content: space-between;
+
+                .action-btn {
+                    flex: 1;
+                    justify-content: center;
+                }
+            }
+        }
+
+        .order-content {
+            gap: 1rem;
+
+            .section {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .order-details {
+                .addresses .address-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .orders-view-page {
+        padding: 0.5rem;
+
+        .order-header {
+            padding: 0.75rem;
+
+            .header-left .order-info {
+                h1 {
+                    font-size: 1.5rem;
+                }
+
+                .order-meta {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 0.5rem;
+                }
+            }
+
+            .header-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        .order-content {
+            .section {
+                padding: 0.75rem;
+
+                h3 {
+                    font-size: 1rem;
+                }
+            }
+
+            .order-details {
+                .order-items .items-list .item-row {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 0.75rem;
+
+                    .item-details {
+                        width: 100%;
+                    }
+
+                    .item-total {
+                        align-self: flex-end;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,59 @@
+@use './assets/styles/vars.scss' as *;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.app-layout {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: $gray-50;
+
+    .app-content {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            background: $gray-50;
+            padding: 2rem;
+
+            .page-placeholder {
+                background: $white;
+                border-radius: $radius-xl;
+                padding: 3rem;
+                text-align: center;
+                color: $text-light;
+                font-size: 1.125rem;
+                box-shadow: $shadow-sm;
+                border: 1px solid $gray-200;
+            }
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .app-layout {
+        .app-content {
+            .main-content {
+                padding: 1rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .app-layout {
+        .app-content {
+            .main-content {
+                padding: 0.75rem;
+            }
+        }
+    }
+}

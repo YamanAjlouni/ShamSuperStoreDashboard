@@ -1,0 +1,575 @@
+@use '../../assets/styles/vars.scss' as *;
+
+.payments-page {
+    padding: 2rem;
+    background: $gray-50;
+    min-height: calc(100vh - 70px);
+
+    .payments-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: $white;
+        border-radius: $radius-xl;
+        padding: 1.5rem 2rem;
+        box-shadow: $shadow-sm;
+        border: 1px solid $gray-200;
+        margin-bottom: 2rem;
+
+        .header-content {
+            h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: $text-dark;
+                margin: 0 0 0.5rem 0;
+            }
+
+            p {
+                color: $text-light;
+                font-size: 0.875rem;
+                margin: 0;
+            }
+        }
+
+        .earnings-summary {
+            display: flex;
+            gap: 2rem;
+
+            .earning-item {
+                text-align: center;
+
+                .earning-value {
+                    display: block;
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    color: $primary-color;
+                    margin-bottom: 0.25rem;
+                }
+
+                .earning-label {
+                    font-size: 0.875rem;
+                    color: $text-light;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    .success-message {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: rgba(16, 185, 129, 0.1);
+        color: #059669;
+        padding: 1rem 1.5rem;
+        border-radius: $radius-lg;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        margin-bottom: 1.5rem;
+        animation: slideInDown 0.3s ease-out;
+
+        svg {
+            flex-shrink: 0;
+        }
+
+        span {
+            font-weight: 500;
+        }
+    }
+
+    .payments-content {
+        .payment-methods-section {
+            background: $white;
+            border-radius: $radius-xl;
+            padding: 2rem;
+            box-shadow: $shadow-sm;
+            border: 1px solid $gray-200;
+            margin-bottom: 2rem;
+
+            .section-header {
+                margin-bottom: 2rem;
+
+                h3 {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    color: $text-dark;
+                    margin: 0 0 0.5rem 0;
+                }
+
+                p {
+                    color: $text-light;
+                    font-size: 0.875rem;
+                    margin: 0;
+                }
+            }
+
+            .payment-methods-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                gap: 1.5rem;
+
+                .payment-method-card {
+                    position: relative;
+                    background: $gray-50;
+                    border: 2px solid $gray-200;
+                    border-radius: $radius-xl;
+                    padding: 1.5rem;
+                    cursor: pointer;
+                    transition: $transition-all;
+                    overflow: hidden;
+
+                    &:hover:not(.disabled) {
+                        border-color: $primary-color;
+                        transform: translateY(-2px);
+                        box-shadow: $shadow-lg;
+                    }
+
+                    &.selected {
+                        border-color: $primary-color;
+                        background: $primary-blue-light;
+                        box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                    }
+
+                    &.disabled {
+                        cursor: not-allowed;
+                        opacity: 0.7;
+                    }
+
+                    .card-header {
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 1rem;
+                        margin-bottom: 1rem;
+
+                        .method-icon {
+                            width: 60px;
+                            height: 60px;
+                            background: $white;
+                            border-radius: $radius-lg;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: $primary-color;
+                            box-shadow: $shadow-sm;
+                            flex-shrink: 0;
+                        }
+
+                        .method-info {
+                            flex: 1;
+
+                            h4 {
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                color: $text-dark;
+                                margin: 0 0 0.5rem 0;
+                            }
+
+                            p {
+                                color: $text-light;
+                                font-size: 0.875rem;
+                                margin: 0;
+                                line-height: 1.4;
+                            }
+                        }
+
+                        .method-status {
+                            .status-badge {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.25rem;
+                                padding: 0.25rem 0.75rem;
+                                border-radius: $radius-sm;
+                                font-size: 0.75rem;
+                                font-weight: 600;
+
+                                &.status--available {
+                                    background: rgba(16, 185, 129, 0.1);
+                                    color: #059669;
+                                }
+
+                                &.status--coming-soon {
+                                    background: rgba(245, 158, 11, 0.1);
+                                    color: #d97706;
+                                }
+                            }
+                        }
+                    }
+
+                    .card-details {
+                        .detail-row {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 0.5rem;
+
+                            .detail-label {
+                                color: $text-light;
+                                font-size: 0.875rem;
+                            }
+
+                            .detail-value {
+                                color: $text-dark;
+                                font-weight: 500;
+                                font-size: 0.875rem;
+                            }
+                        }
+
+                        .method-description {
+                            color: $text-light;
+                            font-size: 0.75rem;
+                            line-height: 1.4;
+                            margin: 1rem 0 0 0;
+                            padding-top: 1rem;
+                            border-top: 1px solid $gray-200;
+                        }
+                    }
+
+                    .selected-indicator {
+                        position: absolute;
+                        top: 1rem;
+                        right: 1rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        background: $primary-color;
+                        color: $white;
+                        padding: 0.5rem 1rem;
+                        border-radius: $radius-md;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                        animation: slideInRight 0.3s ease-out;
+
+                        svg {
+                            width: 16px;
+                            height: 16px;
+                        }
+                    }
+
+                    .coming-soon-overlay {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(255, 255, 255, 0.95);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: $radius-xl;
+
+                        .coming-soon-content {
+                            text-align: center;
+                            padding: 1rem;
+
+                            svg {
+                                color: $text-light;
+                                margin-bottom: 1rem;
+                            }
+
+                            h5 {
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                color: $text-dark;
+                                margin: 0 0 0.5rem 0;
+                            }
+
+                            p {
+                                color: $text-light;
+                                font-size: 0.875rem;
+                                margin: 0;
+                                line-height: 1.4;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .payment-info-section {
+            margin-bottom: 2rem;
+
+            .info-cards-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+
+                .info-card {
+                    background: $white;
+                    border-radius: $radius-xl;
+                    padding: 1.5rem;
+                    box-shadow: $shadow-sm;
+                    border: 1px solid $gray-200;
+
+                    .info-header {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                        margin-bottom: 1rem;
+
+                        svg {
+                            color: $primary-color;
+                        }
+
+                        h4 {
+                            font-size: 1rem;
+                            font-weight: 600;
+                            color: $text-dark;
+                            margin: 0;
+                        }
+                    }
+
+                    p {
+                        color: $text-light;
+                        font-size: 0.875rem;
+                        line-height: 1.5;
+                        margin: 0 0 1rem 0;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                    }
+
+                    ul {
+                        margin: 0;
+                        padding-left: 1.25rem;
+
+                        li {
+                            color: $text-light;
+                            font-size: 0.875rem;
+                            line-height: 1.5;
+                            margin-bottom: 0.5rem;
+
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+
+                    .payout-details {
+                        background: $gray-50;
+                        border-radius: $radius-md;
+                        padding: 1rem;
+
+                        .payout-item {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 0.5rem;
+
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+
+                            span:first-child {
+                                color: $text-light;
+                                font-size: 0.875rem;
+                            }
+
+                            span:last-child {
+                                color: $text-dark;
+                                font-weight: 500;
+                                font-size: 0.875rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .save-section {
+            display: flex;
+            justify-content: center;
+
+            .save-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: linear-gradient(135deg, $primary-color 0%, $primary-blue-hover 100%);
+                color: $white;
+                border: none;
+                border-radius: $radius-lg;
+                padding: 1rem 2rem;
+                font-size: 0.875rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: $transition-all;
+                box-shadow: $shadow-sm;
+
+                &:hover:not(:disabled) {
+                    transform: translateY(-2px);
+                    box-shadow: $shadow-lg;
+                }
+
+                &:active {
+                    transform: translateY(0);
+                }
+
+                &:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                    transform: none;
+                }
+
+                svg {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+    }
+}
+
+// Animations
+@keyframes slideInDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+    .payments-page {
+        .payments-content {
+            .payment-methods-section {
+                .payment-methods-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .payment-info-section {
+                .info-cards-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .payments-page {
+        padding: 1rem;
+
+        .payments-header {
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: center;
+            padding: 1rem;
+
+            .earnings-summary {
+                justify-content: center;
+                gap: 1.5rem;
+            }
+        }
+
+        .payments-content {
+            .payment-methods-section {
+                padding: 1.5rem;
+
+                .payment-methods-grid {
+                    .payment-method-card {
+                        padding: 1rem;
+
+                        .card-header {
+                            flex-direction: column;
+                            text-align: center;
+                            gap: 1rem;
+
+                            .method-info {
+                                text-align: center;
+                            }
+                        }
+
+                        .selected-indicator {
+                            position: static;
+                            margin-top: 1rem;
+                            justify-content: center;
+                        }
+                    }
+                }
+            }
+
+            .payment-info-section {
+                .info-cards-grid {
+                    .info-card {
+                        padding: 1rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .payments-page {
+        padding: 0.5rem;
+
+        .payments-header {
+            padding: 0.75rem;
+
+            .header-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .earnings-summary {
+                gap: 1rem;
+
+                .earning-item .earning-value {
+                    font-size: 1.25rem;
+                }
+            }
+        }
+
+        .payments-content {
+            .payment-methods-section {
+                padding: 1rem;
+
+                .section-header h3 {
+                    font-size: 1.25rem;
+                }
+
+                .payment-methods-grid {
+                    .payment-method-card {
+                        .card-header .method-icon {
+                            width: 50px;
+                            height: 50px;
+                        }
+                    }
+                }
+            }
+
+            .payment-info-section {
+                .info-cards-grid {
+                    gap: 1rem;
+
+                    .info-card {
+                        padding: 0.75rem;
+                    }
+                }
+            }
+
+            .save-section {
+                .save-btn {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}

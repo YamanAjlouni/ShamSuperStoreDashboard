@@ -1,0 +1,594 @@
+@use '../../assets/styles/vars.scss' as *;
+
+.settings-page {
+    padding: 2rem;
+    background: $gray-50;
+    min-height: calc(100vh - 70px);
+
+    .settings-header {
+        margin-bottom: 2rem;
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: $text-dark;
+            margin: 0 0 0.5rem 0;
+        }
+
+        p {
+            color: $text-light;
+            font-size: 1rem;
+            margin: 0;
+        }
+    }
+
+    .settings-container {
+        background: $white;
+        border-radius: $radius-xl;
+        box-shadow: $shadow-sm;
+        border: 1px solid $gray-200;
+        overflow: hidden;
+
+        .settings-tabs {
+            display: flex;
+            background: $gray-50;
+            border-bottom: 1px solid $gray-200;
+            overflow-x: auto;
+
+            .tab-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                background: none;
+                border: none;
+                padding: 1.25rem 1.5rem;
+                font-size: 0.875rem;
+                font-weight: 500;
+                color: $text-light;
+                cursor: pointer;
+                transition: $transition-all;
+                white-space: nowrap;
+                border-bottom: 3px solid transparent;
+                position: relative;
+
+                &:hover {
+                    color: $text-dark;
+                    background: rgba(255, 255, 255, 0.7);
+                }
+
+                &.active {
+                    color: $primary-color;
+                    background: $white;
+                    border-bottom-color: $primary-color;
+                    font-weight: 600;
+                }
+
+                svg {
+                    flex-shrink: 0;
+                }
+            }
+        }
+
+        .settings-content {
+            .settings-section {
+                padding: 2.5rem;
+
+                .section-header {
+                    margin-bottom: 2rem;
+                    padding-bottom: 1rem;
+                    border-bottom: 1px solid $gray-200;
+
+                    h2 {
+                        font-size: 1.5rem;
+                        font-weight: 600;
+                        color: $text-dark;
+                        margin: 0 0 0.5rem 0;
+                    }
+
+                    p {
+                        color: $text-light;
+                        font-size: 0.9rem;
+                        margin: 0;
+                    }
+                }
+
+                .form-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 2rem;
+                    align-items: start;
+
+                    .form-group {
+                        &.full-width {
+                            grid-column: 1 / -1;
+                        }
+
+                        &.image-upload-group {
+                            grid-column: 1 / -1;
+                            margin-bottom: 1rem;
+                        }
+
+                        label {
+                            display: block;
+                            font-weight: 600;
+                            color: $text-dark;
+                            margin-bottom: 0.75rem;
+                            font-size: 0.875rem;
+                        }
+
+                        input,
+                        select,
+                        textarea {
+                            width: 100%;
+                            padding: 0.875rem 1rem;
+                            border: 1.5px solid $gray-200;
+                            border-radius: $radius-md;
+                            font-size: 0.875rem;
+                            transition: $transition-all;
+                            background: $white;
+
+                            &:focus {
+                                outline: none;
+                                border-color: $primary-color;
+                                box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                                transform: translateY(-1px);
+                            }
+
+                            &:hover {
+                                border-color: $gray-300;
+                            }
+
+                            &::placeholder {
+                                color: $text-light;
+                            }
+                        }
+
+                        textarea {
+                            resize: vertical;
+                            min-height: 100px;
+                            line-height: 1.5;
+                        }
+
+                        select {
+                            cursor: pointer;
+                        }
+
+                        h3 {
+                            font-size: 1.125rem;
+                            font-weight: 600;
+                            color: $text-dark;
+                            margin: 0 0 1rem 0;
+                            padding-top: 1rem;
+                            border-top: 1px solid $gray-200;
+
+                            &:first-child {
+                                border-top: none;
+                                padding-top: 0;
+                            }
+                        }
+
+                        .helper-text {
+                            display: block;
+                            color: $text-light;
+                            font-size: 0.75rem;
+                            margin-top: 0.5rem;
+                            line-height: 1.4;
+                        }
+
+                        // Password Input
+                        .password-input {
+                            position: relative;
+
+                            input {
+                                padding-right: 3rem;
+                            }
+
+                            .password-toggle {
+                                position: absolute;
+                                right: 1rem;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                background: none;
+                                border: none;
+                                cursor: pointer;
+                                color: $text-light;
+                                transition: $transition-all;
+                                padding: 0.25rem;
+                                border-radius: $radius-sm;
+
+                                &:hover {
+                                    color: $primary-color;
+                                    background: rgba(66, 103, 178, 0.1);
+                                }
+                            }
+                        }
+
+                        // Toggle Switch
+                        .toggle-label {
+                            display: flex;
+                            align-items: center;
+                            cursor: pointer;
+                            font-weight: normal;
+                            margin: 0;
+                            gap: 1rem;
+
+                            input[type="checkbox"] {
+                                position: absolute;
+                                opacity: 0;
+                                cursor: pointer;
+                                width: 0;
+                                height: 0;
+
+                                &:checked+.toggle-switch {
+                                    background: $primary-color;
+
+                                    &::before {
+                                        transform: translateX(22px);
+                                    }
+                                }
+                            }
+
+                            .toggle-switch {
+                                width: 48px;
+                                height: 26px;
+                                background: $gray-300;
+                                border-radius: 13px;
+                                position: relative;
+                                transition: $transition-all;
+                                flex-shrink: 0;
+
+                                &::before {
+                                    content: '';
+                                    position: absolute;
+                                    top: 2px;
+                                    left: 2px;
+                                    width: 22px;
+                                    height: 22px;
+                                    background: $white;
+                                    border-radius: 50%;
+                                    transition: $transition-all;
+                                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                }
+                            }
+
+                            .toggle-text {
+                                font-size: 0.875rem;
+                                color: $text-dark;
+                            }
+                        }
+
+                        // Image Upload
+                        .image-upload {
+                            display: flex;
+                            align-items: center;
+                            gap: 1.5rem;
+
+                            .image-preview {
+                                width: 120px;
+                                height: 120px;
+                                border-radius: $radius-lg;
+                                overflow: hidden;
+                                border: 2px solid $gray-200;
+                                flex-shrink: 0;
+
+                                &.circular {
+                                    border-radius: 50%;
+                                }
+
+                                img {
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                }
+                            }
+
+                            .upload-controls {
+                                .file-input {
+                                    display: none;
+                                }
+
+                                .upload-btn {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.5rem;
+                                    background: $gray-100;
+                                    color: $text-dark;
+                                    border: 1px solid $gray-200;
+                                    border-radius: $radius-md;
+                                    padding: 0.75rem 1.25rem;
+                                    font-size: 0.875rem;
+                                    font-weight: 500;
+                                    cursor: pointer;
+                                    transition: $transition-all;
+
+                                    &:hover {
+                                        background: $gray-200;
+                                        border-color: $gray-300;
+                                        transform: translateY(-1px);
+                                    }
+                                }
+                            }
+                        }
+
+                        // Document Upload
+                        .document-upload {
+                            .upload-placeholder {
+                                border: 2px dashed $gray-300;
+                                border-radius: $radius-lg;
+                                padding: 2rem;
+                                text-align: center;
+                                background: $gray-50;
+                                transition: $transition-all;
+
+                                &:hover {
+                                    border-color: $primary-color;
+                                    background: $primary-blue-light;
+                                }
+
+                                svg {
+                                    color: $text-light;
+                                    margin-bottom: 1rem;
+                                }
+
+                                p {
+                                    color: $text-dark;
+                                    margin: 0 0 1rem 0;
+                                    font-weight: 500;
+                                }
+
+                                .file-input {
+                                    display: none;
+                                }
+
+                                .upload-btn {
+                                    background: $primary-color;
+                                    color: $white;
+                                    border: none;
+                                    border-radius: $radius-md;
+                                    padding: 0.75rem 1.5rem;
+                                    font-size: 0.875rem;
+                                    cursor: pointer;
+                                    transition: $transition-all;
+
+                                    &:hover {
+                                        background: $primary-blue-hover;
+                                        transform: translateY(-1px);
+                                    }
+                                }
+                            }
+
+                            .document-preview {
+                                position: relative;
+                                border-radius: $radius-lg;
+                                overflow: hidden;
+                                border: 1px solid $gray-200;
+                                max-width: 300px;
+
+                                img {
+                                    width: 100%;
+                                    height: auto;
+                                    display: block;
+                                }
+
+                                .remove-document {
+                                    position: absolute;
+                                    top: 0.5rem;
+                                    right: 0.5rem;
+                                    background: rgba(239, 68, 68, 0.9);
+                                    color: $white;
+                                    border: none;
+                                    border-radius: $radius-sm;
+                                    padding: 0.5rem 0.75rem;
+                                    font-size: 0.75rem;
+                                    cursor: pointer;
+                                    transition: $transition-all;
+
+                                    &:hover {
+                                        background: #dc2626;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Notifications Section
+                .notification-groups {
+                    .notification-group {
+                        margin-bottom: 2rem;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+
+                        h3 {
+                            font-size: 1.125rem;
+                            font-weight: 600;
+                            color: $text-dark;
+                            margin: 0 0 1.5rem 0;
+                            padding-bottom: 0.75rem;
+                            border-bottom: 1px solid $gray-200;
+                        }
+
+                        .notification-options {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 1.25rem;
+                        }
+                    }
+                }
+            }
+
+            .form-actions {
+                padding: 2rem 2.5rem;
+                border-top: 1px solid $gray-200;
+                background: $gray-50;
+                display: flex;
+                justify-content: flex-end;
+
+                .save-btn {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    background: linear-gradient(135deg, $primary-color 0%, $primary-blue-hover 100%);
+                    color: $white;
+                    border: none;
+                    border-radius: $radius-lg;
+                    padding: 1rem 2rem;
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: $transition-all;
+                    box-shadow: $shadow-sm;
+
+                    &:hover {
+                        transform: translateY(-2px);
+                        box-shadow: $shadow-lg;
+                    }
+
+                    &:active {
+                        transform: translateY(0);
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+    .settings-page {
+        .settings-container {
+            .settings-content {
+                .settings-section {
+                    .form-grid {
+                        grid-template-columns: 1fr;
+                        gap: 1.5rem;
+
+                        .form-group.full-width {
+                            grid-column: 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .settings-page {
+        padding: 1rem;
+
+        .settings-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+
+        .settings-container {
+            .settings-tabs {
+                .tab-btn {
+                    padding: 1rem;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    font-size: 0.75rem;
+
+                    svg {
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+            }
+
+            .settings-content {
+                .settings-section {
+                    padding: 1.5rem;
+
+                    .section-header {
+                        margin-bottom: 1.5rem;
+
+                        h2 {
+                            font-size: 1.25rem;
+                        }
+                    }
+
+                    .form-grid {
+                        gap: 1.25rem;
+
+                        .form-group {
+                            .image-upload {
+                                flex-direction: column;
+                                text-align: center;
+                                gap: 1rem;
+
+                                .image-preview {
+                                    width: 100px;
+                                    height: 100px;
+                                    align-self: center;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .form-actions {
+                    padding: 1.5rem;
+
+                    .save-btn {
+                        width: 100%;
+                        justify-content: center;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .settings-page {
+        padding: 0.5rem;
+
+        .settings-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .settings-container {
+            .settings-tabs {
+                .tab-btn {
+                    padding: 0.75rem 0.5rem;
+                    font-size: 0.7rem;
+                }
+            }
+
+            .settings-content {
+                .settings-section {
+                    padding: 1rem;
+
+                    .form-grid {
+                        gap: 1rem;
+
+                        .form-group {
+                            label {
+                                font-size: 0.8rem;
+                            }
+
+                            input,
+                            select,
+                            textarea {
+                                padding: 0.75rem;
+                                font-size: 0.8rem;
+                            }
+                        }
+                    }
+                }
+
+                .form-actions {
+                    padding: 1rem;
+                }
+            }
+        }
+    }
+}
