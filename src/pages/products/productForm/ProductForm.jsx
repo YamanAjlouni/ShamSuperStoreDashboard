@@ -208,7 +208,7 @@ const ProductForm = ({ mode = 'add' }) => {
 
         // Here you would typically send the data to your API
         alert(isEditMode ? 'Product updated successfully!' : 'Product created successfully!')
-        navigate('/products')
+        navigate('/seller/products')
     }
 
     const tabs = [
@@ -225,7 +225,7 @@ const ProductForm = ({ mode = 'add' }) => {
                 <div className="header-left">
                     <button
                         className="back-btn"
-                        onClick={() => navigate('/products')}
+                        onClick={() => navigate('/seller/products')}
                     >
                         <ArrowLeft size={20} />
                     </button>

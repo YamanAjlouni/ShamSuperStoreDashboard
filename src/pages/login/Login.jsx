@@ -10,6 +10,7 @@ const Login = () => {
     });
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -17,18 +18,33 @@ const Login = () => {
             ...prev,
             [name]: value
         }));
+        if (error) setError('');
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
+        setError('');
 
-        // Simulate API call
         setTimeout(() => {
-            console.log('Login attempt:', formData);
+            // Check credentials and route accordingly
+            if (formData.email === 'seller@seller.seller' && formData.password === '123123') {
+                localStorage.setItem('userRole', 'seller');
+                localStorage.setItem('isAuthenticated', 'true');
+                navigate('/seller');
+            } else if (formData.email === 'admin@admin.admin' && formData.password === '123123') {
+                localStorage.setItem('userRole', 'admin');
+                localStorage.setItem('isAuthenticated', 'true');
+                navigate('/admin');
+            } else if (formData.email === 'delivery@delivery.delivery' && formData.password === '123123') {
+                localStorage.setItem('userRole', 'delivery');
+                localStorage.setItem('isAuthenticated', 'true');
+                navigate('/delivery');
+            } else {
+                setError('Invalid email or password');
+            }
+            
             setIsLoading(false);
-            // Navigate to dashboard after successful login
-            navigate('/');
         }, 1500);
     };
 
@@ -48,6 +64,12 @@ const Login = () => {
                 </div>
 
                 <form className="login-form" onSubmit={handleSubmit}>
+                    {error && (
+                        <div className="error-message">
+                            {error}
+                        </div>
+                    )}
+
                     <div className="form-group">
                         <label htmlFor="email">Email Address</label>
                         <div className="input-wrapper">
@@ -129,6 +151,12 @@ const Login = () => {
 
                 <div className="login-footer">
                     <p>Don't have an account? <a href="#">Contact Administrator</a></p>
+                    <div className="demo-credentials">
+                        <h4>Demo Credentials:</h4>
+                        <p><strong>Seller:</strong> seller@seller.seller / 123123</p>
+                        <p><strong>Admin:</strong> admin@admin.admin / 123123</p>
+                        <p><strong>Delivery:</strong> delivery@delivery.delivery / 123123</p>
+                    </div>
                 </div>
             </div>
 

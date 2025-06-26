@@ -228,7 +228,7 @@ const Orders = () => {
             <button
                 key="view"
                 className="action-btn view-btn"
-                onClick={() => navigate(`/orders/view/${order.id}`)}
+                onClick={() => navigate(`/seller/orders/view/${order.id}`)}
                 title="View Details"
             >
                 <Eye size={16} />

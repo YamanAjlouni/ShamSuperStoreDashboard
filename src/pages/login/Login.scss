@@ -430,6 +430,45 @@
             }
         }
     }
+
+    // Add these styles to your existing Login.scss file
+
+    .error-message {
+        background-color: #fee2e2;
+        color: #dc2626;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid #fecaca;
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+        text-align: center;
+    }
+
+    .demo-credentials {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background-color: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+
+        h4 {
+            margin: 0 0 0.75rem 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        p {
+            margin: 0.25rem 0;
+            font-size: 0.75rem;
+            color: #6b7280;
+
+            strong {
+                color: #374151;
+                font-weight: 600;
+            }
+        }
+    }
 }
 
 @keyframes spin {

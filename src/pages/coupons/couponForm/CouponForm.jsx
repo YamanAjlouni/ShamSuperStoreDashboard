@@ -66,7 +66,7 @@ const CouponForm = ({ mode = 'add' }) => {
 
         // Here you would typically send the data to your API
         alert(isEditMode ? 'Coupon updated successfully!' : 'Coupon created successfully!')
-        navigate('/coupons')
+        navigate('/seller/coupons')
     }
 
     const generateCouponCode = () => {
@@ -86,7 +86,7 @@ const CouponForm = ({ mode = 'add' }) => {
                 <div className="header-left">
                     <button
                         className="back-btn"
-                        onClick={() => navigate('/coupons')}
+                        onClick={() => navigate('/seller/coupons')}
                     >
                         <ArrowLeft size={20} />
                     </button>

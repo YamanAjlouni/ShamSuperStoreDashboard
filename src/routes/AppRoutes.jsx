@@ -1,82 +1,50 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import Dashboard from '../pages/dashboard/Dashboard'
-import Products from '../pages/products/Products'
-import ProductForm from '../pages/products/productForm/ProductForm'
-import CouponForm from '../pages/coupons/couponForm/CouponForm'
-import Coupons from '../pages/coupons/Coupons'
-import Orders from '../pages/orders/Orders'
-import OrdersView from '../pages/orders/ordersView/OrdersView'
-import Payments from '../pages/payments/Payments'
-import Settings from '../pages/settings/Settings'
-
-// Placeholder component for pages not yet implemented
-const PlaceholderPage = ({ pageName }) => (
-    <div className="page-placeholder">
-        <div className="placeholder-content">
-            <h2>{pageName}</h2>
-            <p>This page is coming soon!</p>
-        </div>
-    </div>
-)
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import Login from '../pages/login/Login'
+import Seller from '../pages/seller/Seller'
+import Admin from '../pages/admin/Admin'
+import Delivery from '../pages/delivery/Delivery'
 
 const AppRoutes = () => {
+    const location = useLocation()
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'
+    const userRole = localStorage.getItem('userRole')
+
+    // If not authenticated and not on login page, redirect to login
+    if (!isAuthenticated && location.pathname !== '/login') {
+        return <Navigate to="/login" replace />
+    }
+
+    // If authenticated and on login page, redirect to appropriate dashboard
+    if (isAuthenticated && location.pathname === '/login') {
+        if (userRole === 'seller') return <Navigate to="/seller" replace />
+        if (userRole === 'admin') return <Navigate to="/admin" replace />
+        if (userRole === 'delivery') return <Navigate to="/delivery" replace />
+    }
+
     return (
         <Routes>
-            {/* Dashboard */}
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/dashboard" element={<Navigate to="/" replace />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/seller/*" element={<Seller />} />
+            <Route path="/admin/*" element={<Admin />} />
+            <Route path="/delivery/*" element={<Delivery />} />
 
-            {/* Products Management */}
-            <Route path="/products" element={<Products />} />
-            <Route path="/products/new" element={<ProductForm mode="add" />} />
-            <Route path="/products/edit/:id" element={<ProductForm mode="edit" />} />
-
-            {/* E-commerce Pages */}
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/orders/view/:id" element={<OrdersView />} />
-
-            <Route path="/coupons" element={<Coupons />} />
-            <Route path="/coupons/new" element={<CouponForm mode="add" />} />
-            <Route path="/coupons/edit/:id" element={<CouponForm mode="edit" />} />
-
-            {/* Financial Management */}
-            <Route path="/payments" element={<Payments />} />
-
+            {/* Default redirects */}
             <Route
-                path="/refund"
-                element={<PlaceholderPage pageName="Refund Management" />}
+                path="/"
+                element={
+                    isAuthenticated ? (
+                        userRole === 'seller' ? <Navigate to="/seller" replace /> :
+                            userRole === 'admin' ? <Navigate to="/admin" replace /> :
+                                userRole === 'delivery' ? <Navigate to="/delivery" replace /> :
+                                    <Navigate to="/login" replace />
+                    ) : (
+                        <Navigate to="/login" replace />
+                    )
+                }
             />
 
-            {/* <Route
-                path="/support"
-                element={<PlaceholderPage pageName="Support Center" />}
-            /> */}
-
-            {/* Settings & Configuration */}
-            <Route path="/settings" element={<Settings />} />
-
-
-            {/* User Management */}
-            <Route
-                path="/profile"
-                element={<PlaceholderPage pageName="User Profile" />}
-            />
-            <Route
-                path="/account"
-                element={<PlaceholderPage pageName="Account Settings" />}
-            />
-
-            {/* Error Pages */}
-            <Route
-                path="/404"
-                element={<PlaceholderPage pageName="Page Not Found" />}
-            />
-
-            {/* Catch all route - redirect to 404 */}
-            <Route
-                path="*"
-                element={<Navigate to="/404" replace />}
-            />
+            {/* Catch all */}
+            <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
     )
 }

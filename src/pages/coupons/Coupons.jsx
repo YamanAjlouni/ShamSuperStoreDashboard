@@ -204,7 +204,7 @@ const Coupons = () => {
                 <h1>Coupons</h1>
                 <button
                     className="add-coupon-btn"
-                    onClick={() => navigate('/coupons/new')}
+                    onClick={() => navigate('/seller/coupons/new')}
                 >
                     <Plus size={20} />
                     Add New Coupon
@@ -330,7 +330,7 @@ const Coupons = () => {
                                     <div className="actions">
                                         <button
                                             className="action-btn edit-btn"
-                                            onClick={() => navigate(`/coupons/edit/${coupon.id}`)}
+                                            onClick={() => navigate(`/seller/coupons/edit/${coupon.id}`)}
                                             title="Edit"
                                         >
                                             <Edit size={16} />

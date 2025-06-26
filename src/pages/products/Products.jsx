@@ -179,7 +179,7 @@ const Products = () => {
                 <h1>Products</h1>
                 <button
                     className="add-product-btn"
-                    onClick={() => navigate('/products/new')}
+                    onClick={() => navigate('/seller/products/new')}
                 >
                     <Plus size={20} />
                     Add New Product
@@ -324,7 +324,7 @@ const Products = () => {
                                     <div className="actions">
                                         <button
                                             className="action-btn edit-btn"
-                                            onClick={() => navigate(`/products/edit/${product.id}`)}
+                                            onClick={() => navigate(`/seller/products/edit/${product.id}`)}
                                             title="Edit"
                                         >
                                             <Edit size={16} />

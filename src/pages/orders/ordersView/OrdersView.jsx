@@ -224,7 +224,7 @@ const OrdersView = () => {
                 <div className="header-left">
                     <button
                         className="back-btn"
-                        onClick={() => navigate('/orders')}
+                        onClick={() => navigate('/seller/orders')}
                     >
                         <ArrowLeft size={20} />
                     </button>

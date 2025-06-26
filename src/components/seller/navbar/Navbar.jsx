@@ -36,7 +36,7 @@ const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     }
 
     const handleCartClick = () => {
-        navigate('/orders')
+        navigate('/seller/orders')
     }
 
     const handleProfileClick = () => {
@@ -44,13 +44,15 @@ const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     }
 
     const handleSettingsClick = () => {
-        navigate('/settings')
+        navigate('/seller/settings')
         setIsProfileOpen(false)
     }
 
     const handleLogout = () => {
-        // Add logout logic here
         console.log('Logout clicked')
+        localStorage.removeItem('isAuthenticated')
+        localStorage.removeItem('userRole')
+        navigate('/login')
         setIsProfileOpen(false)
         // You can add actual logout logic like clearing localStorage, etc.
     }
