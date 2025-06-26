@@ -101,7 +101,7 @@ const Sidebar = ({ isCollapsed, isMobile, isOpen }) => {
                         <span className="sidebar-label">{item.label}</span>
                     </Link>
                 ))}
-                
+
                 <button
                     className="sidebar-item sidebar-item--logout"
                     onClick={handleLogout}
