@@ -32,16 +32,16 @@ const Seller = () => {
 
     useEffect(() => {
         const checkMobile = () => {
-            const mobile = window.innerWidth <= 768
+            // Changed breakpoint: treat tablets as mobile for sidebar behavior
+            const mobile = window.innerWidth <= 1024 // Changed from 768 to 1024
             setIsMobile(mobile)
 
-            // Auto-collapse sidebar on tablet screens
-            if (window.innerWidth <= 1024 && window.innerWidth > 768) {
-                setIsSidebarCollapsed(true)
-            }
-
-            // Reset states on mobile
-            if (mobile) {
+            // Only auto-collapse on true desktop screens
+            if (window.innerWidth > 1024) {
+                // Reset mobile states when on desktop
+                setIsSidebarOpen(false)
+            } else {
+                // Reset desktop states when on mobile/tablet
                 setIsSidebarCollapsed(false)
                 setIsSidebarOpen(false)
             }
@@ -52,11 +52,27 @@ const Seller = () => {
         return () => window.removeEventListener('resize', checkMobile)
     }, [])
 
+    // Add/remove body class when sidebar is open on mobile/tablet
+    useEffect(() => {
+        if (isMobile && isSidebarOpen) {
+            document.body.classList.add('sidebar-open')
+        } else {
+            document.body.classList.remove('sidebar-open')
+        }
+
+        // Cleanup on unmount
+        return () => {
+            document.body.classList.remove('sidebar-open')
+        }
+    }, [isMobile, isSidebarOpen])
+
     // Handle sidebar toggle from navbar
     const handleToggleSidebar = () => {
         if (isMobile) {
+            // Mobile/Tablet behavior: toggle overlay sidebar
             setIsSidebarOpen(!isSidebarOpen)
         } else {
+            // Desktop behavior: toggle collapse/expand
             setIsSidebarCollapsed(!isSidebarCollapsed)
         }
     }
