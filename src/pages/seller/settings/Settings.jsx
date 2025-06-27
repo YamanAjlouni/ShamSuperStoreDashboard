@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Save, Upload, Camera, User, Store, Shield, Eye, EyeOff } from 'lucide-react'
-import seller from '../../assets/images/seller/userimage.jpg'
+import seller from '../../../assets/images/seller/userimage.jpg'
 import './Settings.scss'
 
 const Settings = () => {
