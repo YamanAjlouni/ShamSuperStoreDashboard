@@ -1,0 +1,746 @@
+@use '../../../../assets/styles/vars.scss' as *;
+
+.seller-details {
+    max-width: 100%;
+    margin: 0 auto;
+
+    .loading-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        color: $gray-500;
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid $gray-200;
+            border-top: 3px solid $orange-color;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.125rem;
+            margin: 0;
+        }
+    }
+
+    .error-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: $white;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-md;
+
+        h2 {
+            font-size: 1.5rem;
+            color: #dc2626;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: $gray-500;
+            margin-bottom: 2rem;
+        }
+
+        button {
+            background: $orange-color;
+            color: $white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: $radius-md;
+            font-weight: 500;
+            cursor: pointer;
+            transition: $transition-all;
+
+            &:hover {
+                background: darken($orange-color, 10%);
+            }
+        }
+    }
+
+    .seller-header {
+        background: $white;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-md;
+        border: 1px solid $gray-200;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, $orange-color 0%, $yellow-color 100%);
+            border-radius: $radius-lg $radius-lg 0 0;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: $gray-500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            transition: color 0.2s ease;
+
+            &:hover {
+                color: $orange-color;
+            }
+
+            svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            .seller-info {
+                h1 {
+                    font-size: 2rem;
+                    font-weight: 700;
+                    color: $gray-800;
+                    margin: 0 0 0.5rem 0;
+                    background: linear-gradient(135deg, $gray-800 0%, $gray-700 100%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+
+                p {
+                    font-size: 1.125rem;
+                    color: $gray-500;
+                    margin: 0 0 1rem 0;
+                }
+
+                .seller-meta {
+                    display: flex;
+                    gap: 1rem;
+                    align-items: center;
+
+                    .seller-id {
+                        background: rgba(206, 128, 45, 0.1);
+                        color: $orange-color;
+                        padding: 0.25rem 0.75rem;
+                        border-radius: $radius-sm;
+                        font-size: 0.875rem;
+                        font-weight: 600;
+                        font-family: 'Courier New', monospace;
+                    }
+                }
+            }
+
+            .header-actions {
+                display: flex;
+                gap: 0.75rem;
+
+                .action-btn {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.75rem 1rem;
+                    border: none;
+                    border-radius: $radius-md;
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: $transition-all;
+
+                    svg {
+                        width: 16px;
+                        height: 16px;
+                    }
+
+                    &--contact {
+                        background: rgba(206, 128, 45, 0.1);
+                        color: $orange-color;
+
+                        &:hover {
+                            background: rgba(206, 128, 45, 0.2);
+                            transform: translateY(-1px);
+                        }
+                    }
+
+                    &--suspend {
+                        background: rgba(239, 68, 68, 0.1);
+                        color: #dc2626;
+
+                        &:hover {
+                            background: rgba(239, 68, 68, 0.2);
+                            transform: translateY(-1px);
+                        }
+                    }
+
+                    &--activate {
+                        background: rgba(66, 103, 178, 0.1);
+                        color: $primary-color;
+
+                        &:hover {
+                            background: rgba(66, 103, 178, 0.2);
+                            transform: translateY(-1px);
+                        }
+                    }
+
+                    &--delete {
+                        background: rgba(239, 68, 68, 0.1);
+                        color: #dc2626;
+
+                        &:hover {
+                            background: rgba(239, 68, 68, 0.2);
+                            transform: translateY(-1px);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .seller-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        .stat-card {
+            background: $white;
+            border-radius: $radius-lg;
+            padding: 1.5rem;
+            box-shadow: $shadow-md;
+            border: 1px solid $gray-200;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: $transition-all;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: $shadow-lg;
+            }
+
+            .stat-icon {
+                width: 48px;
+                height: 48px;
+                background: linear-gradient(135deg, $orange-color 0%, $yellow-color 100%);
+                border-radius: $radius-md;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $white;
+                flex-shrink: 0;
+
+                svg {
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+
+            .stat-content {
+                .stat-value {
+                    display: block;
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    color: $gray-800;
+                    margin-bottom: 0.25rem;
+                }
+
+                .stat-label {
+                    font-size: 0.875rem;
+                    color: $gray-500;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: $radius-full;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+
+        &--success {
+            background: rgba(66, 103, 178, 0.1);
+            color: $primary-color;
+        }
+
+        &--warning {
+            background: rgba(206, 128, 45, 0.1);
+            color: $orange-color;
+        }
+
+        &--danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
+        &--info {
+            background: rgba(66, 103, 178, 0.1);
+            color: $primary-color;
+        }
+    }
+
+    .tabs-container {
+        background: $white;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-md;
+        border: 1px solid $gray-200;
+        overflow: hidden;
+
+        .tabs-header {
+            display: flex;
+            background: $gray-50;
+            border-bottom: 1px solid $gray-200;
+
+            .tab-btn {
+                flex: 1;
+                padding: 1rem 1.5rem;
+                border: none;
+                background: none;
+                color: $gray-500;
+                font-size: 0.875rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: $transition-all;
+                position: relative;
+
+                &:hover {
+                    color: $orange-color;
+                    background: rgba(206, 128, 45, 0.05);
+                }
+
+                &.active {
+                    color: $orange-color;
+                    background: $white;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        height: 2px;
+                        background: $orange-color;
+                    }
+                }
+            }
+        }
+
+        .tabs-content {
+            .tab-content {
+                padding: 2rem;
+
+                .overview-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                    gap: 2rem;
+                }
+
+                .info-card {
+                    background: $gray-50;
+                    border-radius: $radius-md;
+                    padding: 1.5rem;
+                    border: 1px solid $gray-200;
+
+                    h3 {
+                        font-size: 1.125rem;
+                        font-weight: 600;
+                        color: $gray-800;
+                        margin: 0 0 1rem 0;
+                        padding-bottom: 0.5rem;
+                        border-bottom: 2px solid $orange-color;
+                    }
+
+                    .info-list {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.75rem;
+
+                        .info-item {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-start;
+                            padding: 0.75rem 0;
+                            border-bottom: 1px solid $gray-200;
+
+                            &:last-child {
+                                border-bottom: none;
+                            }
+
+                            .label {
+                                font-size: 0.875rem;
+                                font-weight: 500;
+                                color: $gray-500;
+                                min-width: 120px;
+                            }
+
+                            .value {
+                                font-size: 0.875rem;
+                                color: $gray-800;
+                                font-weight: 500;
+                                text-align: right;
+                                flex: 1;
+                            }
+                        }
+                    }
+                }
+
+                .products-section {
+                    .products-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 1.5rem;
+
+                        h3 {
+                            font-size: 1.25rem;
+                            font-weight: 600;
+                            color: $gray-800;
+                            margin: 0;
+                        }
+
+                        .products-summary {
+                            display: flex;
+                            gap: 1rem;
+
+                            span {
+                                font-size: 0.875rem;
+                                color: $gray-500;
+                                font-weight: 500;
+                            }
+                        }
+                    }
+
+                    .products-table {
+                        overflow-x: auto;
+
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            min-width: 900px;
+
+                            thead {
+                                background: $gray-50;
+
+                                th {
+                                    padding: 1rem 0.75rem;
+                                    text-align: left;
+                                    font-weight: 600;
+                                    font-size: 0.875rem;
+                                    color: $gray-700;
+                                    border-bottom: 2px solid $gray-200;
+                                    white-space: nowrap;
+                                }
+                            }
+
+                            tbody {
+                                tr {
+                                    border-bottom: 1px solid $gray-100;
+                                    transition: background-color 0.2s ease;
+
+                                    &:hover {
+                                        background: $gray-50;
+                                    }
+
+                                    td {
+                                        padding: 1rem 0.75rem;
+                                        vertical-align: top;
+                                        font-size: 0.875rem;
+
+                                        &.sku {
+                                            font-family: 'Courier New', monospace;
+                                            color: $orange-color;
+                                            font-weight: 600;
+                                        }
+
+                                        &.product-name {
+                                            .product-info {
+                                                .name {
+                                                    display: block;
+                                                    font-weight: 600;
+                                                    color: $gray-800;
+                                                    margin-bottom: 0.25rem;
+                                                }
+
+                                                .description {
+                                                    font-size: 0.75rem;
+                                                    color: $gray-500;
+                                                }
+                                            }
+                                        }
+
+                                        &.price {
+                                            .price-info {
+                                                .sale-price {
+                                                    display: block;
+                                                    font-weight: 600;
+                                                    color: #dc2626;
+                                                    margin-bottom: 0.25rem;
+                                                }
+
+                                                .original-price {
+                                                    text-decoration: line-through;
+                                                    color: $gray-400;
+                                                    font-size: 0.75rem;
+                                                }
+
+                                                .regular-price {
+                                                    font-weight: 600;
+                                                    color: $primary-color;
+                                                }
+                                            }
+                                        }
+
+                                        &.stock {
+                                            .stock-indicator {
+                                                font-weight: 600;
+
+                                                &.in-stock {
+                                                    color: $primary-color;
+                                                }
+
+                                                &.out-of-stock {
+                                                    color: #dc2626;
+                                                }
+                                            }
+                                        }
+
+                                        &.status {
+                                            .product-status {
+                                                display: inline-flex;
+                                                align-items: center;
+                                                padding: 0.25rem 0.5rem;
+                                                border-radius: $radius-sm;
+                                                font-size: 0.75rem;
+                                                font-weight: 600;
+                                                text-transform: uppercase;
+                                                letter-spacing: 0.5px;
+
+                                                &--success {
+                                                    background: rgba(66, 103, 178, 0.1);
+                                                    color: $primary-color;
+                                                }
+
+                                                &--warning {
+                                                    background: rgba(206, 128, 45, 0.1);
+                                                    color: $orange-color;
+                                                }
+
+                                                &--danger {
+                                                    background: rgba(239, 68, 68, 0.1);
+                                                    color: #dc2626;
+                                                }
+
+                                                &--neutral {
+                                                    background: rgba(75, 85, 99, 0.1);
+                                                    color: $gray-500;
+                                                }
+                                            }
+                                        }
+
+                                        &.created {
+                                            color: $gray-500;
+                                        }
+
+                                        &.actions {
+                                            .product-actions {
+                                                display: flex;
+                                                gap: 0.5rem;
+
+                                                .product-action-btn {
+                                                    width: 28px;
+                                                    height: 28px;
+                                                    border: none;
+                                                    border-radius: $radius-sm;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: center;
+                                                    cursor: pointer;
+                                                    transition: $transition-all;
+
+                                                    svg {
+                                                        width: 14px;
+                                                        height: 14px;
+                                                    }
+
+                                                    &.approve {
+                                                        background: rgba(66, 103, 178, 0.1);
+                                                        color: $primary-color;
+
+                                                        &:hover {
+                                                            background: rgba(66, 103, 178, 0.2);
+                                                        }
+                                                    }
+
+                                                    &.reject {
+                                                        background: rgba(239, 68, 68, 0.1);
+                                                        color: #dc2626;
+
+                                                        &:hover {
+                                                            background: rgba(239, 68, 68, 0.2);
+                                                        }
+                                                    }
+
+                                                    &.archive {
+                                                        background: rgba(75, 85, 99, 0.1);
+                                                        color: $gray-500;
+
+                                                        &:hover {
+                                                            background: rgba(75, 85, 99, 0.2);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .business-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                    gap: 2rem;
+                }
+            }
+        }
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+    .seller-details {
+        .seller-header .header-content {
+            flex-direction: column;
+            gap: 1.5rem;
+
+            .header-actions {
+                align-self: flex-start;
+            }
+        }
+
+        .seller-stats {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .tabs-content .tab-content {
+
+            .overview-grid,
+            .business-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .seller-details {
+        .seller-header {
+            padding: 1.5rem;
+
+            .header-content .seller-info h1 {
+                font-size: 1.5rem;
+            }
+
+            .header-actions {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+
+                .action-btn {
+                    flex: 1;
+                    min-width: calc(50% - 0.25rem);
+                }
+            }
+        }
+
+        .seller-stats {
+            grid-template-columns: 1fr;
+
+            .stat-card {
+                padding: 1rem;
+            }
+        }
+
+        .tabs-container {
+            .tabs-header {
+                flex-direction: column;
+
+                .tab-btn {
+                    border-right: none;
+                    border-bottom: 1px solid $gray-200;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    &.active::after {
+                        left: 0;
+                        right: auto;
+                        width: 4px;
+                        height: 100%;
+                        top: 0;
+                        bottom: 0;
+                    }
+                }
+            }
+
+            .tabs-content .tab-content {
+                padding: 1rem;
+
+                .info-card {
+                    padding: 1rem;
+
+                    .info-list .info-item {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 0.25rem;
+
+                        .label {
+                            min-width: auto;
+                        }
+
+                        .value {
+                            text-align: left;
+                        }
+                    }
+                }
+
+                .products-table {
+                    table {
+                        font-size: 0.75rem;
+
+                        th,
+                        td {
+                            padding: 0.5rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

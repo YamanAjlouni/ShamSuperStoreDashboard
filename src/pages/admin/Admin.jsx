@@ -1,20 +1,162 @@
+import { useState, useEffect } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import AdminNavbar from '../../components/admin/adminNavbar/AdminNavbar'
+import AdminSidebar from '../../components/admin/adminSidebar/AdminSidebar'
+
+// Import Admin Pages
+import AdminDashboard from './adminDashboard/AdminDashboard'
+import SellersManagement from './sellersManagement/SellersManagement'
+import PendingSellers from './pendingSellers/PendingSellers'
+import SellerDetails from './sellersManagement/sellerDetails/SellerDetails'
+import UsersManagement from './usersManagement/UsersManagement'
+import UserDetails from './usersManagement/userDetails/UserDetails'
+import DriversManagement from './driversManagement/DriversManagement'
+import DriverDetails from './driversManagement/driverDetails/DriverDetails'
+import OrdersManagement from './ordersManagement/OrdersManagement'
+import OrderDetails from './ordersManagement/orderDetails/OrderDetails'
+import ProductsManagement from './productsManagement/ProductsManagement'
+import ProductDetails from './productsManagement/productDetails/ProductDetails'
+
 import './Admin.scss'
 
+const PlaceholderPage = ({ pageName }) => (
+    <div className="page-placeholder">
+        <div className="placeholder-content">
+            <h2>{pageName}</h2>
+            <p>This page is coming soon!</p>
+        </div>
+    </div>
+)
+
 const Admin = () => {
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
+    useEffect(() => {
+        const checkMobile = () => {
+            // Changed breakpoint: treat tablets as mobile for sidebar behavior
+            const mobile = window.innerWidth <= 1024 // Changed from 768 to 1024
+            setIsMobile(mobile)
+
+            // Only auto-collapse on true desktop screens
+            if (window.innerWidth > 1024) {
+                // Reset mobile states when on desktop
+                setIsSidebarOpen(false)
+            } else {
+                // Reset desktop states when on mobile/tablet
+                setIsSidebarCollapsed(false)
+                setIsSidebarOpen(false)
+            }
+        }
+
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
+    // Add/remove body class when sidebar is open on mobile/tablet
+    useEffect(() => {
+        if (isMobile && isSidebarOpen) {
+            document.body.classList.add('sidebar-open')
+        } else {
+            document.body.classList.remove('sidebar-open')
+        }
+
+        // Cleanup on unmount
+        return () => {
+            document.body.classList.remove('sidebar-open')
+        }
+    }, [isMobile, isSidebarOpen])
+
+    // Handle sidebar toggle from navbar
+    const handleToggleSidebar = () => {
+        if (isMobile) {
+            // Mobile/Tablet behavior: toggle overlay sidebar
+            setIsSidebarOpen(!isSidebarOpen)
+        } else {
+            // Desktop behavior: toggle collapse/expand
+            setIsSidebarCollapsed(!isSidebarCollapsed)
+        }
+    }
+
+    // Close mobile sidebar
+    const handleCloseMobileSidebar = () => {
+        if (isMobile) {
+            setIsSidebarOpen(false)
+        }
+    }
+
+    // Close mobile sidebar when clicking on main content
+    const handleMainContentClick = () => {
+        if (isMobile && isSidebarOpen) {
+            setIsSidebarOpen(false)
+        }
+    }
+
     return (
-        <div className="admin-coming-soon">
-            <div className="coming-soon-content">
-                <h1>Admin Dashboard Coming Soon</h1>
-                <p>The admin dashboard is currently under development.</p>
-                <div className="features-preview">
-                    <h3>Upcoming Features:</h3>
-                    <ul>
-                        <li>User Management</li>
-                        <li>System Settings</li>
-                        <li>Analytics & Reports</li>
-                        <li>Content Management</li>
-                    </ul>
-                </div>
+        <div className="admin-layout">
+            <AdminNavbar
+                onToggleSidebar={handleToggleSidebar}
+                isSidebarCollapsed={isSidebarCollapsed}
+            />
+
+            <div className="admin-content">
+                <AdminSidebar
+                    isCollapsed={isSidebarCollapsed}
+                    isMobile={isMobile}
+                    isOpen={isSidebarOpen}
+                    onClose={handleCloseMobileSidebar}
+                />
+
+                <main
+                    className={`main-content ${isSidebarCollapsed ? 'main-content--expanded' : ''} ${isMobile ? 'main-content--mobile' : ''}`}
+                    onClick={handleMainContentClick}
+                >
+                    {/* Admin Routes */}
+                    <Routes>
+                        {/* Dashboard */}
+                        <Route path="/" element={<AdminDashboard />} />
+                        <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
+
+                        {/* User Management */}
+                        <Route path="/users" element={<UsersManagement />} />
+                        <Route path="/users/details/:id" element={<UserDetails />} />
+                        <Route path="/sellers" element={<SellersManagement />} />
+                        <Route path="/sellers/details/:id" element={<SellerDetails />} />
+                        <Route path="/pending-sellers" element={<PendingSellers />} />
+                        <Route path="/drivers" element={<DriversManagement />} />
+                        <Route path="/drivers/details/:id" element={<DriverDetails />} />
+
+                        {/* Order Management */}
+                        <Route path="/orders" element={<OrdersManagement />} />
+                        <Route path="/orders/details/:id" element={<OrderDetails />} />
+                        <Route path="/orders/analytics" element={<PlaceholderPage pageName="Order Analytics" />} />
+
+                        {/* Product Management */}
+                        <Route path="/products" element={<ProductsManagement />} />
+                        <Route path="/products/details/:id" element={<ProductDetails />} />
+                        <Route path="/categories" element={<PlaceholderPage pageName="Category Management" />} />
+
+                        {/* Financial Management */}
+                        <Route path="/payments" element={<PlaceholderPage pageName="Payment Management" />} />
+                        <Route path="/reports" element={<PlaceholderPage pageName="Financial Reports" />} />
+
+                        {/* System Management */}
+                        <Route path="/settings" element={<PlaceholderPage pageName="System Settings" />} />
+                        <Route path="/logs" element={<PlaceholderPage pageName="System Logs" />} />
+
+                        {/* Notifications & Profile */}
+                        <Route path="/notifications" element={<PlaceholderPage pageName="Notifications" />} />
+                        <Route path="/profile" element={<PlaceholderPage pageName="Admin Profile" />} />
+
+                        {/* Error Pages */}
+                        <Route path="/404" element={<PlaceholderPage pageName="Page Not Found" />} />
+
+                        {/* Catch all route */}
+                        <Route path="*" element={<Navigate to="/admin/404" replace />} />
+                    </Routes>
+                </main>
             </div>
         </div>
     )
