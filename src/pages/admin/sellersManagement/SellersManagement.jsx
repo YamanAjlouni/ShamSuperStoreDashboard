@@ -25,6 +25,7 @@ const SellersManagement = () => {
             status: 'active',
             joinDate: '2024-01-15',
             productsCount: 45,
+            productLimit: 50,
             totalOrders: 234,
             revenue: 15670.50,
             email: 'john.smith@email.com'
@@ -40,6 +41,7 @@ const SellersManagement = () => {
             status: 'active',
             joinDate: '2024-02-20',
             productsCount: 78,
+            productLimit: 100,
             totalOrders: 189,
             revenue: 12450.75,
             email: 'sarah.johnson@email.com'
@@ -55,6 +57,7 @@ const SellersManagement = () => {
             status: 'suspended',
             joinDate: '2024-03-10',
             productsCount: 23,
+            productLimit: 50,
             totalOrders: 67,
             revenue: 3240.25,
             email: 'mike.rodriguez@email.com'
@@ -70,6 +73,7 @@ const SellersManagement = () => {
             status: 'active',
             joinDate: '2024-01-28',
             productsCount: 156,
+            productLimit: 200,
             totalOrders: 445,
             revenue: 28950.80,
             email: 'emily.chen@email.com'
@@ -85,6 +89,7 @@ const SellersManagement = () => {
             status: 'active',
             joinDate: '2024-02-14',
             productsCount: 89,
+            productLimit: 100,
             totalOrders: 312,
             revenue: 19675.45,
             email: 'david.wilson@email.com'
@@ -175,6 +180,24 @@ const SellersManagement = () => {
         }
         const config = statusConfig[status] || statusConfig.inactive
         return <span className={`status-badge status-badge--${config.class}`}>{config.label}</span>
+    }
+
+    const getProductsDisplay = (seller) => {
+        const percentage = (seller.productsCount / seller.productLimit) * 100
+        const isNearLimit = percentage > 80
+        const isAtLimit = seller.productsCount >= seller.productLimit
+
+        return (
+            <div className={`products-display ${isAtLimit ? 'at-limit' : isNearLimit ? 'near-limit' : ''}`}>
+                <span className="products-fraction">{seller.productsCount}/{seller.productLimit}</span>
+                <div className="products-progress">
+                    <div
+                        className="progress-bar"
+                        style={{ width: `${Math.min(percentage, 100)}%` }}
+                    ></div>
+                </div>
+            </div>
+        )
     }
 
     if (loading) {
@@ -294,7 +317,7 @@ const SellersManagement = () => {
                                     </td>
                                     <td className="personal-phone">{seller.personalPhone}</td>
                                     <td className="status">{getStatusBadge(seller.status)}</td>
-                                    <td className="products-count">{seller.productsCount}</td>
+                                    <td className="products-count">{getProductsDisplay(seller)}</td>
                                     <td className="revenue">${seller.revenue.toLocaleString()}</td>
                                     <td className="actions">
                                         <div className="action-buttons">

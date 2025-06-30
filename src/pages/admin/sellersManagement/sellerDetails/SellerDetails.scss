@@ -376,7 +376,7 @@
                         .info-item {
                             display: flex;
                             justify-content: space-between;
-                            align-items: flex-start;
+                            align-items: center;
                             padding: 0.75rem 0;
                             border-bottom: 1px solid $gray-200;
 
@@ -397,6 +397,202 @@
                                 font-weight: 500;
                                 text-align: right;
                                 flex: 1;
+
+                                &.limit-display {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.75rem;
+                                    justify-content: flex-end;
+                                    background: rgba(206, 128, 45, 0.05);
+                                    padding: 0.5rem 0.75rem;
+                                    border-radius: $radius-md;
+                                    border: 2px dashed rgba(206, 128, 45, 0.2);
+
+                                    .limit-value {
+                                        font-weight: 600;
+                                        font-size: 0.9rem;
+
+                                        &.near-limit {
+                                            color: $orange-color;
+                                        }
+
+                                        &.at-limit {
+                                            color: #dc2626;
+                                        }
+                                    }
+
+                                    .edit-limit-btn {
+                                        width: 28px;
+                                        height: 28px;
+                                        border: 2px solid $orange-color;
+                                        background: $orange-color;
+                                        color: $white;
+                                        border-radius: $radius-md;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        cursor: pointer;
+                                        transition: $transition-all;
+                                        box-shadow: 0 2px 4px rgba(206, 128, 45, 0.2);
+
+                                        &:hover {
+                                            background: darken($orange-color, 10%);
+                                            border-color: darken($orange-color, 10%);
+                                            transform: translateY(-1px);
+                                            box-shadow: 0 4px 8px rgba(206, 128, 45, 0.3);
+                                        }
+
+                                        svg {
+                                            width: 14px;
+                                            height: 14px;
+                                        }
+                                    }
+                                }
+
+                                &.near-limit {
+                                    color: $orange-color;
+                                }
+
+                                &.at-limit {
+                                    color: #dc2626;
+                                }
+                            }
+
+                            .limit-editor {
+                                flex: 1;
+                                background: $white;
+                                border: 3px solid $orange-color;
+                                border-radius: $radius-lg;
+                                padding: 1.5rem;
+                                box-shadow: 0 4px 12px rgba(206, 128, 45, 0.15);
+                                margin: 0.5rem 0;
+
+                                .preset-options {
+                                    margin-bottom: 1.5rem;
+
+                                    .preset-label {
+                                        display: block;
+                                        font-size: 0.875rem;
+                                        color: $gray-700;
+                                        margin-bottom: 0.75rem;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.5px;
+                                    }
+
+                                    .preset-buttons {
+                                        display: flex;
+                                        gap: 0.75rem;
+                                        flex-wrap: wrap;
+
+                                        .preset-btn {
+                                            padding: 0.5rem 1rem;
+                                            border: 2px solid $gray-300;
+                                            background: $white;
+                                            color: $gray-700;
+                                            border-radius: $radius-md;
+                                            font-size: 0.875rem;
+                                            font-weight: 600;
+                                            cursor: pointer;
+                                            transition: $transition-all;
+                                            min-width: 60px;
+
+                                            &:hover {
+                                                border-color: $orange-color;
+                                                color: $orange-color;
+                                                transform: translateY(-1px);
+                                                box-shadow: 0 2px 4px rgba(206, 128, 45, 0.2);
+                                            }
+
+                                            &.active {
+                                                background: $orange-color;
+                                                color: $white;
+                                                border-color: $orange-color;
+                                                box-shadow: 0 2px 6px rgba(206, 128, 45, 0.3);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .custom-input {
+                                    margin-bottom: 1.5rem;
+
+                                    .custom-label {
+                                        display: block;
+                                        font-size: 0.875rem;
+                                        color: $gray-700;
+                                        margin-bottom: 0.75rem;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.5px;
+                                    }
+
+                                    .custom-limit-input {
+                                        width: 100%;
+                                        padding: 0.75rem 1rem;
+                                        border: 2px solid $gray-300;
+                                        border-radius: $radius-md;
+                                        font-size: 0.875rem;
+                                        font-weight: 600;
+                                        background: $white;
+                                        transition: $transition-all;
+
+                                        &:focus {
+                                            outline: none;
+                                            border-color: $orange-color;
+                                            box-shadow: 0 0 0 3px rgba(206, 128, 45, 0.1);
+                                        }
+
+                                        &::placeholder {
+                                            color: $gray-400;
+                                            font-weight: 400;
+                                        }
+                                    }
+                                }
+
+                                .limit-actions {
+                                    display: flex;
+                                    gap: 0.75rem;
+
+                                    .save-btn {
+                                        flex: 1;
+                                        padding: 0.75rem 1.5rem;
+                                        background: $orange-color;
+                                        color: $white;
+                                        border: none;
+                                        border-radius: $radius-md;
+                                        font-size: 0.875rem;
+                                        font-weight: 600;
+                                        cursor: pointer;
+                                        transition: $transition-all;
+                                        box-shadow: 0 2px 4px rgba(206, 128, 45, 0.2);
+
+                                        &:hover {
+                                            background: darken($orange-color, 10%);
+                                            transform: translateY(-1px);
+                                            box-shadow: 0 4px 8px rgba(206, 128, 45, 0.3);
+                                        }
+                                    }
+
+                                    .cancel-btn {
+                                        flex: 1;
+                                        padding: 0.75rem 1.5rem;
+                                        background: $gray-100;
+                                        color: $gray-700;
+                                        border: 2px solid $gray-300;
+                                        border-radius: $radius-md;
+                                        font-size: 0.875rem;
+                                        font-weight: 600;
+                                        cursor: pointer;
+                                        transition: $transition-all;
+
+                                        &:hover {
+                                            background: $gray-200;
+                                            border-color: $gray-400;
+                                            transform: translateY(-1px);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -726,6 +922,34 @@
 
                         .value {
                             text-align: left;
+
+                            &.limit-display {
+                                justify-content: flex-start;
+                            }
+                        }
+
+                        .limit-editor {
+                            margin: 0.5rem 0;
+
+                            .preset-options .preset-buttons {
+                                gap: 0.5rem;
+
+                                .preset-btn {
+                                    min-width: 50px;
+                                    padding: 0.4rem 0.8rem;
+                                    font-size: 0.75rem;
+                                }
+                            }
+
+                            .limit-actions {
+                                gap: 0.5rem;
+
+                                .save-btn,
+                                .cancel-btn {
+                                    padding: 0.6rem 1rem;
+                                    font-size: 0.75rem;
+                                }
+                            }
                         }
                     }
                 }

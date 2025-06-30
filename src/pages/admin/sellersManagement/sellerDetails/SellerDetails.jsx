@@ -9,6 +9,12 @@ const SellerDetails = () => {
     const [products, setProducts] = useState([])
     const [activeTab, setActiveTab] = useState('overview')
     const [loading, setLoading] = useState(true)
+    const [editingLimit, setEditingLimit] = useState(false)
+    const [tempLimit, setTempLimit] = useState('')
+    const [customLimit, setCustomLimit] = useState('')
+
+    // Preset limit options
+    const presetLimits = [50, 100, 200, 500, 1000]
 
     // Mock seller data
     const mockSellerData = {
@@ -22,7 +28,7 @@ const SellerDetails = () => {
         storeAddress: '123 Main St, New York, NY 10001',
         status: 'active',
         joinDate: '2024-01-15',
-        productLimit: 100,
+        productLimit: 50,
         productsAdded: 45,
         businessType: 'Electronics',
         businessLicense: 'BL123456789',
@@ -91,6 +97,7 @@ const SellerDetails = () => {
         setTimeout(() => {
             setSeller(mockSellerData)
             setProducts(mockProducts)
+            setTempLimit(mockSellerData.productLimit.toString())
             setLoading(false)
         }, 1000)
     }, [id])
@@ -135,6 +142,45 @@ const SellerDetails = () => {
         }))
     }
 
+    const handleEditLimit = () => {
+        setEditingLimit(true)
+        setTempLimit(seller.productLimit.toString())
+        setCustomLimit('')
+    }
+
+    const handleCancelEdit = () => {
+        setEditingLimit(false)
+        setTempLimit(seller.productLimit.toString())
+        setCustomLimit('')
+    }
+
+    const handleSaveLimit = () => {
+        const newLimit = customLimit ? parseInt(customLimit) : parseInt(tempLimit)
+        
+        if (newLimit && newLimit > 0 && newLimit >= seller.productsAdded) {
+            if (window.confirm(`Are you sure you want to change the product limit to ${newLimit}?`)) {
+                setSeller({ ...seller, productLimit: newLimit })
+                setEditingLimit(false)
+                setCustomLimit('')
+                // Here you would make an API call to save the new limit
+            }
+        } else if (newLimit < seller.productsAdded) {
+            alert(`Product limit cannot be lower than current products count (${seller.productsAdded})`)
+        } else {
+            alert('Please enter a valid product limit')
+        }
+    }
+
+    const handlePresetSelect = (limit) => {
+        setTempLimit(limit.toString())
+        setCustomLimit('')
+    }
+
+    const handleCustomLimitChange = (value) => {
+        setCustomLimit(value)
+        setTempLimit('')
+    }
+
     const getStatusBadge = (status) => {
         const statusConfig = {
             active: { class: 'success', label: 'Active' },
@@ -155,6 +201,13 @@ const SellerDetails = () => {
         }
         const config = statusConfig[status] || statusConfig.pending
         return <span className={`product-status product-status--${config.class}`}>{config.label}</span>
+    }
+
+    const getProductLimitStatus = () => {
+        const percentage = (seller.productsAdded / seller.productLimit) * 100
+        if (percentage >= 100) return 'at-limit'
+        if (percentage > 80) return 'near-limit'
+        return 'normal'
     }
 
     if (loading) {
@@ -488,7 +541,64 @@ const SellerDetails = () => {
                                     <div className="info-list">
                                         <div className="info-item">
                                             <span className="label">Product Limit:</span>
-                                            <span className="value">{seller.productLimit} products</span>
+                                            {!editingLimit ? (
+                                                <div className="value limit-display">
+                                                    <span className={`limit-value ${getProductLimitStatus()}`}>
+                                                        {seller.productLimit} products
+                                                    </span>
+                                                    <button 
+                                                        className="edit-limit-btn"
+                                                        onClick={handleEditLimit}
+                                                        title="Edit Product Limit"
+                                                    >
+                                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className="limit-editor">
+                                                    <div className="preset-options">
+                                                        <span className="preset-label">Quick Select:</span>
+                                                        <div className="preset-buttons">
+                                                            {presetLimits.map(limit => (
+                                                                <button
+                                                                    key={limit}
+                                                                    className={`preset-btn ${tempLimit === limit.toString() ? 'active' : ''}`}
+                                                                    onClick={() => handlePresetSelect(limit)}
+                                                                >
+                                                                    {limit}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <div className="custom-input">
+                                                        <span className="custom-label">Custom:</span>
+                                                        <input
+                                                            type="number"
+                                                            placeholder="Enter custom limit"
+                                                            value={customLimit}
+                                                            onChange={(e) => handleCustomLimitChange(e.target.value)}
+                                                            min={seller.productsAdded}
+                                                            className="custom-limit-input"
+                                                        />
+                                                    </div>
+                                                    <div className="limit-actions">
+                                                        <button 
+                                                            className="save-btn"
+                                                            onClick={handleSaveLimit}
+                                                        >
+                                                            Save
+                                                        </button>
+                                                        <button 
+                                                            className="cancel-btn"
+                                                            onClick={handleCancelEdit}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="info-item">
                                             <span className="label">Products Added:</span>
@@ -496,7 +606,9 @@ const SellerDetails = () => {
                                         </div>
                                         <div className="info-item">
                                             <span className="label">Remaining Slots:</span>
-                                            <span className="value">{seller.productLimit - seller.productsAdded} products</span>
+                                            <span className={`value ${getProductLimitStatus()}`}>
+                                                {seller.productLimit - seller.productsAdded} products
+                                            </span>
                                         </div>
                                         <div className="info-item">
                                             <span className="label">Account Status:</span>
