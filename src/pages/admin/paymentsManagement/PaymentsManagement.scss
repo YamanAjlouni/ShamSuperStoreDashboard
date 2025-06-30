@@ -1,0 +1,1051 @@
+@use '../../../assets/styles/vars.scss' as *;
+
+.payments-management {
+    max-width: 100%;
+    margin: 0 auto;
+
+    .loading-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        color: $gray-500;
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid $gray-200;
+            border-top: 3px solid $primary-color;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.125rem;
+            margin: 0;
+        }
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+        background: $white;
+        padding: 2rem;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-md;
+        border: 1px solid $gray-200;
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, $primary-color 0%, #10b981 100%);
+            border-radius: $radius-lg $radius-lg 0 0;
+        }
+
+        .header-content {
+            h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: $gray-800;
+                margin-bottom: 0.5rem;
+                background: linear-gradient(135deg, $gray-800 0%, $gray-700 100%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            p {
+                font-size: 1.125rem;
+                color: $gray-500;
+                margin: 0;
+            }
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 2rem;
+
+            .stat-item {
+                text-align: center;
+
+                .stat-number {
+                    display: block;
+                    font-size: 2rem;
+                    font-weight: 700;
+                    color: $primary-color;
+                    margin-bottom: 0.25rem;
+                }
+
+                .stat-label {
+                    font-size: 0.875rem;
+                    color: $gray-500;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    .tabs-container {
+        background: $white;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-md;
+        border: 1px solid $gray-200;
+        overflow: hidden;
+
+        .tabs-header {
+            display: flex;
+            background: $gray-50;
+            border-bottom: 1px solid $gray-200;
+
+            .tab-btn {
+                flex: 1;
+                padding: 1rem 1.5rem;
+                border: none;
+                background: none;
+                color: $gray-500;
+                font-size: 0.875rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: $transition-all;
+                position: relative;
+
+                &:hover {
+                    color: $primary-color;
+                    background: rgba(66, 103, 178, 0.05);
+                }
+
+                &.active {
+                    color: $primary-color;
+                    background: $white;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        height: 2px;
+                        background: $primary-color;
+                    }
+                }
+            }
+        }
+
+        .tabs-content {
+            .tab-content {
+                padding: 2rem;
+
+                .overview-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                    gap: 2rem;
+                }
+
+                .overview-card {
+                    background: $gray-50;
+                    border-radius: $radius-lg;
+                    padding: 1.5rem;
+                    border: 1px solid $gray-200;
+
+                    .card-header {
+                        h3 {
+                            font-size: 1.125rem;
+                            font-weight: 600;
+                            color: $gray-800;
+                            margin: 0 0 1.5rem 0;
+                            padding-bottom: 0.5rem;
+                            border-bottom: 2px solid $primary-color;
+                        }
+                    }
+
+                    .methods-summary {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 1rem;
+
+                        .method-summary-item {
+                            display: flex;
+                            align-items: center;
+                            gap: 1rem;
+                            padding: 1rem;
+                            border-radius: $radius-md;
+                            border: 1px solid $gray-200;
+                            transition: $transition-all;
+
+                            &.active {
+                                background: rgba(16, 185, 129, 0.05);
+                                border-color: #10b981;
+
+                                .method-icon {
+                                    background: #10b981;
+                                    color: white;
+                                }
+                            }
+
+                            &.coming-soon {
+                                background: rgba(59, 130, 246, 0.05);
+                                border-color: #3b82f6;
+                                border-style: dashed;
+
+                                .method-icon {
+                                    background: #3b82f6;
+                                    color: white;
+                                }
+                            }
+
+                            .method-icon {
+                                width: 48px;
+                                height: 48px;
+                                border-radius: $radius-md;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 1.5rem;
+                                flex-shrink: 0;
+                            }
+
+                            .method-info {
+                                flex: 1;
+
+                                .method-name {
+                                    display: block;
+                                    font-weight: 600;
+                                    color: $gray-800;
+                                    margin-bottom: 0.25rem;
+                                }
+
+                                .method-status {
+                                    font-size: 0.875rem;
+                                    color: $gray-500;
+                                }
+                            }
+
+                            .method-count {
+                                font-size: 0.875rem;
+                                color: $gray-600;
+                                font-weight: 500;
+                            }
+                        }
+                    }
+
+                    .recent-transactions {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.75rem;
+
+                        .transaction-item {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 1rem;
+                            background: $white;
+                            border-radius: $radius-md;
+                            border: 1px solid $gray-200;
+                            transition: $transition-all;
+
+                            &:hover {
+                                border-color: $primary-color;
+                                box-shadow: $shadow-sm;
+                            }
+
+                            .transaction-info {
+                                .transaction-order {
+                                    display: block;
+                                    font-weight: 600;
+                                    color: $gray-800;
+                                    margin-bottom: 0.25rem;
+                                }
+
+                                .transaction-customer {
+                                    font-size: 0.875rem;
+                                    color: $gray-500;
+                                }
+                            }
+
+                            .transaction-details {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.75rem;
+
+                                .transaction-amount {
+                                    font-weight: 600;
+                                    color: $primary-color;
+                                    font-family: 'Courier New', monospace;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .payment-methods-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                    gap: 1.5rem;
+
+                    .payment-method-card {
+                        background: $white;
+                        border: 2px solid $gray-200;
+                        border-radius: $radius-lg;
+                        padding: 1.5rem;
+                        transition: $transition-all;
+                        position: relative;
+                        overflow: hidden;
+
+                        &.available {
+                            &:hover {
+                                transform: translateY(-2px);
+                                box-shadow: $shadow-lg;
+                                border-color: #10b981;
+                            }
+
+                            &::before {
+                                content: '';
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                height: 4px;
+                                background: #10b981;
+                            }
+                        }
+
+                        &.coming-soon {
+                            border-style: dashed;
+                            border-color: #3b82f6;
+                            position: relative;
+
+                            &::before {
+                                content: '';
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                height: 4px;
+                                background: #3b82f6;
+                            }
+
+                            &::after {
+                                content: 'COMING SOON';
+                                position: absolute;
+                                top: 1rem;
+                                right: 1rem;
+                                background: #3b82f6;
+                                color: white;
+                                padding: 0.25rem 0.5rem;
+                                border-radius: $radius-sm;
+                                font-size: 0.75rem;
+                                font-weight: 600;
+                                letter-spacing: 0.5px;
+                            }
+                        }
+
+                        .method-header {
+                            display: flex;
+                            align-items: flex-start;
+                            gap: 1rem;
+                            margin-bottom: 1.5rem;
+
+                            .method-icon-large {
+                                width: 60px;
+                                height: 60px;
+                                background: linear-gradient(135deg, $primary-color 0%, #3b82f6 100%);
+                                border-radius: $radius-md;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 2rem;
+                                flex-shrink: 0;
+                            }
+
+                            .method-info {
+                                flex: 1;
+
+                                h3 {
+                                    font-size: 1.25rem;
+                                    font-weight: 600;
+                                    color: $gray-800;
+                                    margin: 0 0 0.5rem 0;
+                                }
+
+                                p {
+                                    font-size: 0.875rem;
+                                    color: $gray-500;
+                                    line-height: 1.4;
+                                    margin: 0;
+                                }
+                            }
+                        }
+
+                        .method-stats {
+                            display: flex;
+                            justify-content: space-around;
+                            padding: 1rem 0;
+                            border-top: 1px solid $gray-200;
+                            border-bottom: 1px solid $gray-200;
+                            margin-bottom: 1.5rem;
+
+                            .stat {
+                                text-align: center;
+
+                                .stat-value {
+                                    display: block;
+                                    font-size: 1.25rem;
+                                    font-weight: 700;
+                                    color: $primary-color;
+                                    margin-bottom: 0.25rem;
+                                }
+
+                                .stat-label {
+                                    font-size: 0.75rem;
+                                    color: $gray-500;
+                                    font-weight: 500;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.5px;
+                                }
+                            }
+                        }
+
+                        .method-coming-soon {
+                            padding: 1rem 0;
+                            border-top: 1px solid $gray-200;
+                            border-bottom: 1px solid $gray-200;
+                            margin-bottom: 1.5rem;
+
+                            .coming-soon-info {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                margin-bottom: 1rem;
+
+                                .label {
+                                    font-size: 0.875rem;
+                                    color: $gray-500;
+                                    font-weight: 500;
+                                }
+
+                                .date {
+                                    font-size: 0.875rem;
+                                    color: #3b82f6;
+                                    font-weight: 600;
+                                }
+                            }
+
+                            .coming-soon-features {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 0.5rem;
+
+                                span {
+                                    font-size: 0.875rem;
+                                    color: $gray-600;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.5rem;
+                                }
+                            }
+                        }
+
+                        .method-actions {
+                            .action-btn {
+                                width: 100%;
+                                padding: 0.75rem;
+                                border: none;
+                                border-radius: $radius-md;
+                                font-size: 0.875rem;
+                                font-weight: 500;
+                                cursor: pointer;
+                                transition: $transition-all;
+
+                                &--activate {
+                                    background: #10b981;
+                                    color: white;
+
+                                    &:hover {
+                                        background: #059669;
+                                    }
+                                }
+
+                                &--deactivate {
+                                    background: $orange-color;
+                                    color: white;
+
+                                    &:hover {
+                                        background: darken($orange-color, 10%);
+                                    }
+                                }
+
+                                &--notify {
+                                    background: $gray-200;
+                                    color: $gray-500;
+                                    cursor: not-allowed;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .transactions-controls {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 1.5rem;
+                    padding: 1.5rem;
+                    background: $gray-50;
+                    border-radius: $radius-md;
+                    border: 1px solid $gray-200;
+
+                    .controls-left {
+                        display: flex;
+                        gap: 1rem;
+                        align-items: center;
+
+                        .search-box {
+                            position: relative;
+                            min-width: 300px;
+
+                            .search-icon {
+                                position: absolute;
+                                left: 0.75rem;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                width: 18px;
+                                height: 18px;
+                                color: $gray-400;
+                            }
+
+                            input {
+                                width: 100%;
+                                padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+                                border: 1px solid $gray-300;
+                                border-radius: $radius-md;
+                                font-size: 0.875rem;
+                                background: $white;
+                                transition: $transition-all;
+
+                                &:focus {
+                                    outline: none;
+                                    border-color: $primary-color;
+                                    box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                                }
+                            }
+                        }
+
+                        .status-filter {
+                            padding: 0.75rem;
+                            border: 1px solid $gray-300;
+                            border-radius: $radius-md;
+                            font-size: 0.875rem;
+                            background: $white;
+                            cursor: pointer;
+                            transition: $transition-all;
+
+                            &:focus {
+                                outline: none;
+                                border-color: $primary-color;
+                                box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                            }
+                        }
+                    }
+
+                    .controls-right {
+                        .add-btn {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            padding: 0.75rem 1rem;
+                            border: none;
+                            border-radius: $radius-md;
+                            background: $primary-color;
+                            color: $white;
+                            font-size: 0.875rem;
+                            font-weight: 500;
+                            cursor: pointer;
+                            transition: $transition-all;
+
+                            svg {
+                                width: 16px;
+                                height: 16px;
+                            }
+
+                            &:hover {
+                                background: $primary-blue-hover;
+                                transform: translateY(-1px);
+                                box-shadow: $shadow-md;
+                            }
+                        }
+                    }
+                }
+
+                .transactions-table {
+                    background: $white;
+                    border-radius: $radius-md;
+                    overflow: hidden;
+                    border: 1px solid $gray-200;
+
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+
+                        thead {
+                            background: $gray-50;
+
+                            th {
+                                padding: 1rem 0.75rem;
+                                text-align: left;
+                                font-weight: 600;
+                                font-size: 0.875rem;
+                                color: $gray-700;
+                                border-bottom: 2px solid $gray-200;
+                                white-space: nowrap;
+                            }
+                        }
+
+                        tbody {
+                            tr {
+                                border-bottom: 1px solid $gray-100;
+                                transition: background-color 0.2s ease;
+
+                                &:hover {
+                                    background: $gray-50;
+                                }
+
+                                &:last-child {
+                                    border-bottom: none;
+                                }
+
+                                td {
+                                    padding: 1rem 0.75rem;
+                                    vertical-align: middle;
+                                    font-size: 0.875rem;
+
+                                    &.transaction-id {
+                                        font-family: 'Courier New', monospace;
+                                        color: $gray-600;
+                                        font-weight: 500;
+                                    }
+
+                                    &.order-id {
+                                        font-weight: 600;
+                                        color: $primary-color;
+                                    }
+
+                                    &.customer-name,
+                                    &.driver-name {
+                                        color: $gray-800;
+                                        font-weight: 500;
+                                    }
+
+                                    &.amount {
+                                        font-family: 'Courier New', monospace;
+                                        font-weight: 600;
+                                        color: #10b981;
+                                    }
+
+                                    &.date {
+                                        color: $gray-500;
+                                        white-space: nowrap;
+                                    }
+
+                                    &.notes {
+                                        color: $gray-600;
+                                        max-width: 200px;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        white-space: nowrap;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .pagination {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 1.5rem;
+                    padding: 1rem;
+                    background: $gray-50;
+                    border-radius: $radius-md;
+
+                    .pagination-btn {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        padding: 0.75rem 1rem;
+                        border: 1px solid $gray-300;
+                        border-radius: $radius-md;
+                        background: $white;
+                        color: $gray-700;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: $transition-all;
+
+                        &:hover:not(:disabled) {
+                            background: $gray-50;
+                            border-color: $primary-color;
+                            color: $primary-color;
+                            transform: translateY(-1px);
+                        }
+
+                        &:disabled {
+                            opacity: 0.5;
+                            cursor: not-allowed;
+                        }
+
+                        svg {
+                            width: 16px;
+                            height: 16px;
+                        }
+                    }
+
+                    .pagination-info {
+                        span {
+                            font-size: 0.875rem;
+                            color: $gray-500;
+                            font-weight: 500;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: $radius-full;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+
+        &--success {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        &--warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        &--error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        &--info {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+    }
+
+    // Modal styles
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 1rem;
+
+        .modal {
+            background: $white;
+            border-radius: $radius-lg;
+            box-shadow: $shadow-2xl;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.5rem;
+                border-bottom: 1px solid $gray-200;
+
+                h2 {
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                    color: $gray-800;
+                    margin: 0;
+                }
+
+                .close-btn {
+                    width: 36px;
+                    height: 36px;
+                    border: none;
+                    background: none;
+                    color: $gray-500;
+                    cursor: pointer;
+                    border-radius: $radius-md;
+                    transition: $transition-all;
+
+                    &:hover {
+                        background: $gray-100;
+                        color: $gray-700;
+                    }
+
+                    svg {
+                        width: 20px;
+                        height: 20px;
+                    }
+                }
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+
+                .form-group {
+                    margin-bottom: 1.5rem;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    label {
+                        display: block;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        color: $gray-700;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    input,
+                    textarea {
+                        width: 100%;
+                        padding: 0.75rem;
+                        border: 1px solid $gray-300;
+                        border-radius: $radius-md;
+                        font-size: 0.875rem;
+                        transition: $transition-all;
+
+                        &:focus {
+                            outline: none;
+                            border-color: $primary-color;
+                            box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                        }
+                    }
+
+                    textarea {
+                        resize: vertical;
+                        min-height: 80px;
+                    }
+                }
+            }
+
+            .modal-footer {
+                display: flex;
+                gap: 1rem;
+                padding: 1.5rem;
+                border-top: 1px solid $gray-200;
+                justify-content: flex-end;
+
+                .btn {
+                    padding: 0.75rem 1.5rem;
+                    border: none;
+                    border-radius: $radius-md;
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: $transition-all;
+
+                    &--secondary {
+                        background: $gray-100;
+                        color: $gray-700;
+
+                        &:hover {
+                            background: $gray-200;
+                        }
+                    }
+
+                    &--primary {
+                        background: $primary-color;
+                        color: $white;
+
+                        &:hover {
+                            background: $primary-blue-hover;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+    .payments-management {
+        .page-header {
+            flex-direction: column;
+            gap: 1.5rem;
+
+            .header-stats {
+                justify-content: space-around;
+                width: 100%;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+
+        .tabs-content .tab-content {
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+
+            .transactions-controls {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+
+                .controls-left {
+                    flex-direction: column;
+                    gap: 1rem;
+
+                    .search-box {
+                        min-width: auto;
+                    }
+                }
+
+                .controls-right {
+                    align-self: stretch;
+
+                    .add-btn {
+                        width: 100%;
+                        justify-content: center;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .payments-management {
+        .page-header {
+            padding: 1.5rem;
+
+            .header-content h1 {
+                font-size: 1.75rem;
+            }
+
+            .header-stats {
+                gap: 0.75rem;
+
+                .stat-item .stat-number {
+                    font-size: 1.5rem;
+                }
+            }
+        }
+
+        .tabs-container {
+            .tabs-header {
+                flex-direction: column;
+
+                .tab-btn {
+                    border-right: none;
+                    border-bottom: 1px solid $gray-200;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    &.active::after {
+                        left: 0;
+                        right: auto;
+                        width: 4px;
+                        height: 100%;
+                        top: 0;
+                        bottom: 0;
+                    }
+                }
+            }
+
+            .tabs-content .tab-content {
+                padding: 1rem;
+
+                .payment-methods-grid {
+                    grid-template-columns: 1fr;
+
+                    .payment-method-card {
+                        padding: 1rem;
+
+                        .method-header {
+                            flex-direction: column;
+                            align-items: center;
+                            text-align: center;
+                        }
+
+                        .method-stats {
+                            flex-direction: column;
+                            gap: 1rem;
+                        }
+                    }
+                }
+
+                .transactions-table {
+                    overflow-x: auto;
+
+                    table {
+                        min-width: 800px;
+                        font-size: 0.75rem;
+
+                        th,
+                        td {
+                            padding: 0.5rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        .modal-overlay {
+            padding: 0.5rem;
+
+            .modal {
+
+                .modal-header,
+                .modal-body,
+                .modal-footer {
+                    padding: 1rem;
+                }
+
+                .modal-footer {
+                    flex-direction: column;
+
+                    .btn {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

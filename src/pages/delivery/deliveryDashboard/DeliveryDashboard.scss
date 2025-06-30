@@ -1,0 +1,764 @@
+@use '../../../assets/styles/vars.scss' as *;
+
+.delivery-dashboard {
+    height: 100%;
+
+    .loading-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: $gray-500;
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid $gray-200;
+            border-top: 3px solid $primary-color;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.125rem;
+            margin: 0;
+        }
+    }
+
+    .dashboard-header {
+        background: $white;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-md;
+        border: 1px solid $gray-200;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, $primary-color 0%, $orange-color 100%);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem;
+
+            .driver-info {
+                h1 {
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: $gray-800;
+                    margin: 0 0 0.75rem 0;
+                    background: linear-gradient(135deg, $primary-color 0%, $dark-blue-color 100%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+
+                .driver-stats {
+                    display: flex;
+                    align-items: center;
+                    gap: 1.5rem;
+                    font-size: 0.875rem;
+
+                    .rating {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.25rem;
+                        color: $yellow-color;
+                        font-weight: 600;
+
+                        svg {
+                            width: 18px;
+                            height: 18px;
+                        }
+                    }
+
+                    .total-deliveries {
+                        color: $gray-600;
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            .status-controls {
+                .status-toggle {
+                    text-align: center;
+
+                    .toggle-label {
+                        display: block;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        color: $gray-600;
+                        margin-bottom: 0.75rem;
+                    }
+
+                    .status-btn {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        padding: 0.75rem 1.5rem;
+                        border: 2px solid;
+                        border-radius: $radius-full;
+                        background: $white;
+                        cursor: pointer;
+                        transition: $transition-all;
+                        font-weight: 600;
+                        min-width: 120px;
+                        justify-content: center;
+
+                        .status-indicator {
+                            width: 10px;
+                            height: 10px;
+                            border-radius: 50%;
+                            transition: $transition-all;
+                        }
+
+                        &.online {
+                            border-color: #10b981;
+                            color: #10b981;
+
+                            .status-indicator {
+                                background: #10b981;
+                                box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+                            }
+
+                            &:hover {
+                                background: rgba(16, 185, 129, 0.05);
+                            }
+                        }
+
+                        &.offline {
+                            border-color: $gray-400;
+                            color: $gray-600;
+
+                            .status-indicator {
+                                background: $gray-400;
+                            }
+
+                            &:hover {
+                                background: $gray-50;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        .stat-card {
+            background: $white;
+            border-radius: $radius-lg;
+            box-shadow: $shadow-md;
+            border: 1px solid $gray-200;
+            overflow: hidden;
+            transition: $transition-all;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: $shadow-lg;
+            }
+
+            .stat-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.5rem 1.5rem 1rem 1.5rem;
+
+                h3 {
+                    font-size: 1rem;
+                    font-weight: 600;
+                    color: $gray-700;
+                    margin: 0;
+                }
+
+                .stat-icon {
+                    width: 24px;
+                    height: 24px;
+                    color: $gray-400;
+                }
+            }
+
+            .stat-content {
+                padding: 0 1.5rem 1.5rem 1.5rem;
+
+                .primary-stat {
+                    display: flex;
+                    align-items: baseline;
+                    gap: 0.5rem;
+                    margin-bottom: 1rem;
+
+                    .value {
+                        font-size: 2.5rem;
+                        font-weight: 700;
+                        color: $primary-color;
+                        line-height: 1;
+                    }
+
+                    .label {
+                        font-size: 0.875rem;
+                        color: $gray-500;
+                        font-weight: 500;
+                    }
+                }
+
+                .secondary-stats {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 1rem;
+
+                    .stat-item {
+                        text-align: center;
+
+                        .value {
+                            display: block;
+                            font-size: 1rem;
+                            font-weight: 600;
+                            color: $gray-800;
+                            margin-bottom: 0.25rem;
+                        }
+
+                        .label {
+                            font-size: 0.75rem;
+                            color: $gray-500;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+                    }
+                }
+            }
+
+            &.today {
+                border-left: 4px solid $primary-color;
+
+                .stat-header .stat-icon {
+                    color: $primary-color;
+                }
+            }
+
+            &.week {
+                border-left: 4px solid $orange-color;
+
+                .stat-header .stat-icon {
+                    color: $orange-color;
+                }
+            }
+
+            &.quick-actions {
+                border-left: 4px solid $yellow-color;
+
+                .stat-header .stat-icon {
+                    color: $yellow-color;
+                }
+
+                .quick-actions-content {
+                    padding: 0 1.5rem 1.5rem 1.5rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.75rem;
+
+                    .action-btn {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        padding: 0.75rem 1rem;
+                        border: none;
+                        border-radius: $radius-md;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: $transition-all;
+                        text-align: left;
+
+                        svg {
+                            width: 16px;
+                            height: 16px;
+                        }
+
+                        &.primary {
+                            background: $primary-color;
+                            color: $white;
+
+                            &:hover {
+                                background: $primary-blue-hover;
+                                transform: translateY(-1px);
+                            }
+                        }
+
+                        &.secondary {
+                            background: $gray-100;
+                            color: $gray-700;
+
+                            &:hover {
+                                background: $gray-200;
+                                color: $primary-color;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 1.5rem;
+
+        .content-card {
+            width: 100%;
+            background: $white;
+            border-radius: $radius-lg;
+            box-shadow: $shadow-md;
+            border: 1px solid $gray-200;
+            overflow: hidden;
+
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.5rem;
+                border-bottom: 1px solid $gray-200;
+                background: $gray-50;
+
+                h3 {
+                    font-size: 1.125rem;
+                    font-weight: 600;
+                    color: $gray-800;
+                    margin: 0;
+                }
+
+                .view-all-btn {
+                    background: none;
+                    border: none;
+                    color: $primary-color;
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: color 0.2s ease;
+
+                    &:hover {
+                        color: $primary-blue-hover;
+                    }
+                }
+            }
+
+            .card-content {
+                padding: 1.5rem;
+                width: 100%;
+                overflow-y: auto;
+
+                .empty-state {
+                    text-align: center;
+                    padding: 2rem 1rem;
+                    color: $gray-500;
+
+                    svg {
+                        width: 48px;
+                        height: 48px;
+                        margin-bottom: 1rem;
+                        color: $gray-400;
+                    }
+
+                    p {
+                        font-size: 1rem;
+                        font-weight: 500;
+                        margin: 0 0 0.5rem 0;
+                        color: $gray-600;
+                    }
+
+                    span {
+                        font-size: 0.875rem;
+                        color: $gray-500;
+                    }
+                }
+            }
+
+            &.active-deliveries {
+                .delivery-item {
+                    border: 1px solid $gray-200;
+                    border-radius: $radius-md;
+                    padding: 1rem;
+                    margin-bottom: 1rem;
+                    transition: $transition-all;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    &:hover {
+                        border-color: $primary-color;
+                        box-shadow: $shadow-sm;
+                    }
+
+                    .delivery-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 1rem;
+
+                        .delivery-id {
+                            font-family: 'Courier New', monospace;
+                            font-weight: 600;
+                            color: $gray-600;
+                        }
+
+                        .delivery-status {
+                            padding: 0.25rem 0.75rem;
+                            border-radius: $radius-full;
+                            font-size: 0.75rem;
+                            font-weight: 600;
+                            color: $white;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+                    }
+
+                    .delivery-info {
+                        margin-bottom: 1rem;
+
+                        .customer-name {
+                            font-weight: 600;
+                            color: $gray-800;
+                            margin-bottom: 0.25rem;
+                        }
+
+                        .delivery-address {
+                            font-size: 0.875rem;
+                            color: $gray-600;
+                            margin-bottom: 0.75rem;
+                        }
+
+                        .delivery-details {
+                            display: flex;
+                            gap: 1rem;
+                            font-size: 0.75rem;
+                            color: $gray-500;
+
+                            .order-total {
+                                font-weight: 600;
+                                color: $primary-color;
+                            }
+                        }
+                    }
+
+                    .delivery-actions {
+                        .start-delivery {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            width: 100%;
+                            padding: 0.75rem;
+                            background: $primary-color;
+                            color: $white;
+                            border: none;
+                            border-radius: $radius-md;
+                            font-size: 0.875rem;
+                            font-weight: 500;
+                            cursor: pointer;
+                            transition: $transition-all;
+
+                            svg {
+                                width: 16px;
+                                height: 16px;
+                            }
+
+                            &:hover {
+                                background: $primary-blue-hover;
+                                transform: translateY(-1px);
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.recent-activity {
+                .recent-item {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1rem 0;
+                    border-bottom: 1px solid $gray-100;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    .recent-info {
+                        .customer-name {
+                            font-weight: 500;
+                            color: $gray-800;
+                            margin-bottom: 0.25rem;
+                        }
+
+                        .delivery-time {
+                            font-size: 0.75rem;
+                            color: $gray-500;
+                        }
+                    }
+
+                    .recent-details {
+                        text-align: right;
+
+                        .rating {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.25rem;
+                            color: $yellow-color;
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            margin-bottom: 0.25rem;
+                            justify-content: flex-end;
+
+                            svg {
+                                width: 14px;
+                                height: 14px;
+                            }
+                        }
+
+                        .earnings {
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            color: $gray-800;
+
+                            .tip {
+                                display: block;
+                                font-size: 0.75rem;
+                                color: $primary-color;
+                                font-weight: 500;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.notifications {
+                .notification-item {
+                    display: flex;
+                    gap: 1rem;
+                    padding: 1rem 0;
+                    border-bottom: 1px solid $gray-100;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    &.high {
+                        .notification-icon {
+                            background: rgba(239, 68, 68, 0.1);
+                            color: #ef4444;
+                        }
+                    }
+
+                    &.normal {
+                        .notification-icon {
+                            background: rgba(66, 103, 178, 0.1);
+                            color: $primary-color;
+                        }
+                    }
+
+                    .notification-icon {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: $radius-md;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+
+                        svg {
+                            width: 18px;
+                            height: 18px;
+                        }
+                    }
+
+                    .notification-content {
+                        flex: 1;
+
+                        .notification-message {
+                            font-size: 0.875rem;
+                            color: $gray-800;
+                            margin-bottom: 0.25rem;
+                            line-height: 1.4;
+                        }
+
+                        .notification-time {
+                            font-size: 0.75rem;
+                            color: $gray-500;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+    .delivery-dashboard {
+        .content-grid {
+            grid-template-columns: 1fr 1fr;
+
+            .content-card.active-deliveries {
+                grid-column: span 2;
+            }
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .delivery-dashboard {
+        .stats-grid {
+            grid-template-columns: 1fr 1fr;
+
+            .stat-card.quick-actions {
+                grid-column: span 2;
+
+                .quick-actions-content {
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                }
+            }
+        }
+
+        .content-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+
+            .content-card.active-deliveries {
+                grid-column: span 1;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .delivery-dashboard {
+        .dashboard-header .header-content {
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: flex-start;
+
+            .status-controls {
+                align-self: stretch;
+
+                .status-toggle .status-btn {
+                    width: 100%;
+                }
+            }
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+
+            .stat-card.quick-actions {
+                grid-column: span 1;
+
+                .quick-actions-content {
+                    flex-direction: column;
+                }
+            }
+        }
+
+        .content-grid {
+            .content-card .card-content {
+                padding: 1rem;
+                max-height: 300px;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .delivery-dashboard {
+        .dashboard-header .header-content {
+            padding: 1.5rem;
+
+            .driver-info h1 {
+                font-size: 1.5rem;
+            }
+
+            .driver-stats {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        .stats-grid {
+            gap: 1rem;
+
+            .stat-card .stat-content {
+                .primary-stat .value {
+                    font-size: 2rem;
+                }
+
+                .secondary-stats {
+                    grid-template-columns: 1fr;
+                    gap: 0.5rem;
+                }
+            }
+        }
+
+        .content-grid {
+            gap: 1rem;
+
+            .content-card {
+                .card-header {
+                    padding: 1rem;
+                }
+
+                .card-content {
+                    padding: 1rem;
+                }
+
+                &.active-deliveries .delivery-item {
+                    .delivery-details {
+                        flex-direction: column;
+                        gap: 0.25rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Custom scrollbar for card content
+.content-card .card-content {
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $gray-100;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $gray-300;
+        border-radius: 2px;
+
+        &:hover {
+            background: $gray-400;
+        }
+    }
+}

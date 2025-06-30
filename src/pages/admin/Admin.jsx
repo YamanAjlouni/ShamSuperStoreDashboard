@@ -17,6 +17,19 @@ import OrderDetails from './ordersManagement/orderDetails/OrderDetails'
 import ProductsManagement from './productsManagement/ProductsManagement'
 import ProductDetails from './productsManagement/productDetails/ProductDetails'
 
+// Import Category Management Components
+import CategoriesManagement from './categoriesManagement/CategoriesManagement'
+import CategoryDetails from './categoriesManagement/categoryDetails/CategoryDetails'
+
+// Import Payment Management Components
+import PaymentsManagement from './paymentsManagement/PaymentsManagement'
+
+// Import Reports Management Components
+import ReportsManagement from './reportsManagement/ReportsManagement'
+
+// Import Settings Management Components
+import SettingsManagement from './settingsManagement/SettingsManagement'
+
 import './Admin.scss'
 
 const PlaceholderPage = ({ pageName }) => (
@@ -136,14 +149,17 @@ const Admin = () => {
                         {/* Product Management */}
                         <Route path="/products" element={<ProductsManagement />} />
                         <Route path="/products/details/:id" element={<ProductDetails />} />
-                        <Route path="/categories" element={<PlaceholderPage pageName="Category Management" />} />
+                        
+                        {/* Category Management - Updated Routes */}
+                        <Route path="/categories" element={<CategoriesManagement />} />
+                        <Route path="/categories/details/:id" element={<CategoryDetails />} />
 
                         {/* Financial Management */}
-                        <Route path="/payments" element={<PlaceholderPage pageName="Payment Management" />} />
-                        <Route path="/reports" element={<PlaceholderPage pageName="Financial Reports" />} />
+                        <Route path="/payments" element={<PaymentsManagement />} />
+                        <Route path="/reports" element={<ReportsManagement />} />
 
                         {/* System Management */}
-                        <Route path="/settings" element={<PlaceholderPage pageName="System Settings" />} />
+                        <Route path="/settings" element={<SettingsManagement />} />
                         <Route path="/logs" element={<PlaceholderPage pageName="System Logs" />} />
 
                         {/* Notifications & Profile */}
