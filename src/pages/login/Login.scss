@@ -1,13 +1,14 @@
 @use '../../assets/styles/vars.scss' as *;
 
 .login-container {
-    min-height: 100dvh;
+    min-height: 100vh;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     background: linear-gradient(135deg, $primary-blue-light 0%, $gray-50 100%);
-    padding: 1rem;
+    padding: 2rem 1rem;
     overflow: hidden;
 
     &::before {
@@ -25,9 +26,9 @@
         background: rgba(255, 255, 255, 0.98);
         border-radius: $radius-xl;
         box-shadow: $shadow-2xl;
-        padding: 2.5rem 2rem;
+        padding: 2rem 2rem;
         width: 100%;
-        max-width: 500px;
+        max-width: 480px;
         position: relative;
         z-index: 3;
         backdrop-filter: blur(20px);
@@ -43,44 +44,23 @@
 
         .login-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
 
             .logo {
-                margin-bottom: 1.5rem;
+                margin-bottom: 1.25rem;
 
-                .logo-icon {
-                    width: 64px;
-                    height: 64px;
-                    background: linear-gradient(135deg, $primary-color 0%, $primary-blue-hover 100%);
-                    border-radius: $radius-lg;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin: 0 auto 1rem;
-                    box-shadow: $shadow-lg;
-                    transform: rotate(-2deg);
+                .logo-image {
+                    width: 100%;
+                    height: 80px;
+                    object-fit: contain;
+                    display: block;
+                    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
                     transition: $transition-all;
 
                     &:hover {
-                        transform: rotate(0deg) scale(1.05);
+                        transform: scale(1.05);
+                        filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
                     }
-
-                    span {
-                        color: $white;
-                        font-size: 1.5rem;
-                        font-weight: 700;
-                    }
-                }
-
-                h1 {
-                    font-size: 2rem;
-                    font-weight: 700;
-                    background: linear-gradient(135deg, $primary-color 0%, $dark-blue-color 100%);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                    margin-bottom: 0.25rem;
-                    letter-spacing: -0.5px;
                 }
 
                 p {
@@ -88,12 +68,13 @@
                     font-size: 0.875rem;
                     font-weight: 500;
                     text-transform: uppercase;
+                    margin-top: 10px;
                     letter-spacing: 1px;
                 }
             }
 
             h2 {
-                font-size: 1.5rem;
+                font-size: 1.375rem;
                 font-weight: 600;
                 color: $text-dark;
                 margin-bottom: 0.5rem;
@@ -107,7 +88,7 @@
 
         .login-form {
             .form-group {
-                margin-bottom: 1.5rem;
+                margin-bottom: 1.25rem;
 
                 label {
                     display: block;
@@ -134,7 +115,7 @@
 
                     input {
                         width: 100%;
-                        padding: 1rem 1rem 1rem 3rem;
+                        padding: 0.875rem 0.875rem 0.875rem 3rem;
                         border: 1.5px solid $gray-200;
                         border-radius: $radius-md;
                         font-size: 0.875rem;
@@ -191,7 +172,7 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                margin-bottom: 2rem;
+                margin-bottom: 1.5rem;
                 font-size: 0.875rem;
 
                 .checkbox-label {
@@ -272,7 +253,7 @@
 
             .login-btn {
                 width: 100%;
-                padding: 1rem 1.5rem;
+                padding: 0.875rem 1.5rem;
                 background: linear-gradient(135deg, $primary-color 0%, $primary-blue-hover 100%);
                 color: $white;
                 border: none;
@@ -331,8 +312,8 @@
 
         .login-footer {
             text-align: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
             border-top: 1px solid $gray-200;
 
             p {
@@ -430,8 +411,6 @@
         }
     }
 
-    // Add these styles to your existing Login.scss file
-
     .error-message {
         background-color: #fee2e2;
         color: #dc2626;
@@ -444,7 +423,7 @@
     }
 
     .demo-credentials {
-        margin-top: 1.5rem;
+        margin-top: 1.25rem;
         padding: 1rem;
         background-color: #f8fafc;
         border-radius: 8px;
@@ -511,29 +490,28 @@
 // Responsive Design
 @media (max-width: 768px) {
     .login-container {
-        padding: 1rem;
+        padding: 1.5rem 1rem;
 
         .login-card {
-            padding: 2rem 1.5rem;
+            padding: 1.75rem 1.5rem;
             margin: 0;
             max-width: 100%;
 
             .login-header {
-                margin-bottom: 1.5rem;
+                margin-bottom: 1.25rem;
 
                 .logo {
-                    .logo-icon {
-                        width: 56px;
-                        height: 56px;
+                    .logo-image {
+                        height: 70px;
                     }
 
                     h1 {
-                        font-size: 1.875rem;
+                        font-size: 1.75rem;
                     }
                 }
 
                 h2 {
-                    font-size: 1.5rem;
+                    font-size: 1.25rem;
                 }
             }
 
@@ -551,16 +529,15 @@
 
 @media (max-width: 480px) {
     .login-container {
-        padding: 0.5rem;
+        padding: 1rem 0.5rem;
 
         .login-card {
             padding: 1.5rem 1rem;
 
             .login-header {
                 .logo {
-                    .logo-icon {
-                        width: 48px;
-                        height: 48px;
+                    .logo-image {
+                        height: 60px;
                     }
 
                     h1 {
@@ -569,7 +546,7 @@
                 }
 
                 h2 {
-                    font-size: 1.25rem;
+                    font-size: 1.125rem;
                 }
             }
         }

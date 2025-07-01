@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/images/shamSuperStoreLogo.jpg'
 import './Login.scss';
 
 const Login = () => {
@@ -43,7 +44,7 @@ const Login = () => {
             } else {
                 setError('Invalid email or password');
             }
-            
+
             setIsLoading(false);
         }, 1500);
     };
@@ -53,10 +54,7 @@ const Login = () => {
             <div className="login-card">
                 <div className="login-header">
                     <div className="logo">
-                        <div className="logo-icon">
-                            <span>SS</span>
-                        </div>
-                        <h1>ShamSuperStore</h1>
+                        <img src={logo} alt="ShamSuperStore Logo" className="logo-image" />
                         <p>Dashboard</p>
                     </div>
                     <h2>Welcome Back</h2>
