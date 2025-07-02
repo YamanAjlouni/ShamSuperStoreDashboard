@@ -8,8 +8,10 @@ import AdminDashboard from './adminDashboard/AdminDashboard'
 import SellersManagement from './sellersManagement/SellersManagement'
 import PendingSellers from './pendingSellers/PendingSellers'
 import SellerDetails from './sellersManagement/sellerDetails/SellerDetails'
+import SellerResetPassword from './sellersManagement/sellerResetPassword/SellerResetPassword'
 import UsersManagement from './usersManagement/UsersManagement'
 import UserDetails from './usersManagement/userDetails/UserDetails'
+import ResetPassword from './usersManagement/resetPassword/ResetPassword'
 import DriversManagement from './driversManagement/DriversManagement'
 import DriverDetails from './driversManagement/driverDetails/DriverDetails'
 import OrdersManagement from './ordersManagement/OrdersManagement'
@@ -135,8 +137,10 @@ const Admin = () => {
                         {/* User Management */}
                         <Route path="/users" element={<UsersManagement />} />
                         <Route path="/users/details/:id" element={<UserDetails />} />
+                        <Route path="/users/reset-password/:id" element={<ResetPassword />} />
                         <Route path="/sellers" element={<SellersManagement />} />
                         <Route path="/sellers/details/:id" element={<SellerDetails />} />
+                        <Route path="/sellers/reset-password/:id" element={<SellerResetPassword />} />
                         <Route path="/pending-sellers" element={<PendingSellers />} />
                         <Route path="/drivers" element={<DriversManagement />} />
                         <Route path="/drivers/details/:id" element={<DriverDetails />} />
@@ -157,6 +161,8 @@ const Admin = () => {
                         {/* Financial Management */}
                         <Route path="/payments" element={<PaymentsManagement />} />
                         <Route path="/reports" element={<ReportsManagement />} />
+                        <Route path="/returns" element={<PlaceholderPage pageName="Return Orders Management" />} />
+                        <Route path="/reviews" element={<PlaceholderPage pageName="Customer Reviews Management" />} />
 
                         {/* System Management */}
                         <Route path="/settings" element={<SettingsManagement />} />

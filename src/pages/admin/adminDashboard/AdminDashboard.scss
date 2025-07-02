@@ -30,6 +30,12 @@
         gap: 1.5rem;
         margin-bottom: 2rem;
 
+        .stat-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
         .stat-card {
             background: $white;
             border-radius: $radius-lg;
@@ -50,6 +56,15 @@
                 background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
             }
 
+            &--clickable {
+                cursor: pointer;
+
+                &:hover {
+                    transform: translateY(-6px);
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1);
+                }
+            }
+
             &--blue::before {
                 background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
             }
@@ -64,6 +79,14 @@
 
             &--orange::before {
                 background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
+            }
+
+            &--red::before {
+                background: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
+            }
+
+            &--yellow::before {
+                background: linear-gradient(90deg, #eab308 0%, #facc15 100%);
             }
 
             &:hover {
@@ -102,6 +125,14 @@
 
                 .stat-card--orange & {
                     background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+                }
+
+                .stat-card--red & {
+                    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+                }
+
+                .stat-card--yellow & {
+                    background: linear-gradient(135deg, #eab308 0%, #facc15 100%);
                 }
 
                 svg {

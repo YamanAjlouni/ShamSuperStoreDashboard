@@ -131,6 +131,7 @@
                     display: flex;
                     gap: 1rem;
                     align-items: center;
+                    flex-wrap: wrap;
 
                     .seller-id {
                         background: rgba(206, 128, 45, 0.1);
@@ -191,6 +192,16 @@
 
                         &:hover {
                             background: rgba(66, 103, 178, 0.2);
+                            transform: translateY(-1px);
+                        }
+                    }
+
+                    &--reset {
+                        background: rgba(139, 92, 246, 0.1);
+                        color: #8b5cf6;
+
+                        &:hover {
+                            background: rgba(139, 92, 246, 0.2);
                             transform: translateY(-1px);
                         }
                     }
@@ -294,6 +305,37 @@
         &--info {
             background: rgba(66, 103, 178, 0.1);
             color: $primary-color;
+        }
+    }
+
+    .membership-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: $radius-full;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+
+        &--neutral {
+            background: rgba(75, 85, 99, 0.1);
+            color: $gray-500;
+        }
+
+        &--info {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        &--warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        &--success {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
         }
     }
 
@@ -455,6 +497,188 @@
 
                                 &.at-limit {
                                     color: #dc2626;
+                                }
+
+                                &.membership-display {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.75rem;
+                                    justify-content: flex-end;
+                                    background: rgba(59, 130, 246, 0.05);
+                                    padding: 0.5rem 0.75rem;
+                                    border-radius: $radius-md;
+                                    border: 2px dashed rgba(59, 130, 246, 0.2);
+
+                                    .membership-info {
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 0.25rem;
+                                        align-items: flex-end;
+
+                                        .membership-price {
+                                            font-size: 0.75rem;
+                                            color: $gray-500;
+                                            font-weight: 500;
+                                        }
+                                    }
+
+                                    .edit-membership-btn {
+                                        width: 28px;
+                                        height: 28px;
+                                        border: 2px solid #3b82f6;
+                                        background: #3b82f6;
+                                        color: $white;
+                                        border-radius: $radius-md;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        cursor: pointer;
+                                        transition: $transition-all;
+                                        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+
+                                        &:hover {
+                                            background: darken(#3b82f6, 10%);
+                                            border-color: darken(#3b82f6, 10%);
+                                            transform: translateY(-1px);
+                                            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+                                        }
+
+                                        svg {
+                                            width: 14px;
+                                            height: 14px;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .membership-editor {
+                                flex: 1;
+                                background: $white;
+                                border: 3px solid #3b82f6;
+                                border-radius: $radius-lg;
+                                padding: 1.5rem;
+                                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+                                margin: 0.5rem 0;
+
+                                .membership-options {
+                                    margin-bottom: 1.5rem;
+
+                                    .membership-label {
+                                        display: block;
+                                        font-size: 0.875rem;
+                                        color: $gray-700;
+                                        margin-bottom: 0.75rem;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.5px;
+                                    }
+
+                                    .membership-select {
+                                        width: 100%;
+                                        padding: 0.75rem 1rem;
+                                        border: 2px solid $gray-300;
+                                        border-radius: $radius-md;
+                                        font-size: 0.875rem;
+                                        font-weight: 600;
+                                        background: $white;
+                                        transition: $transition-all;
+
+                                        &:focus {
+                                            outline: none;
+                                            border-color: #3b82f6;
+                                            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+                                        }
+                                    }
+                                }
+
+                                .membership-preview {
+                                    margin-bottom: 1.5rem;
+                                    padding: 1rem;
+                                    background: rgba(59, 130, 246, 0.05);
+                                    border-radius: $radius-md;
+                                    border: 1px solid rgba(59, 130, 246, 0.2);
+
+                                    .plan-details {
+                                        h4 {
+                                            font-size: 1rem;
+                                            font-weight: 600;
+                                            color: $gray-800;
+                                            margin-bottom: 0.25rem;
+                                        }
+
+                                        .plan-price {
+                                            font-size: 0.875rem;
+                                            color: #3b82f6;
+                                            font-weight: 600;
+                                            margin-bottom: 0.75rem;
+                                        }
+
+                                        .plan-features {
+                                            list-style: none;
+                                            padding: 0;
+                                            margin: 0;
+
+                                            li {
+                                                font-size: 0.75rem;
+                                                color: $gray-600;
+                                                margin-bottom: 0.25rem;
+                                                padding-left: 1rem;
+                                                position: relative;
+
+                                                &::before {
+                                                    content: '✓';
+                                                    position: absolute;
+                                                    left: 0;
+                                                    color: #10b981;
+                                                    font-weight: 600;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .membership-actions {
+                                    display: flex;
+                                    gap: 0.75rem;
+
+                                    .save-btn {
+                                        flex: 1;
+                                        padding: 0.75rem 1.5rem;
+                                        background: #3b82f6;
+                                        color: $white;
+                                        border: none;
+                                        border-radius: $radius-md;
+                                        font-size: 0.875rem;
+                                        font-weight: 600;
+                                        cursor: pointer;
+                                        transition: $transition-all;
+                                        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+
+                                        &:hover {
+                                            background: darken(#3b82f6, 10%);
+                                            transform: translateY(-1px);
+                                            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+                                        }
+                                    }
+
+                                    .cancel-btn {
+                                        flex: 1;
+                                        padding: 0.75rem 1.5rem;
+                                        background: $gray-100;
+                                        color: $gray-700;
+                                        border: 2px solid $gray-300;
+                                        border-radius: $radius-md;
+                                        font-size: 0.875rem;
+                                        font-weight: 600;
+                                        cursor: pointer;
+                                        transition: $transition-all;
+
+                                        &:hover {
+                                            background: $gray-200;
+                                            border-color: $gray-400;
+                                            transform: translateY(-1px);
+                                        }
+                                    }
                                 }
                             }
 
@@ -923,12 +1147,14 @@
                         .value {
                             text-align: left;
 
-                            &.limit-display {
+                            &.limit-display,
+                            &.membership-display {
                                 justify-content: flex-start;
                             }
                         }
 
-                        .limit-editor {
+                        .limit-editor,
+                        .membership-editor {
                             margin: 0.5rem 0;
 
                             .preset-options .preset-buttons {
@@ -941,7 +1167,8 @@
                                 }
                             }
 
-                            .limit-actions {
+                            .limit-actions,
+                            .membership-actions {
                                 gap: 0.5rem;
 
                                 .save-btn,

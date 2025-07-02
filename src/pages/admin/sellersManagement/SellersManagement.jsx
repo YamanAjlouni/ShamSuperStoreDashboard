@@ -10,7 +10,16 @@ const SellersManagement = () => {
     const [sellersPerPage, setSellersPerPage] = useState(10)
     const [searchTerm, setSearchTerm] = useState('')
     const [statusFilter, setStatusFilter] = useState('all')
+    const [membershipFilter, setMembershipFilter] = useState('all')
     const [loading, setLoading] = useState(false)
+
+    // Membership plans
+    const membershipPlans = [
+        { value: 'free', label: 'Free Plan', productLimit: 50, price: '$0/month' },
+        { value: 'basic', label: 'Basic Plan', productLimit: 100, price: '$29/month' },
+        { value: 'premium', label: 'Premium Plan', productLimit: 500, price: '$79/month' },
+        { value: 'enterprise', label: 'Enterprise Plan', productLimit: 1000, price: '$199/month' }
+    ]
 
     // Mock data - replace with actual API call
     const mockSellers = [
@@ -28,7 +37,8 @@ const SellersManagement = () => {
             productLimit: 50,
             totalOrders: 234,
             revenue: 15670.50,
-            email: 'john.smith@email.com'
+            email: 'john.smith@email.com',
+            membership: 'free'
         },
         {
             id: 'SEL002',
@@ -44,7 +54,8 @@ const SellersManagement = () => {
             productLimit: 100,
             totalOrders: 189,
             revenue: 12450.75,
-            email: 'sarah.johnson@email.com'
+            email: 'sarah.johnson@email.com',
+            membership: 'basic'
         },
         {
             id: 'SEL003',
@@ -60,7 +71,8 @@ const SellersManagement = () => {
             productLimit: 50,
             totalOrders: 67,
             revenue: 3240.25,
-            email: 'mike.rodriguez@email.com'
+            email: 'mike.rodriguez@email.com',
+            membership: 'free'
         },
         {
             id: 'SEL004',
@@ -73,10 +85,11 @@ const SellersManagement = () => {
             status: 'active',
             joinDate: '2024-01-28',
             productsCount: 156,
-            productLimit: 200,
+            productLimit: 500,
             totalOrders: 445,
             revenue: 28950.80,
-            email: 'emily.chen@email.com'
+            email: 'emily.chen@email.com',
+            membership: 'premium'
         },
         {
             id: 'SEL005',
@@ -89,10 +102,11 @@ const SellersManagement = () => {
             status: 'active',
             joinDate: '2024-02-14',
             productsCount: 89,
-            productLimit: 100,
+            productLimit: 1000,
             totalOrders: 312,
             revenue: 19675.45,
-            email: 'david.wilson@email.com'
+            email: 'david.wilson@email.com',
+            membership: 'enterprise'
         }
     ]
 
@@ -124,9 +138,14 @@ const SellersManagement = () => {
             filtered = filtered.filter(seller => seller.status === statusFilter)
         }
 
+        // Membership filter
+        if (membershipFilter !== 'all') {
+            filtered = filtered.filter(seller => seller.membership === membershipFilter)
+        }
+
         setFilteredSellers(filtered)
         setCurrentPage(1)
-    }, [searchTerm, statusFilter, sellers])
+    }, [searchTerm, statusFilter, membershipFilter, sellers])
 
     // Pagination
     const indexOfLastSeller = currentPage * sellersPerPage
@@ -165,11 +184,8 @@ const SellersManagement = () => {
         }
     }
 
-    const handleDeleteSeller = async (sellerId) => {
-        if (window.confirm('Are you sure you want to permanently delete this seller and all their products? This action cannot be undone.')) {
-            // API call to delete seller
-            setSellers(sellers.filter(seller => seller.id !== sellerId))
-        }
+    const handleResetPassword = (sellerId) => {
+        navigate(`/admin/sellers/reset-password/${sellerId}`)
     }
 
     const getStatusBadge = (status) => {
@@ -180,6 +196,17 @@ const SellersManagement = () => {
         }
         const config = statusConfig[status] || statusConfig.inactive
         return <span className={`status-badge status-badge--${config.class}`}>{config.label}</span>
+    }
+
+    const getMembershipBadge = (membership) => {
+        const membershipConfig = {
+            free: { class: 'neutral', label: 'Free' },
+            basic: { class: 'info', label: 'Basic' },
+            premium: { class: 'warning', label: 'Premium' },
+            enterprise: { class: 'success', label: 'Enterprise' }
+        }
+        const config = membershipConfig[membership] || membershipConfig.free
+        return <span className={`membership-badge membership-badge--${config.class}`}>{config.label}</span>
     }
 
     const getProductsDisplay = (seller) => {
@@ -258,6 +285,17 @@ const SellersManagement = () => {
                             <option value="suspended">Suspended</option>
                             <option value="inactive">Inactive</option>
                         </select>
+                        <select
+                            value={membershipFilter}
+                            onChange={(e) => setMembershipFilter(e.target.value)}
+                            className="membership-filter"
+                        >
+                            <option value="all">All Plans</option>
+                            <option value="free">Free Plan</option>
+                            <option value="basic">Basic Plan</option>
+                            <option value="premium">Premium Plan</option>
+                            <option value="enterprise">Enterprise Plan</option>
+                        </select>
                     </div>
                     <div className="controls-right">
                         <span className="results-count">
@@ -288,6 +326,7 @@ const SellersManagement = () => {
                                 <th>Personal Address</th>
                                 <th>Personal Phone</th>
                                 <th>Status</th>
+                                <th>Membership</th>
                                 <th>Products</th>
                                 <th>Revenue</th>
                                 <th>Actions</th>
@@ -317,6 +356,14 @@ const SellersManagement = () => {
                                     </td>
                                     <td className="personal-phone">{seller.personalPhone}</td>
                                     <td className="status">{getStatusBadge(seller.status)}</td>
+                                    <td className="membership">
+                                        <div className="membership-cell">
+                                            {getMembershipBadge(seller.membership)}
+                                            <span className="membership-price">
+                                                {membershipPlans.find(plan => plan.value === seller.membership)?.price}
+                                            </span>
+                                        </div>
+                                    </td>
                                     <td className="products-count">{getProductsDisplay(seller)}</td>
                                     <td className="revenue">${seller.revenue.toLocaleString()}</td>
                                     <td className="actions">
@@ -362,12 +409,12 @@ const SellersManagement = () => {
                                                 </button>
                                             )}
                                             <button
-                                                className="action-btn action-btn--delete"
-                                                onClick={() => handleDeleteSeller(seller.id)}
-                                                title="Delete Seller"
+                                                className="action-btn action-btn--reset"
+                                                onClick={() => handleResetPassword(seller.id)}
+                                                title="Reset Password"
                                             >
                                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z" />
                                                 </svg>
                                             </button>
                                         </div>

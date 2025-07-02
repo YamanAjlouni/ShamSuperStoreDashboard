@@ -189,11 +189,8 @@ const UsersManagement = () => {
         }
     }
 
-    const handleDeleteUser = async (userId) => {
-        if (window.confirm('Are you sure you want to permanently delete this user? This action cannot be undone.')) {
-            // API call to delete user
-            setUsers(users.filter(user => user.id !== userId))
-        }
+    const handleResetPassword = (userId) => {
+        navigate(`/admin/users/reset-password/${userId}`)
     }
 
     const getStatusBadge = (status) => {
@@ -250,10 +247,6 @@ const UsersManagement = () => {
                         <span className="stat-number">{users.filter(u => u.status === 'suspended').length}</span>
                         <span className="stat-label">Suspended</span>
                     </div>
-                    {/* <div className="stat-item">
-                        <span className="stat-number">{users.filter(u => u.accountType === 'premium').length}</span>
-                        <span className="stat-label">Premium Users</span>
-                    </div> */}
                     <div className="stat-item">
                         <span className="stat-number">{users.length}</span>
                         <span className="stat-label">Total Users</span>
@@ -316,7 +309,6 @@ const UsersManagement = () => {
                                 <th>Total Spent</th>
                                 <th>Join Date</th>
                                 <th>Status</th>
-                                {/* <th>Account Type</th> */}
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -345,7 +337,6 @@ const UsersManagement = () => {
                                     </td>
                                     <td className="join-date">{formatDate(user.joinDate)}</td>
                                     <td className="status">{getStatusBadge(user.status)}</td>
-                                    {/* <td className="account-type">{getAccountTypeBadge(user.accountType)}</td> */}
                                     <td className="actions">
                                         <div className="action-buttons">
                                             <button
@@ -389,12 +380,12 @@ const UsersManagement = () => {
                                                 </button>
                                             )}
                                             <button
-                                                className="action-btn action-btn--delete"
-                                                onClick={() => handleDeleteUser(user.id)}
-                                                title="Delete User"
+                                                className="action-btn action-btn--reset"
+                                                onClick={() => handleResetPassword(user.id)}
+                                                title="Reset Password"
                                             >
                                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                                                 </svg>
                                             </button>
                                         </div>

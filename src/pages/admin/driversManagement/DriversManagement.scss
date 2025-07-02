@@ -422,12 +422,12 @@
                                             }
                                         }
 
-                                        &--delete {
-                                            background: rgba(239, 68, 68, 0.1);
-                                            color: #dc2626;
+                                        &--reset {
+                                            background: rgba(139, 92, 246, 0.1);
+                                            color: #8b5cf6;
 
                                             &:hover {
-                                                background: rgba(239, 68, 68, 0.2);
+                                                background: rgba(139, 92, 246, 0.2);
                                                 transform: translateY(-1px);
                                             }
                                         }

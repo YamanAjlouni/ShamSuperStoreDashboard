@@ -7,6 +7,7 @@ const DriverDetails = () => {
     const navigate = useNavigate()
     const [driver, setDriver] = useState(null)
     const [deliveries, setDeliveries] = useState([])
+    const [reviews, setReviews] = useState([])
     const [activeTab, setActiveTab] = useState('overview')
     const [loading, setLoading] = useState(true)
 
@@ -24,6 +25,7 @@ const DriverDetails = () => {
         totalEarnings: 2890.50,
         averageEarningsPerOrder: 19.93,
         rating: 4.8,
+        reviewCount: 89,
         vehicleType: 'Motorcycle',
         licenseNumber: 'DL123456789',
         emergencyContact: {
@@ -125,12 +127,70 @@ const DriverDetails = () => {
         }
     ]
 
+    const mockReviews = [
+        {
+            id: 'REV001',
+            orderId: 'ORD12345',
+            customerName: 'Alice Johnson',
+            rating: 5,
+            comment: 'Excellent delivery service! Michael was very professional and delivered my order super fast. Highly recommend!',
+            date: '2024-06-25',
+            orderValue: 129.99
+        },
+        {
+            id: 'REV002',
+            orderId: 'ORD12344',
+            customerName: 'Bob Smith',
+            rating: 4,
+            comment: 'Good service, delivered on time. Driver was polite and careful with the package.',
+            date: '2024-06-25',
+            orderValue: 89.50
+        },
+        {
+            id: 'REV003',
+            orderId: 'ORD12343',
+            customerName: 'Carol Davis',
+            rating: 5,
+            comment: 'Amazing driver! Very fast delivery and excellent communication. Will definitely order again.',
+            date: '2024-06-24',
+            orderValue: 234.75
+        },
+        {
+            id: 'REV004',
+            orderId: 'ORD12342',
+            customerName: 'David Wilson',
+            rating: 5,
+            comment: 'Perfect delivery service. Driver was very friendly and the delivery was extremely quick.',
+            date: '2024-06-24',
+            orderValue: 45.99
+        },
+        {
+            id: 'REV005',
+            orderId: 'ORD12341',
+            customerName: 'Emily Brown',
+            rating: 4,
+            comment: 'Great service overall. Package arrived in perfect condition and on time.',
+            date: '2024-06-23',
+            orderValue: 299.99
+        },
+        {
+            id: 'REV006',
+            orderId: 'ORD12340',
+            customerName: 'Frank Miller',
+            rating: 5,
+            comment: 'Outstanding delivery experience! Michael is very professional and delivers with care.',
+            date: '2024-06-22',
+            orderValue: 156.75
+        }
+    ]
+
     useEffect(() => {
         // Simulate API call
         setLoading(true)
         setTimeout(() => {
             setDriver(mockDriverData)
             setDeliveries(mockDeliveries)
+            setReviews(mockReviews)
             setLoading(false)
         }, 1000)
     }, [id])
@@ -149,6 +209,10 @@ const DriverDetails = () => {
         if (window.confirm('Are you sure you want to remove suspension from this driver?')) {
             setDriver({ ...driver, status: 'offline' })
         }
+    }
+
+    const handleResetPassword = () => {
+        navigate(`/admin/drivers/reset-password/${driver.id}`)
     }
 
     const handleDeleteDriver = () => {
@@ -201,6 +265,14 @@ const DriverDetails = () => {
             minute: '2-digit',
             hour12: true
         })
+    }
+
+    const renderStarRating = (rating) => {
+        return Array.from({ length: 5 }, (_, index) => (
+            <span key={index} className={`star ${index < rating ? 'filled' : ''}`}>
+                ⭐
+            </span>
+        ))
     }
 
     if (loading) {
@@ -268,6 +340,12 @@ const DriverDetails = () => {
                                 Suspend
                             </button>
                         )}
+                        <button className="action-btn action-btn--reset" onClick={handleResetPassword}>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z" />
+                            </svg>
+                            Reset Password
+                        </button>
                         <button className="action-btn action-btn--delete" onClick={handleDeleteDriver}>
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -313,7 +391,7 @@ const DriverDetails = () => {
                         <span className="stat-label">Avg Per Order</span>
                     </div>
                 </div>
-                {/* <div className="stat-card">
+                <div className="stat-card">
                     <div className="stat-icon">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
@@ -321,9 +399,9 @@ const DriverDetails = () => {
                     </div>
                     <div className="stat-content">
                         <span className="stat-value">{driver.rating}/5</span>
-                        <span className="stat-label">Driver Rating</span>
+                        <span className="stat-label">{driver.reviewCount} Reviews</span>
                     </div>
-                </div> */}
+                </div>
             </div>
 
             {/* Tabs */}
@@ -340,6 +418,12 @@ const DriverDetails = () => {
                         onClick={() => setActiveTab('deliveries')}
                     >
                         Deliveries ({deliveries.length})
+                    </button>
+                    <button
+                        className={`tab-btn ${activeTab === 'reviews' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('reviews')}
+                    >
+                        Reviews ({reviews.length})
                     </button>
                     <button
                         className={`tab-btn ${activeTab === 'documents' ? 'active' : ''}`}
@@ -481,6 +565,51 @@ const DriverDetails = () => {
                         </div>
                     )}
 
+                    {/* Reviews Tab */}
+                    {activeTab === 'reviews' && (
+                        <div className="tab-content">
+                            <div className="reviews-section">
+                                <div className="reviews-header">
+                                    <h3>Customer Reviews</h3>
+                                    <div className="reviews-summary">
+                                        <div className="rating-overview">
+                                            <span className="avg-rating">{driver.rating}</span>
+                                            <div className="stars">
+                                                {renderStarRating(Math.round(driver.rating))}
+                                            </div>
+                                            <span className="total-reviews">({driver.reviewCount} reviews)</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="reviews-list">
+                                    {reviews.map(review => (
+                                        <div key={review.id} className="review-card">
+                                            <div className="review-header">
+                                                <div className="customer-info">
+                                                    <h4>{review.customerName}</h4>
+                                                    <span className="order-id">Order #{review.orderId}</span>
+                                                </div>
+                                                <div className="review-meta">
+                                                    <div className="rating">
+                                                        {renderStarRating(review.rating)}
+                                                    </div>
+                                                    <span className="date">{formatDate(review.date)}</span>
+                                                </div>
+                                            </div>
+                                            <div className="review-content">
+                                                <p>{review.comment}</p>
+                                            </div>
+                                            <div className="review-footer">
+                                                <span className="order-value">Order Value: ${review.orderValue}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Driver Details Tab */}
                     {activeTab === 'documents' && (
                         <div className="tab-content">
@@ -524,10 +653,6 @@ const DriverDetails = () => {
                                             <span className="document-name">Vehicle Insurance</span>
                                             <span className="document-status verified">{driver.documents.insurance}</span>
                                         </div>
-                                        {/* <div className="document-item">
-                                            <span className="document-name">Background Check</span>
-                                            <span className="document-status verified">{driver.documents.background}</span>
-                                        </div> */}
                                     </div>
                                 </div>
                             </div>

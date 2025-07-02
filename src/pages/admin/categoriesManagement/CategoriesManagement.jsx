@@ -12,11 +12,15 @@ const CategoriesManagement = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10)
     const [showAddCategory, setShowAddCategory] = useState(false)
     const [showAddSubcategory, setShowAddSubcategory] = useState(false)
+    const [showAddSubSubcategory, setShowAddSubSubcategory] = useState(false)
     const [selectedParentCategory, setSelectedParentCategory] = useState('')
+    const [selectedParentSubcategory, setSelectedParentSubcategory] = useState('')
     const [newCategoryName, setNewCategoryName] = useState('')
     const [newCategoryDescription, setNewCategoryDescription] = useState('')
     const [newSubcategoryName, setNewSubcategoryName] = useState('')
     const [newSubcategoryDescription, setNewSubcategoryDescription] = useState('')
+    const [newSubSubcategoryName, setNewSubSubcategoryName] = useState('')
+    const [newSubSubcategoryDescription, setNewSubSubcategoryDescription] = useState('')
 
     // Mock data - replace with actual API call
     useEffect(() => {
@@ -33,6 +37,7 @@ const CategoriesManagement = () => {
                         status: 'active',
                         productsCount: 245,
                         subcategoriesCount: 4,
+                        subSubcategoriesCount: 8,
                         createdAt: '2024-01-10',
                         subcategories: [
                             {
@@ -41,7 +46,34 @@ const CategoriesManagement = () => {
                                 description: 'Mobile phones and accessories',
                                 status: 'active',
                                 productsCount: 89,
-                                createdAt: '2024-01-10'
+                                subSubcategoriesCount: 3,
+                                createdAt: '2024-01-10',
+                                subSubcategories: [
+                                    {
+                                        id: 'SUBSUB001',
+                                        name: 'iPhone',
+                                        description: 'Apple iPhone devices and accessories',
+                                        status: 'active',
+                                        productsCount: 45,
+                                        createdAt: '2024-01-10'
+                                    },
+                                    {
+                                        id: 'SUBSUB002',
+                                        name: 'Android',
+                                        description: 'Android smartphone devices',
+                                        status: 'active',
+                                        productsCount: 32,
+                                        createdAt: '2024-01-10'
+                                    },
+                                    {
+                                        id: 'SUBSUB003',
+                                        name: 'Phone Cases',
+                                        description: 'Protective cases for smartphones',
+                                        status: 'active',
+                                        productsCount: 12,
+                                        createdAt: '2024-01-10'
+                                    }
+                                ]
                             },
                             {
                                 id: 'SUB002',
@@ -49,7 +81,26 @@ const CategoriesManagement = () => {
                                 description: 'Portable computers and accessories',
                                 status: 'active',
                                 productsCount: 56,
-                                createdAt: '2024-01-10'
+                                subSubcategoriesCount: 2,
+                                createdAt: '2024-01-10',
+                                subSubcategories: [
+                                    {
+                                        id: 'SUBSUB004',
+                                        name: 'Gaming Laptops',
+                                        description: 'High-performance gaming laptops',
+                                        status: 'active',
+                                        productsCount: 28,
+                                        createdAt: '2024-01-10'
+                                    },
+                                    {
+                                        id: 'SUBSUB005',
+                                        name: 'Business Laptops',
+                                        description: 'Professional laptops for business use',
+                                        status: 'active',
+                                        productsCount: 28,
+                                        createdAt: '2024-01-10'
+                                    }
+                                ]
                             },
                             {
                                 id: 'SUB003',
@@ -57,7 +108,26 @@ const CategoriesManagement = () => {
                                 description: 'Headphones, speakers, and audio equipment',
                                 status: 'active',
                                 productsCount: 67,
-                                createdAt: '2024-01-10'
+                                subSubcategoriesCount: 2,
+                                createdAt: '2024-01-10',
+                                subSubcategories: [
+                                    {
+                                        id: 'SUBSUB006',
+                                        name: 'Wireless Headphones',
+                                        description: 'Bluetooth and wireless audio devices',
+                                        status: 'active',
+                                        productsCount: 40,
+                                        createdAt: '2024-01-10'
+                                    },
+                                    {
+                                        id: 'SUBSUB007',
+                                        name: 'Speakers',
+                                        description: 'Portable and home speakers',
+                                        status: 'active',
+                                        productsCount: 27,
+                                        createdAt: '2024-01-10'
+                                    }
+                                ]
                             },
                             {
                                 id: 'SUB004',
@@ -65,7 +135,18 @@ const CategoriesManagement = () => {
                                 description: 'Gaming consoles and accessories',
                                 status: 'inactive',
                                 productsCount: 33,
-                                createdAt: '2024-01-10'
+                                subSubcategoriesCount: 1,
+                                createdAt: '2024-01-10',
+                                subSubcategories: [
+                                    {
+                                        id: 'SUBSUB008',
+                                        name: 'Gaming Consoles',
+                                        description: 'Video game consoles and controllers',
+                                        status: 'inactive',
+                                        productsCount: 33,
+                                        createdAt: '2024-01-10'
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -77,6 +158,7 @@ const CategoriesManagement = () => {
                         status: 'active',
                         productsCount: 156,
                         subcategoriesCount: 3,
+                        subSubcategoriesCount: 6,
                         createdAt: '2024-01-12',
                         subcategories: [
                             {
@@ -85,7 +167,26 @@ const CategoriesManagement = () => {
                                 description: 'Clothing for men',
                                 status: 'active',
                                 productsCount: 78,
-                                createdAt: '2024-01-12'
+                                subSubcategoriesCount: 2,
+                                createdAt: '2024-01-12',
+                                subSubcategories: [
+                                    {
+                                        id: 'SUBSUB009',
+                                        name: 'Shirts',
+                                        description: 'Casual and formal shirts',
+                                        status: 'active',
+                                        productsCount: 45,
+                                        createdAt: '2024-01-12'
+                                    },
+                                    {
+                                        id: 'SUBSUB010',
+                                        name: 'Pants',
+                                        description: 'Jeans, trousers, and casual pants',
+                                        status: 'active',
+                                        productsCount: 33,
+                                        createdAt: '2024-01-12'
+                                    }
+                                ]
                             },
                             {
                                 id: 'SUB006',
@@ -93,7 +194,26 @@ const CategoriesManagement = () => {
                                 description: 'Clothing for women',
                                 status: 'active',
                                 productsCount: 65,
-                                createdAt: '2024-01-12'
+                                subSubcategoriesCount: 2,
+                                createdAt: '2024-01-12',
+                                subSubcategories: [
+                                    {
+                                        id: 'SUBSUB011',
+                                        name: 'Dresses',
+                                        description: 'Casual and formal dresses',
+                                        status: 'active',
+                                        productsCount: 35,
+                                        createdAt: '2024-01-12'
+                                    },
+                                    {
+                                        id: 'SUBSUB012',
+                                        name: 'Tops',
+                                        description: 'Blouses, t-shirts, and tops',
+                                        status: 'active',
+                                        productsCount: 30,
+                                        createdAt: '2024-01-12'
+                                    }
+                                ]
                             },
                             {
                                 id: 'SUB007',
@@ -101,7 +221,26 @@ const CategoriesManagement = () => {
                                 description: 'Fashion accessories and jewelry',
                                 status: 'active',
                                 productsCount: 13,
-                                createdAt: '2024-01-12'
+                                subSubcategoriesCount: 2,
+                                createdAt: '2024-01-12',
+                                subSubcategories: [
+                                    {
+                                        id: 'SUBSUB013',
+                                        name: 'Jewelry',
+                                        description: 'Necklaces, rings, and bracelets',
+                                        status: 'active',
+                                        productsCount: 8,
+                                        createdAt: '2024-01-12'
+                                    },
+                                    {
+                                        id: 'SUBSUB014',
+                                        name: 'Bags',
+                                        description: 'Handbags, backpacks, and purses',
+                                        status: 'active',
+                                        productsCount: 5,
+                                        createdAt: '2024-01-12'
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -113,6 +252,7 @@ const CategoriesManagement = () => {
                         status: 'active',
                         productsCount: 98,
                         subcategoriesCount: 2,
+                        subSubcategoriesCount: 4,
                         createdAt: '2024-01-15',
                         subcategories: [
                             {
@@ -121,7 +261,26 @@ const CategoriesManagement = () => {
                                 description: 'Home and office furniture',
                                 status: 'active',
                                 productsCount: 45,
-                                createdAt: '2024-01-15'
+                                subSubcategoriesCount: 2,
+                                createdAt: '2024-01-15',
+                                subSubcategories: [
+                                    {
+                                        id: 'SUBSUB015',
+                                        name: 'Living Room',
+                                        description: 'Sofas, chairs, and living room furniture',
+                                        status: 'active',
+                                        productsCount: 25,
+                                        createdAt: '2024-01-15'
+                                    },
+                                    {
+                                        id: 'SUBSUB016',
+                                        name: 'Bedroom',
+                                        description: 'Beds, dressers, and bedroom furniture',
+                                        status: 'active',
+                                        productsCount: 20,
+                                        createdAt: '2024-01-15'
+                                    }
+                                ]
                             },
                             {
                                 id: 'SUB009',
@@ -129,7 +288,26 @@ const CategoriesManagement = () => {
                                 description: 'Tools and equipment for gardening',
                                 status: 'active',
                                 productsCount: 53,
-                                createdAt: '2024-01-15'
+                                subSubcategoriesCount: 2,
+                                createdAt: '2024-01-15',
+                                subSubcategories: [
+                                    {
+                                        id: 'SUBSUB017',
+                                        name: 'Hand Tools',
+                                        description: 'Shovels, pruners, and hand tools',
+                                        status: 'active',
+                                        productsCount: 30,
+                                        createdAt: '2024-01-15'
+                                    },
+                                    {
+                                        id: 'SUBSUB018',
+                                        name: 'Power Tools',
+                                        description: 'Electric and battery-powered garden tools',
+                                        status: 'active',
+                                        productsCount: 23,
+                                        createdAt: '2024-01-15'
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -141,6 +319,7 @@ const CategoriesManagement = () => {
                         status: 'inactive',
                         productsCount: 67,
                         subcategoriesCount: 2,
+                        subSubcategoriesCount: 4,
                         createdAt: '2024-01-18',
                         subcategories: [
                             {
@@ -149,7 +328,26 @@ const CategoriesManagement = () => {
                                 description: 'Exercise and fitness equipment',
                                 status: 'active',
                                 productsCount: 34,
-                                createdAt: '2024-01-18'
+                                subSubcategoriesCount: 2,
+                                createdAt: '2024-01-18',
+                                subSubcategories: [
+                                    {
+                                        id: 'SUBSUB019',
+                                        name: 'Cardio Equipment',
+                                        description: 'Treadmills, bikes, and cardio machines',
+                                        status: 'active',
+                                        productsCount: 20,
+                                        createdAt: '2024-01-18'
+                                    },
+                                    {
+                                        id: 'SUBSUB020',
+                                        name: 'Strength Training',
+                                        description: 'Weights, resistance bands, and strength equipment',
+                                        status: 'active',
+                                        productsCount: 14,
+                                        createdAt: '2024-01-18'
+                                    }
+                                ]
                             },
                             {
                                 id: 'SUB011',
@@ -157,7 +355,26 @@ const CategoriesManagement = () => {
                                 description: 'Equipment for outdoor sports activities',
                                 status: 'inactive',
                                 productsCount: 33,
-                                createdAt: '2024-01-18'
+                                subSubcategoriesCount: 2,
+                                createdAt: '2024-01-18',
+                                subSubcategories: [
+                                    {
+                                        id: 'SUBSUB021',
+                                        name: 'Team Sports',
+                                        description: 'Soccer, basketball, and team sports equipment',
+                                        status: 'inactive',
+                                        productsCount: 18,
+                                        createdAt: '2024-01-18'
+                                    },
+                                    {
+                                        id: 'SUBSUB022',
+                                        name: 'Individual Sports',
+                                        description: 'Tennis, golf, and individual sports equipment',
+                                        status: 'inactive',
+                                        productsCount: 15,
+                                        createdAt: '2024-01-18'
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -213,6 +430,7 @@ const CategoriesManagement = () => {
                 status: 'active',
                 productsCount: 0,
                 subcategoriesCount: 0,
+                subSubcategoriesCount: 0,
                 createdAt: new Date().toISOString().split('T')[0],
                 subcategories: []
             }
@@ -231,7 +449,9 @@ const CategoriesManagement = () => {
                 description: newSubcategoryDescription,
                 status: 'active',
                 productsCount: 0,
-                createdAt: new Date().toISOString().split('T')[0]
+                subSubcategoriesCount: 0,
+                createdAt: new Date().toISOString().split('T')[0],
+                subSubcategories: []
             }
 
             setCategories(categories.map(category =>
@@ -249,6 +469,48 @@ const CategoriesManagement = () => {
             setSelectedParentCategory('')
             setShowAddSubcategory(false)
         }
+    }
+
+    const handleAddSubSubcategory = () => {
+        if (newSubSubcategoryName.trim() && selectedParentCategory && selectedParentSubcategory) {
+            const newSubSubcategory = {
+                id: `SUBSUB${String(Date.now()).slice(-3)}`,
+                name: newSubSubcategoryName,
+                description: newSubSubcategoryDescription,
+                status: 'active',
+                productsCount: 0,
+                createdAt: new Date().toISOString().split('T')[0]
+            }
+
+            setCategories(categories.map(category =>
+                category.id === selectedParentCategory
+                    ? {
+                        ...category,
+                        subcategories: category.subcategories.map(subcategory =>
+                            subcategory.id === selectedParentSubcategory
+                                ? {
+                                    ...subcategory,
+                                    subSubcategories: [...(subcategory.subSubcategories || []), newSubSubcategory],
+                                    subSubcategoriesCount: (subcategory.subSubcategoriesCount || 0) + 1
+                                }
+                                : subcategory
+                        ),
+                        subSubcategoriesCount: category.subSubcategoriesCount + 1
+                    }
+                    : category
+            ))
+
+            setNewSubSubcategoryName('')
+            setNewSubSubcategoryDescription('')
+            setSelectedParentCategory('')
+            setSelectedParentSubcategory('')
+            setShowAddSubSubcategory(false)
+        }
+    }
+
+    const getAvailableSubcategories = () => {
+        const selectedCategory = categories.find(cat => cat.id === selectedParentCategory)
+        return selectedCategory ? selectedCategory.subcategories.filter(sub => sub.status === 'active') : []
     }
 
     const getStatusBadge = (status) => {
@@ -295,6 +557,12 @@ const CategoriesManagement = () => {
                     </div>
                     <div className="stat-item">
                         <span className="stat-number">
+                            {categories.reduce((sum, cat) => sum + cat.subSubcategoriesCount, 0)}
+                        </span>
+                        <span className="stat-label">Sub-subcategories</span>
+                    </div>
+                    <div className="stat-item">
+                        <span className="stat-number">
                             {categories.reduce((sum, cat) => sum + cat.productsCount, 0)}
                         </span>
                         <span className="stat-label">Total Products</span>
@@ -327,6 +595,15 @@ const CategoriesManagement = () => {
                         </select>
                     </div>
                     <div className="controls-right">
+                        <button
+                            className="add-btn"
+                            onClick={() => setShowAddSubSubcategory(true)}
+                        >
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            Add Sub-subcategory
+                        </button>
                         <button
                             className="add-btn"
                             onClick={() => setShowAddSubcategory(true)}
@@ -375,6 +652,10 @@ const CategoriesManagement = () => {
                                     <span className="stat-label">Subcategories</span>
                                 </div>
                                 <div className="stat">
+                                    <span className="stat-value">{category.subSubcategoriesCount}</span>
+                                    <span className="stat-label">Sub-subs</span>
+                                </div>
+                                <div className="stat">
                                     <span className="stat-value">{new Date(category.createdAt).toLocaleDateString()}</span>
                                     <span className="stat-label">Created</span>
                                 </div>
@@ -384,18 +665,34 @@ const CategoriesManagement = () => {
                                 <h4>Subcategories</h4>
                                 {category.subcategories.length > 0 ? (
                                     <div className="subcategories-list">
-                                        {category.subcategories.slice(0, 3).map((sub) => (
+                                        {category.subcategories.slice(0, 2).map((sub) => (
                                             <div key={sub.id} className="subcategory-item">
                                                 <div className="subcategory-info">
-                                                    <span className="subcategory-name">{sub.name}</span>
-                                                    <span className="subcategory-count">{sub.productsCount} products</span>
+                                                    <div className="subcategory-header">
+                                                        <span className="subcategory-name">{sub.name}</span>
+                                                        {getStatusBadge(sub.status)}
+                                                    </div>
+                                                    <span className="subcategory-count">
+                                                        {sub.productsCount} products • {sub.subSubcategoriesCount} sub-subs
+                                                    </span>
+                                                    {sub.subSubcategories && sub.subSubcategories.length > 0 && (
+                                                        <div className="sub-subcategories-preview">
+                                                            {sub.subSubcategories.slice(0, 2).map((subSub, index) => (
+                                                                <span key={subSub.id} className="sub-subcategory-tag">
+                                                                    {subSub.name}
+                                                                </span>
+                                                            ))}
+                                                            {sub.subSubcategories.length > 2 && (
+                                                                <span className="more-tags">+{sub.subSubcategories.length - 2}</span>
+                                                            )}
+                                                        </div>
+                                                    )}
                                                 </div>
-                                                {getStatusBadge(sub.status)}
                                             </div>
                                         ))}
-                                        {category.subcategories.length > 3 && (
+                                        {category.subcategories.length > 2 && (
                                             <div className="more-subcategories">
-                                                +{category.subcategories.length - 3} more
+                                                +{category.subcategories.length - 2} more subcategories
                                             </div>
                                         )}
                                     </div>
@@ -587,6 +884,91 @@ const CategoriesManagement = () => {
                                 onClick={handleAddSubcategory}
                             >
                                 Add Subcategory
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Add Sub-subcategory Modal */}
+            {showAddSubSubcategory && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <div className="modal-header">
+                            <h2>Add New Sub-subcategory</h2>
+                            <button
+                                className="close-btn"
+                                onClick={() => setShowAddSubSubcategory(false)}
+                            >
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="form-group">
+                                <label>Parent Category</label>
+                                <select
+                                    value={selectedParentCategory}
+                                    onChange={(e) => {
+                                        setSelectedParentCategory(e.target.value)
+                                        setSelectedParentSubcategory('')
+                                    }}
+                                >
+                                    <option value="">Select a category</option>
+                                    {categories.filter(cat => cat.status === 'active').map(category => (
+                                        <option key={category.id} value={category.id}>
+                                            {category.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label>Parent Subcategory</label>
+                                <select
+                                    value={selectedParentSubcategory}
+                                    onChange={(e) => setSelectedParentSubcategory(e.target.value)}
+                                    disabled={!selectedParentCategory}
+                                >
+                                    <option value="">Select a subcategory</option>
+                                    {getAvailableSubcategories().map(subcategory => (
+                                        <option key={subcategory.id} value={subcategory.id}>
+                                            {subcategory.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label>Sub-subcategory Name</label>
+                                <input
+                                    type="text"
+                                    value={newSubSubcategoryName}
+                                    onChange={(e) => setNewSubSubcategoryName(e.target.value)}
+                                    placeholder="Enter sub-subcategory name"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Description</label>
+                                <textarea
+                                    value={newSubSubcategoryDescription}
+                                    onChange={(e) => setNewSubSubcategoryDescription(e.target.value)}
+                                    placeholder="Enter sub-subcategory description"
+                                    rows={3}
+                                />
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button
+                                className="btn btn--secondary"
+                                onClick={() => setShowAddSubSubcategory(false)}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="btn btn--primary"
+                                onClick={handleAddSubSubcategory}
+                            >
+                                Add Sub-subcategory
                             </button>
                         </div>
                     </div>

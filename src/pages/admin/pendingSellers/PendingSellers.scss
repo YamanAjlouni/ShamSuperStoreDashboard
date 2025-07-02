@@ -538,22 +538,25 @@
             }
         }
 
-        .applications-grid {
-            padding: 1rem;
-            gap: 1rem;
+        .applications-table-container {
 
-            .application-card {
-                .card-content .info-section .info-grid {
-                    grid-template-columns: 1fr;
-                    gap: 0.5rem;
-                }
+            .applications-grid {
+                padding: 0.5rem;
+                gap: 1rem;
 
-                .card-actions {
-                    flex-wrap: wrap;
+                .application-card {
+                    .card-content .info-section .info-grid {
+                        grid-template-columns: 1fr;
+                        gap: 0.5rem;
+                    }
 
-                    .action-btn {
-                        flex: 1;
-                        min-width: calc(50% - 0.25rem);
+                    .card-actions {
+                        flex-wrap: wrap;
+
+                        .action-btn {
+                            flex: 1;
+                            min-width: calc(50% - 0.25rem);
+                        }
                     }
                 }
             }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import './AdminDashboard.scss'
 
 const AdminDashboard = () => {
@@ -28,6 +29,19 @@ const AdminDashboard = () => {
             active: 278,
             offline: 67,
             delivering: 156
+        },
+        returns: {
+            total: 1234,
+            pending: 89,
+            processed: 1098,
+            rejected: 47,
+            growth: -5.2
+        },
+        reviews: {
+            total: 8765,
+            average: 4.3,
+            newThisWeek: 156,
+            growth: 18.7
         }
     })
 
@@ -39,35 +53,39 @@ const AdminDashboard = () => {
         { id: 5, type: 'payment', message: 'Payment dispute resolved for order #12340', time: '20 minutes ago', status: 'success' }
     ])
 
-    const StatCard = ({ title, value, subtitle, icon, trend, trendValue, color = 'blue' }) => (
-        <div className={`stat-card stat-card--${color}`}>
-            <div className="stat-card__header">
-                <div className="stat-card__icon">
-                    {icon}
+    const StatCard = ({ title, value, subtitle, icon, trend, trendValue, color = 'blue', link }) => {
+        const cardContent = (
+            <div className={`stat-card stat-card--${color} ${link ? 'stat-card--clickable' : ''}`}>
+                <div className="stat-card__header">
+                    <div className="stat-card__icon">
+                        {icon}
+                    </div>
+                    <div className="stat-card__trend">
+                        <span className={`trend ${trend === 'up' ? 'trend--up' : trend === 'down' ? 'trend--down' : 'trend--neutral'}`}>
+                            {trend === 'up' && (
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17l9.2-9.2M17 17V7H7" />
+                                </svg>
+                            )}
+                            {trend === 'down' && (
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 7l-9.2 9.2M7 7v10h10" />
+                                </svg>
+                            )}
+                            {trendValue}%
+                        </span>
+                    </div>
                 </div>
-                <div className="stat-card__trend">
-                    <span className={`trend ${trend === 'up' ? 'trend--up' : trend === 'down' ? 'trend--down' : 'trend--neutral'}`}>
-                        {trend === 'up' && (
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17l9.2-9.2M17 17V7H7" />
-                            </svg>
-                        )}
-                        {trend === 'down' && (
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 7l-9.2 9.2M7 7v10h10" />
-                            </svg>
-                        )}
-                        {trendValue}%
-                    </span>
+                <div className="stat-card__content">
+                    <h3 className="stat-card__title">{title}</h3>
+                    <div className="stat-card__value">{value}</div>
+                    <p className="stat-card__subtitle">{subtitle}</p>
                 </div>
             </div>
-            <div className="stat-card__content">
-                <h3 className="stat-card__title">{title}</h3>
-                <div className="stat-card__value">{value}</div>
-                <p className="stat-card__subtitle">{subtitle}</p>
-            </div>
-        </div>
-    )
+        )
+
+        return link ? <Link to={link} className="stat-card-link">{cardContent}</Link> : cardContent
+    }
 
     const ActivityItem = ({ activity }) => {
         const getActivityIcon = (type) => {
@@ -145,6 +163,7 @@ const AdminDashboard = () => {
                     trend="up"
                     trendValue={dashboardStats.users.growth}
                     color="blue"
+                    link="/admin/users"
                 />
 
                 <StatCard
@@ -159,6 +178,7 @@ const AdminDashboard = () => {
                     trend="up"
                     trendValue={dashboardStats.sellers.growth}
                     color="green"
+                    link="/admin/sellers"
                 />
 
                 <StatCard
@@ -173,6 +193,7 @@ const AdminDashboard = () => {
                     trend="up"
                     trendValue="15.2"
                     color="purple"
+                    link="/admin/orders"
                 />
 
                 <StatCard
@@ -187,6 +208,37 @@ const AdminDashboard = () => {
                     trend="neutral"
                     trendValue="2.1"
                     color="orange"
+                    link="/admin/drivers"
+                />
+
+                <StatCard
+                    title="Return Orders"
+                    value={dashboardStats.returns.total.toLocaleString()}
+                    subtitle={`${dashboardStats.returns.pending} pending review`}
+                    icon={
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                        </svg>
+                    }
+                    trend="down"
+                    trendValue={Math.abs(dashboardStats.returns.growth)}
+                    color="red"
+                    link="/admin/returns"
+                />
+
+                <StatCard
+                    title="Customer Reviews"
+                    value={dashboardStats.reviews.total.toLocaleString()}
+                    subtitle={`${dashboardStats.reviews.average}★ average rating`}
+                    icon={
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        </svg>
+                    }
+                    trend="up"
+                    trendValue={dashboardStats.reviews.growth}
+                    color="yellow"
+                    link="/admin/reviews"
                 />
             </div>
 

@@ -12,11 +12,21 @@ const SellerDetails = () => {
     const [editingLimit, setEditingLimit] = useState(false)
     const [tempLimit, setTempLimit] = useState('')
     const [customLimit, setCustomLimit] = useState('')
+    const [editingMembership, setEditingMembership] = useState(false)
+    const [tempMembership, setTempMembership] = useState('')
 
     // Preset limit options
     const presetLimits = [50, 100, 200, 500, 1000]
 
-    // Mock seller data
+    // Membership plans
+    const membershipPlans = [
+        { value: 'free', label: 'Free Plan', productLimit: 50, price: '$0/month', features: ['Basic storefront', 'Up to 50 products', 'Standard support'] },
+        { value: 'basic', label: 'Basic Plan', productLimit: 100, price: '$29/month', features: ['Enhanced storefront', 'Up to 100 products', 'Priority support', 'Analytics'] },
+        { value: 'premium', label: 'Premium Plan', productLimit: 500, price: '$79/month', features: ['Advanced storefront', 'Up to 500 products', '24/7 support', 'Advanced analytics', 'Marketing tools'] },
+        { value: 'enterprise', label: 'Enterprise Plan', productLimit: 1000, price: '$199/month', features: ['Custom storefront', 'Unlimited products', 'Dedicated support', 'Full analytics suite', 'API access'] }
+    ]
+
+    // Mock seller data 
     const mockSellerData = {
         id: id,
         personalName: 'John Smith',
@@ -37,7 +47,8 @@ const SellerDetails = () => {
         totalOrders: 234,
         totalRevenue: 15670.50,
         rating: 4.5,
-        reviewCount: 127
+        reviewCount: 127,
+        membership: 'free'
     }
 
     const mockProducts = [
@@ -98,6 +109,7 @@ const SellerDetails = () => {
             setSeller(mockSellerData)
             setProducts(mockProducts)
             setTempLimit(mockSellerData.productLimit.toString())
+            setTempMembership(mockSellerData.membership)
             setLoading(false)
         }, 1000)
     }, [id])
@@ -122,6 +134,10 @@ const SellerDetails = () => {
         if (window.confirm('Are you sure you want to permanently delete this seller and all their products? This action cannot be undone.')) {
             navigate('/admin/sellers')
         }
+    }
+
+    const handleResetPassword = () => {
+        navigate(`/admin/sellers/reset-password/${seller.id}`)
     }
 
     const handleProductAction = (productId, action) => {
@@ -181,6 +197,33 @@ const SellerDetails = () => {
         setTempLimit('')
     }
 
+    const handleEditMembership = () => {
+        setEditingMembership(true)
+        setTempMembership(seller.membership)
+    }
+
+    const handleCancelMembershipEdit = () => {
+        setEditingMembership(false)
+        setTempMembership(seller.membership)
+    }
+
+    const handleSaveMembership = () => {
+        const selectedPlan = membershipPlans.find(plan => plan.value === tempMembership)
+        if (window.confirm(`Are you sure you want to change the membership to ${selectedPlan.label}?`)) {
+            setSeller({ 
+                ...seller, 
+                membership: tempMembership,
+                productLimit: selectedPlan.productLimit
+            })
+            setEditingMembership(false)
+            // Here you would make an API call to save the new membership
+        }
+    }
+
+    const getCurrentMembershipPlan = () => {
+        return membershipPlans.find(plan => plan.value === seller.membership) || membershipPlans[0]
+    }
+
     const getStatusBadge = (status) => {
         const statusConfig = {
             active: { class: 'success', label: 'Active' },
@@ -208,6 +251,17 @@ const SellerDetails = () => {
         if (percentage >= 100) return 'at-limit'
         if (percentage > 80) return 'near-limit'
         return 'normal'
+    }
+
+    const getMembershipBadge = (membership) => {
+        const membershipConfig = {
+            free: { class: 'neutral', label: 'Free Plan' },
+            basic: { class: 'info', label: 'Basic Plan' },
+            premium: { class: 'warning', label: 'Premium Plan' },
+            enterprise: { class: 'success', label: 'Enterprise Plan' }
+        }
+        const config = membershipConfig[membership] || membershipConfig.free
+        return <span className={`membership-badge membership-badge--${config.class}`}>{config.label}</span>
     }
 
     if (loading) {
@@ -250,6 +304,7 @@ const SellerDetails = () => {
                         <div className="seller-meta">
                             <span className="seller-id">ID: {seller.id}</span>
                             {getStatusBadge(seller.status)}
+                            {getMembershipBadge(seller.membership)}
                         </div>
                     </div>
                     <div className="header-actions">
@@ -274,6 +329,12 @@ const SellerDetails = () => {
                                 Activate
                             </button>
                         )}
+                        <button className="action-btn action-btn--reset" onClick={handleResetPassword}>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                            </svg>
+                            Reset Password
+                        </button>
                         <button className="action-btn action-btn--delete" onClick={handleDeleteSeller}>
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -537,8 +598,72 @@ const SellerDetails = () => {
                                 </div>
 
                                 <div className="info-card">
-                                    <h3>Account Limits</h3>
+                                    <h3>Account Settings</h3>
                                     <div className="info-list">
+                                        <div className="info-item">
+                                            <span className="label">Membership Plan:</span>
+                                            {!editingMembership ? (
+                                                <div className="value membership-display">
+                                                    <div className="membership-info">
+                                                        {getMembershipBadge(seller.membership)}
+                                                        <span className="membership-price">{getCurrentMembershipPlan().price}</span>
+                                                    </div>
+                                                    <button 
+                                                        className="edit-membership-btn"
+                                                        onClick={handleEditMembership}
+                                                        title="Edit Membership Plan"
+                                                    >
+                                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className="membership-editor">
+                                                    <div className="membership-options">
+                                                        <span className="membership-label">Select Plan:</span>
+                                                        <select
+                                                            value={tempMembership}
+                                                            onChange={(e) => setTempMembership(e.target.value)}
+                                                            className="membership-select"
+                                                        >
+                                                            {membershipPlans.map(plan => (
+                                                                <option key={plan.value} value={plan.value}>
+                                                                    {plan.label} - {plan.price}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                    <div className="membership-preview">
+                                                        {membershipPlans.find(plan => plan.value === tempMembership) && (
+                                                            <div className="plan-details">
+                                                                <h4>{membershipPlans.find(plan => plan.value === tempMembership).label}</h4>
+                                                                <p className="plan-price">{membershipPlans.find(plan => plan.value === tempMembership).price}</p>
+                                                                <ul className="plan-features">
+                                                                    {membershipPlans.find(plan => plan.value === tempMembership).features.map((feature, index) => (
+                                                                        <li key={index}>{feature}</li>
+                                                                    ))}
+                                                                </ul>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div className="membership-actions">
+                                                        <button 
+                                                            className="save-btn"
+                                                            onClick={handleSaveMembership}
+                                                        >
+                                                            Save
+                                                        </button>
+                                                        <button 
+                                                            className="cancel-btn"
+                                                            onClick={handleCancelMembershipEdit}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
                                         <div className="info-item">
                                             <span className="label">Product Limit:</span>
                                             {!editingLimit ? (

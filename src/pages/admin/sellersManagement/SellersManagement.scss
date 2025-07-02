@@ -137,7 +137,8 @@
                     }
                 }
 
-                .status-filter {
+                .status-filter,
+                .membership-filter {
                     padding: 0.75rem;
                     border: 1px solid $gray-300;
                     border-radius: $radius-md;
@@ -189,7 +190,7 @@
             .sellers-table {
                 width: 100%;
                 border-collapse: collapse;
-                min-width: 1200px;
+                min-width: 1400px;
 
                 thead {
                     background: $gray-50;
@@ -289,9 +290,114 @@
                                 }
                             }
 
+                            &.membership {
+                                .membership-cell {
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 0.25rem;
+
+                                    .membership-badge {
+                                        display: inline-flex;
+                                        align-items: center;
+                                        padding: 0.25rem 0.75rem;
+                                        border-radius: $radius-full;
+                                        font-size: 0.75rem;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.5px;
+                                        width: fit-content;
+
+                                        &--neutral {
+                                            background: rgba(75, 85, 99, 0.1);
+                                            color: $gray-500;
+                                        }
+
+                                        &--info {
+                                            background: rgba(59, 130, 246, 0.1);
+                                            color: #3b82f6;
+                                        }
+
+                                        &--warning {
+                                            background: rgba(245, 158, 11, 0.1);
+                                            color: #f59e0b;
+                                        }
+
+                                        &--success {
+                                            background: rgba(16, 185, 129, 0.1);
+                                            color: #10b981;
+                                        }
+                                    }
+
+                                    .membership-price {
+                                        font-size: 0.75rem;
+                                        color: $gray-500;
+                                        font-weight: 500;
+                                    }
+                                }
+                            }
+
                             &.products-count {
-                                font-weight: 600;
-                                color: $dark-blue-color;
+                                .products-display {
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 0.25rem;
+
+                                    .products-fraction {
+                                        font-weight: 600;
+                                        color: $primary-color;
+                                        font-size: 0.875rem;
+
+                                        &.near-limit {
+                                            color: $orange-color;
+                                        }
+
+                                        &.at-limit {
+                                            color: #dc2626;
+                                        }
+                                    }
+
+                                    .products-progress {
+                                        width: 80px;
+                                        height: 4px;
+                                        background: $gray-200;
+                                        border-radius: $radius-full;
+                                        overflow: hidden;
+
+                                        .progress-bar {
+                                            height: 100%;
+                                            background: $primary-color;
+                                            transition: width 0.3s ease;
+
+                                            &.near-limit {
+                                                background: $orange-color;
+                                            }
+
+                                            &.at-limit {
+                                                background: #dc2626;
+                                            }
+                                        }
+                                    }
+
+                                    &.near-limit {
+                                        .products-fraction {
+                                            color: $orange-color;
+                                        }
+
+                                        .progress-bar {
+                                            background: $orange-color;
+                                        }
+                                    }
+
+                                    &.at-limit {
+                                        .products-fraction {
+                                            color: #dc2626;
+                                        }
+
+                                        .progress-bar {
+                                            background: #dc2626;
+                                        }
+                                    }
+                                }
                             }
 
                             &.revenue {
@@ -362,12 +468,12 @@
                                             }
                                         }
 
-                                        &--delete {
-                                            background: rgba(239, 68, 68, 0.1);
-                                            color: #dc2626;
+                                        &--reset {
+                                            background: rgba(139, 92, 246, 0.1);
+                                            color: #8b5cf6;
 
                                             &:hover {
-                                                background: rgba(239, 68, 68, 0.2);
+                                                background: rgba(139, 92, 246, 0.2);
                                                 transform: translateY(-1px);
                                             }
                                         }

@@ -143,6 +143,10 @@ const UserDetails = () => {
         }
     }
 
+    const handleResetPassword = () => {
+        navigate(`/admin/users/reset-password/${user.id}`)
+    }
+
     const getStatusBadge = (status) => {
         const statusConfig = {
             active: { class: 'success', label: 'Active' },
@@ -221,7 +225,6 @@ const UserDetails = () => {
                         <div className="user-meta">
                             <span className="user-id">ID: {user.id}</span>
                             {getStatusBadge(user.status)}
-                            {/* {getAccountTypeBadge(user.accountType)} */}
                         </div>
                     </div>
                     <div className="header-actions">
@@ -246,6 +249,12 @@ const UserDetails = () => {
                                 Activate
                             </button>
                         )}
+                        <button className="action-btn action-btn--reset" onClick={handleResetPassword}>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                            </svg>
+                            Reset Password
+                        </button>
                         <button className="action-btn action-btn--delete" onClick={handleDeleteUser}>
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -291,17 +300,6 @@ const UserDetails = () => {
                         <span className="stat-label">Avg Order Value</span>
                     </div>
                 </div>
-                {/* <div className="stat-card">
-                    <div className="stat-icon">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <div className="stat-content">
-                        <span className="stat-value">{Math.floor((new Date() - new Date(user.joinDate)) / (1000 * 60 * 60 * 24))}</span>
-                        <span className="stat-label">Days Active</span>
-                    </div>
-                </div> */}
             </div>
 
             {/* Tabs */}
@@ -365,10 +363,6 @@ const UserDetails = () => {
                                             <span className="label">Last Login:</span>
                                             <span className="value">{formatDate(user.lastLoginDate)}</span>
                                         </div>
-                                        {/* <div className="info-item">
-                                            <span className="label">Account Type:</span>
-                                            <span className="value">{getAccountTypeBadge(user.accountType)}</span>
-                                        </div> */}
                                         <div className="info-item">
                                             <span className="label">Status:</span>
                                             <span className="value">{getStatusBadge(user.status)}</span>
@@ -383,14 +377,6 @@ const UserDetails = () => {
                                             <span className="label">Last Order:</span>
                                             <span className="value">{formatDate(user.lastOrderDate)}</span>
                                         </div>
-                                        {/* <div className="info-item">
-                                            <span className="label">Favorite Categories:</span>
-                                            <span className="value">
-                                                {user.favoriteCategories.map((cat, index) => (
-                                                    <span key={index} className="category-tag">{cat}</span>
-                                                ))}
-                                            </span>
-                                        </div> */}
                                     </div>
                                 </div>
                             </div>
@@ -503,14 +489,6 @@ const UserDetails = () => {
                                                 </span>
                                             </span>
                                         </div>
-                                        {/* <div className="info-item">
-                                            <span className="label">SMS Notifications:</span>
-                                            <span className="value">
-                                                <span className={`preference-status ${user.preferences.smsNotifications ? 'enabled' : 'disabled'}`}>
-                                                    {user.preferences.smsNotifications ? 'Enabled' : 'Disabled'}
-                                                </span>
-                                            </span>
-                                        </div> */}
                                         <div className="info-item">
                                             <span className="label">Language:</span>
                                             <span className="value">{user.preferences.language}</span>

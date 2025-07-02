@@ -40,8 +40,8 @@ const PaymentsManagement = () => {
                         }
                     },
                     {
-                        id: 'visa',
-                        name: 'Visa Card',
+                        id: 'credit',
+                        name: 'Credit Cards',
                         description: 'Accept Visa credit and debit cards',
                         icon: '💳',
                         status: 'coming_soon',
@@ -51,11 +51,11 @@ const PaymentsManagement = () => {
                         estimatedLaunch: '2026-03-15'
                     },
                     {
-                        id: 'mastercard',
-                        name: 'Mastercard',
-                        description: 'Accept Mastercard credit and debit cards',
-                        icon: '💳',
-                        status: 'coming_soon',
+                        id: 'sham',
+                        name: 'Pay Sham',
+                        description: 'Accept payments through Pay Sham',
+                        icon: '💵',
+                        status: 'active',
                         transactionsCount: 0,
                         totalAmount: 0,
                         isAvailable: false,
@@ -88,6 +88,17 @@ const PaymentsManagement = () => {
                         name: 'Google Pay',
                         description: 'Accept payments through Google Pay',
                         icon: '🔍',
+                        status: 'coming_soon',
+                        transactionsCount: 0,
+                        totalAmount: 0,
+                        isAvailable: false,
+                        estimatedLaunch: '2026-04-15'
+                    },
+                    {
+                        id: 'bank',
+                        name: 'Bank Transfer',
+                        description: 'Accept payments through Bank Transfer',
+                        icon: '💵',
                         status: 'coming_soon',
                         transactionsCount: 0,
                         totalAmount: 0,
@@ -314,7 +325,7 @@ const PaymentsManagement = () => {
                         className={`tab-btn ${activeTab === 'transactions' ? 'active' : ''}`}
                         onClick={() => setActiveTab('transactions')}
                     >
-                        Cash Transactions
+                        Detail Transactions
                     </button>
                 </div>
 
@@ -338,7 +349,7 @@ const PaymentsManagement = () => {
                                         <div className="method-summary-item coming-soon">
                                             <span className="method-icon">💳</span>
                                             <div className="method-info">
-                                                <span className="method-name">Card Payments</span>
+                                                <span className="method-name">Credit Cards</span>
                                                 <span className="method-status">Coming March 2026</span>
                                             </div>
                                             <span className="method-count">Visa, Mastercard</span>
@@ -346,10 +357,26 @@ const PaymentsManagement = () => {
                                         <div className="method-summary-item coming-soon">
                                             <span className="method-icon">📱</span>
                                             <div className="method-info">
-                                                <span className="method-name">Digital Wallets</span>
+                                                <span className="method-name">Pay Sham</span>
                                                 <span className="method-status">Coming April 2026</span>
                                             </div>
                                             <span className="method-count">PayPal, Apple Pay, Google Pay</span>
+                                        </div>
+                                        <div className="method-summary-item coming-soon">
+                                            <span className="method-icon">📱</span>
+                                            <div className="method-info">
+                                                <span className="method-name">Digital Wallet</span>
+                                                <span className="method-status">Coming April 2026</span>
+                                            </div>
+                                            {/* <span className="method-count">PayPal, Apple Pay, Google Pay</span> */}
+                                        </div>
+                                        <div className="method-summary-item coming-soon">
+                                            <span className="method-icon">📱</span>
+                                            <div className="method-info">
+                                                <span className="method-name">Bank Transfer</span>
+                                                <span className="method-status">Coming April 2026</span>
+                                            </div>
+                                            {/* <span className="method-count">PayPal, Apple Pay, Google Pay</span> */}
                                         </div>
                                     </div>
                                 </div>
@@ -408,11 +435,6 @@ const PaymentsManagement = () => {
                                                     <span className="label">Estimated Launch:</span>
                                                     <span className="date">{new Date(method.estimatedLaunch).toLocaleDateString()}</span>
                                                 </div>
-                                                <div className="coming-soon-features">
-                                                    <span>🔒 Secure transactions</span>
-                                                    <span>⚡ Fast processing</span>
-                                                    <span>🌍 Global acceptance</span>
-                                                </div>
                                             </div>
                                         )}
 
@@ -426,7 +448,7 @@ const PaymentsManagement = () => {
                                                 </button>
                                             ) : (
                                                 <button className="action-btn action-btn--notify" disabled>
-                                                    Notify Me
+                                                    Enable
                                                 </button>
                                             )}
                                         </div>
