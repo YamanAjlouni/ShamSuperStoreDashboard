@@ -147,6 +147,18 @@
                     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
                 }
             }
+
+            &--reutrns {
+                .stat-icon {
+                    background: linear-gradient(135deg, #0c4aad 0%, #2563eb 100%);
+                }
+            }
+
+            &--review {
+                .stat-icon {
+                    background: linear-gradient(135deg, $yellow-color 0%, #995910 100%);
+                }
+            }
         }
     }
 

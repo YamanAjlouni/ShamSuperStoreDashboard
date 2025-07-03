@@ -167,6 +167,13 @@ const ProductsManagement = () => {
         console.log(`Archiving product ${id}`)
     }
 
+    const handleUnarchiveProduct = (id) => {
+        setProducts(products.map(product =>
+            product.id === id ? { ...product, status: 'active' } : product
+        ))
+        console.log(`Unarchiving product ${id}`)
+    }
+
     const handleDeleteProduct = (id) => {
         if (window.confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
             setProducts(products.filter(product => product.id !== id))
@@ -381,6 +388,17 @@ const ProductsManagement = () => {
                                                 >
                                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8l4 6 6-6" />
+                                                    </svg>
+                                                </button>
+                                            )}
+                                            {product.status === 'archived' && (
+                                                <button
+                                                    className="action-btn action-btn--unarchive"
+                                                    onClick={() => handleUnarchiveProduct(product.id)}
+                                                    title="Unarchive Product"
+                                                >
+                                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
                                                     </svg>
                                                 </button>
                                             )}

@@ -9,6 +9,17 @@ const ProductDetails = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [activeImageIndex, setActiveImageIndex] = useState(0)
+    const [showCouponForm, setShowCouponForm] = useState(false)
+    const [coupons, setCoupons] = useState([])
+    const [newCoupon, setNewCoupon] = useState({
+        code: '',
+        type: 'percentage', // percentage or fixed
+        value: '',
+        expiryDate: '',
+        usageLimit: '',
+        minOrderAmount: '',
+        description: ''
+    })
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -116,6 +127,37 @@ const ProductDetails = () => {
                         }
                     }
                     setProduct(mockProduct)
+                    
+                    // Mock coupons data
+                    const mockCoupons = [
+                        {
+                            id: 'COUP001',
+                            code: 'HEADPHONES20',
+                            type: 'percentage',
+                            value: 20,
+                            expiryDate: '2024-12-31',
+                            usageLimit: 100,
+                            usedCount: 23,
+                            minOrderAmount: 50,
+                            description: '20% off on headphones',
+                            isActive: true,
+                            createdAt: '2024-01-20T10:00:00Z'
+                        },
+                        {
+                            id: 'COUP002',
+                            code: 'SAVE15',
+                            type: 'fixed',
+                            value: 15,
+                            expiryDate: '2024-06-30',
+                            usageLimit: 50,
+                            usedCount: 45,
+                            minOrderAmount: 75,
+                            description: '$15 off on orders over $75',
+                            isActive: true,
+                            createdAt: '2024-01-15T14:30:00Z'
+                        }
+                    ]
+                    setCoupons(mockCoupons)
                     setLoading(false)
                 }, 1000)
             } catch (err) {
@@ -142,10 +184,58 @@ const ProductDetails = () => {
         console.log(`Archiving product ${id}`)
     }
 
+    const handleUnarchiveProduct = () => {
+        setProduct({ ...product, status: 'active' })
+        console.log(`Unarchiving product ${id}`)
+    }
+
     const handleDeleteProduct = () => {
         if (window.confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
             console.log(`Deleting product ${id}`)
             navigate('/admin/products')
+        }
+    }
+
+    const handleAddCoupon = () => {
+        if (!newCoupon.code || !newCoupon.value || !newCoupon.expiryDate) {
+            alert('Please fill in all required fields')
+            return
+        }
+
+        const coupon = {
+            id: `COUP${Date.now()}`,
+            ...newCoupon,
+            value: parseFloat(newCoupon.value),
+            usageLimit: parseInt(newCoupon.usageLimit) || 0,
+            minOrderAmount: parseFloat(newCoupon.minOrderAmount) || 0,
+            usedCount: 0,
+            isActive: true,
+            createdAt: new Date().toISOString()
+        }
+
+        setCoupons([...coupons, coupon])
+        setNewCoupon({
+            code: '',
+            type: 'percentage',
+            value: '',
+            expiryDate: '',
+            usageLimit: '',
+            minOrderAmount: '',
+            description: ''
+        })
+        setShowCouponForm(false)
+        console.log('Adding coupon:', coupon)
+    }
+
+    const handleToggleCoupon = (couponId) => {
+        setCoupons(coupons.map(coupon =>
+            coupon.id === couponId ? { ...coupon, isActive: !coupon.isActive } : coupon
+        ))
+    }
+
+    const handleDeleteCoupon = (couponId) => {
+        if (window.confirm('Are you sure you want to delete this coupon?')) {
+            setCoupons(coupons.filter(coupon => coupon.id !== couponId))
         }
     }
 
@@ -252,6 +342,14 @@ const ProductDetails = () => {
                                 Archive
                             </button>
                         )}
+                        {product.status === 'archived' && (
+                            <button className="action-btn action-btn--unarchive" onClick={handleUnarchiveProduct}>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                                </svg>
+                                Unarchive
+                            </button>
+                        )}
                         <button className="action-btn action-btn--delete" onClick={handleDeleteProduct}>
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -336,6 +434,174 @@ const ProductDetails = () => {
                                     <img src={image} alt={`${product.name} ${index + 1}`} />
                                 </button>
                             ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="content-section">
+                    <h2>Coupon Management</h2>
+                    <div className="coupon-section">
+                        <div className="coupon-header">
+                            <div className="coupon-stats">
+                                <span>Active Coupons: {coupons.filter(c => c.isActive).length}</span>
+                                <span>Total Coupons: {coupons.length}</span>
+                            </div>
+                            <button 
+                                className="add-coupon-btn"
+                                onClick={() => setShowCouponForm(!showCouponForm)}
+                            >
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                </svg>
+                                Add Coupon
+                            </button>
+                        </div>
+
+                        {showCouponForm && (
+                            <div className="coupon-form">
+                                <h3>Create New Coupon</h3>
+                                <div className="form-grid">
+                                    <div className="form-group">
+                                        <label>Coupon Code*</label>
+                                        <input
+                                            type="text"
+                                            value={newCoupon.code}
+                                            onChange={(e) => setNewCoupon({...newCoupon, code: e.target.value.toUpperCase()})}
+                                            placeholder="e.g., SAVE20"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Discount Type*</label>
+                                        <select
+                                            value={newCoupon.type}
+                                            onChange={(e) => setNewCoupon({...newCoupon, type: e.target.value})}
+                                        >
+                                            <option value="percentage">Percentage (%)</option>
+                                            <option value="fixed">Fixed Amount ($)</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Discount Value*</label>
+                                        <input
+                                            type="number"
+                                            value={newCoupon.value}
+                                            onChange={(e) => setNewCoupon({...newCoupon, value: e.target.value})}
+                                            placeholder={newCoupon.type === 'percentage' ? '20' : '15'}
+                                            min="0"
+                                            step={newCoupon.type === 'percentage' ? '1' : '0.01'}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Expiry Date*</label>
+                                        <input
+                                            type="date"
+                                            value={newCoupon.expiryDate}
+                                            onChange={(e) => setNewCoupon({...newCoupon, expiryDate: e.target.value})}
+                                            min={new Date().toISOString().split('T')[0]}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Usage Limit</label>
+                                        <input
+                                            type="number"
+                                            value={newCoupon.usageLimit}
+                                            onChange={(e) => setNewCoupon({...newCoupon, usageLimit: e.target.value})}
+                                            placeholder="100"
+                                            min="0"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Min Order Amount</label>
+                                        <input
+                                            type="number"
+                                            value={newCoupon.minOrderAmount}
+                                            onChange={(e) => setNewCoupon({...newCoupon, minOrderAmount: e.target.value})}
+                                            placeholder="50.00"
+                                            min="0"
+                                            step="0.01"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="form-group full-width">
+                                    <label>Description</label>
+                                    <input
+                                        type="text"
+                                        value={newCoupon.description}
+                                        onChange={(e) => setNewCoupon({...newCoupon, description: e.target.value})}
+                                        placeholder="Brief description of the coupon"
+                                    />
+                                </div>
+                                <div className="form-actions">
+                                    <button className="save-btn" onClick={handleAddCoupon}>
+                                        Save Coupon
+                                    </button>
+                                    <button 
+                                        className="cancel-btn" 
+                                        onClick={() => setShowCouponForm(false)}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="coupons-list">
+                            {coupons.length === 0 ? (
+                                <div className="no-coupons">
+                                    <p>No coupons created for this product yet.</p>
+                                </div>
+                            ) : (
+                                coupons.map((coupon) => (
+                                    <div key={coupon.id} className={`coupon-item ${!coupon.isActive ? 'coupon-item--inactive' : ''}`}>
+                                        <div className="coupon-main">
+                                            <div className="coupon-info">
+                                                <div className="coupon-code">{coupon.code}</div>
+                                                <div className="coupon-details">
+                                                    <span className="coupon-value">
+                                                        {coupon.type === 'percentage' ? `${coupon.value}% OFF` : `$${coupon.value} OFF`}
+                                                    </span>
+                                                    <span className="coupon-expiry">
+                                                        Expires: {new Date(coupon.expiryDate).toLocaleDateString()}
+                                                    </span>
+                                                </div>
+                                                {coupon.description && (
+                                                    <div className="coupon-description">{coupon.description}</div>
+                                                )}
+                                            </div>
+                                            <div className="coupon-stats">
+                                                <div className="stat">
+                                                    <span className="stat-label">Used</span>
+                                                    <span className="stat-value">{coupon.usedCount}</span>
+                                                </div>
+                                                <div className="stat">
+                                                    <span className="stat-label">Limit</span>
+                                                    <span className="stat-value">{coupon.usageLimit || '∞'}</span>
+                                                </div>
+                                                <div className="stat">
+                                                    <span className="stat-label">Min Order</span>
+                                                    <span className="stat-value">${coupon.minOrderAmount || '0'}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="coupon-actions">
+                                            <button
+                                                className={`toggle-btn ${coupon.isActive ? 'toggle-btn--active' : 'toggle-btn--inactive'}`}
+                                                onClick={() => handleToggleCoupon(coupon.id)}
+                                            >
+                                                {coupon.isActive ? 'Disable' : 'Enable'}
+                                            </button>
+                                            <button
+                                                className="delete-btn"
+                                                onClick={() => handleDeleteCoupon(coupon.id)}
+                                            >
+                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
                         </div>
                     </div>
                 </div>

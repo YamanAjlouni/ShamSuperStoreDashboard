@@ -1,5 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell } from 'recharts'
-import { Clock, DollarSign, CreditCard, Package, ShoppingCart, TrendingUp, PieChart as PieChartIcon, Bell, MessageCircle, BarChart3, MessageSquare, AlertCircle, Truck, AlertTriangle, XCircle } from 'lucide-react'
+import { Clock, DollarSign, CreditCard, Package, ShoppingCart, TrendingUp, PieChart as PieChartIcon, Bell, MessageCircle, BarChart3, MessageSquare, AlertCircle, Truck, AlertTriangle, XCircle, Backpack, Box, GitCommitVerticalIcon, MagnetIcon } from 'lucide-react'
 import './Dashboard.scss'
 
 const Dashboard = () => {
@@ -117,6 +117,26 @@ const Dashboard = () => {
                     </div>
                     <div className="stat-content">
                         <h3>0 orders</h3>
+                        <p>received in this month</p>
+                    </div>
+                </div>
+
+                <div className="stat-card stat-card--reutrns">
+                    <div className="stat-icon">
+                        <Box size={24} />
+                    </div>
+                    <div className="stat-content">
+                        <h3>0 returns</h3>
+                        <p>received in this month</p>
+                    </div>
+                </div>
+
+                <div className="stat-card stat-card--review">
+                    <div className="stat-icon">
+                        <MagnetIcon size={24} />
+                    </div>
+                    <div className="stat-content">
+                        <h3>0 review</h3>
                         <p>received in this month</p>
                     </div>
                 </div>
