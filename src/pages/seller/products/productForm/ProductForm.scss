@@ -162,6 +162,13 @@
                         border-bottom: 1px solid $gray-200;
                     }
 
+                    .section-description {
+                        color: $text-light;
+                        font-size: 0.875rem;
+                        margin: -1rem 0 1.5rem 0;
+                        line-height: 1.5;
+                    }
+
                     .form-grid {
                         display: grid;
                         grid-template-columns: 1fr 1fr;
@@ -353,6 +360,344 @@
                             }
                         }
                     }
+
+                    // Quantity Pricing Section
+                    .quantity-pricing {
+                        background: $gray-50;
+                        border-radius: $radius-lg;
+                        padding: 1.5rem;
+                        border: 1px solid $gray-200;
+
+                        .pricing-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 1.5rem;
+                            padding-bottom: 1rem;
+                            border-bottom: 1px solid $gray-300;
+
+                            h4 {
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                color: $text-dark;
+                                margin: 0;
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+
+                                &::before {
+                                    content: '💰';
+                                    font-size: 1.25rem;
+                                }
+                            }
+
+                            .pricing-count {
+                                background: $primary-color;
+                                color: $white;
+                                padding: 0.25rem 0.75rem;
+                                border-radius: $radius-sm;
+                                font-size: 0.75rem;
+                                font-weight: 600;
+                            }
+                        }
+
+                        .pricing-tiers {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 1rem;
+                        }
+
+                        .quantity-pricing-row {
+                            background: $white;
+                            border-radius: $radius-lg;
+                            padding: 1.5rem;
+                            border: 2px solid $gray-200;
+                            transition: $transition-all;
+                            position: relative;
+                            overflow: hidden;
+
+                            &::before {
+                                content: '';
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 4px;
+                                height: 100%;
+                                background: linear-gradient(135deg, $primary-color 0%, $primary-blue-hover 100%);
+                            }
+
+                            &:hover {
+                                border-color: $primary-color;
+                                box-shadow: 0 4px 12px rgba(66, 103, 178, 0.15);
+                                transform: translateY(-2px);
+                            }
+
+                            .pricing-row-header {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                margin-bottom: 1rem;
+
+                                .tier-label {
+                                    background: $primary-blue-light;
+                                    color: $primary-color;
+                                    padding: 0.25rem 0.75rem;
+                                    border-radius: $radius-sm;
+                                    font-size: 0.75rem;
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.5px;
+                                }
+
+                                .remove-pricing-btn {
+                                    background: rgba(239, 68, 68, 0.1);
+                                    color: #dc2626;
+                                    border: none;
+                                    border-radius: 50%;
+                                    width: 32px;
+                                    height: 32px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    cursor: pointer;
+                                    transition: $transition-all;
+
+                                    &:hover {
+                                        background: #dc2626;
+                                        color: $white;
+                                        transform: scale(1.1);
+                                    }
+                                }
+                            }
+
+                            .pricing-inputs {
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                                gap: 1.5rem;
+
+                                .pricing-input-group {
+                                    .input-label {
+                                        display: block;
+                                        font-weight: 600;
+                                        color: $text-dark;
+                                        margin-bottom: 0.5rem;
+                                        font-size: 0.875rem;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 0.5rem;
+
+                                        .input-icon {
+                                            width: 16px;
+                                            height: 16px;
+                                            color: $primary-color;
+                                        }
+                                    }
+
+                                    .pricing-input {
+                                        width: 100%;
+                                        padding: 0.875rem 1rem;
+                                        border: 2px solid $gray-200;
+                                        border-radius: $radius-md;
+                                        font-size: 0.875rem;
+                                        font-weight: 500;
+                                        transition: $transition-all;
+                                        background: $gray-50;
+
+                                        &:focus {
+                                            outline: none;
+                                            border-color: $primary-color;
+                                            box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                                            background: $white;
+                                        }
+
+                                        &::placeholder {
+                                            color: $text-light;
+                                            font-weight: normal;
+                                        }
+                                    }
+
+                                    &.quantity-input .pricing-input {
+                                        background: rgba(16, 185, 129, 0.05);
+                                        border-color: rgba(16, 185, 129, 0.2);
+
+                                        &:focus {
+                                            border-color: #10b981;
+                                            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+                                        }
+                                    }
+
+                                    &.price-input .pricing-input {
+                                        background: rgba(245, 158, 11, 0.05);
+                                        border-color: rgba(245, 158, 11, 0.2);
+
+                                        &:focus {
+                                            border-color: #f59e0b;
+                                            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+                                        }
+                                    }
+                                }
+                            }
+
+                            .pricing-preview {
+                                margin-top: 1rem;
+                                padding: 0.75rem 1rem;
+                                background: $primary-blue-light;
+                                border-radius: $radius-sm;
+                                border: 1px solid rgba(66, 103, 178, 0.2);
+
+                                .preview-text {
+                                    font-size: 0.875rem;
+                                    color: $primary-color;
+                                    font-weight: 500;
+                                    margin: 0;
+
+                                    .savings {
+                                        color: #10b981;
+                                        font-weight: 600;
+                                    }
+                                }
+                            }
+                        }
+
+                        .empty-state {
+                            text-align: center;
+                            padding: 2rem;
+                            color: $text-light;
+
+                            .empty-icon {
+                                font-size: 3rem;
+                                margin-bottom: 1rem;
+                                opacity: 0.5;
+                            }
+
+                            .empty-title {
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                color: $text-dark;
+                                margin: 0 0 0.5rem 0;
+                            }
+
+                            .empty-description {
+                                font-size: 0.875rem;
+                                margin: 0;
+                            }
+                        }
+
+                        .add-pricing-btn {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 0.5rem;
+                            width: 100%;
+                            background: linear-gradient(135deg, $primary-color 0%, $primary-blue-hover 100%);
+                            color: $white;
+                            border: 2px dashed transparent;
+                            border-radius: $radius-lg;
+                            padding: 1rem 1.5rem;
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: $transition-all;
+                            margin-top: 1rem;
+                            position: relative;
+                            overflow: hidden;
+
+                            &::before {
+                                content: '';
+                                position: absolute;
+                                top: 0;
+                                left: -100%;
+                                width: 100%;
+                                height: 100%;
+                                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                                transition: left 0.5s;
+                            }
+
+                            &:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 8px 25px rgba(66, 103, 178, 0.3);
+
+                                &::before {
+                                    left: 100%;
+                                }
+                            }
+
+                            &:active {
+                                transform: translateY(0);
+                            }
+
+                            .add-icon {
+                                width: 18px;
+                                height: 18px;
+                            }
+                        }
+                    }
+
+                    // Custom Attributes Section
+                    .custom-attributes {
+                        .custom-attribute-row {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 1rem;
+                            background: $gray-50;
+                            border-radius: $radius-md;
+                            border: 1px solid $gray-200;
+                            margin-bottom: 1rem;
+
+                            .attribute-info {
+                                display: flex;
+                                gap: 0.5rem;
+
+                                .attribute-name {
+                                    font-weight: 600;
+                                    color: $text-dark;
+                                }
+
+                                .attribute-value {
+                                    color: $text-light;
+                                }
+                            }
+
+                            .remove-attribute-btn {
+                                background: #ef4444;
+                                color: $white;
+                                border: none;
+                                border-radius: 50%;
+                                width: 32px;
+                                height: 32px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                cursor: pointer;
+                                transition: $transition-all;
+
+                                &:hover {
+                                    background: #dc2626;
+                                    transform: scale(1.1);
+                                }
+                            }
+                        }
+
+                        .add-attribute-btn {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            background: $primary-color;
+                            color: $white;
+                            border: none;
+                            border-radius: $radius-md;
+                            padding: 0.75rem 1rem;
+                            font-size: 0.875rem;
+                            cursor: pointer;
+                            transition: $transition-all;
+                            margin-top: 1rem;
+
+                            &:hover {
+                                background: $primary-blue-hover;
+                            }
+                        }
+                    }
                 }
 
                 // Images upload section
@@ -510,12 +855,31 @@
             .product-form .tab-content {
                 padding: 1.5rem;
 
-                .form-section .form-grid {
-                    gap: 1rem;
+                .form-section {
+                    .form-grid {
+                        gap: 1rem;
 
-                    .form-group.dimensions-group .dimensions-inputs {
-                        grid-template-columns: 1fr;
-                        gap: 0.75rem;
+                        .form-group.dimensions-group .dimensions-inputs {
+                            grid-template-columns: 1fr;
+                            gap: 0.75rem;
+                        }
+                    }
+
+                    .quantity-pricing .pricing-tiers .quantity-pricing-row {
+                        .pricing-inputs {
+                            grid-template-columns: 1fr;
+                            gap: 1rem;
+                        }
+
+                        .pricing-row-header {
+                            flex-direction: column;
+                            align-items: flex-start;
+                            gap: 0.75rem;
+
+                            .remove-pricing-btn {
+                                align-self: flex-end;
+                            }
+                        }
                     }
                 }
 
@@ -573,6 +937,20 @@
 
                     h3 {
                         font-size: 1.125rem;
+                    }
+
+                    .quantity-pricing .quantity-pricing-row {
+                        padding: 0.75rem;
+                    }
+
+                    .custom-attributes .custom-attribute-row {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 0.75rem;
+
+                        .remove-attribute-btn {
+                            align-self: flex-end;
+                        }
                     }
                 }
 

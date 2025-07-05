@@ -18,13 +18,14 @@ const Products = () => {
         view: ''
     })
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [showPublishModal, setShowPublishModal] = useState(false)
+    const [showStatusModal, setShowStatusModal] = useState(false)
     const [productToAction, setProductToAction] = useState(null)
+    const [statusAction, setStatusAction] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
     const [itemsPerPage, setItemsPerPage] = useState(10)
 
     // Mock data for products
-    const mockProducts = [
+    const [mockProducts, setMockProducts] = useState([
         {
             id: 1,
             image: 'https://via.placeholder.com/60',
@@ -72,7 +73,7 @@ const Products = () => {
             image: 'https://via.placeholder.com/60',
             name: 'Ceramic Coffee Mug',
             sku: 'CCM-004',
-            status: 'published',
+            status: 'archived',
             stock: 'in_stock',
             stockCount: 120,
             price: 15.99,
@@ -95,18 +96,23 @@ const Products = () => {
             store: 'GameGear',
             brand: 'MechKeys'
         }
-    ]
+    ])
 
     const categories = ['All Categories', 'Electronics', 'Clothing', 'Home & Garden']
     const brands = ['All Brands', 'SoundMax', 'GreenFashion', 'TechWatch', 'CeramicCraft', 'MechKeys']
-    const statuses = ['All Status', 'published', 'private']
+    const statuses = ['All Status', 'published', 'private', 'archived']
     const stockStatuses = ['All Stock', 'in_stock', 'low_stock', 'out_of_stock']
     const priceRanges = ['All Prices', '$0-$50', '$50-$100', '$100-$200', '$200+']
-    const viewOptions = ['All', 'Published Only', 'Private Only']
+    const viewOptions = ['All', 'Published Only', 'Private Only', 'Archived Only']
 
     const getStatusBadge = (status) => {
-        const statusClass = status === 'published' ? 'status--published' : 'status--private'
-        return <span className={`status-badge ${statusClass}`}>{status}</span>
+        const statusConfig = {
+            published: { class: 'status--published', text: 'Published' },
+            private: { class: 'status--private', text: 'Private' },
+            archived: { class: 'status--archived', text: 'Archived' }
+        }
+        const config = statusConfig[status] || statusConfig.private
+        return <span className={`status-badge ${config.class}`}>{config.text}</span>
     }
 
     const getStockBadge = (stock, count) => {
@@ -140,21 +146,33 @@ const Products = () => {
         setShowDeleteModal(true)
     }
 
-    const handlePublish = (product) => {
+    const handleStatusChange = (product, action) => {
         setProductToAction(product)
-        setShowPublishModal(true)
+        setStatusAction(action)
+        setShowStatusModal(true)
+    }
+
+    const handleView = (productId) => {
+        navigate(`/seller/products/view/${productId}`)
     }
 
     const confirmDelete = () => {
-        console.log('Deleting product:', productToAction)
+        setMockProducts(prev => prev.filter(p => p.id !== productToAction.id))
         setShowDeleteModal(false)
         setProductToAction(null)
     }
 
-    const confirmPublish = () => {
-        console.log('Publishing product:', productToAction)
-        setShowPublishModal(false)
+    const confirmStatusChange = () => {
+        setMockProducts(prev => 
+            prev.map(p => 
+                p.id === productToAction.id 
+                    ? { ...p, status: statusAction } 
+                    : p
+            )
+        )
+        setShowStatusModal(false)
         setProductToAction(null)
+        setStatusAction('')
     }
 
     const filteredProducts = mockProducts.filter(product => {
@@ -171,6 +189,56 @@ const Products = () => {
     const startIndex = (currentPage - 1) * itemsPerPage
     const endIndex = Math.min(startIndex + itemsPerPage, totalProducts)
     const currentProducts = filteredProducts.slice(startIndex, endIndex)
+
+    const getStatusActionButton = (product) => {
+        switch (product.status) {
+            case 'private':
+                return (
+                    <button
+                        className="action-btn publish-btn"
+                        onClick={() => handleStatusChange(product, 'published')}
+                        title="Publish"
+                    >
+                        <RotateCcw size={16} />
+                    </button>
+                )
+            case 'published':
+                return (
+                    <button
+                        className="action-btn archive-btn"
+                        onClick={() => handleStatusChange(product, 'archived')}
+                        title="Archive"
+                    >
+                        <Archive size={16} />
+                    </button>
+                )
+            case 'archived':
+                return (
+                    <button
+                        className="action-btn publish-btn"
+                        onClick={() => handleStatusChange(product, 'published')}
+                        title="Restore"
+                    >
+                        <RotateCcw size={16} />
+                    </button>
+                )
+            default:
+                return null
+        }
+    }
+
+    const getStatusActionText = () => {
+        switch (statusAction) {
+            case 'published':
+                return productToAction?.status === 'archived' ? 'restore' : 'publish'
+            case 'archived':
+                return 'archive'
+            case 'private':
+                return 'make private'
+            default:
+                return 'update'
+        }
+    }
 
     return (
         <div className="products-page">
@@ -315,7 +383,10 @@ const Products = () => {
                                     </div>
                                 </td>
                                 <td className="view-column">
-                                    <button className="view-btn">
+                                    <button 
+                                        className="view-btn"
+                                        onClick={() => handleView(product.id)}
+                                    >
                                         <Eye size={16} />
                                     </button>
                                 </td>
@@ -329,24 +400,10 @@ const Products = () => {
                                         >
                                             <Edit size={16} />
                                         </button>
-                                        {product.status === 'private' ? (
-                                            <button
-                                                className="action-btn publish-btn"
-                                                onClick={() => handlePublish(product)}
-                                                title="Publish"
-                                            >
-                                                <RotateCcw size={16} />
-                                            </button>
-                                        ) : (
-                                            <button
-                                                className="action-btn archive-btn"
-                                                title="Archive"
-                                            >
-                                                <Archive size={16} />
-                                            </button>
-                                        )}
+                                        {getStatusActionButton(product)}
                                         <button
                                             className="action-btn view-btn"
+                                            onClick={() => handleView(product.id)}
                                             title="View Details"
                                         >
                                             <Eye size={16} />
@@ -425,24 +482,28 @@ const Products = () => {
                 </div>
             )}
 
-            {/* Publish Modal */}
-            {showPublishModal && (
+            {/* Status Change Modal */}
+            {showStatusModal && (
                 <div className="modal-overlay">
                     <div className="modal">
-                        <h3>Confirm Publish</h3>
-                        <p>Are you sure you want to publish "{productToAction?.name}"? This will make it visible to customers.</p>
+                        <h3>Confirm Status Change</h3>
+                        <p>
+                            Are you sure you want to {getStatusActionText()} "{productToAction?.name}"?
+                            {statusAction === 'archived' && ' This will hide it from customers.'}
+                            {statusAction === 'published' && ' This will make it visible to customers.'}
+                        </p>
                         <div className="modal-actions">
                             <button
                                 className="cancel-btn"
-                                onClick={() => setShowPublishModal(false)}
+                                onClick={() => setShowStatusModal(false)}
                             >
                                 Cancel
                             </button>
                             <button
-                                className="publish-btn"
-                                onClick={confirmPublish}
+                                className={`action-btn ${statusAction === 'published' ? 'publish-btn' : 'archive-btn'}`}
+                                onClick={confirmStatusChange}
                             >
-                                Publish
+                                {getStatusActionText().charAt(0).toUpperCase() + getStatusActionText().slice(1)}
                             </button>
                         </div>
                     </div>

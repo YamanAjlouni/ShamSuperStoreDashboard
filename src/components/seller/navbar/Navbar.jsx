@@ -5,7 +5,7 @@ import './Navbar.scss'
 const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     const navigate = useNavigate()
     const location = useLocation()
-    const [orders] = useState(5)
+    const [notifications] = useState(3) // Changed from orders to notifications
     const [products] = useState({ current: 7, total: 10 })
     const [isProfileOpen, setIsProfileOpen] = useState(false)
     const profileRef = useRef(null)
@@ -35,8 +35,10 @@ const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
         return 'Dashboard'
     }
 
-    const handleCartClick = () => {
-        navigate('/seller/orders')
+    const handleNotificationClick = () => {
+        // Handle notification click - you can add your notification logic here
+        console.log('Notifications clicked')
+        // navigate('/seller/notifications') // Uncomment if you have a notifications page
     }
 
     const handleProfileClick = () => {
@@ -92,16 +94,16 @@ const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                 </div>
 
                 <div className="navbar-actions">
-                    {/* Cart/Orders */}
+                    {/* Notifications */}
                     <button
-                        className="action-btn cart-btn"
-                        onClick={handleCartClick}
-                        title="Click to go to orders page"
+                        className="action-btn notification-btn"
+                        onClick={handleNotificationClick}
+                        title="View notifications"
                     >
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5L17 18" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
-                        {orders > 0 && <span className="badge">{orders}</span>}
+                        {notifications > 0 && <span className="badge">{notifications}</span>}
                     </button>
 
                     {/* User Profile */}

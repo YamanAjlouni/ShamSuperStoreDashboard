@@ -136,7 +136,7 @@ const Dashboard = () => {
                         <MagnetIcon size={24} />
                     </div>
                     <div className="stat-content">
-                        <h3>0 review</h3>
+                        <h3>0 reviews</h3>
                         <p>received in this month</p>
                     </div>
                 </div>

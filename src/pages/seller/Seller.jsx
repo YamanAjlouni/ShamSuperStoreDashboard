@@ -15,6 +15,7 @@ import Payments from './payments/Payments'
 import Settings from './settings/Settings'
 
 import './Seller.scss'
+import ProductDetails from './products/productDetails/ProductDetails'
 
 const PlaceholderPage = ({ pageName }) => (
     <div className="page-placeholder">
@@ -120,6 +121,7 @@ const Seller = () => {
                         <Route path="/products" element={<Products />} />
                         <Route path="/products/new" element={<ProductForm mode="add" />} />
                         <Route path="/products/edit/:id" element={<ProductForm mode="edit" />} />
+                        <Route path="/products/view/:id" element={<ProductDetails mode="view" />} />
 
                         {/* E-commerce Pages */}
                         <Route path="/orders" element={<Orders />} />

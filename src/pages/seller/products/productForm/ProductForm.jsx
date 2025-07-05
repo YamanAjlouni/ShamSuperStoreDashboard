@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import {
     ArrowLeft, Upload, X, Plus, Minus, Save,
     Eye, EyeOff, Package, Tag, DollarSign,
-    Image as ImageIcon, FileText, Settings
+    Image as ImageIcon, FileText, Settings, Truck
 } from 'lucide-react'
 import './ProductForm.scss'
 
@@ -20,11 +20,16 @@ const ProductForm = ({ mode = 'add' }) => {
         price: '',
         salePrice: '',
         onSale: false,
+        saleStartDate: '',
+        saleEndDate: '',
+        quantityPricing: [],
         category: '',
         subcategory: '',
+        subSubcategory: '',
         stock: '',
         sku: '',
         status: 'private',
+        soldIndividually: false,
         weight: '',
         dimensions: {
             length: '',
@@ -33,15 +38,19 @@ const ProductForm = ({ mode = 'add' }) => {
         },
         shippingClass: '',
         processTime: '',
+        deliveryDriverPickup: '',
         color: '',
+        customColor: '',
         condition: '',
         size: '',
         brand: '',
-        tags: []
+        tags: [],
+        customAttributes: []
     })
 
     const [dragActive, setDragActive] = useState(false)
     const [activeTab, setActiveTab] = useState('general')
+    const [showCustomColor, setShowCustomColor] = useState(false)
 
     const categories = [
         'Electronics',
@@ -64,6 +73,21 @@ const ProductForm = ({ mode = 'add' }) => {
         'Automotive': ['Parts', 'Accessories', 'Tools', 'Care Products'],
         'Baby & Kids': ['Toys', 'Clothing', 'Care Products', 'Safety']
     }
+
+    const subSubcategories = {
+        'Audio': ['Headphones', 'Speakers', 'Amplifiers', 'Microphones'],
+        'Computing': ['Laptops', 'Desktops', 'Monitors', 'Peripherals'],
+        'Gaming': ['Consoles', 'Games', 'Accessories', 'PC Gaming'],
+        'T-Shirts': ['Casual', 'Formal', 'Sports', 'Graphic'],
+        'Pants': ['Jeans', 'Chinos', 'Shorts', 'Formal'],
+        'Kitchen': ['Appliances', 'Cookware', 'Utensils', 'Storage'],
+        'Bedroom': ['Furniture', 'Bedding', 'Decor', 'Storage']
+    }
+
+    const commonColors = [
+        'Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Orange', 'Purple', 
+        'Pink', 'Gray', 'Brown', 'Navy', 'Maroon', 'Teal', 'Gold', 'Silver'
+    ]
 
     const shippingClasses = [
         'Standard',
@@ -109,11 +133,19 @@ const ProductForm = ({ mode = 'add' }) => {
                 price: '99.99',
                 salePrice: '79.99',
                 onSale: true,
+                saleStartDate: '2024-01-01',
+                saleEndDate: '2024-12-31',
+                quantityPricing: [
+                    { minQuantity: 5, price: '89.99' },
+                    { minQuantity: 10, price: '84.99' }
+                ],
                 category: 'Electronics',
                 subcategory: 'Audio',
+                subSubcategory: 'Headphones',
                 stock: '45',
                 sku: 'WBH-001',
                 status: 'published',
+                soldIndividually: false,
                 weight: '0.35',
                 dimensions: {
                     length: '20',
@@ -122,11 +154,17 @@ const ProductForm = ({ mode = 'add' }) => {
                 },
                 shippingClass: 'Standard',
                 processTime: '2 days',
+                deliveryDriverPickup: 'Warehouse A',
                 color: 'Black',
+                customColor: '',
                 condition: 'New',
                 size: 'One Size',
                 brand: 'SoundMax',
-                tags: ['wireless', 'bluetooth', 'noise-canceling']
+                tags: ['wireless', 'bluetooth', 'noise-canceling'],
+                customAttributes: [
+                    { name: 'Warranty', value: '2 years' },
+                    { name: 'Battery Life', value: '30 hours' }
+                ]
             }
             setFormData(mockProduct)
         }
@@ -202,6 +240,61 @@ const ProductForm = ({ mode = 'add' }) => {
         }))
     }
 
+    const addQuantityPricing = () => {
+        setFormData(prev => ({
+            ...prev,
+            quantityPricing: [...prev.quantityPricing, { minQuantity: '', price: '' }]
+        }))
+    }
+
+    const removeQuantityPricing = (index) => {
+        setFormData(prev => ({
+            ...prev,
+            quantityPricing: prev.quantityPricing.filter((_, i) => i !== index)
+        }))
+    }
+
+    const updateQuantityPricing = (index, field, value) => {
+        setFormData(prev => ({
+            ...prev,
+            quantityPricing: prev.quantityPricing.map((item, i) => 
+                i === index ? { ...item, [field]: value } : item
+            )
+        }))
+    }
+
+    const addCustomAttribute = () => {
+        const name = prompt('Enter attribute name:')
+        const value = prompt('Enter attribute value:')
+        if (name && value) {
+            setFormData(prev => ({
+                ...prev,
+                customAttributes: [...prev.customAttributes, { name, value }]
+            }))
+        }
+    }
+
+    const removeCustomAttribute = (index) => {
+        setFormData(prev => ({
+            ...prev,
+            customAttributes: prev.customAttributes.filter((_, i) => i !== index)
+        }))
+    }
+
+    const handleColorChange = (color) => {
+        if (color === 'custom') {
+            setShowCustomColor(true)
+            setFormData(prev => ({ ...prev, color: 'custom' }))
+        } else {
+            setShowCustomColor(false)
+            setFormData(prev => ({ ...prev, color, customColor: '' }))
+        }
+    }
+
+    const handlePreview = () => {
+        navigate(`/seller/products/view/${id || 'new'}`, { state: { productData: formData } })
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log('Form submitted:', formData)
@@ -216,6 +309,7 @@ const ProductForm = ({ mode = 'add' }) => {
         { id: 'images', label: 'Images', icon: <ImageIcon size={16} /> },
         { id: 'pricing', label: 'Pricing', icon: <DollarSign size={16} /> },
         { id: 'inventory', label: 'Inventory', icon: <Settings size={16} /> },
+        { id: 'shipping', label: 'Shipping', icon: <Truck size={16} /> },
         { id: 'attributes', label: 'Attributes', icon: <Tag size={16} /> }
     ]
 
@@ -238,7 +332,7 @@ const ProductForm = ({ mode = 'add' }) => {
                     <button
                         type="button"
                         className="preview-btn"
-                        onClick={() => console.log('Preview product')}
+                        onClick={handlePreview}
                     >
                         <Eye size={16} />
                         Preview
@@ -340,7 +434,11 @@ const ProductForm = ({ mode = 'add' }) => {
                                         <select
                                             id="category"
                                             value={formData.category}
-                                            onChange={(e) => handleInputChange('category', e.target.value)}
+                                            onChange={(e) => {
+                                                handleInputChange('category', e.target.value)
+                                                handleInputChange('subcategory', '')
+                                                handleInputChange('subSubcategory', '')
+                                            }}
                                             required
                                         >
                                             <option value="">Select category</option>
@@ -355,12 +453,30 @@ const ProductForm = ({ mode = 'add' }) => {
                                         <select
                                             id="subcategory"
                                             value={formData.subcategory}
-                                            onChange={(e) => handleInputChange('subcategory', e.target.value)}
+                                            onChange={(e) => {
+                                                handleInputChange('subcategory', e.target.value)
+                                                handleInputChange('subSubcategory', '')
+                                            }}
                                             disabled={!formData.category}
                                         >
                                             <option value="">Select subcategory</option>
                                             {formData.category && subcategories[formData.category]?.map(subcat => (
                                                 <option key={subcat} value={subcat}>{subcat}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label htmlFor="subSubcategory">Sub-subcategory</label>
+                                        <select
+                                            id="subSubcategory"
+                                            value={formData.subSubcategory}
+                                            onChange={(e) => handleInputChange('subSubcategory', e.target.value)}
+                                            disabled={!formData.subcategory}
+                                        >
+                                            <option value="">Select sub-subcategory</option>
+                                            {formData.subcategory && subSubcategories[formData.subcategory]?.map(subSubcat => (
+                                                <option key={subSubcat} value={subSubcat}>{subSubcat}</option>
                                             ))}
                                         </select>
                                     </div>
@@ -448,7 +564,7 @@ const ProductForm = ({ mode = 'add' }) => {
                     {activeTab === 'pricing' && (
                         <div className="tab-content">
                             <div className="form-section">
-                                <h3>Pricing Information</h3>
+                                <h3>Basic Pricing</h3>
                                 <div className="form-grid">
                                     <div className="form-group">
                                         <label htmlFor="price">Regular Price *</label>
@@ -466,7 +582,19 @@ const ProductForm = ({ mode = 'add' }) => {
                                         </div>
                                     </div>
 
-                                    {isEditMode && (
+                                    <div className="form-group">
+                                        <label className="checkbox-label">
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.onSale}
+                                                onChange={(e) => handleInputChange('onSale', e.target.checked)}
+                                            />
+                                            <span className="checkmark"></span>
+                                            This product is on sale
+                                        </label>
+                                    </div>
+
+                                    {formData.onSale && (
                                         <>
                                             <div className="form-group">
                                                 <label htmlFor="salePrice">Sale Price</label>
@@ -479,24 +607,127 @@ const ProductForm = ({ mode = 'add' }) => {
                                                         onChange={(e) => handleInputChange('salePrice', e.target.value)}
                                                         placeholder="0.00"
                                                         step="0.01"
-                                                        disabled={!formData.onSale}
                                                     />
                                                 </div>
                                             </div>
 
-                                            <div className="form-group full-width">
-                                                <label className="checkbox-label">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={formData.onSale}
-                                                        onChange={(e) => handleInputChange('onSale', e.target.checked)}
-                                                    />
-                                                    <span className="checkmark"></span>
-                                                    This product is on sale
-                                                </label>
+                                            <div className="form-group">
+                                                <label htmlFor="saleStartDate">Sale Start Date</label>
+                                                <input
+                                                    type="date"
+                                                    id="saleStartDate"
+                                                    value={formData.saleStartDate}
+                                                    onChange={(e) => handleInputChange('saleStartDate', e.target.value)}
+                                                />
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label htmlFor="saleEndDate">Sale End Date</label>
+                                                <input
+                                                    type="date"
+                                                    id="saleEndDate"
+                                                    value={formData.saleEndDate}
+                                                    onChange={(e) => handleInputChange('saleEndDate', e.target.value)}
+                                                />
                                             </div>
                                         </>
                                     )}
+                                </div>
+                            </div>
+
+                            <div className="form-section">
+                                <h3>Quantity Pricing</h3>
+                                <p className="section-description">Offer discounts for bulk purchases to encourage larger orders</p>
+                                <div className="quantity-pricing">
+                                    <div className="pricing-header">
+                                        <h4>Pricing Tiers</h4>
+                                        {formData.quantityPricing.length > 0 && (
+                                            <span className="pricing-count">
+                                                {formData.quantityPricing.length} tier{formData.quantityPricing.length !== 1 ? 's' : ''}
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    {formData.quantityPricing.length === 0 ? (
+                                        <div className="empty-state">
+                                            <div className="empty-icon">📊</div>
+                                            <h5 className="empty-title">No quantity pricing set</h5>
+                                            <p className="empty-description">
+                                                Add pricing tiers to offer discounts for bulk purchases
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <div className="pricing-tiers">
+                                            {formData.quantityPricing.map((pricing, index) => (
+                                                <div key={index} className="quantity-pricing-row">
+                                                    <div className="pricing-row-header">
+                                                        <span className="tier-label">Tier {index + 1}</span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeQuantityPricing(index)}
+                                                            className="remove-pricing-btn"
+                                                            title="Remove this pricing tier"
+                                                        >
+                                                            <X size={14} />
+                                                        </button>
+                                                    </div>
+                                                    
+                                                    <div className="pricing-inputs">
+                                                        <div className="pricing-input-group quantity-input">
+                                                            <label className="input-label">
+                                                                <Package size={16} className="input-icon" />
+                                                                Minimum Quantity
+                                                            </label>
+                                                            <input
+                                                                type="number"
+                                                                className="pricing-input"
+                                                                value={pricing.minQuantity}
+                                                                onChange={(e) => updateQuantityPricing(index, 'minQuantity', e.target.value)}
+                                                                placeholder="e.g., 5"
+                                                                min="1"
+                                                            />
+                                                        </div>
+                                                        <div className="pricing-input-group price-input">
+                                                            <label className="input-label">
+                                                                <DollarSign size={16} className="input-icon" />
+                                                                Price per Unit
+                                                            </label>
+                                                            <input
+                                                                type="number"
+                                                                className="pricing-input"
+                                                                value={pricing.price}
+                                                                onChange={(e) => updateQuantityPricing(index, 'price', e.target.value)}
+                                                                placeholder="0.00"
+                                                                step="0.01"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    {pricing.minQuantity && pricing.price && formData.price && (
+                                                        <div className="pricing-preview">
+                                                            <p className="preview-text">
+                                                                Buy {pricing.minQuantity}+ units at ${pricing.price} each 
+                                                                {parseFloat(pricing.price) < parseFloat(formData.price) && (
+                                                                    <span className="savings">
+                                                                        {' '}(Save ${(parseFloat(formData.price) - parseFloat(pricing.price)).toFixed(2)} per unit)
+                                                                    </span>
+                                                                )}
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    <button
+                                        type="button"
+                                        onClick={addQuantityPricing}
+                                        className="add-pricing-btn"
+                                    >
+                                        <Plus size={18} className="add-icon" />
+                                        Add Pricing Tier
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -531,15 +762,27 @@ const ProductForm = ({ mode = 'add' }) => {
                                             <option value="published">Published</option>
                                         </select>
                                     </div>
+
+                                    <div className="form-group full-width">
+                                        <label className="checkbox-label">
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.soldIndividually}
+                                                onChange={(e) => handleInputChange('soldIndividually', e.target.checked)}
+                                            />
+                                            <span className="checkmark"></span>
+                                            Sold individually (customers can only buy one at a time)
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     )}
 
-                    {activeTab === 'attributes' && (
+                    {activeTab === 'shipping' && (
                         <div className="tab-content">
                             <div className="form-section">
-                                <h3>Physical Attributes</h3>
+                                <h3>Physical Properties</h3>
                                 <div className="form-grid">
                                     <div className="form-group">
                                         <label htmlFor="weight">Weight (kg)</label>
@@ -551,34 +794,6 @@ const ProductForm = ({ mode = 'add' }) => {
                                             placeholder="0.0"
                                             step="0.01"
                                         />
-                                    </div>
-
-                                    <div className="form-group">
-                                        <label htmlFor="shippingClass">Shipping Class</label>
-                                        <select
-                                            id="shippingClass"
-                                            value={formData.shippingClass}
-                                            onChange={(e) => handleInputChange('shippingClass', e.target.value)}
-                                        >
-                                            <option value="">Select shipping class</option>
-                                            {shippingClasses.map(cls => (
-                                                <option key={cls} value={cls}>{cls}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    <div className="form-group">
-                                        <label htmlFor="processTime">Process Time</label>
-                                        <select
-                                            id="processTime"
-                                            value={formData.processTime}
-                                            onChange={(e) => handleInputChange('processTime', e.target.value)}
-                                        >
-                                            <option value="">Select process time</option>
-                                            {processTimes.map(time => (
-                                                <option key={time} value={time}>{time}</option>
-                                            ))}
-                                        </select>
                                     </div>
 
                                     <div className="form-group dimensions-group full-width">
@@ -623,18 +838,83 @@ const ProductForm = ({ mode = 'add' }) => {
                             </div>
 
                             <div className="form-section">
-                                <h3>Optional Attributes</h3>
+                                <h3>Shipping Configuration</h3>
+                                <div className="form-grid">
+                                    <div className="form-group">
+                                        <label htmlFor="shippingClass">Shipping Class</label>
+                                        <select
+                                            id="shippingClass"
+                                            value={formData.shippingClass}
+                                            onChange={(e) => handleInputChange('shippingClass', e.target.value)}
+                                        >
+                                            <option value="">Select shipping class</option>
+                                            {shippingClasses.map(cls => (
+                                                <option key={cls} value={cls}>{cls}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label htmlFor="processTime">Process Time</label>
+                                        <select
+                                            id="processTime"
+                                            value={formData.processTime}
+                                            onChange={(e) => handleInputChange('processTime', e.target.value)}
+                                        >
+                                            <option value="">Select process time</option>
+                                            {processTimes.map(time => (
+                                                <option key={time} value={time}>{time}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label htmlFor="deliveryDriverPickup">Delivery Driver Pickup Location</label>
+                                        <input
+                                            type="text"
+                                            id="deliveryDriverPickup"
+                                            value={formData.deliveryDriverPickup}
+                                            onChange={(e) => handleInputChange('deliveryDriverPickup', e.target.value)}
+                                            placeholder="Enter pickup location"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {activeTab === 'attributes' && (
+                        <div className="tab-content">
+                            <div className="form-section">
+                                <h3>Product Attributes</h3>
                                 <div className="form-grid">
                                     <div className="form-group">
                                         <label htmlFor="color">Color</label>
-                                        <input
-                                            type="text"
+                                        <select
                                             id="color"
                                             value={formData.color}
-                                            onChange={(e) => handleInputChange('color', e.target.value)}
-                                            placeholder="Product color"
-                                        />
+                                            onChange={(e) => handleColorChange(e.target.value)}
+                                        >
+                                            <option value="">Select color</option>
+                                            {commonColors.map(color => (
+                                                <option key={color} value={color}>{color}</option>
+                                            ))}
+                                            <option value="custom">Custom Color</option>
+                                        </select>
                                     </div>
+
+                                    {showCustomColor && (
+                                        <div className="form-group">
+                                            <label htmlFor="customColor">Custom Color</label>
+                                            <input
+                                                type="text"
+                                                id="customColor"
+                                                value={formData.customColor}
+                                                onChange={(e) => handleInputChange('customColor', e.target.value)}
+                                                placeholder="Enter custom color"
+                                            />
+                                        </div>
+                                    )}
 
                                     <div className="form-group">
                                         <label htmlFor="condition">Condition</label>
@@ -663,6 +943,35 @@ const ProductForm = ({ mode = 'add' }) => {
                                             ))}
                                         </select>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div className="form-section">
+                                <h3>Custom Attributes</h3>
+                                <div className="custom-attributes">
+                                    {formData.customAttributes.map((attr, index) => (
+                                        <div key={index} className="custom-attribute-row">
+                                            <div className="attribute-info">
+                                                <span className="attribute-name">{attr.name}:</span>
+                                                <span className="attribute-value">{attr.value}</span>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => removeCustomAttribute(index)}
+                                                className="remove-attribute-btn"
+                                            >
+                                                <X size={16} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                    <button
+                                        type="button"
+                                        onClick={addCustomAttribute}
+                                        className="add-attribute-btn"
+                                    >
+                                        <Plus size={16} />
+                                        Add Custom Attribute
+                                    </button>
                                 </div>
                             </div>
                         </div>
