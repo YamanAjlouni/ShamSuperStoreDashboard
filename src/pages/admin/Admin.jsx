@@ -23,6 +23,9 @@ import ProductDetails from './productsManagement/productDetails/ProductDetails'
 import CategoriesManagement from './categoriesManagement/CategoriesManagement'
 import CategoryDetails from './categoriesManagement/categoryDetails/CategoryDetails'
 
+// Import Reviews Management Components
+import ReviewsManagement from './reviewsManagement/ReviewsManagement'
+
 // Import Payment Management Components
 import PaymentsManagement from './paymentsManagement/PaymentsManagement'
 
@@ -154,15 +157,18 @@ const Admin = () => {
                         <Route path="/products" element={<ProductsManagement />} />
                         <Route path="/products/details/:id" element={<ProductDetails />} />
                         
-                        {/* Category Management - Updated Routes */}
+                        {/* Category Management */}
                         <Route path="/categories" element={<CategoriesManagement />} />
                         <Route path="/categories/details/:id" element={<CategoryDetails />} />
+
+                        {/* Reviews Management */}
+                        <Route path="/reviews" element={<ReviewsManagement />} />
+                        <Route path="/reviews/details/:id" element={<PlaceholderPage pageName="Review Details" />} />
 
                         {/* Financial Management */}
                         <Route path="/payments" element={<PaymentsManagement />} />
                         <Route path="/reports" element={<ReportsManagement />} />
                         <Route path="/returns" element={<PlaceholderPage pageName="Return Orders Management" />} />
-                        <Route path="/reviews" element={<PlaceholderPage pageName="Customer Reviews Management" />} />
 
                         {/* System Management */}
                         <Route path="/settings" element={<SettingsManagement />} />
