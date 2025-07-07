@@ -14,6 +14,14 @@ const SellerDetails = () => {
     const [customLimit, setCustomLimit] = useState('')
     const [editingMembership, setEditingMembership] = useState(false)
     const [tempMembership, setTempMembership] = useState('')
+    const [editingFeatured, setEditingFeatured] = useState(false)
+    const [tempFeatured, setTempFeatured] = useState({
+        isFeatured: false,
+        logoUrl: '',
+        websiteUrl: '',
+        displayName: '',
+        description: ''
+    })
 
     // Preset limit options
     const presetLimits = [50, 100, 200, 500, 1000]
@@ -48,7 +56,14 @@ const SellerDetails = () => {
         totalRevenue: 15670.50,
         rating: 4.5,
         reviewCount: 127,
-        membership: 'free'
+        membership: 'free',
+        featured: {
+            isFeatured: true,
+            logoUrl: 'https://via.placeholder.com/200x80/4267B2/white?text=Tech+Paradise',
+            websiteUrl: 'https://techparadise.com',
+            displayName: 'Tech Paradise',
+            description: 'Your one-stop destination for cutting-edge technology and electronics.'
+        }
     }
 
     const mockProducts = [
@@ -110,6 +125,7 @@ const SellerDetails = () => {
             setProducts(mockProducts)
             setTempLimit(mockSellerData.productLimit.toString())
             setTempMembership(mockSellerData.membership)
+            setTempFeatured(mockSellerData.featured)
             setLoading(false)
         }, 1000)
     }, [id])
@@ -150,6 +166,8 @@ const SellerDetails = () => {
                         return { ...product, status: 'rejected' }
                     case 'archive':
                         return { ...product, status: 'archived' }
+                    case 'unarchive':
+                        return { ...product, status: 'published' }
                     default:
                         return product
                 }
@@ -220,6 +238,34 @@ const SellerDetails = () => {
         }
     }
 
+    const handleEditFeatured = () => {
+        setEditingFeatured(true)
+        setTempFeatured(seller.featured)
+    }
+
+    const handleCancelFeaturedEdit = () => {
+        setEditingFeatured(false)
+        setTempFeatured(seller.featured)
+    }
+
+    const handleSaveFeatured = () => {
+        if (window.confirm(`Are you sure you want to ${tempFeatured.isFeatured ? 'feature' : 'unfeature'} this seller?`)) {
+            setSeller({ 
+                ...seller, 
+                featured: tempFeatured
+            })
+            setEditingFeatured(false)
+            // Here you would make an API call to save the featured settings
+        }
+    }
+
+    const handleFeaturedFieldChange = (field, value) => {
+        setTempFeatured(prev => ({
+            ...prev,
+            [field]: value
+        }))
+    }
+
     const getCurrentMembershipPlan = () => {
         return membershipPlans.find(plan => plan.value === seller.membership) || membershipPlans[0]
     }
@@ -264,6 +310,28 @@ const SellerDetails = () => {
         return <span className={`membership-badge membership-badge--${config.class}`}>{config.label}</span>
     }
 
+    const getFeaturedBadge = (isFeatured) => {
+        return (
+            <span className={`featured-badge ${isFeatured ? 'featured-badge--active' : 'featured-badge--inactive'}`}>
+                {isFeatured ? (
+                    <>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        </svg>
+                        Featured
+                    </>
+                ) : (
+                    <>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Not Featured
+                    </>
+                )}
+            </span>
+        )
+    }
+
     if (loading) {
         return (
             <div className="seller-details">
@@ -305,6 +373,7 @@ const SellerDetails = () => {
                             <span className="seller-id">ID: {seller.id}</span>
                             {getStatusBadge(seller.status)}
                             {getMembershipBadge(seller.membership)}
+                            {getFeaturedBadge(seller.featured.isFeatured)}
                         </div>
                     </div>
                     <div className="header-actions">
@@ -331,7 +400,7 @@ const SellerDetails = () => {
                         )}
                         <button className="action-btn action-btn--reset" onClick={handleResetPassword}>
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z" />
                             </svg>
                             Reset Password
                         </button>
@@ -478,6 +547,7 @@ const SellerDetails = () => {
                                         <span>Published: {products.filter(p => p.status === 'published').length}</span>
                                         <span>Pending: {products.filter(p => p.status === 'pending').length}</span>
                                         <span>Archived: {products.filter(p => p.status === 'archived').length}</span>
+                                        <span>Rejected: {products.filter(p => p.status === 'rejected').length}</span>
                                     </div>
                                 </div>
 
@@ -557,6 +627,28 @@ const SellerDetails = () => {
                                                                 >
                                                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8l7-7 7 7M5 16l7 7 7-7" />
+                                                                    </svg>
+                                                                </button>
+                                                            )}
+                                                            {product.status === 'archived' && (
+                                                                <button
+                                                                    className="product-action-btn unarchive"
+                                                                    onClick={() => handleProductAction(product.id, 'unarchive')}
+                                                                    title="Unarchive Product"
+                                                                >
+                                                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l3-3m0 0l3 3m-3-3v12M5 5h14a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z" />
+                                                                    </svg>
+                                                                </button>
+                                                            )}
+                                                            {product.status === 'rejected' && (
+                                                                <button
+                                                                    className="product-action-btn approve"
+                                                                    onClick={() => handleProductAction(product.id, 'approve')}
+                                                                    title="Approve Product"
+                                                                >
+                                                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                                                     </svg>
                                                                 </button>
                                                             )}
@@ -739,9 +831,334 @@ const SellerDetails = () => {
                                             <span className="label">Account Status:</span>
                                             <span className="value">{getStatusBadge(seller.status)}</span>
                                         </div>
+                                        
+                                        {/* Featured Status - Updated to match other sections */}
+                                        <div className="info-item">
+                                            <span className="label">Featured Status:</span>
+                                            {!editingFeatured ? (
+                                                <div className="value featured-display">
+                                                    <div className="featured-info">
+                                                        {getFeaturedBadge(seller.featured.isFeatured)}
+                                                        {seller.featured.isFeatured && (
+                                                            <span className="featured-details">
+                                                                {seller.featured.displayName || seller.storeName}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <button 
+                                                        className="edit-featured-btn"
+                                                        onClick={handleEditFeatured}
+                                                        title="Edit Featured Settings"
+                                                    >
+                                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className="featured-editor">
+                                                    <div className="featured-toggle-section">
+                                                        <span className="toggle-label">Featured Status:</span>
+                                                        <label className="toggle-container">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={tempFeatured.isFeatured}
+                                                                onChange={(e) => handleFeaturedFieldChange('isFeatured', e.target.checked)}
+                                                            />
+                                                            <span className="toggle-slider"></span>
+                                                            <span className="toggle-text">
+                                                                {tempFeatured.isFeatured ? 'Featured' : 'Not Featured'}
+                                                            </span>
+                                                        </label>
+                                                    </div>
+
+                                                    {tempFeatured.isFeatured && (
+                                                        <div className="featured-settings">
+                                                            <div className="form-group">
+                                                                <label>Display Name:</label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={tempFeatured.displayName}
+                                                                    onChange={(e) => handleFeaturedFieldChange('displayName', e.target.value)}
+                                                                    placeholder="Enter display name"
+                                                                    className="form-input"
+                                                                />
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <label>Logo URL:</label>
+                                                                <input
+                                                                    type="url"
+                                                                    value={tempFeatured.logoUrl}
+                                                                    onChange={(e) => handleFeaturedFieldChange('logoUrl', e.target.value)}
+                                                                    placeholder="https://example.com/logo.png"
+                                                                    className="form-input"
+                                                                />
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <label>Website URL:</label>
+                                                                <input
+                                                                    type="url"
+                                                                    value={tempFeatured.websiteUrl}
+                                                                    onChange={(e) => handleFeaturedFieldChange('websiteUrl', e.target.value)}
+                                                                    placeholder="https://example.com"
+                                                                    className="form-input"
+                                                                />
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <label>Description:</label>
+                                                                <textarea
+                                                                    value={tempFeatured.description}
+                                                                    onChange={(e) => handleFeaturedFieldChange('description', e.target.value)}
+                                                                    placeholder="Brief description for the featured section"
+                                                                    className="form-textarea"
+                                                                    rows="3"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    <div className="featured-actions">
+                                                        <button 
+                                                            className="save-btn"
+                                                            onClick={handleSaveFeatured}
+                                                        >
+                                                            Save Changes
+                                                        </button>
+                                                        <button 
+                                                            className="cancel-btn"
+                                                            onClick={handleCancelFeaturedEdit}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Additional featured info when active and not editing */}
+                                        {seller.featured.isFeatured && !editingFeatured && (
+                                            <>
+                                                <div className="info-item">
+                                                    <span className="label">Display Name:</span>
+                                                    <span className="value">{seller.featured.displayName || 'Not set'}</span>
+                                                </div>
+                                                <div className="info-item">
+                                                    <span className="label">Website URL:</span>
+                                                    <span className="value">
+                                                        {seller.featured.websiteUrl ? (
+                                                            <a href={seller.featured.websiteUrl} target="_blank" rel="noopener noreferrer" className="website-link">
+                                                                {seller.featured.websiteUrl}
+                                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                                </svg>
+                                                            </a>
+                                                        ) : (
+                                                            'Not set'
+                                                        )}
+                                                    </span>
+                                                </div>
+                                                <div className="info-item">
+                                                    <span className="label">Description:</span>
+                                                    <span className="value">{seller.featured.description || 'Not set'}</span>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Featured Seller Settings - Standalone Section */}
+                            <div className="info-card featured-settings-card">
+                                <h3>
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                    </svg>
+                                    Featured Seller Settings
+                                </h3>
+                                
+                                <div className="featured-main-toggle">
+                                    <label className="featured-master-control">
+                                        <input
+                                            type="checkbox"
+                                            checked={seller.featured.isFeatured}
+                                            onChange={(e) => {
+                                                const newFeatured = { ...seller.featured, isFeatured: e.target.checked }
+                                                setSeller({ ...seller, featured: newFeatured })
+                                            }}
+                                        />
+                                        <span className="toggle-switch"></span>
+                                        <span className="toggle-label-text">
+                                            Enable Featured Status
+                                        </span>
+                                    </label>
+                                </div>
+
+                                {seller.featured.isFeatured && (
+                                    <div className="featured-controls">
+                                        <div className="featured-field">
+                                            <div className="field-header">
+                                                <label className="field-control">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={!!seller.featured.displayName}
+                                                        onChange={(e) => {
+                                                            const newFeatured = { 
+                                                                ...seller.featured, 
+                                                                displayName: e.target.checked ? seller.storeName : '' 
+                                                            }
+                                                            setSeller({ ...seller, featured: newFeatured })
+                                                        }}
+                                                    />
+                                                    <span className="field-checkbox"></span>
+                                                    <span className="field-label">Display Name</span>
+                                                </label>
+                                            </div>
+                                            {seller.featured.displayName !== undefined && (
+                                                <input
+                                                    type="text"
+                                                    value={seller.featured.displayName}
+                                                    onChange={(e) => {
+                                                        const newFeatured = { ...seller.featured, displayName: e.target.value }
+                                                        setSeller({ ...seller, featured: newFeatured })
+                                                    }}
+                                                    placeholder="Enter display name"
+                                                    className="featured-input"
+                                                />
+                                            )}
+                                        </div>
+
+                                        <div className="featured-field">
+                                            <div className="field-header">
+                                                <label className="field-control">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={!!seller.featured.logoUrl}
+                                                        onChange={(e) => {
+                                                            const newFeatured = { 
+                                                                ...seller.featured, 
+                                                                logoUrl: e.target.checked ? 'https://' : '' 
+                                                            }
+                                                            setSeller({ ...seller, featured: newFeatured })
+                                                        }}
+                                                    />
+                                                    <span className="field-checkbox"></span>
+                                                    <span className="field-label">Logo URL</span>
+                                                </label>
+                                            </div>
+                                            {seller.featured.logoUrl !== undefined && (
+                                                <input
+                                                    type="url"
+                                                    value={seller.featured.logoUrl}
+                                                    onChange={(e) => {
+                                                        const newFeatured = { ...seller.featured, logoUrl: e.target.value }
+                                                        setSeller({ ...seller, featured: newFeatured })
+                                                    }}
+                                                    placeholder="https://example.com/logo.png"
+                                                    className="featured-input"
+                                                />
+                                            )}
+                                        </div>
+
+                                        <div className="featured-field">
+                                            <div className="field-header">
+                                                <label className="field-control">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={!!seller.featured.websiteUrl}
+                                                        onChange={(e) => {
+                                                            const newFeatured = { 
+                                                                ...seller.featured, 
+                                                                websiteUrl: e.target.checked ? 'https://' : '' 
+                                                            }
+                                                            setSeller({ ...seller, featured: newFeatured })
+                                                        }}
+                                                    />
+                                                    <span className="field-checkbox"></span>
+                                                    <span className="field-label">Website URL</span>
+                                                </label>
+                                            </div>
+                                            {seller.featured.websiteUrl !== undefined && (
+                                                <input
+                                                    type="url"
+                                                    value={seller.featured.websiteUrl}
+                                                    onChange={(e) => {
+                                                        const newFeatured = { ...seller.featured, websiteUrl: e.target.value }
+                                                        setSeller({ ...seller, featured: newFeatured })
+                                                    }}
+                                                    placeholder="https://example.com"
+                                                    className="featured-input"
+                                                />
+                                            )}
+                                        </div>
+
+                                        <div className="featured-field">
+                                            <div className="field-header">
+                                                <label className="field-control">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={!!seller.featured.description}
+                                                        onChange={(e) => {
+                                                            const newFeatured = { 
+                                                                ...seller.featured, 
+                                                                description: e.target.checked ? '' : '' 
+                                                            }
+                                                            setSeller({ ...seller, featured: newFeatured })
+                                                        }}
+                                                    />
+                                                    <span className="field-checkbox"></span>
+                                                    <span className="field-label">Description</span>
+                                                </label>
+                                            </div>
+                                            {seller.featured.description !== undefined && (
+                                                <textarea
+                                                    value={seller.featured.description}
+                                                    onChange={(e) => {
+                                                        const newFeatured = { ...seller.featured, description: e.target.value }
+                                                        setSeller({ ...seller, featured: newFeatured })
+                                                    }}
+                                                    placeholder="Brief description for the featured section"
+                                                    className="featured-textarea"
+                                                    rows="3"
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Preview section as separate card when featured and not editing */}
+                            {seller.featured.isFeatured && !editingFeatured && (
+                                <div className="info-card featured-preview-card">
+                                    <h3>
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        Public Display Preview
+                                    </h3>
+                                    <div className="preview-card">
+                                        {seller.featured.logoUrl && (
+                                            <div className="preview-logo">
+                                                <img src={seller.featured.logoUrl} alt={seller.featured.displayName} />
+                                            </div>
+                                        )}
+                                        <div className="preview-content">
+                                            <h5>{seller.featured.displayName || seller.storeName}</h5>
+                                            {seller.featured.description && (
+                                                <p>{seller.featured.description}</p>
+                                            )}
+                                            {seller.featured.websiteUrl && (
+                                                <a href={seller.featured.websiteUrl} target="_blank" rel="noopener noreferrer" className="preview-link">
+                                                    Visit Website
+                                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                    </svg>
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
