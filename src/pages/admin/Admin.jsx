@@ -25,6 +25,7 @@ import CategoryDetails from './categoriesManagement/categoryDetails/CategoryDeta
 
 // Import Reviews Management Components
 import ReviewsManagement from './reviewsManagement/ReviewsManagement'
+import ReviewDetails from './reviewsManagement/reviewDetails/ReviewDetails'
 
 // Import Payment Management Components
 import PaymentsManagement from './paymentsManagement/PaymentsManagement'
@@ -163,7 +164,7 @@ const Admin = () => {
 
                         {/* Reviews Management */}
                         <Route path="/reviews" element={<ReviewsManagement />} />
-                        <Route path="/reviews/details/:id" element={<PlaceholderPage pageName="Review Details" />} />
+                        <Route path="/reviews/details/:id" element={<ReviewDetails />} />
 
                         {/* Financial Management */}
                         <Route path="/payments" element={<PaymentsManagement />} />
