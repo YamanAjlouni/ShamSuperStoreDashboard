@@ -1,0 +1,995 @@
+@use '../../../assets/styles/vars.scss' as *;
+
+.delivery-settings {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .loading-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: $gray-500;
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid $gray-200;
+            border-top: 3px solid $primary-color;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.125rem;
+            margin: 0;
+        }
+    }
+
+    .settings-header {
+        background: $white;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-md;
+        border: 1px solid $gray-200;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, $primary-color 0%, $orange-color 100%);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem;
+
+            .page-title {
+                h1 {
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: $gray-800;
+                    margin: 0 0 0.25rem 0;
+                    background: linear-gradient(135deg, $primary-color 0%, $dark-blue-color 100%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+
+                p {
+                    margin: 0;
+                    color: $gray-600;
+                    font-size: 0.875rem;
+                }
+            }
+
+            .save-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.5rem;
+                background: linear-gradient(135deg, $primary-color 0%, $dark-blue-color 100%);
+                color: $white;
+                border: none;
+                border-radius: $radius-md;
+                font-size: 0.875rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: $transition-all;
+                box-shadow: $shadow-sm;
+
+                &:hover {
+                    transform: translateY(-1px);
+                    box-shadow: $shadow-md;
+                }
+
+                &:active {
+                    transform: translateY(0);
+                }
+
+                svg {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+    }
+
+    .settings-content {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 2rem;
+        overflow: hidden;
+
+        .settings-sidebar {
+            background: $white;
+            border-radius: $radius-lg;
+            box-shadow: $shadow-md;
+            border: 1px solid $gray-200;
+            padding: 1.5rem 0;
+            height: fit-content;
+
+            .settings-menu {
+                display: flex;
+                flex-direction: column;
+
+                .menu-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    padding: 1rem 1.5rem;
+                    border: none;
+                    background: none;
+                    color: $gray-600;
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: $transition-all;
+                    text-align: left;
+                    width: 100%;
+                    position: relative;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        width: 3px;
+                        height: 0;
+                        background: linear-gradient(135deg, $primary-color 0%, $orange-color 100%);
+                        border-radius: 0 2px 2px 0;
+                        transition: $transition-all;
+                    }
+
+                    &:hover {
+                        background: rgba(66, 103, 178, 0.05);
+                        color: $primary-color;
+
+                        &::before {
+                            height: 24px;
+                        }
+                    }
+
+                    &.active {
+                        background: rgba(66, 103, 178, 0.1);
+                        color: $primary-color;
+                        font-weight: 600;
+
+                        &::before {
+                            height: 32px;
+                        }
+
+                        .menu-icon {
+                            color: $primary-color;
+                        }
+                    }
+
+                    .menu-icon {
+                        width: 20px;
+                        height: 20px;
+                        color: $gray-400;
+                        transition: $transition-all;
+                    }
+
+                    .menu-label {
+                        flex: 1;
+                    }
+                }
+            }
+        }
+
+        .settings-main {
+            overflow-y: auto;
+            padding-right: 0.5rem;
+
+            .settings-section {
+                background: $white;
+                border-radius: $radius-lg;
+                box-shadow: $shadow-md;
+                border: 1px solid $gray-200;
+                overflow: hidden;
+
+                .section-header {
+                    padding: 2rem 2rem 1rem 2rem;
+                    border-bottom: 1px solid $gray-200;
+                    background: $gray-50;
+
+                    h2 {
+                        font-size: 1.5rem;
+                        font-weight: 700;
+                        color: $gray-800;
+                        margin: 0 0 0.5rem 0;
+                    }
+
+                    p {
+                        margin: 0;
+                        color: $gray-600;
+                        font-size: 0.875rem;
+                    }
+                }
+
+                // Profile Photo Section
+                .profile-photo-section {
+                    padding: 2rem;
+                    border-bottom: 1px solid $gray-200;
+
+                    .photo-upload {
+                        display: flex;
+                        justify-content: center;
+
+                        .photo-preview {
+                            text-align: center;
+
+                            img {
+                                width: 120px;
+                                height: 120px;
+                                border-radius: 50%;
+                                object-fit: cover;
+                                margin-bottom: 1rem;
+                                border: 4px solid $gray-200;
+                            }
+
+                            .change-photo-btn {
+                                padding: 0.5rem 1rem;
+                                background: $gray-100;
+                                color: $gray-700;
+                                border: 1px solid $gray-300;
+                                border-radius: $radius-md;
+                                font-size: 0.875rem;
+                                cursor: pointer;
+                                transition: $transition-all;
+
+                                &:hover {
+                                    background: $gray-200;
+                                }
+                            }
+                        }
+
+                        .upload-area {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            width: 120px;
+                            height: 120px;
+                            border: 2px dashed $gray-300;
+                            border-radius: 50%;
+                            cursor: pointer;
+                            transition: $transition-all;
+                            background: $gray-50;
+
+                            &:hover {
+                                border-color: $primary-color;
+                                background: rgba(66, 103, 178, 0.05);
+
+                                .upload-placeholder {
+                                    color: $primary-color;
+                                }
+                            }
+
+                            .upload-placeholder {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                gap: 0.5rem;
+                                color: $gray-500;
+                                transition: $transition-all;
+
+                                svg {
+                                    width: 32px;
+                                    height: 32px;
+                                }
+
+                                span {
+                                    font-size: 0.75rem;
+                                    font-weight: 500;
+                                    text-align: center;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Form Grid
+                .form-grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1.5rem;
+                    padding: 2rem;
+
+                    .form-group {
+                        display: flex;
+                        flex-direction: column;
+
+                        &.full-width {
+                            grid-column: span 2;
+                        }
+
+                        label {
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            color: $gray-700;
+                            margin-bottom: 0.5rem;
+                        }
+
+                        input,
+                        select {
+                            padding: 0.75rem;
+                            border: 1px solid $gray-300;
+                            border-radius: $radius-md;
+                            background: $white;
+                            font-size: 0.875rem;
+                            transition: $transition-all;
+
+                            &:focus {
+                                outline: none;
+                                border-color: $primary-color;
+                                box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                            }
+
+                            &::placeholder {
+                                color: $gray-400;
+                            }
+                        }
+
+                        select {
+                            cursor: pointer;
+                        }
+                    }
+                }
+
+                // Documents Grid
+                .documents-grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1.5rem;
+                    padding: 2rem;
+
+                    .document-card {
+                        border: 1px solid $gray-200;
+                        border-radius: $radius-lg;
+                        overflow: hidden;
+                        transition: $transition-all;
+
+                        &:hover {
+                            transform: translateY(-2px);
+                            box-shadow: $shadow-md;
+                        }
+
+                        .document-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-start;
+                            padding: 1.5rem 1.5rem 1rem 1.5rem;
+                            background: $gray-50;
+
+                            .document-info {
+                                h3 {
+                                    font-size: 1rem;
+                                    font-weight: 600;
+                                    color: $gray-800;
+                                    margin: 0 0 0.25rem 0;
+                                }
+
+                                p {
+                                    font-size: 0.75rem;
+                                    color: $gray-500;
+                                    margin: 0;
+                                }
+                            }
+
+                            .status-badge {
+                                padding: 0.25rem 0.75rem;
+                                border-radius: $radius-full;
+                                font-size: 0.75rem;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+
+                                &.uploaded {
+                                    background: rgba(16, 185, 129, 0.1);
+                                    color: #10b981;
+                                }
+
+                                &.not-uploaded {
+                                    background: rgba(239, 68, 68, 0.1);
+                                    color: #ef4444;
+                                }
+                            }
+                        }
+
+                        .document-preview {
+                            padding: 1rem 1.5rem 1.5rem 1.5rem;
+
+                            .file-info {
+                                display: flex;
+                                align-items: center;
+                                gap: 1rem;
+                                margin-bottom: 1rem;
+
+                                .file-icon {
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    width: 40px;
+                                    height: 40px;
+                                    background: rgba(66, 103, 178, 0.1);
+                                    border-radius: $radius-md;
+                                    color: $primary-color;
+
+                                    svg {
+                                        width: 20px;
+                                        height: 20px;
+                                    }
+                                }
+
+                                .file-details {
+                                    flex: 1;
+
+                                    .file-name {
+                                        display: block;
+                                        font-size: 0.875rem;
+                                        font-weight: 600;
+                                        color: $gray-800;
+                                        margin-bottom: 0.25rem;
+                                    }
+
+                                    .file-size {
+                                        font-size: 0.75rem;
+                                        color: $gray-500;
+                                    }
+                                }
+                            }
+
+                            .replace-btn {
+                                padding: 0.5rem 1rem;
+                                background: $gray-100;
+                                color: $gray-700;
+                                border: 1px solid $gray-300;
+                                border-radius: $radius-md;
+                                font-size: 0.75rem;
+                                cursor: pointer;
+                                transition: $transition-all;
+
+                                &:hover {
+                                    background: $gray-200;
+                                }
+                            }
+                        }
+
+                        .upload-area {
+                            padding: 1.5rem;
+                            border: 2px dashed $gray-300;
+                            margin: 1rem 1.5rem 1.5rem 1.5rem;
+                            border-radius: $radius-md;
+                            cursor: pointer;
+                            transition: $transition-all;
+                            background: $gray-50;
+
+                            &:hover {
+                                border-color: $primary-color;
+                                background: rgba(66, 103, 178, 0.05);
+
+                                .upload-content {
+                                    color: $primary-color;
+                                }
+                            }
+
+                            .upload-content {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                gap: 0.75rem;
+                                color: $gray-500;
+                                transition: $transition-all;
+                                text-align: center;
+
+                                svg {
+                                    width: 32px;
+                                    height: 32px;
+                                }
+
+                                span {
+                                    font-size: 0.875rem;
+                                    font-weight: 600;
+                                }
+
+                                small {
+                                    font-size: 0.75rem;
+                                    color: $gray-400;
+                                }
+                            }
+
+                            &.large {
+                                margin: 1rem 0 0 0;
+                                padding: 2rem;
+                            }
+                        }
+                    }
+                }
+
+                // License Plate Photo Section
+                .plate-photo-section {
+                    padding: 2rem;
+                    border-top: 1px solid $gray-200;
+
+                    h3 {
+                        font-size: 1.125rem;
+                        font-weight: 600;
+                        color: $gray-800;
+                        margin: 0 0 0.5rem 0;
+                    }
+
+                    p {
+                        font-size: 0.875rem;
+                        color: $gray-600;
+                        margin: 0 0 1.5rem 0;
+                    }
+
+                    .plate-preview {
+                        display: flex;
+                        align-items: center;
+                        gap: 1.5rem;
+                        padding: 1.5rem;
+                        background: $gray-50;
+                        border-radius: $radius-lg;
+                        border: 1px solid $gray-200;
+
+                        img {
+                            width: 120px;
+                            height: 80px;
+                            object-fit: cover;
+                            border-radius: $radius-md;
+                            border: 1px solid $gray-300;
+                        }
+
+                        .plate-info {
+                            flex: 1;
+
+                            .file-name {
+                                display: block;
+                                font-size: 0.875rem;
+                                font-weight: 600;
+                                color: $gray-800;
+                                margin-bottom: 0.25rem;
+                            }
+
+                            .file-size {
+                                font-size: 0.75rem;
+                                color: $gray-500;
+                            }
+                        }
+
+                        .replace-btn {
+                            padding: 0.75rem 1.5rem;
+                            background: $white;
+                            color: $gray-700;
+                            border: 1px solid $gray-300;
+                            border-radius: $radius-md;
+                            font-size: 0.875rem;
+                            cursor: pointer;
+                            transition: $transition-all;
+
+                            &:hover {
+                                background: $gray-50;
+                            }
+                        }
+                    }
+                }
+
+                // Banking Information
+                .banking-info {
+                    padding: 2rem;
+
+                    .security-notice {
+                        display: flex;
+                        gap: 1rem;
+                        padding: 1.5rem;
+                        background: rgba(16, 185, 129, 0.05);
+                        border: 1px solid rgba(16, 185, 129, 0.2);
+                        border-radius: $radius-lg;
+                        margin-bottom: 2rem;
+
+                        svg {
+                            width: 24px;
+                            height: 24px;
+                            color: #10b981;
+                            flex-shrink: 0;
+                            margin-top: 0.125rem;
+                        }
+
+                        h4 {
+                            font-size: 1rem;
+                            font-weight: 600;
+                            color: $gray-800;
+                            margin: 0 0 0.5rem 0;
+                        }
+
+                        p {
+                            font-size: 0.875rem;
+                            color: $gray-600;
+                            margin: 0;
+                            line-height: 1.5;
+                        }
+                    }
+                }
+
+                // Notification Groups
+                .notification-groups {
+                    padding: 2rem;
+
+                    .notification-group {
+                        margin-bottom: 2rem;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+
+                        h3 {
+                            font-size: 1.125rem;
+                            font-weight: 600;
+                            color: $gray-800;
+                            margin: 0 0 1rem 0;
+                            padding-bottom: 0.5rem;
+                            border-bottom: 1px solid $gray-200;
+                        }
+
+                        .notification-item {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 1rem 0;
+                            border-bottom: 1px solid $gray-100;
+
+                            &:last-child {
+                                border-bottom: none;
+                            }
+
+                            .notification-info {
+                                flex: 1;
+
+                                label {
+                                    display: block;
+                                    font-size: 0.875rem;
+                                    font-weight: 600;
+                                    color: $gray-800;
+                                    margin-bottom: 0.25rem;
+                                }
+
+                                span {
+                                    font-size: 0.75rem;
+                                    color: $gray-500;
+                                }
+                            }
+
+                            .toggle-switch {
+                                position: relative;
+                                display: inline-block;
+                                width: 48px;
+                                height: 24px;
+
+                                input {
+                                    opacity: 0;
+                                    width: 0;
+                                    height: 0;
+
+                                    &:checked+.slider {
+                                        background: $primary-color;
+
+                                        &:before {
+                                            transform: translateX(24px);
+                                        }
+                                    }
+                                }
+
+                                .slider {
+                                    position: absolute;
+                                    cursor: pointer;
+                                    top: 0;
+                                    left: 0;
+                                    right: 0;
+                                    bottom: 0;
+                                    background: $gray-300;
+                                    transition: 0.3s;
+                                    border-radius: 24px;
+
+                                    &:before {
+                                        position: absolute;
+                                        content: "";
+                                        height: 18px;
+                                        width: 18px;
+                                        left: 3px;
+                                        bottom: 3px;
+                                        background: $white;
+                                        transition: 0.3s;
+                                        border-radius: 50%;
+                                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Account Groups
+                .account-groups {
+                    padding: 2rem;
+
+                    .account-group {
+                        margin-bottom: 2rem;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+
+                        h3 {
+                            font-size: 1.125rem;
+                            font-weight: 600;
+                            color: $gray-800;
+                            margin: 0 0 1rem 0;
+                            padding-bottom: 0.5rem;
+                            border-bottom: 1px solid $gray-200;
+                        }
+
+                        .security-item {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 1rem 0;
+                            border-bottom: 1px solid $gray-100;
+
+                            .security-info {
+                                flex: 1;
+
+                                label {
+                                    display: block;
+                                    font-size: 0.875rem;
+                                    font-weight: 600;
+                                    color: $gray-800;
+                                    margin-bottom: 0.25rem;
+                                }
+
+                                span {
+                                    font-size: 0.75rem;
+                                    color: $gray-500;
+                                }
+                            }
+                        }
+
+                        .security-actions {
+                            display: flex;
+                            gap: 1rem;
+                            margin-top: 1rem;
+
+                            .security-btn {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                padding: 0.75rem 1.5rem;
+                                border: 1px solid $gray-300;
+                                border-radius: $radius-md;
+                                background: $white;
+                                color: $gray-700;
+                                font-size: 0.875rem;
+                                font-weight: 500;
+                                cursor: pointer;
+                                transition: $transition-all;
+
+                                &:hover {
+                                    background: $gray-50;
+                                    border-color: $gray-400;
+                                }
+
+                                &.danger {
+                                    border-color: #ef4444;
+                                    color: #ef4444;
+
+                                    &:hover {
+                                        background: rgba(239, 68, 68, 0.05);
+                                    }
+                                }
+
+                                svg {
+                                    width: 16px;
+                                    height: 16px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+    .delivery-settings {
+        .settings-content {
+            grid-template-columns: 240px 1fr;
+            gap: 1.5rem;
+        }
+
+        .settings-main .settings-section {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+
+                .form-group.full-width {
+                    grid-column: span 1;
+                }
+            }
+
+            .documents-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .delivery-settings {
+        .settings-header .header-content {
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: stretch;
+            padding: 1.5rem;
+
+            .page-title {
+                text-align: center;
+
+                h1 {
+                    font-size: 1.5rem;
+                }
+            }
+
+            .save-btn {
+                align-self: center;
+            }
+        }
+
+        .settings-content {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+
+            .settings-sidebar {
+                order: 2;
+                padding: 1rem 0;
+
+                .settings-menu {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 0.5rem;
+                    padding: 0 1rem;
+
+                    .menu-item {
+                        flex-direction: column;
+                        gap: 0.5rem;
+                        padding: 1rem 0.5rem;
+                        text-align: center;
+                        font-size: 0.75rem;
+
+                        &::before {
+                            display: none;
+                        }
+
+                        .menu-icon {
+                            width: 24px;
+                            height: 24px;
+                        }
+                    }
+                }
+            }
+
+            .settings-main {
+                order: 1;
+                padding-right: 0;
+
+                .settings-section {
+                    .section-header {
+                        padding: 1.5rem;
+                    }
+
+                    .form-grid {
+                        padding: 1.5rem;
+                    }
+
+                    .documents-grid {
+                        padding: 1.5rem;
+                    }
+
+                    .notification-groups {
+                        padding: 1.5rem;
+                    }
+
+                    .account-groups {
+                        padding: 1.5rem;
+
+                        .security-actions {
+                            flex-direction: column;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .delivery-settings {
+        .settings-header .header-content {
+            padding: 1rem;
+        }
+
+        .settings-content {
+            .settings-sidebar .settings-menu {
+                grid-template-columns: repeat(2, 1fr);
+
+                .menu-item {
+                    font-size: 0.7rem;
+                }
+            }
+
+            .settings-main .settings-section {
+                .section-header {
+                    padding: 1rem;
+                }
+
+                .form-grid {
+                    padding: 1rem;
+                }
+
+                .documents-grid {
+                    padding: 1rem;
+                }
+
+                .plate-photo-section {
+                    padding: 1rem;
+
+                    .plate-preview {
+                        flex-direction: column;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Custom scrollbar for settings main
+.settings-main {
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $gray-100;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $gray-300;
+        border-radius: 2px;
+
+        &:hover {
+            background: $gray-400;
+        }
+    }
+}

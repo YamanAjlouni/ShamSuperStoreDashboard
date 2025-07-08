@@ -156,7 +156,7 @@
 
     .stats-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 1.5rem;
         margin-bottom: 2rem;
 
@@ -258,19 +258,11 @@
                 }
             }
 
-            &.ratings {
+            &.quick-actions {
                 border-left: 4px solid $yellow-color;
 
                 .stat-header .stat-icon {
                     color: $yellow-color;
-                }
-            }
-
-            &.quick-actions {
-                border-left: 4px solid #10b981;
-
-                .stat-header .stat-icon {
-                    color: #10b981;
                 }
 
                 .quick-actions-content {
@@ -324,7 +316,7 @@
 
     .content-grid {
         display: grid;
-        grid-template-columns: 2fr 1.5fr 1fr 1fr;
+        grid-template-columns: 2fr 1fr 1fr;
         gap: 1.5rem;
 
         .content-card {
@@ -369,7 +361,6 @@
                 padding: 1.5rem;
                 width: 100%;
                 overflow-y: auto;
-                max-height: 500px;
 
                 .empty-state {
                     text-align: center;
@@ -489,136 +480,6 @@
                             &:hover {
                                 background: $primary-blue-hover;
                                 transform: translateY(-1px);
-                            }
-                        }
-                    }
-                }
-            }
-
-            &.customer-reviews {
-                .review-item {
-                    border: 1px solid $gray-200;
-                    border-radius: $radius-md;
-                    padding: 1.25rem;
-                    margin-bottom: 1rem;
-                    transition: $transition-all;
-
-                    &:last-child {
-                        margin-bottom: 0;
-                    }
-
-                    &:hover {
-                        border-color: $yellow-color;
-                        box-shadow: $shadow-sm;
-                    }
-
-                    .review-header {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: flex-start;
-                        margin-bottom: 1rem;
-
-                        .customer-info {
-                            .customer-name {
-                                font-weight: 600;
-                                color: $gray-800;
-                                margin-bottom: 0.25rem;
-                                font-size: 0.9rem;
-                            }
-
-                            .review-date {
-                                font-size: 0.75rem;
-                                color: $gray-500;
-                            }
-                        }
-
-                        .review-rating {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: flex-end;
-                            gap: 0.25rem;
-
-                            .stars {
-                                display: flex;
-                                gap: 0.125rem;
-
-                                .star {
-                                    width: 14px;
-                                    height: 14px;
-                                    transition: color 0.2s ease;
-
-                                    &.filled {
-                                        color: $yellow-color;
-                                    }
-
-                                    &.empty {
-                                        color: $gray-300;
-                                    }
-                                }
-                            }
-
-                            .rating-number {
-                                font-size: 0.75rem;
-                                font-weight: 600;
-                                color: $gray-600;
-                            }
-                        }
-                    }
-
-                    .review-content {
-                        margin-bottom: 1rem;
-
-                        .review-comment {
-                            font-size: 0.875rem;
-                            color: $gray-700;
-                            line-height: 1.5;
-                            margin: 0 0 1rem 0;
-                        }
-
-                        .review-badge {
-                            display: inline-flex;
-                            align-items: center;
-                            gap: 0.375rem;
-                            padding: 0.375rem 0.75rem;
-                            background: rgba(16, 185, 129, 0.1);
-                            color: #10b981;
-                            border-radius: $radius-full;
-                            font-size: 0.75rem;
-                            font-weight: 500;
-
-                            svg {
-                                width: 12px;
-                                height: 12px;
-                            }
-                        }
-                    }
-
-                    .review-actions {
-                        display: flex;
-                        justify-content: flex-end;
-
-                        .thank-btn {
-                            display: flex;
-                            align-items: center;
-                            gap: 0.375rem;
-                            padding: 0.5rem 1rem;
-                            background: $gray-100;
-                            color: $gray-700;
-                            border: none;
-                            border-radius: $radius-md;
-                            font-size: 0.75rem;
-                            font-weight: 500;
-                            cursor: pointer;
-                            transition: $transition-all;
-
-                            svg {
-                                width: 14px;
-                                height: 14px;
-                            }
-
-                            &:hover {
-                                background: rgba(239, 68, 68, 0.1);
-                                color: #ef4444;
                             }
                         }
                     }
@@ -753,35 +614,8 @@
 }
 
 // Responsive Design
-@media (max-width: 1400px) {
-    .delivery-dashboard {
-        .content-grid {
-            grid-template-columns: 2fr 1.5fr 1fr;
-
-            .content-card.notifications {
-                grid-column: span 1;
-                grid-row: 2;
-            }
-        }
-    }
-}
-
 @media (max-width: 1200px) {
     .delivery-dashboard {
-        .stats-grid {
-            grid-template-columns: 1fr 1fr;
-
-            .stat-card.ratings,
-            .stat-card.quick-actions {
-                grid-column: span 2;
-
-                &.quick-actions .quick-actions-content {
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                }
-            }
-        }
-
         .content-grid {
             grid-template-columns: 1fr 1fr;
 
@@ -797,11 +631,10 @@
         .stats-grid {
             grid-template-columns: 1fr 1fr;
 
-            .stat-card.ratings,
             .stat-card.quick-actions {
                 grid-column: span 2;
 
-                &.quick-actions .quick-actions-content {
+                .quick-actions-content {
                     flex-direction: row;
                     flex-wrap: wrap;
                 }
@@ -838,11 +671,10 @@
         .stats-grid {
             grid-template-columns: 1fr;
 
-            .stat-card.ratings,
             .stat-card.quick-actions {
                 grid-column: span 1;
 
-                &.quick-actions .quick-actions-content {
+                .quick-actions-content {
                     flex-direction: column;
                 }
             }
@@ -852,24 +684,6 @@
             .content-card .card-content {
                 padding: 1rem;
                 max-height: 300px;
-            }
-
-            .content-card.customer-reviews {
-                .review-item {
-                    padding: 1rem;
-
-                    .review-header {
-                        flex-direction: column;
-                        gap: 0.5rem;
-                        align-items: flex-start;
-
-                        .review-rating {
-                            flex-direction: row;
-                            align-items: center;
-                            gap: 0.5rem;
-                        }
-                    }
-                }
             }
         }
     }
@@ -922,12 +736,6 @@
                     .delivery-details {
                         flex-direction: column;
                         gap: 0.25rem;
-                    }
-                }
-
-                &.customer-reviews .review-item {
-                    .review-content .review-comment {
-                        font-size: 0.8rem;
                     }
                 }
             }

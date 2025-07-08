@@ -3,6 +3,8 @@ import Login from '../pages/login/Login'
 import Seller from '../pages/seller/Seller'
 import Admin from '../pages/admin/Admin'
 import Delivery from '../pages/delivery/Delivery'
+import AdminDeliverySidebar from '../components/adminDelivery/AdminDeliverySidebar/AdminDeliverySidebar'
+import AdminDelivery from '../pages/adminDelivery/AdminDelivery'
 
 const AppRoutes = () => {
     const location = useLocation()
@@ -26,6 +28,7 @@ const AppRoutes = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/seller/*" element={<Seller />} />
             <Route path="/admin/*" element={<Admin />} />
+            <Route path="/adminDelivery/*" element={<AdminDelivery />} />
             <Route path="/delivery/*" element={<Delivery />} />
 
             {/* Default redirects */}

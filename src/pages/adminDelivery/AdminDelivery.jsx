@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import DeliveryNavbar from '../../components/delivery/deliveryNavbar/DeliveryNavbar'
-import DeliverySidebar from '../../components/delivery/deliverySidebar/DeliverySidebar'
 
 // Import Delivery Pages
 import DeliveryDashboard from './deliveryDashboard/DeliveryDashboard'
-import DeliveryOrders from './deliveryOrders/DeliveryOrders'
 import ActiveDeliveries from './activeDeliveries/ActiveDeliveries'
 import DeliveryHistory from './deliveryHistory/DeliveryHistory'
+import DeliveryRoutes from './deliveryRoutes/DeliveryRoutes'
 
-import './Delivery.scss'
-import DeliveryEarnings from './deliveryEarnings/DeliveryEarnings'
-import DeliveryReviews from './deliveryReviews/DeliveryReviews'
-import DeliverySettings from './deliverySettings/DeliverySettings'
+import './AdminDelivery.scss'
+import AdminDeliveryNavbar from '../../components/adminDelivery/adminDeliveryNavbar/AdminDeliveryNavbar'
+import AdminDeliverySidebar from '../../components/adminDelivery/AdminDeliverySidebar/AdminDeliverySidebar'
 
 const PlaceholderPage = ({ pageName }) => (
     <div className="page-placeholder">
@@ -23,7 +20,7 @@ const PlaceholderPage = ({ pageName }) => (
     </div>
 )
 
-const Delivery = () => {
+const AdminDelivery = () => {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -91,13 +88,13 @@ const Delivery = () => {
 
     return (
         <div className="delivery-layout">
-            <DeliveryNavbar
+            <AdminDeliveryNavbar
                 onToggleSidebar={handleToggleSidebar}
                 isSidebarCollapsed={isSidebarCollapsed}
             />
 
             <div className="delivery-content">
-                <DeliverySidebar
+                <AdminDeliverySidebar
                     isCollapsed={isSidebarCollapsed}
                     isMobile={isMobile}
                     isOpen={isSidebarOpen}
@@ -114,19 +111,25 @@ const Delivery = () => {
                         <Route path="/" element={<DeliveryDashboard />} />
                         <Route path="/dashboard" element={<Navigate to="/delivery" replace />} />
 
-                        {/* Orders Management */}
-                        <Route path="/orders" element={<DeliveryOrders />} />
-
                         {/* Delivery Management */}
                         <Route path="/active-deliveries" element={<ActiveDeliveries />} />
                         <Route path="/delivery-history" element={<DeliveryHistory pageName="Delivery History" />} />
+                        <Route path="/routes" element={<DeliveryRoutes />} />
+                        <Route path="/delivery/:id" element={<PlaceholderPage pageName="Delivery Details" />} />
 
                         {/* Earnings & Reports */}
-                        <Route path="/earnings" element={<DeliveryEarnings />} />
-                        <Route path="/reviews" element={<DeliveryReviews />} />
+                        <Route path="/earnings" element={<PlaceholderPage pageName="Earnings" />} />
+                        <Route path="/reports" element={<PlaceholderPage pageName="Performance Reports" />} />
+
+                        {/* Driver Management */}
+                        <Route path="/schedule" element={<PlaceholderPage pageName="Schedule" />} />
+                        <Route path="/availability" element={<PlaceholderPage pageName="Availability" />} />
+                        <Route path="/vehicle" element={<PlaceholderPage pageName="Vehicle Information" />} />
 
                         {/* Support & Settings */}
-                        <Route path="/settings" element={<DeliverySettings />} />
+                        <Route path="/support" element={<PlaceholderPage pageName="Support Center" />} />
+                        <Route path="/settings" element={<PlaceholderPage pageName="Driver Settings" />} />
+                        <Route path="/profile" element={<PlaceholderPage pageName="Driver Profile" />} />
 
                         {/* Error Pages */}
                         <Route path="/404" element={<PlaceholderPage pageName="Page Not Found" />} />
@@ -140,4 +143,4 @@ const Delivery = () => {
     )
 }
 
-export default Delivery
+export default AdminDelivery

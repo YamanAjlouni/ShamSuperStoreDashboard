@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import './DeliveryNavbar.scss'
+import './AdminDeliveryNavbar.scss'
 
-const DeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
+const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const [notifications] = useState(8) // Driver notifications count
@@ -94,11 +94,11 @@ const DeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                         <span className="stat-value">{deliveryStats.active}</span>
                         <span className="stat-label">Active</span>
                     </div>
-                    {/* <div className="stat-divider">|</div>
+                    <div className="stat-divider">|</div>
                     <div className="stat-item">
                         <span className="stat-value">{deliveryStats.completed}</span>
                         <span className="stat-label">Today</span>
-                    </div> */}
+                    </div>
                 </div>
 
                 <div className="navbar-actions">
@@ -115,14 +115,14 @@ const DeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                     </button>
 
                     {/* Emergency Button */}
-                    {/* <button
+                    <button
                         className="action-btn emergency-btn"
                         title="Emergency Support"
                     >
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
                         </svg>
-                    </button> */}
+                    </button>
 
                     {/* User Profile */}
                     <div className="user-profile" ref={profileRef}>
@@ -142,7 +142,7 @@ const DeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                             <div className="profile-dropdown">
                                 <div className="dropdown-header">
                                     <span className="user-role">Delivery Driver</span>
-                                    {/* <span className="driver-status online">Online</span> */}
+                                    <span className="driver-status online">Online</span>
                                 </div>
                                 <button
                                     className="dropdown-item"
@@ -184,4 +184,4 @@ const DeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     )
 }
 
-export default DeliveryNavbar
+export default AdminDeliveryNavbar
