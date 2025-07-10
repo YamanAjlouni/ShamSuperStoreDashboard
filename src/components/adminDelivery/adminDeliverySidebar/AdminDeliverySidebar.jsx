@@ -17,44 +17,24 @@ const AdminDeliverySidebar = ({ isCollapsed, isMobile, isOpen, onClose }) => {
             active: location.pathname === '/adminDelivery' || location.pathname === '/adminDelivery/'
         },
         {
-            path: '/adminDelivery/active-deliveries',
+            path: '/adminDelivery/orders',
             icon: (
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l-1 12H6L5 9z" />
                 </svg>
             ),
-            label: 'Active Deliveries',
-            active: location.pathname.includes('/active-deliveries')
+            label: 'Orders',
+            active: location.pathname.includes('/orders')
         },
         {
-            path: '/adminDelivery/delivery-history',
+            path: '/adminDelivery/drivers',
             icon: (
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
             ),
-            label: 'Delivery History',
-            active: location.pathname.includes('/delivery-history')
-        },
-        {
-            path: '/adminDelivery/routes',
-            icon: (
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                </svg>
-            ),
-            label: 'Routes',
-            active: location.pathname.includes('/routes')
-        },
-        {
-            path: '/adminDelivery/earnings',
-            icon: (
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                </svg>
-            ),
-            label: 'Earnings',
-            active: location.pathname.includes('/earnings')
+            label: 'Delivery Drivers',
+            active: location.pathname.includes('/drivers')
         },
         {
             path: '/adminDelivery/reports',
@@ -65,46 +45,6 @@ const AdminDeliverySidebar = ({ isCollapsed, isMobile, isOpen, onClose }) => {
             ),
             label: 'Reports',
             active: location.pathname.includes('/reports')
-        },
-        {
-            path: '/adminDelivery/schedule',
-            icon: (
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-            ),
-            label: 'Schedule',
-            active: location.pathname.includes('/schedule')
-        },
-        {
-            path: '/adminDelivery/availability',
-            icon: (
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-            ),
-            label: 'Availability',
-            active: location.pathname.includes('/availability')
-        },
-        {
-            path: '/adminDelivery/vehicle',
-            icon: (
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-            ),
-            label: 'Vehicle Info',
-            active: location.pathname.includes('/vehicle')
-        },
-        {
-            path: '/adminDelivery/support',
-            icon: (
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-            ),
-            label: 'Support',
-            active: location.pathname.includes('/support')
         },
         {
             path: '/adminDelivery/settings',
@@ -120,7 +60,7 @@ const AdminDeliverySidebar = ({ isCollapsed, isMobile, isOpen, onClose }) => {
     ]
 
     const handleLogout = () => {
-        console.log('Driver logout clicked')
+        console.log('Admin delivery logout clicked')
         localStorage.removeItem('isAuthenticated')
         localStorage.removeItem('userRole')
         navigate('/login')
@@ -157,8 +97,8 @@ const AdminDeliverySidebar = ({ isCollapsed, isMobile, isOpen, onClose }) => {
                 {isMobile && (
                     <div className="sidebar-header">
                         <div className="brand-section">
-                            <div className="brand-icon">DEL</div>
-                            <span className="brand-text">Driver Portal</span>
+                            <div className="brand-icon">ADM</div>
+                            <span className="brand-text">Admin Delivery</span>
                         </div>
                         <button className="close-btn" onClick={handleCloseClick} type="button">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">

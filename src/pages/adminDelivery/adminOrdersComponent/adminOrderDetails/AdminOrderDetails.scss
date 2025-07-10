@@ -1,0 +1,599 @@
+@use '../../../../assets/styles/vars.scss' as *;
+
+.order-details {
+    padding: 1.5rem;
+    background-color: $gray-50;
+    min-height: 100vh;
+
+    .error-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 50vh;
+        text-align: center;
+
+        h2 {
+            color: $dark-blue-color;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: $text-light;
+            margin-bottom: 2rem;
+        }
+    }
+
+    .order-details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        background: $white;
+        padding: 1.5rem;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-sm;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            @media (max-width: 768px) {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            h1 {
+                color: $dark-blue-color;
+                font-size: 1.75rem;
+                font-weight: 600;
+                margin: 0;
+
+                @media (max-width: 768px) {
+                    font-size: 1.5rem;
+                }
+            }
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+
+            @media (max-width: 768px) {
+                justify-content: center;
+            }
+        }
+    }
+
+    .back-btn {
+        background: $gray-200;
+        color: $text-dark;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: $radius-md;
+        font-weight: 500;
+        cursor: pointer;
+        transition: $transition-all;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        &:hover {
+            background: $gray-300;
+        }
+    }
+
+    .status-badge,
+    .size-badge {
+        padding: 0.5rem 1rem;
+        border-radius: $radius-full;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-badge {
+        &.status-pending {
+            background-color: rgba(251, 191, 36, 0.1);
+            color: rgb(180, 83, 9);
+        }
+
+        &.status-processing {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: rgb(29, 78, 216);
+        }
+
+        &.status-assigned {
+            background-color: rgba(139, 69, 19, 0.1);
+            color: rgb(120, 53, 15);
+        }
+
+        &.status-transit {
+            background-color: rgba(147, 51, 234, 0.1);
+            color: rgb(109, 40, 217);
+        }
+
+        &.status-delivered {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: rgb(21, 128, 61);
+        }
+    }
+
+    .size-badge {
+        &.size-small {
+            background: rgba(16, 185, 129, 0.1);
+            color: rgb(5, 150, 105);
+        }
+
+        &.size-medium {
+            background: rgba(245, 158, 11, 0.1);
+            color: rgb(180, 83, 9);
+        }
+
+        &.size-large {
+            background: rgba(239, 68, 68, 0.1);
+            color: rgb(185, 28, 28);
+        }
+    }
+
+    .order-details-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .details-section {
+        background: $white;
+        padding: 2rem;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-sm;
+
+        h3 {
+            color: $dark-blue-color;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 0 1.5rem 0;
+            border-bottom: 2px solid $primary-color;
+            padding-bottom: 0.75rem;
+        }
+
+        h4 {
+            color: $dark-blue-color;
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin: 0 0 1rem 0;
+        }
+
+        h5 {
+            color: $dark-blue-color;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+        }
+    }
+
+    // Order Summary Section
+    .order-summary {
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+
+            .summary-item {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                .label {
+                    font-size: 0.875rem;
+                    color: $text-light;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+
+                .value {
+                    font-size: 1.125rem;
+                    font-weight: 600;
+                    color: $text-dark;
+
+                    &.total-amount {
+                        color: $orange-color;
+                        font-size: 1.5rem;
+                    }
+                }
+            }
+        }
+    }
+
+    // Route Section
+    .route-section {
+        .route-display {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            justify-content: center;
+
+            @media (max-width: 768px) {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .route-point {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                flex: 1;
+
+                .route-icon {
+                    font-size: 2rem;
+                    padding: 1rem;
+                    background: $primary-blue-light;
+                    border-radius: $radius-full;
+                }
+
+                .route-info {
+                    h4 {
+                        margin: 0 0 0.5rem 0;
+                        color: $dark-blue-color;
+                    }
+
+                    p {
+                        margin: 0;
+                        color: $text-dark;
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            .route-line {
+                height: 2px;
+                background: linear-gradient(90deg, $primary-color 0%, $orange-color 100%);
+                flex: 0.5;
+                min-width: 50px;
+
+                @media (max-width: 768px) {
+                    width: 2px;
+                    height: 30px;
+                    background: linear-gradient(180deg, $primary-color 0%, $orange-color 100%);
+                }
+            }
+        }
+    }
+
+    // Details Grid for Customer/Seller
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .info-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+
+            .info-icon {
+                font-size: 1.25rem;
+                padding: 0.75rem;
+                background: $gray-100;
+                border-radius: $radius-md;
+                flex-shrink: 0;
+            }
+
+            .info-text {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+
+                strong {
+                    color: $dark-blue-color;
+                    font-weight: 600;
+                    font-size: 0.875rem;
+                }
+
+                span {
+                    color: $text-dark;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    // Items Table
+    .items-table {
+        border: 1px solid $gray-200;
+        border-radius: $radius-md;
+        overflow: hidden;
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            background: $gray-100;
+            padding: 1rem;
+            font-weight: 600;
+            color: $dark-blue-color;
+            gap: 1rem;
+
+            @media (max-width: 768px) {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            padding: 1rem;
+            border-bottom: 1px solid $gray-200;
+            align-items: center;
+            gap: 1rem;
+
+            @media (max-width: 768px) {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+
+                span {
+                    padding: 0.25rem 0;
+                }
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &:hover {
+                background: $gray-50;
+            }
+
+            .item-name {
+                font-weight: 600;
+                color: $text-dark;
+            }
+
+            .item-quantity,
+            .item-price,
+            .item-total {
+                font-weight: 500;
+                color: $text-dark;
+            }
+
+            .item-total {
+                color: $orange-color;
+                font-weight: 600;
+            }
+        }
+
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: $primary-blue-light;
+            border-top: 2px solid $primary-color;
+
+            .total-label {
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: $dark-blue-color;
+            }
+
+            .total-value {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: $orange-color;
+            }
+        }
+    }
+
+    // Driver Assignment Section
+    .driver-assignment {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        .driver-select {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+
+            label {
+                font-weight: 600;
+                color: $dark-blue-color;
+            }
+
+            .driver-dropdown {
+                padding: 0.75rem;
+                border: 2px solid $gray-300;
+                border-radius: $radius-md;
+                background: $white;
+                color: $text-dark;
+                font-size: 1rem;
+                transition: $transition-all;
+
+                &:focus {
+                    outline: none;
+                    border-color: $primary-color;
+                }
+            }
+        }
+
+        .available-drivers {
+            .drivers-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1rem;
+                margin-top: 1rem;
+
+                .driver-card {
+                    background: $gray-50;
+                    padding: 1rem;
+                    border-radius: $radius-md;
+                    border: 2px solid transparent;
+                    transition: $transition-all;
+
+                    &:hover {
+                        border-color: $primary-color;
+                        background: $white;
+                    }
+
+                    .driver-info {
+                        margin-bottom: 1rem;
+
+                        h5 {
+                            margin-bottom: 0.25rem;
+                        }
+
+                        p {
+                            color: $text-light;
+                            font-size: 0.875rem;
+                            margin-bottom: 0.5rem;
+                        }
+
+                        .driver-rating {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+
+                            .star {
+                                color: $gray-300;
+                                font-size: 0.875rem;
+
+                                &.filled {
+                                    color: $yellow-color;
+                                }
+                            }
+
+                            span {
+                                font-weight: 600;
+                                color: $text-dark;
+                            }
+                        }
+                    }
+
+                    .select-driver-btn {
+                        background: $primary-color;
+                        color: $white;
+                        border: none;
+                        padding: 0.5rem 1rem;
+                        border-radius: $radius-sm;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: $transition-all;
+                        width: 100%;
+
+                        &:hover {
+                            background: $primary-blue-hover;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Action Buttons Section
+    .actions-section {
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+
+            .action-btn {
+                padding: 1rem 2rem;
+                border: none;
+                border-radius: $radius-md;
+                font-weight: 600;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: $transition-all;
+                align-self: flex-start;
+
+                &.assign-btn {
+                    background: $primary-color;
+                    color: $white;
+
+                    &:hover:not(:disabled) {
+                        background: $primary-blue-hover;
+                    }
+
+                    &:disabled {
+                        background: $gray-300;
+                        color: $text-light;
+                        cursor: not-allowed;
+                    }
+                }
+            }
+
+            .status-actions {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 1rem;
+
+                span {
+                    font-weight: 600;
+                    color: $dark-blue-color;
+                }
+
+                .status-btn {
+                    padding: 0.75rem 1.5rem;
+                    border: none;
+                    border-radius: $radius-md;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: $transition-all;
+
+                    &:disabled {
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                    }
+
+                    &.processing-btn {
+                        background: rgba(59, 130, 246, 0.1);
+                        color: rgb(29, 78, 216);
+
+                        &:hover:not(:disabled) {
+                            background: rgba(59, 130, 246, 0.2);
+                        }
+                    }
+
+                    &.transit-btn {
+                        background: rgba(147, 51, 234, 0.1);
+                        color: rgb(109, 40, 217);
+
+                        &:hover:not(:disabled) {
+                            background: rgba(147, 51, 234, 0.2);
+                        }
+                    }
+
+                    &.delivered-btn {
+                        background: rgba(34, 197, 94, 0.1);
+                        color: rgb(21, 128, 61);
+
+                        &:hover:not(:disabled) {
+                            background: rgba(34, 197, 94, 0.2);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

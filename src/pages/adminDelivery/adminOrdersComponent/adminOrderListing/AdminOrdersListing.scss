@@ -1,0 +1,231 @@
+@use '../../../../assets/styles/vars.scss' as *;
+
+.orders-listing {
+    padding: 1.5rem;
+    background-color: $gray-50;
+    min-height: 100vh;
+
+    .orders-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        h2 {
+            color: $dark-blue-color;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                border: 2px solid $gray-300;
+                background: $white;
+                color: $text-light;
+                border-radius: $radius-md;
+                font-weight: 500;
+                cursor: pointer;
+                transition: $transition-all;
+
+                &:hover {
+                    border-color: $primary-color;
+                    color: $primary-color;
+                }
+
+                &.active {
+                    background: $primary-color;
+                    border-color: $primary-color;
+                    color: $white;
+                }
+            }
+        }
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: flex-start;
+
+            .filter-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    }
+
+    .orders-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+
+        .order-card {
+            background: $white;
+            border-radius: $radius-lg;
+            padding: 1.5rem;
+            box-shadow: $shadow-sm;
+            cursor: pointer;
+            transition: $transition-all;
+            position: relative;
+            border-left: 4px solid transparent;
+
+            &:hover {
+                box-shadow: $shadow-md;
+                transform: translateY(-2px);
+            }
+
+            // Size-based styling
+            &.size-small {
+                border-left-color: #10b981; // Green
+                background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            }
+
+            &.size-medium {
+                border-left-color: $yellow-color; // Yellow
+                background: linear-gradient(135deg, #ffffff 0%, #fefce8 100%);
+            }
+
+            &.size-large {
+                border-left-color: #ef4444; // Red
+                background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+            }
+
+            .order-card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 1rem;
+
+                .order-id {
+                    font-size: 1.125rem;
+                    font-weight: 700;
+                    color: $dark-blue-color;
+                }
+
+                .order-badges {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.25rem;
+                    align-items: flex-end;
+                }
+            }
+
+            .order-route {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 1.5rem;
+                padding: 1rem;
+                background: rgba(255, 255, 255, 0.8);
+                border-radius: $radius-md;
+                border: 1px solid $gray-200;
+
+                .route-point {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                    flex: 1;
+
+                    .route-label {
+                        font-size: 0.75rem;
+                        color: $text-light;
+                        font-weight: 500;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        margin-bottom: 0.25rem;
+                    }
+
+                    .route-location {
+                        font-weight: 600;
+                        color: $text-dark;
+                        font-size: 0.875rem;
+                    }
+                }
+
+                .route-arrow {
+                    font-size: 1.5rem;
+                    color: $primary-color;
+                    font-weight: bold;
+                    margin: 0 0.5rem;
+                }
+            }
+
+            .order-card-footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .order-time {
+                    font-size: 0.875rem;
+                    color: $text-light;
+                    font-weight: 500;
+                }
+
+                .order-total {
+                    font-size: 1.125rem;
+                    font-weight: 700;
+                    color: $orange-color;
+                }
+            }
+
+            .size-indicator {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+
+                .size-badge {
+                    padding: 0.25rem 0.5rem;
+                    border-radius: $radius-sm;
+                    font-size: 0.625rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+
+                    &.size-small {
+                        background: rgba(16, 185, 129, 0.1);
+                        color: rgb(5, 150, 105);
+                    }
+
+                    &.size-medium {
+                        background: rgba(245, 158, 11, 0.1);
+                        color: rgb(180, 83, 9);
+                    }
+
+                    &.size-large {
+                        background: rgba(239, 68, 68, 0.1);
+                        color: rgb(185, 28, 28);
+                    }
+                }
+            }
+        }
+    }
+
+    // Status classes
+    .status {
+        padding: 0.25rem 0.75rem;
+        border-radius: $radius-full;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+
+        &.status-pending {
+            background-color: rgba(251, 191, 36, 0.1);
+            color: rgb(180, 83, 9);
+        }
+
+        &.status-processing {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: rgb(29, 78, 216);
+        }
+    }
+}

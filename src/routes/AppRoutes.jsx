@@ -21,6 +21,7 @@ const AppRoutes = () => {
         if (userRole === 'seller') return <Navigate to="/seller" replace />
         if (userRole === 'admin') return <Navigate to="/admin" replace />
         if (userRole === 'delivery') return <Navigate to="/delivery" replace />
+        if (userRole === 'adminDelivery') return <Navigate to="/adminDelivery" replace />
     }
 
     return (
@@ -39,7 +40,8 @@ const AppRoutes = () => {
                         userRole === 'seller' ? <Navigate to="/seller" replace /> :
                             userRole === 'admin' ? <Navigate to="/admin" replace /> :
                                 userRole === 'delivery' ? <Navigate to="/delivery" replace /> :
-                                    <Navigate to="/login" replace />
+                                    userRole === 'adminDelivery' ? <Navigate to="/adminDelivery" replace /> :
+                                        <Navigate to="/login" replace />
                     ) : (
                         <Navigate to="/login" replace />
                     )

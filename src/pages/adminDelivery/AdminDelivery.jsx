@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 
 // Import Delivery Pages
-import DeliveryDashboard from './deliveryDashboard/DeliveryDashboard'
 import ActiveDeliveries from './activeDeliveries/ActiveDeliveries'
 import DeliveryHistory from './deliveryHistory/DeliveryHistory'
-import DeliveryRoutes from './deliveryRoutes/DeliveryRoutes'
 
 import './AdminDelivery.scss'
 import AdminDeliveryNavbar from '../../components/adminDelivery/adminDeliveryNavbar/AdminDeliveryNavbar'
 import AdminDeliverySidebar from '../../components/adminDelivery/AdminDeliverySidebar/AdminDeliverySidebar'
+import AdminDeliveryDashboard from './adminDeliveryDashboard/AdminDeliveryDashboard'
+import AdminOrdersComponent from './adminOrdersComponent/AdminOrdersComponent'
 
 const PlaceholderPage = ({ pageName }) => (
     <div className="page-placeholder">
@@ -24,6 +24,10 @@ const AdminDelivery = () => {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    
+    // Order management state
+    const [selectedOrder, setSelectedOrder] = useState(null)
+    const [currentOrderView, setCurrentOrderView] = useState('listing') // 'listing' or 'details'
 
     useEffect(() => {
         const checkMobile = () => {
@@ -86,6 +90,35 @@ const AdminDelivery = () => {
         }
     }
 
+    // Handle order selection and navigation
+    const handleOrderClick = (order) => {
+        setSelectedOrder(order)
+        setCurrentOrderView('details')
+    }
+
+    const handleBackToOrders = () => {
+        setCurrentOrderView('listing')
+        setSelectedOrder(null)
+    }
+
+    // Component to render based on current view
+    const OrdersComponent = () => {
+        if (currentOrderView === 'details') {
+            return (
+                <AdminOrderDetails 
+                    order={selectedOrder} 
+                    onBack={handleBackToOrders} 
+                />
+            )
+        }
+        
+        return (
+            <AdminOrdersListing 
+                onOrderClick={handleOrderClick}
+            />
+        )
+    }
+
     return (
         <div className="delivery-layout">
             <AdminDeliveryNavbar
@@ -108,14 +141,13 @@ const AdminDelivery = () => {
                     {/* Delivery Routes */}
                     <Routes>
                         {/* Dashboard */}
-                        <Route path="/" element={<DeliveryDashboard />} />
-                        <Route path="/dashboard" element={<Navigate to="/delivery" replace />} />
+                        <Route path="/" element={<AdminDeliveryDashboard />} />
+                        <Route path="/dashboard" element={<Navigate to="/adminDelivery" replace />} />
 
                         {/* Delivery Management */}
                         <Route path="/active-deliveries" element={<ActiveDeliveries />} />
                         <Route path="/delivery-history" element={<DeliveryHistory pageName="Delivery History" />} />
-                        <Route path="/routes" element={<DeliveryRoutes />} />
-                        <Route path="/delivery/:id" element={<PlaceholderPage pageName="Delivery Details" />} />
+                        <Route path="/orders" element={<AdminOrdersComponent />} />
 
                         {/* Earnings & Reports */}
                         <Route path="/earnings" element={<PlaceholderPage pageName="Earnings" />} />
@@ -135,7 +167,7 @@ const AdminDelivery = () => {
                         <Route path="/404" element={<PlaceholderPage pageName="Page Not Found" />} />
 
                         {/* Catch all route */}
-                        <Route path="*" element={<Navigate to="/delivery/404" replace />} />
+                        <Route path="*" element={<Navigate to="/adminDelivery/404" replace />} />
                     </Routes>
                 </main>
             </div>

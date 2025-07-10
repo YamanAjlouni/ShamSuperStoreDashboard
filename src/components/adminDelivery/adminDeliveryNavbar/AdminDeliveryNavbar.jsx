@@ -5,8 +5,8 @@ import './AdminDeliveryNavbar.scss'
 const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     const navigate = useNavigate()
     const location = useLocation()
-    const [notifications] = useState(8) // Driver notifications count
-    const [deliveryStats] = useState({ active: 2, completed: 15 }) // Delivery stats
+    const [notifications] = useState(12) // Admin notifications count
+    const [deliveryStats] = useState({ pending: 8, processing: 5, activeDrivers: 12 }) // Admin delivery stats
     const [isProfileOpen, setIsProfileOpen] = useState(false)
     const profileRef = useRef(null)
 
@@ -25,24 +25,16 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     // Get current page name from location
     const getCurrentPageName = () => {
         const path = location.pathname
-        if (path === '/delivery' || path === '/delivery/') return 'Delivery Dashboard'
-        if (path.includes('/active-deliveries')) return 'Active Deliveries'
-        if (path.includes('/delivery-history')) return 'Delivery History'
-        if (path.includes('/routes')) return 'Delivery Routes'
-        if (path.includes('/delivery/')) return 'Delivery Details'
-        if (path.includes('/earnings')) return 'Earnings'
-        if (path.includes('/reports')) return 'Performance Reports'
-        if (path.includes('/schedule')) return 'Schedule'
-        if (path.includes('/availability')) return 'Availability'
-        if (path.includes('/vehicle')) return 'Vehicle Information'
-        if (path.includes('/support')) return 'Support Center'
-        if (path.includes('/settings')) return 'Driver Settings'
-        if (path.includes('/profile')) return 'Driver Profile'
-        return 'Delivery Dashboard'
+        if (path === '/adminDelivery' || path === '/adminDelivery/') return 'Admin Dashboard'
+        if (path.includes('/orders')) return 'Orders Management'
+        if (path.includes('/drivers')) return 'Delivery Drivers'
+        if (path.includes('/reports')) return 'Reports & Analytics'
+        if (path.includes('/settings')) return 'Admin Settings'
+        return 'Admin Dashboard'
     }
 
     const handleNotificationsClick = () => {
-        navigate('/delivery/notifications')
+        navigate('/adminDelivery/notifications')
     }
 
     const handleProfileClick = () => {
@@ -50,12 +42,12 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     }
 
     const handleSettingsClick = () => {
-        navigate('/delivery/settings')
+        navigate('/adminDelivery/settings')
         setIsProfileOpen(false)
     }
 
     const handleLogout = () => {
-        console.log('Driver logout clicked')
+        console.log('Admin delivery logout clicked')
         localStorage.removeItem('isAuthenticated')
         localStorage.removeItem('userRole')
         navigate('/login')
@@ -76,8 +68,8 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                 </button>
 
                 <div className="navbar-brand">
-                    <div className="brand-icon">DEL</div>
-                    <span className="brand-text">Driver Portal</span>
+                    <div className="brand-icon">ADM</div>
+                    <span className="brand-text">Admin Delivery</span>
                 </div>
 
                 <div className="navbar-breadcrumb">
@@ -91,13 +83,18 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
             <div className="navbar-right">
                 <div className="navbar-stats">
                     <div className="stat-item">
-                        <span className="stat-value">{deliveryStats.active}</span>
-                        <span className="stat-label">Active</span>
+                        <span className="stat-value">{deliveryStats.pending}</span>
+                        <span className="stat-label">Pending</span>
                     </div>
                     <div className="stat-divider">|</div>
                     <div className="stat-item">
-                        <span className="stat-value">{deliveryStats.completed}</span>
-                        <span className="stat-label">Today</span>
+                        <span className="stat-value">{deliveryStats.processing}</span>
+                        <span className="stat-label">Processing</span>
+                    </div>
+                    <div className="stat-divider">|</div>
+                    <div className="stat-item">
+                        <span className="stat-value">{deliveryStats.activeDrivers}</span>
+                        <span className="stat-label">Drivers</span>
                     </div>
                 </div>
 
@@ -114,13 +111,14 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                         {notifications > 0 && <span className="badge">{notifications}</span>}
                     </button>
 
-                    {/* Emergency Button */}
+                    {/* Quick Actions Button */}
                     <button
-                        className="action-btn emergency-btn"
-                        title="Emergency Support"
+                        className="action-btn quick-actions-btn"
+                        title="Quick Actions"
+                        onClick={() => navigate('/adminDelivery/orders')}
                     >
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
                         </svg>
                     </button>
 
@@ -128,12 +126,12 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                     <div className="user-profile" ref={profileRef}>
                         <button className="user-avatar" onClick={handleProfileClick}>
                             <img
-                                src="https://images.unsplash.com/photo-1566492031773-4f4e44671d66?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                alt="Driver Avatar"
+                                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                alt="Admin Avatar"
                             />
-                            <div className="driver-indicator">
+                            <div className="admin-indicator">
                                 <svg fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z" />
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                                 </svg>
                             </div>
                         </button>
@@ -141,8 +139,8 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                         {isProfileOpen && (
                             <div className="profile-dropdown">
                                 <div className="dropdown-header">
-                                    <span className="user-role">Delivery Driver</span>
-                                    <span className="driver-status online">Online</span>
+                                    <span className="user-role">Admin Delivery</span>
+                                    <span className="admin-status online">Online</span>
                                 </div>
                                 <button
                                     className="dropdown-item"
@@ -157,7 +155,7 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                                 <button
                                     className="dropdown-item"
                                     onClick={() => {
-                                        navigate('/delivery/profile')
+                                        navigate('/adminDelivery/profile')
                                         setIsProfileOpen(false)
                                     }}
                                 >
@@ -165,6 +163,18 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                     Profile
+                                </button>
+                                <button
+                                    className="dropdown-item"
+                                    onClick={() => {
+                                        navigate('/adminDelivery/reports')
+                                        setIsProfileOpen(false)
+                                    }}
+                                >
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    Reports
                                 </button>
                                 <button
                                     className="dropdown-item dropdown-item--logout"
