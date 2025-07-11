@@ -1,0 +1,796 @@
+@use '../../../assets/styles/vars.scss' as *;
+
+.revenue-reports {
+    padding: 1.5rem;
+    background-color: $gray-50;
+    min-height: 100vh;
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
+
+    .reports-header {
+        margin-bottom: 2rem;
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+
+            @media (max-width: 768px) {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            h1 {
+                color: $dark-blue-color;
+                font-size: 2rem;
+                font-weight: 600;
+                margin: 0;
+
+                @media (max-width: 768px) {
+                    font-size: 1.5rem;
+                }
+            }
+
+            .header-actions {
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+
+                @media (max-width: 768px) {
+                    flex-direction: column;
+                    width: 100%;
+                }
+
+                .period-selector {
+                    padding: 0.75rem 1rem;
+                    border: 2px solid $gray-300;
+                    border-radius: $radius-md;
+                    background: $white;
+                    color: $text-dark;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: $transition-all;
+                    min-width: 140px;
+
+                    @media (max-width: 768px) {
+                        width: 100%;
+                    }
+
+                    &:focus {
+                        outline: none;
+                        border-color: $primary-color;
+                    }
+                }
+
+                .export-btn {
+                    background: $primary-color;
+                    color: $white;
+                    border: none;
+                    padding: 0.75rem 1.5rem;
+                    border-radius: $radius-md;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: $transition-all;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    white-space: nowrap;
+
+                    @media (max-width: 768px) {
+                        width: 100%;
+                        justify-content: center;
+                    }
+
+                    svg {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
+
+                    &:hover {
+                        background: $primary-blue-hover;
+                        transform: translateY(-2px);
+                        box-shadow: $shadow-md;
+                    }
+                }
+            }
+        }
+
+        .revenue-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+
+            @media (max-width: 768px) {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .overview-card {
+                background: $white;
+                padding: 2rem;
+                border-radius: $radius-xl;
+                box-shadow: $shadow-sm;
+                transition: $transition-all;
+                position: relative;
+                overflow: hidden;
+
+                @media (max-width: 768px) {
+                    padding: 1.5rem;
+                }
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, $primary-color 0%, $orange-color 100%);
+                }
+
+                &:hover {
+                    box-shadow: $shadow-lg;
+                    transform: translateY(-4px);
+                }
+
+                &.total-revenue::before {
+                    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+                }
+
+                &.deliveries::before {
+                    background: linear-gradient(90deg, $primary-color 0%, $primary-blue-hover 100%);
+                }
+
+                &.daily-average::before {
+                    background: linear-gradient(90deg, $orange-color 0%, #ea580c 100%);
+                }
+
+                .card-icon {
+                    position: absolute;
+                    top: 1.5rem;
+                    right: 1.5rem;
+                    width: 3rem;
+                    height: 3rem;
+                    border-radius: $radius-full;
+                    background: rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(10px);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0.3;
+
+                    @media (max-width: 768px) {
+                        width: 2.5rem;
+                        height: 2.5rem;
+                        top: 1rem;
+                        right: 1rem;
+                    }
+
+                    svg {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        color: $dark-blue-color;
+
+                        @media (max-width: 768px) {
+                            width: 1.25rem;
+                            height: 1.25rem;
+                        }
+                    }
+                }
+
+                .card-content {
+                    h3 {
+                        font-size: 2.5rem;
+                        font-weight: 700;
+                        color: $dark-blue-color;
+                        margin: 0 0 0.5rem 0;
+                        line-height: 1;
+
+                        @media (max-width: 768px) {
+                            font-size: 2rem;
+                        }
+                    }
+
+                    p {
+                        color: $text-light;
+                        font-size: 1rem;
+                        font-weight: 500;
+                        margin: 0 0 1rem 0;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+
+                        @media (max-width: 768px) {
+                            font-size: 0.875rem;
+                        }
+                    }
+
+                    .growth-indicator {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        font-size: 0.875rem;
+                        font-weight: 600;
+
+                        &.positive {
+                            color: #10b981;
+                        }
+
+                        svg {
+                            width: 1rem;
+                            height: 1rem;
+                        }
+                    }
+
+                    .percentage,
+                    .average {
+                        color: $text-light;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    }
+
+    .reports-content {
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+
+            @media (max-width: 768px) {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .report-section {
+                background: $white;
+                padding: 2rem;
+                border-radius: $radius-xl;
+                box-shadow: $shadow-sm;
+                transition: $transition-all;
+
+                @media (max-width: 768px) {
+                    padding: 1.5rem;
+                }
+
+                &:hover {
+                    box-shadow: $shadow-md;
+                }
+
+                h3 {
+                    color: $dark-blue-color;
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    margin: 0 0 1.5rem 0;
+                    border-bottom: 2px solid $primary-color;
+                    padding-bottom: 0.75rem;
+
+                    @media (max-width: 768px) {
+                        font-size: 1.25rem;
+                        margin-bottom: 1rem;
+                    }
+                }
+
+                // Fixed Weekly Revenue Chart Design
+                &.chart-section {
+                    grid-column: 1 / -1;
+
+                    .chart-container {
+                        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+                        border-radius: $radius-lg;
+                        padding: 2rem;
+                        margin-top: 1rem;
+
+                        @media (max-width: 768px) {
+                            padding: 1rem;
+                        }
+
+                        .chart-wrapper {
+                            display: grid;
+                            grid-template-columns: repeat(4, 1fr);
+                            gap: 1.5rem;
+                            align-items: end;
+                            min-height: 280px;
+
+                            @media (max-width: 768px) {
+                                grid-template-columns: repeat(2, 1fr);
+                                gap: 1rem;
+                                min-height: 240px;
+                            }
+
+                            @media (max-width: 480px) {
+                                grid-template-columns: 1fr;
+                                gap: 1rem;
+                            }
+
+                            .chart-bar-container {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                height: 100%;
+
+                                .chart-bar-wrapper {
+                                    display: flex;
+                                    align-items: end;
+                                    justify-content: center;
+                                    flex: 1;
+                                    width: 100%;
+
+                                    .revenue-bar {
+                                        background: linear-gradient(180deg, $primary-color 0%, $primary-blue-hover 100%);
+                                        width: 60px;
+                                        border-radius: $radius-md $radius-md 0 0;
+                                        transition: $transition-all;
+                                        cursor: pointer;
+                                        box-shadow: $shadow-sm;
+                                        position: relative;
+                                        display: flex;
+                                        align-items: flex-start;
+                                        justify-content: center;
+                                        padding-top: 0.5rem;
+
+                                        @media (max-width: 768px) {
+                                            width: 50px;
+                                        }
+
+                                        .bar-value {
+                                            color: $white;
+                                            font-size: 0.75rem;
+                                            font-weight: 600;
+                                            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+                                            @media (max-width: 768px) {
+                                                font-size: 0.625rem;
+                                            }
+                                        }
+
+                                        &:hover {
+                                            background: linear-gradient(180deg, $orange-color 0%, #ea580c 100%);
+                                            transform: scaleX(1.1);
+                                        }
+                                    }
+                                }
+
+                                .bar-info {
+                                    text-align: center;
+                                    margin-top: 1rem;
+
+                                    .week-name {
+                                        display: block;
+                                        font-weight: 700;
+                                        color: $dark-blue-color;
+                                        margin-bottom: 0.25rem;
+                                        font-size: 0.875rem;
+
+                                        @media (max-width: 768px) {
+                                            font-size: 0.75rem;
+                                        }
+                                    }
+
+                                    .week-amount {
+                                        display: block;
+                                        font-weight: 700;
+                                        color: $orange-color;
+                                        font-size: 1rem;
+                                        margin-bottom: 0.25rem;
+
+                                        @media (max-width: 768px) {
+                                            font-size: 0.875rem;
+                                        }
+                                    }
+
+                                    .week-deliveries {
+                                        display: block;
+                                        font-size: 0.75rem;
+                                        color: $text-light;
+
+                                        @media (max-width: 768px) {
+                                            font-size: 0.625rem;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.city-breakdown {
+                    .city-list {
+                        .city-item {
+                            display: grid;
+                            grid-template-columns: 1fr auto 100px;
+                            align-items: center;
+                            gap: 1rem;
+                            padding: 1rem 0;
+                            border-bottom: 1px solid $gray-200;
+
+                            @media (max-width: 768px) {
+                                grid-template-columns: 1fr;
+                                gap: 0.5rem;
+                                text-align: center;
+                            }
+
+                            &:last-child {
+                                border-bottom: none;
+                            }
+
+                            .city-info {
+                                display: flex;
+                                flex-direction: column;
+
+                                @media (max-width: 768px) {
+                                    align-items: center;
+                                }
+
+                                .city-name {
+                                    font-weight: 600;
+                                    color: $dark-blue-color;
+                                    margin-bottom: 0.25rem;
+                                }
+
+                                .city-deliveries {
+                                    font-size: 0.875rem;
+                                    color: $text-light;
+                                }
+                            }
+
+                            .city-revenue {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: end;
+
+                                @media (max-width: 768px) {
+                                    align-items: center;
+                                }
+
+                                .revenue-amount {
+                                    font-weight: 700;
+                                    color: $orange-color;
+                                    margin-bottom: 0.25rem;
+                                }
+
+                                .revenue-percentage {
+                                    font-size: 0.875rem;
+                                    color: $text-light;
+                                }
+                            }
+
+                            .progress-bar {
+                                width: 100px;
+                                height: 8px;
+                                background: $gray-200;
+                                border-radius: $radius-full;
+                                overflow: hidden;
+
+                                @media (max-width: 768px) {
+                                    width: 100%;
+                                    max-width: 200px;
+                                    margin: 0 auto;
+                                }
+
+                                .progress-fill {
+                                    height: 100%;
+                                    background: linear-gradient(90deg, $primary-color 0%, $orange-color 100%);
+                                    border-radius: $radius-full;
+                                    transition: $transition-all;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.drivers-section {
+                    .drivers-table {
+                        .table-header {
+                            display: grid;
+                            grid-template-columns: 2fr 1fr 1fr 1fr;
+                            padding: 1rem;
+                            background: $gray-100;
+                            border-radius: $radius-md;
+                            font-weight: 600;
+                            color: $dark-blue-color;
+                            margin-bottom: 0.5rem;
+                            gap: 1rem;
+
+                            @media (max-width: 768px) {
+                                display: none;
+                            }
+                        }
+
+                        .table-row {
+                            display: grid;
+                            grid-template-columns: 2fr 1fr 1fr 1fr;
+                            padding: 1rem;
+                            border-bottom: 1px solid $gray-200;
+                            align-items: center;
+                            gap: 1rem;
+                            transition: $transition-all;
+
+                            @media (max-width: 768px) {
+                                grid-template-columns: 1fr;
+                                gap: 0.5rem;
+                                text-align: center;
+                                padding: 1rem 0.5rem;
+
+                                span {
+                                    padding: 0.25rem 0;
+                                }
+                            }
+
+                            &:hover {
+                                background: $gray-50;
+                            }
+
+                            &:last-child {
+                                border-bottom: none;
+                            }
+
+                            .driver-info {
+                                display: flex;
+                                align-items: center;
+                                gap: 1rem;
+
+                                @media (max-width: 768px) {
+                                    justify-content: center;
+                                }
+
+                                .driver-rank {
+                                    width: 2rem;
+                                    height: 2rem;
+                                    background: linear-gradient(135deg, $primary-color 0%, $primary-blue-hover 100%);
+                                    color: $white;
+                                    border-radius: $radius-full;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-weight: 700;
+                                    font-size: 0.875rem;
+                                }
+
+                                .driver-name {
+                                    font-weight: 600;
+                                    color: $dark-blue-color;
+                                }
+                            }
+
+                            .driver-city {
+                                color: $text-light;
+                                font-weight: 500;
+                            }
+
+                            .driver-earnings {
+                                font-weight: 700;
+                                color: $orange-color;
+                            }
+
+                            .driver-deliveries {
+                                font-weight: 600;
+                                color: $dark-blue-color;
+                            }
+                        }
+                    }
+                }
+
+                // Changed from transactions to deliveries
+                &.deliveries-section {
+                    .deliveries-list {
+                        .delivery-item {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-start;
+                            padding: 1.5rem;
+                            background: $gray-50;
+                            border-radius: $radius-md;
+                            margin-bottom: 1rem;
+                            transition: $transition-all;
+                            gap: 1rem;
+
+                            @media (max-width: 768px) {
+                                flex-direction: column;
+                                gap: 1rem;
+                            }
+
+                            &:hover {
+                                background: $white;
+                                box-shadow: $shadow-sm;
+                                transform: translateY(-1px);
+                            }
+
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+
+                            .delivery-main-info {
+                                display: flex;
+                                flex-direction: column;
+                                flex: 1;
+                                gap: 0.5rem;
+
+                                .delivery-header {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 1rem;
+
+                                    @media (max-width: 768px) {
+                                        flex-direction: column;
+                                        gap: 0.5rem;
+                                        align-items: flex-start;
+                                    }
+
+                                    .delivery-id {
+                                        font-weight: 700;
+                                        color: $dark-blue-color;
+                                        font-size: 1rem;
+                                    }
+
+                                    .status {
+                                        padding: 0.25rem 0.75rem;
+                                        border-radius: $radius-full;
+                                        font-size: 0.75rem;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.5px;
+
+                                        &.status-delivered {
+                                            background: rgba(16, 185, 129, 0.1);
+                                            color: rgb(5, 150, 105);
+                                        }
+
+                                        &.status-transit {
+                                            background: rgba(59, 130, 246, 0.1);
+                                            color: rgb(29, 78, 216);
+                                        }
+
+                                        &.status-processing {
+                                            background: rgba(251, 191, 36, 0.1);
+                                            color: rgb(180, 83, 9);
+                                        }
+                                    }
+                                }
+
+                                .delivery-route {
+                                    .route {
+                                        font-weight: 600;
+                                        color: $primary-color;
+                                        font-size: 0.875rem;
+                                    }
+                                }
+
+                                .delivery-details {
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 0.25rem;
+
+                                    @media (max-width: 768px) {
+                                        gap: 0.125rem;
+                                    }
+
+                                    .driver,
+                                    .customer {
+                                        font-size: 0.875rem;
+                                        color: $text-light;
+
+                                        @media (max-width: 768px) {
+                                            font-size: 0.75rem;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .delivery-amount-info {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: end;
+                                text-align: right;
+
+                                @media (max-width: 768px) {
+                                    align-items: flex-start;
+                                    text-align: left;
+                                }
+
+                                .delivery-amount {
+                                    font-weight: 700;
+                                    color: $orange-color;
+                                    font-size: 1.125rem;
+                                    margin-bottom: 0.25rem;
+                                }
+
+                                .delivery-date {
+                                    font-size: 0.875rem;
+                                    color: $text-light;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.summary-cards {
+                    .summary-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                        gap: 1rem;
+
+                        @media (max-width: 768px) {
+                            grid-template-columns: 1fr;
+                        }
+
+                        .summary-card {
+                            background: linear-gradient(135deg, $primary-blue-light 0%, #ffffff 100%);
+                            padding: 1.5rem;
+                            border-radius: $radius-lg;
+                            border: 1px solid $gray-200;
+                            transition: $transition-all;
+                            text-align: center;
+
+                            @media (max-width: 768px) {
+                                padding: 1rem;
+                            }
+
+                            &:hover {
+                                transform: translateY(-2px);
+                                box-shadow: $shadow-md;
+                            }
+
+                            .summary-icon {
+                                width: 3rem;
+                                height: 3rem;
+                                background: linear-gradient(135deg, $primary-color 0%, $primary-blue-hover 100%);
+                                border-radius: $radius-full;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin: 0 auto 1rem;
+
+                                @media (max-width: 768px) {
+                                    width: 2.5rem;
+                                    height: 2.5rem;
+                                }
+
+                                svg {
+                                    width: 1.5rem;
+                                    height: 1.5rem;
+                                    color: $white;
+
+                                    @media (max-width: 768px) {
+                                        width: 1.25rem;
+                                        height: 1.25rem;
+                                    }
+                                }
+                            }
+
+                            .summary-content {
+                                h4 {
+                                    color: $dark-blue-color;
+                                    font-size: 1rem;
+                                    font-weight: 600;
+                                    margin: 0 0 0.5rem 0;
+
+                                    @media (max-width: 768px) {
+                                        font-size: 0.875rem;
+                                    }
+                                }
+
+                                p {
+                                    color: $orange-color;
+                                    font-size: 1.5rem;
+                                    font-weight: 700;
+                                    margin: 0;
+
+                                    @media (max-width: 768px) {
+                                        font-size: 1.25rem;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

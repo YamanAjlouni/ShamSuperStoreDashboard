@@ -151,9 +151,9 @@ const AdminDeliveryDashboard = () => {
                                             <span className="customer-name">{order.customer}</span>
                                             <span className="order-total">EGP {order.total}</span>
                                         </div>
-                                        <span className={`priority ${getPriorityClass(order.priority)}`}>
+                                        {/* <span className={`priority ${getPriorityClass(order.priority)}`}>
                                             {order.priority}
-                                        </span>
+                                        </span> */}
                                     </div>
                                 ))}
                             </div>
@@ -207,11 +207,11 @@ const AdminDeliveryDashboard = () => {
                                 <div key={order.id} className="order-card">
                                     <div className="order-header">
                                         <span className="order-id">{order.id}</span>
-                                        <span className={`priority ${getPriorityClass(order.priority)}`}>
+                                        {/* <span className={`priority ${getPriorityClass(order.priority)}`}>
                                             {order.priority}
-                                        </span>
+                                        </span> */}
                                     </div>
-                                    <div className="order-details">
+                                    <div className="order-details-dashboard">
                                         <p><strong>Customer:</strong> {order.customer}</p>
                                         <p><strong>Address:</strong> {order.address}</p>
                                         <p><strong>Items:</strong> {order.items} items</p>

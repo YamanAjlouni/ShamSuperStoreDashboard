@@ -5,6 +5,10 @@
     background-color: $gray-50;
     min-height: 100vh;
 
+    @media(max-width:768px){
+        padding: 0.5rem;
+    }
+
     .orders-header {
         display: flex;
         justify-content: space-between;
@@ -71,11 +75,19 @@
             background: $white;
             border-radius: $radius-lg;
             padding: 1.5rem;
+            padding-top: 3rem; // Extra space for badges at top
+            padding-bottom: 1.5rem;
             box-shadow: $shadow-sm;
             cursor: pointer;
             transition: $transition-all;
             position: relative;
             border-left: 4px solid transparent;
+            min-height: 200px; // Ensure consistent height
+
+            @media (max-width: 768px) {
+                padding-top: 2.5rem;
+                min-height: 180px;
+            }
 
             &:hover {
                 box-shadow: $shadow-md;
@@ -99,9 +111,11 @@
             }
 
             .order-card-header {
+                width: 100%;
                 display: flex;
                 justify-content: space-between;
                 align-items: flex-start;
+                margin-top: 1rem;
                 margin-bottom: 1rem;
 
                 .order-id {
@@ -181,6 +195,7 @@
                 position: absolute;
                 top: 1rem;
                 right: 1rem;
+                z-index: 2;
 
                 .size-badge {
                     padding: 0.25rem 0.5rem;

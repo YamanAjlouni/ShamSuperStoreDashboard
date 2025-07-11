@@ -28,6 +28,10 @@
             // Additional styles when sidebar is collapsed on desktop
             margin-left: 0;
         }
+
+        @media(max-width:768px){
+            padding: 1rem;
+        }
     }
 }
 

@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 
-// Import Delivery Pages
-import ActiveDeliveries from './activeDeliveries/ActiveDeliveries'
-import DeliveryHistory from './deliveryHistory/DeliveryHistory'
-
 import './AdminDelivery.scss'
 import AdminDeliveryNavbar from '../../components/adminDelivery/adminDeliveryNavbar/AdminDeliveryNavbar'
-import AdminDeliverySidebar from '../../components/adminDelivery/AdminDeliverySidebar/AdminDeliverySidebar'
+import AdminDeliverySidebar from '../../components/adminDelivery/adminDeliverySidebar/AdminDeliverySidebar'
 import AdminDeliveryDashboard from './adminDeliveryDashboard/AdminDeliveryDashboard'
 import AdminOrdersComponent from './adminOrdersComponent/AdminOrdersComponent'
+import AdminDeliveryDrivers from './adminDeliveryDrivers/AdminDeliveryDrivers'
+import AdminRevenueReports from './adminRevenueReports/AdminRevenueReports'
+import AdminOrdersHistory from './adminOrdersHistory/AdminOrdersHistory'
+import PendingDeliveryDrivers from './pendingDeliveryDrivers/PendingDeliveryDrivers'
 
 const PlaceholderPage = ({ pageName }) => (
     <div className="page-placeholder">
@@ -24,10 +24,6 @@ const AdminDelivery = () => {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-    
-    // Order management state
-    const [selectedOrder, setSelectedOrder] = useState(null)
-    const [currentOrderView, setCurrentOrderView] = useState('listing') // 'listing' or 'details'
 
     useEffect(() => {
         const checkMobile = () => {
@@ -90,35 +86,6 @@ const AdminDelivery = () => {
         }
     }
 
-    // Handle order selection and navigation
-    const handleOrderClick = (order) => {
-        setSelectedOrder(order)
-        setCurrentOrderView('details')
-    }
-
-    const handleBackToOrders = () => {
-        setCurrentOrderView('listing')
-        setSelectedOrder(null)
-    }
-
-    // Component to render based on current view
-    const OrdersComponent = () => {
-        if (currentOrderView === 'details') {
-            return (
-                <AdminOrderDetails 
-                    order={selectedOrder} 
-                    onBack={handleBackToOrders} 
-                />
-            )
-        }
-        
-        return (
-            <AdminOrdersListing 
-                onOrderClick={handleOrderClick}
-            />
-        )
-    }
-
     return (
         <div className="delivery-layout">
             <AdminDeliveryNavbar
@@ -138,30 +105,29 @@ const AdminDelivery = () => {
                     className={`main-content ${isSidebarCollapsed ? 'main-content--expanded' : ''} ${isMobile ? 'main-content--mobile' : ''}`}
                     onClick={handleMainContentClick}
                 >
-                    {/* Delivery Routes */}
+                    {/* Admin Delivery Routes */}
                     <Routes>
                         {/* Dashboard */}
                         <Route path="/" element={<AdminDeliveryDashboard />} />
                         <Route path="/dashboard" element={<Navigate to="/adminDelivery" replace />} />
 
-                        {/* Delivery Management */}
-                        <Route path="/active-deliveries" element={<ActiveDeliveries />} />
-                        <Route path="/delivery-history" element={<DeliveryHistory pageName="Delivery History" />} />
+                        {/* Orders Management */}
                         <Route path="/orders" element={<AdminOrdersComponent />} />
+                        <Route path="/orders-history" element={<AdminOrdersHistory />} />
 
-                        {/* Earnings & Reports */}
-                        <Route path="/earnings" element={<PlaceholderPage pageName="Earnings" />} />
-                        <Route path="/reports" element={<PlaceholderPage pageName="Performance Reports" />} />
+                        {/* Delivery Drivers Management */}
+                        <Route path="/drivers" element={<AdminDeliveryDrivers />} />
+                        <Route path="/pending-drivers" element={<PendingDeliveryDrivers />} />
 
-                        {/* Driver Management */}
-                        <Route path="/schedule" element={<PlaceholderPage pageName="Schedule" />} />
-                        <Route path="/availability" element={<PlaceholderPage pageName="Availability" />} />
-                        <Route path="/vehicle" element={<PlaceholderPage pageName="Vehicle Information" />} />
+                        {/* Reports & Analytics */}
+                        <Route path="/reports" element={<AdminRevenueReports />} />
 
-                        {/* Support & Settings */}
-                        <Route path="/support" element={<PlaceholderPage pageName="Support Center" />} />
-                        <Route path="/settings" element={<PlaceholderPage pageName="Driver Settings" />} />
-                        <Route path="/profile" element={<PlaceholderPage pageName="Driver Profile" />} />
+                        {/* Admin Settings */}
+                        <Route path="/settings" element={<PlaceholderPage pageName="Admin Settings" />} />
+                        <Route path="/profile" element={<PlaceholderPage pageName="Admin Profile" />} />
+
+                        {/* Notifications */}
+                        <Route path="/notifications" element={<PlaceholderPage pageName="Notifications" />} />
 
                         {/* Error Pages */}
                         <Route path="/404" element={<PlaceholderPage pageName="Page Not Found" />} />

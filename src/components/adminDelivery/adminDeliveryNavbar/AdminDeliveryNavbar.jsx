@@ -26,8 +26,10 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     const getCurrentPageName = () => {
         const path = location.pathname
         if (path === '/adminDelivery' || path === '/adminDelivery/') return 'Admin Dashboard'
-        if (path.includes('/orders')) return 'Orders Management'
-        if (path.includes('/drivers')) return 'Delivery Drivers'
+        if (path === '/adminDelivery/orders') return 'Orders Management'
+        if (path.includes('/orders-history')) return 'Orders History'
+        if (path === '/adminDelivery/drivers') return 'Delivery Drivers'
+        if (path.includes('/pending-drivers')) return 'Pending Drivers'
         if (path.includes('/reports')) return 'Reports & Analytics'
         if (path.includes('/settings')) return 'Admin Settings'
         return 'Admin Dashboard'
@@ -44,6 +46,14 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     const handleSettingsClick = () => {
         navigate('/adminDelivery/settings')
         setIsProfileOpen(false)
+    }
+
+    const handleOrdersHistoryClick = () => {
+        navigate('/adminDelivery/orders-history')
+    }
+
+    const handlePendingDriversClick = () => {
+        navigate('/adminDelivery/pending-drivers')
     }
 
     const handleLogout = () => {
@@ -111,6 +121,28 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                         {notifications > 0 && <span className="badge">{notifications}</span>}
                     </button>
 
+                    {/* Orders History Quick Access */}
+                    <button
+                        className="action-btn history-btn"
+                        title="Orders History"
+                        onClick={handleOrdersHistoryClick}
+                    >
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        </svg>
+                    </button>
+
+                    {/* Pending Drivers Quick Access */}
+                    <button
+                        className="action-btn pending-drivers-btn"
+                        title="Pending Drivers"
+                        onClick={handlePendingDriversClick}
+                    >
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+
                     {/* Quick Actions Button */}
                     <button
                         className="action-btn quick-actions-btn"
@@ -163,6 +195,27 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                     Profile
+                                </button>
+                                <button
+                                    className="dropdown-item"
+                                    onClick={handleOrdersHistoryClick}
+                                >
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                    </svg>
+                                    Orders History
+                                </button>
+                                <button
+                                    className="dropdown-item"
+                                    onClick={() => {
+                                        handlePendingDriversClick()
+                                        setIsProfileOpen(false)
+                                    }}
+                                >
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Pending Drivers
                                 </button>
                                 <button
                                     className="dropdown-item"
