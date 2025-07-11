@@ -3,7 +3,10 @@
 .admin-delivery-dashboard {
     padding: 1.5rem;
     background-color: $gray-50;
-    min-height: 100vh;
+
+    @media (max-width: 768px) {
+        padding: 0.5rem;
+    }
 
     .dashboard-header {
         margin-bottom: 2rem;
@@ -102,8 +105,11 @@
                 font-weight: 600;
             }
 
-            .drivers-list, .orders-list {
-                .driver-item, .order-item {
+            .drivers-list,
+            .orders-list {
+
+                .driver-item,
+                .order-item {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
@@ -114,12 +120,14 @@
                         border-bottom: none;
                     }
 
-                    .driver-info, .order-info {
+                    .driver-info,
+                    .order-info {
                         display: flex;
                         flex-direction: column;
                         gap: 0.25rem;
 
-                        .driver-name, .order-id {
+                        .driver-name,
+                        .order-id {
                             font-weight: 600;
                             color: $text-dark;
                         }
@@ -156,7 +164,8 @@
                 font-weight: 600;
             }
 
-            .add-btn, .refresh-btn {
+            .add-btn,
+            .refresh-btn {
                 background-color: $primary-color;
                 color: $white;
                 border: none;
@@ -203,7 +212,7 @@
                 @media (max-width: 768px) {
                     grid-template-columns: 1fr;
                     gap: 0.5rem;
-                    
+
                     span {
                         padding: 0.25rem 0;
                     }
@@ -232,7 +241,8 @@
                     display: flex;
                     gap: 0.5rem;
 
-                    .edit-btn, .view-btn {
+                    .edit-btn,
+                    .view-btn {
                         padding: 0.375rem 0.75rem;
                         border: none;
                         border-radius: $radius-sm;
@@ -310,7 +320,8 @@
                     display: flex;
                     gap: 0.75rem;
 
-                    .assign-btn, .view-btn {
+                    .assign-btn,
+                    .view-btn {
                         flex: 1;
                         padding: 0.75rem;
                         border: none;

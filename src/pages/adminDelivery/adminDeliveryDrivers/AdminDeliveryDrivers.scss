@@ -3,7 +3,10 @@
 .delivery-drivers {
     padding: 1.5rem;
     background-color: $gray-50;
-    min-height: 100vh;
+
+    @media (max-width: 768px) {
+        padding: 0.5rem;
+    }
 
     .drivers-header {
         margin-bottom: 2rem;
@@ -78,7 +81,7 @@
 
                 &.online {
                     border-left-color: #10b981;
-                    
+
                     h3 {
                         color: #10b981;
                     }
@@ -86,7 +89,7 @@
 
                 &.offline {
                     border-left-color: $yellow-color;
-                    
+
                     h3 {
                         color: $yellow-color;
                     }
@@ -94,7 +97,7 @@
 
                 &.suspended {
                     border-left-color: #ef4444;
-                    
+
                     h3 {
                         color: #ef4444;
                     }
@@ -429,6 +432,7 @@
                     opacity: 0;
                     transform: translateY(-50px) scale(0.95);
                 }
+
                 to {
                     opacity: 1;
                     transform: translateY(0) scale(1);
