@@ -52,7 +52,7 @@ const PaymentsManagement = () => {
                     },
                     {
                         id: 'sham',
-                        name: 'Pay Sham',
+                        name: 'PaySham',
                         description: 'Accept payments through Pay Sham',
                         icon: '💵',
                         status: 'active',

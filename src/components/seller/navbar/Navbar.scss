@@ -159,35 +159,236 @@
                     align-items: center;
                     justify-content: center;
                     border: 2px solid $dark-blue-color;
+                    animation: pulse 2s infinite;
                 }
+            }
 
-                // Cart button specific styles
-                &.cart-btn {
-                    position: relative;
+            // Notification Container
+            .notification-container {
+                position: relative;
 
-                    &::after {
-                        content: attr(title);
+                .notification-dropdown {
+                    position: absolute;
+                    top: calc(100% + 10px);
+                    right: 0;
+                    background: $white;
+                    border-radius: $radius-lg;
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+                    width: 380px;
+                    max-height: 500px;
+                    overflow: hidden;
+                    z-index: 1000;
+                    animation: slideInDown 0.3s ease-out;
+
+                    // Arrow pointing up
+                    &::before {
+                        content: '';
                         position: absolute;
-                        bottom: -35px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        background: rgba(0, 0, 0, 0.8);
-                        color: $white;
-                        padding: 0.5rem 0.75rem;
-                        border-radius: $radius-sm;
-                        font-size: 0.75rem;
-                        white-space: nowrap;
-                        opacity: 0;
-                        visibility: hidden;
-                        transition: $transition-all;
-                        pointer-events: none;
-                        z-index: 1000;
+                        top: -8px;
+                        right: 16px;
+                        width: 0;
+                        height: 0;
+                        border-left: 8px solid transparent;
+                        border-right: 8px solid transparent;
+                        border-bottom: 8px solid $white;
                     }
 
-                    &:hover::after {
-                        opacity: 1;
-                        visibility: visible;
-                        bottom: -40px;
+                    .notification-header {
+                        padding: 1rem 1.25rem;
+                        border-bottom: 1px solid #e5e7eb;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+
+                        .notification-title {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+
+                            h3 {
+                                margin: 0;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                color: #1f2937;
+                            }
+
+                            .notification-count {
+                                background: #3b82f6;
+                                color: $white;
+                                font-size: 0.75rem;
+                                font-weight: 600;
+                                padding: 0.25rem 0.5rem;
+                                border-radius: $radius-full;
+                            }
+                        }
+
+                        .mark-all-read-btn {
+                            background: none;
+                            border: none;
+                            color: $primary-color;
+                            font-size: 0.875rem;
+                            font-weight: 500;
+                            cursor: pointer;
+                            transition: $transition-all;
+
+                            &:hover {
+                                color: $primary-blue-hover;
+                            }
+                        }
+                    }
+
+                    .notification-list {
+                        max-height: 320px;
+                        overflow-y: auto;
+                        scroll-behavior: smooth;
+
+                        &::-webkit-scrollbar {
+                            width: 4px;
+                        }
+
+                        &::-webkit-scrollbar-track {
+                            background: #f1f5f9;
+                        }
+
+                        &::-webkit-scrollbar-thumb {
+                            background: #cbd5e1;
+                            border-radius: 2px;
+
+                            &:hover {
+                                background: #94a3b8;
+                            }
+                        }
+
+                        .notification-item {
+                            display: flex;
+                            align-items: flex-start;
+                            gap: 0.75rem;
+                            padding: 1rem 1.25rem;
+                            border-bottom: 1px solid #f3f4f6;
+                            cursor: pointer;
+                            transition: $transition-all;
+                            position: relative;
+
+                            &:hover {
+                                background: #f8fafc;
+                            }
+
+                            &.unread {
+                                background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+                                border-left: 3px solid $primary-color;
+
+                                &:hover {
+                                    background: linear-gradient(135deg, #e0f2fe 0%, #e6f7ff 100%);
+                                }
+                            }
+
+                            .notification-icon {
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                flex-shrink: 0;
+                                color: $white;
+
+                                svg {
+                                    width: 18px;
+                                    height: 18px;
+                                }
+
+                                &.notification-order {
+                                    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                                }
+
+                                &.notification-success {
+                                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                                }
+
+                                &.notification-payment {
+                                    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+                                }
+
+                                &.notification-error {
+                                    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+                                }
+
+                                &.notification-info {
+                                    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+                                }
+                            }
+
+                            .notification-content {
+                                flex: 1;
+                                min-width: 0;
+
+                                .notification-text {
+                                    margin-bottom: 0.25rem;
+
+                                    h4 {
+                                        margin: 0 0 0.25rem 0;
+                                        font-size: 0.875rem;
+                                        font-weight: 600;
+                                        color: #1f2937;
+                                        line-height: 1.3;
+                                    }
+
+                                    p {
+                                        margin: 0;
+                                        font-size: 0.8125rem;
+                                        color: #6b7280;
+                                        line-height: 1.4;
+                                        display: -webkit-box;
+                                        -webkit-line-clamp: 2;
+                                        -webkit-box-orient: vertical;
+                                        overflow: hidden;
+                                    }
+                                }
+
+                                .notification-time {
+                                    font-size: 0.75rem;
+                                    color: #9ca3af;
+                                    font-weight: 500;
+                                }
+                            }
+
+                            .unread-indicator {
+                                position: absolute;
+                                top: 50%;
+                                right: 1rem;
+                                transform: translateY(-50%);
+                                width: 8px;
+                                height: 8px;
+                                background: $primary-color;
+                                border-radius: 50%;
+                                animation: pulse 2s infinite;
+                            }
+                        }
+                    }
+
+                    .notification-footer {
+                        padding: 0.75rem 1.25rem;
+                        border-top: 1px solid #e5e7eb;
+                        background: #f9fafb;
+
+                        .view-all-btn {
+                            width: 100%;
+                            background: none;
+                            border: none;
+                            color: $primary-color;
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            padding: 0.5rem;
+                            cursor: pointer;
+                            transition: $transition-all;
+                            border-radius: $radius-md;
+
+                            &:hover {
+                                background: rgba(59, 130, 246, 0.1);
+                                color: $primary-blue-hover;
+                            }
+                        }
                     }
                 }
             }
@@ -286,7 +487,7 @@
     }
 }
 
-// Animation for dropdown
+// Animations
 @keyframes fadeInDown {
     from {
         opacity: 0;

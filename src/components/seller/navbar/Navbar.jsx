@@ -5,16 +5,73 @@ import './Navbar.scss'
 const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     const navigate = useNavigate()
     const location = useLocation()
-    const [notifications] = useState(3) // Changed from orders to notifications
+    
+    // Sample notification data
+    const [notifications, setNotifications] = useState([
+        {
+            id: 1,
+            type: 'order',
+            title: 'New Order Received',
+            message: 'Order #12345 has been placed by John Doe',
+            time: '2 minutes ago',
+            isRead: false,
+            icon: 'shopping-bag'
+        },
+        {
+            id: 2,
+            type: 'approval',
+            title: 'Product Approved',
+            message: 'Your product "Premium Headphones" has been approved by admin',
+            time: '1 hour ago',
+            isRead: false,
+            icon: 'check-circle'
+        },
+        {
+            id: 3,
+            type: 'payment',
+            title: 'Payment Received',
+            message: 'Payment of $299.99 has been processed successfully',
+            time: '3 hours ago',
+            isRead: true,
+            icon: 'credit-card'
+        },
+        {
+            id: 4,
+            type: 'order',
+            title: 'Order Shipped',
+            message: 'Order #12340 has been shipped to customer',
+            time: '1 day ago',
+            isRead: true,
+            icon: 'truck'
+        },
+        {
+            id: 5,
+            type: 'rejection',
+            title: 'Product Rejected',
+            message: 'Your product "Basic Earbuds" needs revision',
+            time: '2 days ago',
+            isRead: false,
+            icon: 'x-circle'
+        }
+    ])
+
     const [products] = useState({ current: 7, total: 10 })
     const [isProfileOpen, setIsProfileOpen] = useState(false)
+    const [isNotificationOpen, setIsNotificationOpen] = useState(false)
     const profileRef = useRef(null)
+    const notificationRef = useRef(null)
 
-    // Close profile dropdown when clicking outside
+    // Get unread notifications count
+    const unreadCount = notifications.filter(n => !n.isRead).length
+
+    // Close dropdowns when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (profileRef.current && !profileRef.current.contains(event.target)) {
                 setIsProfileOpen(false)
+            }
+            if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+                setIsNotificationOpen(false)
             }
         }
 
@@ -36,9 +93,7 @@ const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     }
 
     const handleNotificationClick = () => {
-        // Handle notification click - you can add your notification logic here
-        console.log('Notifications clicked')
-        // navigate('/seller/notifications') // Uncomment if you have a notifications page
+        setIsNotificationOpen(!isNotificationOpen)
     }
 
     const handleProfileClick = () => {
@@ -56,7 +111,78 @@ const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
         localStorage.removeItem('userRole')
         navigate('/login')
         setIsProfileOpen(false)
-        // You can add actual logout logic like clearing localStorage, etc.
+    }
+
+    const markAsRead = (notificationId) => {
+        setNotifications(prev => 
+            prev.map(notification => 
+                notification.id === notificationId 
+                    ? { ...notification, isRead: true }
+                    : notification
+            )
+        )
+    }
+
+    const markAllAsRead = () => {
+        setNotifications(prev => 
+            prev.map(notification => ({ ...notification, isRead: true }))
+        )
+    }
+
+    const getNotificationIcon = (iconType) => {
+        switch (iconType) {
+            case 'shopping-bag':
+                return (
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                )
+            case 'check-circle':
+                return (
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                )
+            case 'credit-card':
+                return (
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                )
+            case 'truck':
+                return (
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                )
+            case 'x-circle':
+                return (
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                )
+            default:
+                return (
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                )
+        }
+    }
+
+    const getNotificationTypeColor = (type) => {
+        switch (type) {
+            case 'order':
+                return 'notification-order'
+            case 'approval':
+                return 'notification-success'
+            case 'payment':
+                return 'notification-payment'
+            case 'rejection':
+                return 'notification-error'
+            default:
+                return 'notification-info'
+        }
     }
 
     return (
@@ -95,16 +221,65 @@ const Navbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
 
                 <div className="navbar-actions">
                     {/* Notifications */}
-                    <button
-                        className="action-btn notification-btn"
-                        onClick={handleNotificationClick}
-                        title="View notifications"
-                    >
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                        {notifications > 0 && <span className="badge">{notifications}</span>}
-                    </button>
+                    <div className="notification-container" ref={notificationRef}>
+                        <button
+                            className="action-btn notification-btn"
+                            onClick={handleNotificationClick}
+                            title="View notifications"
+                        >
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
+                        </button>
+
+                        {isNotificationOpen && (
+                            <div className="notification-dropdown">
+                                <div className="notification-header">
+                                    <div className="notification-title">
+                                        <h3>Notifications</h3>
+                                        <span className="notification-count">{unreadCount} new</span>
+                                    </div>
+                                    {unreadCount > 0 && (
+                                        <button 
+                                            className="mark-all-read-btn"
+                                            onClick={markAllAsRead}
+                                        >
+                                            Mark all as read
+                                        </button>
+                                    )}
+                                </div>
+
+                                <div className="notification-list">
+                                    {notifications.map((notification) => (
+                                        <div
+                                            key={notification.id}
+                                            className={`notification-item ${!notification.isRead ? 'unread' : ''}`}
+                                            onClick={() => markAsRead(notification.id)}
+                                        >
+                                            <div className={`notification-icon ${getNotificationTypeColor(notification.type)}`}>
+                                                {getNotificationIcon(notification.icon)}
+                                            </div>
+                                            <div className="notification-content">
+                                                <div className="notification-text">
+                                                    <h4>{notification.title}</h4>
+                                                    <p>{notification.message}</p>
+                                                </div>
+                                                <span className="notification-time">{notification.time}</span>
+                                            </div>
+                                            {!notification.isRead && <div className="unread-indicator"></div>}
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="notification-footer">
+                                    <button className="view-all-btn">
+                                        View all notifications
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
 
                     {/* User Profile */}
                     <div className="user-profile" ref={profileRef}>
