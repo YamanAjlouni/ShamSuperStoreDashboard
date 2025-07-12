@@ -358,6 +358,46 @@
                                     }
                                 }
                             }
+
+                            .field-help {
+                                display: block;
+                                color: $text-light;
+                                font-size: 0.75rem;
+                                margin-top: 0.25rem;
+                                font-style: italic;
+                            }
+
+                            // Shipping Info Box
+                            .shipping-info-box {
+                                background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+                                border: 1px solid rgba(16, 185, 129, 0.2);
+                                border-radius: $radius-lg;
+                                padding: 1.5rem;
+                                display: flex;
+                                gap: 1rem;
+                                align-items: flex-start;
+
+                                .info-icon {
+                                    font-size: 2rem;
+                                    flex-shrink: 0;
+                                }
+
+                                .info-content {
+                                    h4 {
+                                        color: #059669;
+                                        font-size: 1rem;
+                                        font-weight: 600;
+                                        margin: 0 0 0.5rem 0;
+                                    }
+
+                                    p {
+                                        color: #065f46;
+                                        font-size: 0.875rem;
+                                        line-height: 1.5;
+                                        margin: 0;
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -633,6 +673,457 @@
                         }
                     }
 
+                    // Enhanced Shipping Styles
+                    .shipping-types-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                        gap: 1rem;
+                        margin-top: 1rem;
+                    }
+
+                    .shipping-type-card {
+                        background: $white;
+                        border: 2px solid $gray-200;
+                        border-radius: $radius-lg;
+                        padding: 1.5rem;
+                        cursor: pointer;
+                        transition: $transition-all;
+                        position: relative;
+                        overflow: hidden;
+
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 4px;
+                            background: linear-gradient(90deg, $primary-color, $primary-blue-hover);
+                            transform: scaleX(0);
+                            transform-origin: left;
+                            transition: transform 0.3s ease;
+                        }
+
+                        &:hover {
+                            border-color: $primary-color;
+                            box-shadow: 0 4px 12px rgba(66, 103, 178, 0.15);
+                            transform: translateY(-2px);
+
+                            &::before {
+                                transform: scaleX(1);
+                            }
+                        }
+
+                        &.selected {
+                            border-color: $primary-color;
+                            background: $primary-blue-light;
+                            box-shadow: 0 4px 16px rgba(66, 103, 178, 0.2);
+
+                            &::before {
+                                transform: scaleX(1);
+                            }
+
+                            .shipping-type-header h4 {
+                                color: $primary-color;
+                            }
+                        }
+
+                        .shipping-type-header {
+                            display: flex;
+                            align-items: center;
+                            gap: 1rem;
+                            margin-bottom: 0.75rem;
+
+                            input[type="radio"] {
+                                width: 20px;
+                                height: 20px;
+                                accent-color: $primary-color;
+                            }
+
+                            h4 {
+                                font-size: 1rem;
+                                font-weight: 600;
+                                color: $text-dark;
+                                margin: 0;
+                                flex: 1;
+                            }
+
+                            .shipping-type-icon {
+                                font-size: 1.5rem;
+                                opacity: 0.8;
+                            }
+                        }
+
+                        .shipping-type-description {
+                            color: $text-light;
+                            font-size: 0.875rem;
+                            line-height: 1.4;
+                            margin: 0 0 0.75rem 0;
+                        }
+
+                        .shipping-recommendation {
+                            display: inline-block;
+                            background: linear-gradient(135deg, #10b981, #059669);
+                            color: $white;
+                            padding: 0.25rem 0.75rem;
+                            border-radius: $radius-sm;
+                            font-size: 0.75rem;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+                    }
+
+                    // Weight Tiers Container
+                    .weight-tiers-container {
+                        background: $gray-50;
+                        border-radius: $radius-lg;
+                        padding: 1.5rem;
+                        border: 1px solid $gray-200;
+
+                        .weight-tier-row {
+                            background: $white;
+                            border-radius: $radius-md;
+                            padding: 1rem;
+                            margin-bottom: 1rem;
+                            border: 1px solid $gray-200;
+                            transition: $transition-all;
+
+                            &:hover {
+                                border-color: $primary-color;
+                                box-shadow: 0 2px 8px rgba(66, 103, 178, 0.1);
+                            }
+
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+
+                            .weight-tier-inputs {
+                                display: grid;
+                                grid-template-columns: 1fr 1fr 1fr auto;
+                                gap: 1rem;
+                                align-items: end;
+
+                                .tier-input {
+                                    label {
+                                        display: block;
+                                        font-weight: 600;
+                                        color: $text-dark;
+                                        margin-bottom: 0.5rem;
+                                        font-size: 0.75rem;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.5px;
+                                    }
+
+                                    input {
+                                        width: 100%;
+                                        padding: 0.75rem;
+                                        border: 1px solid $gray-200;
+                                        border-radius: $radius-md;
+                                        font-size: 0.875rem;
+                                        transition: $transition-all;
+
+                                        &:focus {
+                                            outline: none;
+                                            border-color: $primary-color;
+                                            box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                                        }
+                                    }
+                                }
+
+                                .remove-tier-btn {
+                                    background: #ef4444;
+                                    color: $white;
+                                    border: none;
+                                    border-radius: 50%;
+                                    width: 40px;
+                                    height: 40px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    cursor: pointer;
+                                    transition: $transition-all;
+
+                                    &:hover {
+                                        background: #dc2626;
+                                        transform: scale(1.1);
+                                    }
+                                }
+                            }
+                        }
+
+                        .add-tier-btn {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 0.5rem;
+                            width: 100%;
+                            background: $primary-color;
+                            color: $white;
+                            border: none;
+                            border-radius: $radius-md;
+                            padding: 1rem;
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: $transition-all;
+                            margin-top: 1rem;
+
+                            &:hover {
+                                background: $primary-blue-hover;
+                                transform: translateY(-1px);
+                            }
+                        }
+                    }
+
+                    // Carriers Grid
+                    .carriers-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                        gap: 1rem;
+                        margin-top: 1rem;
+
+                        .carrier-checkbox {
+                            display: flex;
+                            align-items: center;
+                            background: $white;
+                            border: 2px solid $gray-200;
+                            border-radius: $radius-lg;
+                            padding: 1rem;
+                            cursor: pointer;
+                            transition: $transition-all;
+
+                            &:hover {
+                                border-color: $primary-color;
+                                box-shadow: 0 2px 8px rgba(66, 103, 178, 0.1);
+                            }
+
+                            input[type="checkbox"] {
+                                position: absolute;
+                                opacity: 0;
+
+                                &:checked + .carrier-info {
+                                    .carrier-icon {
+                                        transform: scale(1.2);
+                                    }
+
+                                    .carrier-name {
+                                        color: $primary-color;
+                                        font-weight: 600;
+                                    }
+                                }
+                            }
+
+                            &:has(input:checked) {
+                                border-color: $primary-color;
+                                background: $primary-blue-light;
+                            }
+
+                            .carrier-info {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                gap: 0.5rem;
+                                text-align: center;
+                                width: 100%;
+
+                                .carrier-icon {
+                                    font-size: 2rem;
+                                    transition: $transition-all;
+                                }
+
+                                .carrier-name {
+                                    font-size: 0.875rem;
+                                    font-weight: 500;
+                                    color: $text-dark;
+                                    transition: $transition-all;
+                                }
+                            }
+                        }
+                    }
+
+                    // Admin Default Info
+                    .admin-default-info {
+                        background: linear-gradient(135deg, rgba(66, 103, 178, 0.1) 0%, rgba(66, 103, 178, 0.05) 100%);
+                        border: 1px solid rgba(66, 103, 178, 0.2);
+                        border-radius: $radius-lg;
+                        padding: 2rem;
+                        display: flex;
+                        gap: 1.5rem;
+                        align-items: flex-start;
+
+                        .info-icon {
+                            font-size: 2.5rem;
+                            flex-shrink: 0;
+                        }
+
+                        .info-content {
+                            flex: 1;
+
+                            h4 {
+                                color: $primary-color;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                margin: 0 0 0.75rem 0;
+                            }
+
+                            p {
+                                color: $text-dark;
+                                font-size: 0.875rem;
+                                line-height: 1.6;
+                                margin: 0 0 1.5rem 0;
+                            }
+
+                            .system-rules-preview {
+                                background: $white;
+                                border-radius: $radius-md;
+                                padding: 1.5rem;
+                                margin-bottom: 1.5rem;
+                                border: 1px solid rgba(66, 103, 178, 0.1);
+
+                                h5 {
+                                    font-size: 1rem;
+                                    font-weight: 600;
+                                    color: $text-dark;
+                                    margin: 0 0 1rem 0;
+                                }
+
+                                ul {
+                                    list-style: none;
+                                    padding: 0;
+                                    margin: 0;
+
+                                    li {
+                                        display: flex;
+                                        justify-content: space-between;
+                                        align-items: center;
+                                        padding: 0.5rem 0;
+                                        font-size: 0.875rem;
+                                        color: $text-dark;
+                                        border-bottom: 1px solid $gray-100;
+
+                                        &:last-child {
+                                            border-bottom: none;
+                                        }
+
+                                        &::before {
+                                            content: '•';
+                                            color: $primary-color;
+                                            font-weight: bold;
+                                            margin-right: 0.5rem;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .override-checkbox {
+                                display: flex;
+                                align-items: center;
+                                cursor: pointer;
+                                font-weight: 500;
+                                color: $text-dark;
+
+                                input[type="checkbox"] {
+                                    position: absolute;
+                                    opacity: 0;
+
+                                    &:checked + .checkmark {
+                                        background: $primary-color;
+                                        border-color: $primary-color;
+
+                                        &::after {
+                                            opacity: 1;
+                                            transform: rotate(45deg) scale(1);
+                                        }
+                                    }
+                                }
+
+                                .checkmark {
+                                    width: 20px;
+                                    height: 20px;
+                                    border: 2px solid $gray-300;
+                                    border-radius: 4px;
+                                    margin-right: 0.75rem;
+                                    position: relative;
+                                    transition: $transition-all;
+                                    flex-shrink: 0;
+
+                                    &::after {
+                                        content: '';
+                                        position: absolute;
+                                        left: 6px;
+                                        top: 2px;
+                                        width: 6px;
+                                        height: 10px;
+                                        border: solid $white;
+                                        border-width: 0 2px 2px 0;
+                                        transform: rotate(45deg) scale(0);
+                                        opacity: 0;
+                                        transition: $transition-all;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Shipping Calculation Preview
+                    .shipping-calculation-preview {
+                        background: $gray-50;
+                        border-radius: $radius-lg;
+                        padding: 1.5rem;
+                        border: 1px solid $gray-200;
+                        border-left: 4px solid $primary-color;
+
+                        h4 {
+                            color: $text-dark;
+                            font-size: 1rem;
+                            font-weight: 600;
+                            margin: 0 0 1rem 0;
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+
+                            &::before {
+                                content: '🧮';
+                                font-size: 1.25rem;
+                            }
+                        }
+
+                        .preview-scenarios {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                            gap: 1rem;
+
+                            .scenario {
+                                background: $white;
+                                border-radius: $radius-md;
+                                padding: 1rem;
+                                border: 1px solid $gray-200;
+                                text-align: center;
+                                transition: $transition-all;
+
+                                &:hover {
+                                    border-color: $primary-color;
+                                    box-shadow: 0 2px 8px rgba(66, 103, 178, 0.1);
+                                }
+
+                                h5 {
+                                    font-size: 0.875rem;
+                                    font-weight: 600;
+                                    color: $text-dark;
+                                    margin: 0 0 0.5rem 0;
+                                }
+
+                                .preview-cost {
+                                    font-size: 1.25rem;
+                                    font-weight: 700;
+                                    color: $primary-color;
+                                    display: block;
+                                }
+                            }
+                        }
+                    }
+
                     // Custom Attributes Section
                     .custom-attributes {
                         .custom-attribute-row {
@@ -810,11 +1301,13 @@
 // Responsive Design
 @media (max-width: 1200px) {
     .product-form-page {
-        .form-container .product-form .tab-content .form-section .form-grid {
-            grid-template-columns: 1fr;
+        .form-container .product-form .tab-content .form-section {
+            .form-grid {
+                grid-template-columns: 1fr;
 
-            .form-group.full-width {
-                grid-column: 1;
+                .form-group.full-width {
+                    grid-column: 1;
+                }
             }
         }
     }
@@ -863,6 +1356,44 @@
                             grid-template-columns: 1fr;
                             gap: 0.75rem;
                         }
+
+                        .form-group {
+                            .shipping-info-box {
+                                flex-direction: column;
+                                text-align: center;
+                                padding: 1rem;
+
+                                .info-icon {
+                                    align-self: center;
+                                }
+                            }
+
+                            .admin-default-info {
+                                flex-direction: column;
+                                text-align: center;
+                                padding: 1.5rem;
+
+                                .info-icon {
+                                    align-self: center;
+                                }
+
+                                .info-content {
+                                    .system-rules-preview ul li {
+                                        flex-direction: column;
+                                        align-items: flex-start;
+                                        gap: 0.25rem;
+                                    }
+                                }
+                            }
+
+                            .shipping-preview {
+                                .preview-examples .example {
+                                    flex-direction: column;
+                                    align-items: flex-start;
+                                    gap: 0.25rem;
+                                }
+                            }
+                        }
                     }
 
                     .quantity-pricing .pricing-tiers .quantity-pricing-row {
@@ -879,6 +1410,16 @@
                             .remove-pricing-btn {
                                 align-self: flex-end;
                             }
+                        }
+                    }
+
+                    .custom-attributes .custom-attribute-row {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 0.75rem;
+
+                        .remove-attribute-btn {
+                            align-self: flex-end;
                         }
                     }
                 }
@@ -939,18 +1480,122 @@
                         font-size: 1.125rem;
                     }
 
+                    .form-grid .form-group {
+                        .shipping-info-box {
+                            padding: 0.75rem;
+
+                            .info-content h4 {
+                                font-size: 0.875rem;
+                            }
+
+                            .info-content p {
+                                font-size: 0.75rem;
+                            }
+                        }
+
+                        .admin-default-info {
+                            padding: 1rem;
+
+                            .info-content {
+                                h4 {
+                                    font-size: 1rem;
+                                }
+
+                                p {
+                                    font-size: 0.75rem;
+                                }
+
+                                .system-rules-preview {
+                                    padding: 1rem;
+
+                                    h5 {
+                                        font-size: 0.875rem;
+                                    }
+
+                                    ul li {
+                                        font-size: 0.75rem;
+                                    }
+                                }
+                            }
+                        }
+
+                        .shipping-calculation-preview {
+                            padding: 1rem;
+
+                            h4 {
+                                font-size: 0.875rem;
+                            }
+
+                            .preview-scenarios .scenario {
+                                padding: 0.75rem;
+
+                                h5 {
+                                    font-size: 0.75rem;
+                                }
+
+                                .preview-cost {
+                                    font-size: 1rem;
+                                }
+                            }
+                        }
+                    }
+
+                    .shipping-types-grid {
+                        .shipping-type-card {
+                            padding: 1rem;
+
+                            .shipping-type-header {
+                                gap: 0.75rem;
+
+                                h4 {
+                                    font-size: 0.875rem;
+                                }
+
+                                .shipping-type-icon {
+                                    font-size: 1.25rem;
+                                }
+                            }
+
+                            .shipping-type-description {
+                                font-size: 0.75rem;
+                            }
+
+                            .shipping-recommendation {
+                                font-size: 0.625rem;
+                                padding: 0.125rem 0.5rem;
+                            }
+                        }
+                    }
+
+                    .carriers-grid {
+                        grid-template-columns: 1fr;
+                        
+                        .carrier-checkbox {
+                            .carrier-info {
+                                flex-direction: row;
+                                text-align: left;
+
+                                .carrier-icon {
+                                    font-size: 1.5rem;
+                                }
+                            }
+                        }
+                    }
+
+                    .weight-tiers-container {
+                        padding: 1rem;
+
+                        .weight-tier-row {
+                            padding: 0.75rem;
+                        }
+                    }
+
                     .quantity-pricing .quantity-pricing-row {
-                        padding: 0.75rem;
+                        padding: 1rem;
                     }
 
                     .custom-attributes .custom-attribute-row {
-                        flex-direction: column;
-                        align-items: flex-start;
-                        gap: 0.75rem;
-
-                        .remove-attribute-btn {
-                            align-self: flex-end;
-                        }
+                        padding: 0.75rem;
                     }
                 }
 

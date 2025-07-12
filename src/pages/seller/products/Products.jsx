@@ -1,13 +1,14 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
     Plus, Search, Filter, Eye, Edit, Trash2, Archive,
-    RotateCcw, CheckSquare, Square, ChevronDown
+    RotateCcw, CheckSquare, Square, ChevronDown, Upload, FileText
 } from 'lucide-react'
 import './Products.scss'
 
 const Products = () => {
     const navigate = useNavigate()
+    const csvFileInputRef = useRef(null)
     const [selectedProducts, setSelectedProducts] = useState([])
     const [filters, setFilters] = useState({
         category: '',
@@ -19,10 +20,13 @@ const Products = () => {
     })
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [showStatusModal, setShowStatusModal] = useState(false)
+    const [showCsvUploadModal, setShowCsvUploadModal] = useState(false)
     const [productToAction, setProductToAction] = useState(null)
     const [statusAction, setStatusAction] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
     const [itemsPerPage, setItemsPerPage] = useState(10)
+    const [csvFile, setCsvFile] = useState(null)
+    const [csvUploadStatus, setCsvUploadStatus] = useState('')
 
     // Mock data for products
     const [mockProducts, setMockProducts] = useState([
@@ -156,6 +160,74 @@ const Products = () => {
         navigate(`/seller/products/view/${productId}`)
     }
 
+    const handleCsvUpload = () => {
+        csvFileInputRef.current?.click()
+    }
+
+    const handleCsvFileChange = (event) => {
+        const file = event.target.files[0]
+        if (file && file.type === 'text/csv') {
+            setCsvFile(file)
+            setShowCsvUploadModal(true)
+        } else {
+            alert('Please select a valid CSV file')
+        }
+        // Reset the input
+        event.target.value = ''
+    }
+
+    const processCsvUpload = () => {
+        if (!csvFile) return
+
+        setCsvUploadStatus('Processing...')
+
+        // Simulate CSV processing
+        setTimeout(() => {
+            // Here you would typically parse the CSV and add products
+            // For demo purposes, we'll just add a mock product
+            const newProduct = {
+                id: mockProducts.length + 1,
+                image: 'https://via.placeholder.com/60',
+                name: `CSV Product ${Date.now()}`,
+                sku: `CSV-${Date.now()}`,
+                status: 'private',
+                stock: 'in_stock',
+                stockCount: 10,
+                price: 49.99,
+                category: 'Electronics',
+                subcategory: 'Imported',
+                store: 'CSV Import',
+                brand: 'Generic'
+            }
+
+            setMockProducts(prev => [...prev, newProduct])
+            setCsvUploadStatus('Successfully imported 1 product!')
+
+            setTimeout(() => {
+                setShowCsvUploadModal(false)
+                setCsvFile(null)
+                setCsvUploadStatus('')
+            }, 2000)
+        }, 2000)
+    }
+
+    const downloadCsvTemplate = () => {
+        const csvContent = `name,sku,price,category,subcategory,brand,stock,description
+"Example Product","EX-001",29.99,"Electronics","Audio","ExampleBrand",50,"Example product description"
+"Another Product","EX-002",19.99,"Clothing","T-Shirts","ExampleClothing",25,"Another example product"`
+
+        const blob = new Blob([csvContent], { type: 'text/csv' })
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.setAttribute('hidden', '')
+        a.setAttribute('href', url)
+        a.setAttribute('download', 'product-template.csv')
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        window.URL.revokeObjectURL(url)
+    }
+
     const confirmDelete = () => {
         setMockProducts(prev => prev.filter(p => p.id !== productToAction.id))
         setShowDeleteModal(false)
@@ -163,10 +235,10 @@ const Products = () => {
     }
 
     const confirmStatusChange = () => {
-        setMockProducts(prev => 
-            prev.map(p => 
-                p.id === productToAction.id 
-                    ? { ...p, status: statusAction } 
+        setMockProducts(prev =>
+            prev.map(p =>
+                p.id === productToAction.id
+                    ? { ...p, status: statusAction }
                     : p
             )
         )
@@ -242,16 +314,35 @@ const Products = () => {
 
     return (
         <div className="products-page">
+            {/* Hidden CSV File Input */}
+            <input
+                ref={csvFileInputRef}
+                type="file"
+                accept=".csv"
+                onChange={handleCsvFileChange}
+                style={{ display: 'none' }}
+            />
+
             {/* Header */}
             <div className="products-header">
                 <h1>Products</h1>
-                <button
-                    className="add-product-btn"
-                    onClick={() => navigate('/seller/products/new')}
-                >
-                    <Plus size={20} />
-                    Add New Product
-                </button>
+                <div className="header-actions">
+                    <button
+                        className="csv-upload-btn"
+                        onClick={handleCsvUpload}
+                        title="Upload CSV file to bulk import products"
+                    >
+                        <Upload size={20} />
+                        Import CSV
+                    </button>
+                    <button
+                        className="add-product-btn"
+                        onClick={() => navigate('/seller/products/new')}
+                    >
+                        <Plus size={20} />
+                        Add New Product
+                    </button>
+                </div>
             </div>
 
             {/* Filters */}
@@ -383,7 +474,7 @@ const Products = () => {
                                     </div>
                                 </td>
                                 <td className="view-column">
-                                    <button 
+                                    <button
                                         className="view-btn"
                                         onClick={() => handleView(product.id)}
                                     >
@@ -457,6 +548,70 @@ const Products = () => {
                     </button>
                 </div>
             </div>
+
+            {/* CSV Upload Modal */}
+            {showCsvUploadModal && (
+                <div className="modal-overlay">
+                    <div className="modal csv-modal">
+                        <h3>Import Products from CSV</h3>
+                        <div className="csv-upload-content">
+                            <div className="file-info">
+                                <FileText size={24} className="file-icon" />
+                                <div className="file-details">
+                                    <span className="file-name">{csvFile?.name}</span>
+                                    <span className="file-size">{csvFile ? Math.round(csvFile.size / 1024) : 0} KB</span>
+                                </div>
+                            </div>
+
+                            <div className="upload-instructions">
+                                <h4>Instructions:</h4>
+                                <ul>
+                                    <li>Make sure your CSV includes: name, sku, price, category, stock</li>
+                                    <li>Use UTF-8 encoding for special characters</li>
+                                    <li>Duplicate SKUs will be skipped</li>
+                                    <li>Products will be created as "Private" by default</li>
+                                </ul>
+                            </div>
+
+                            {csvUploadStatus && (
+                                <div className={`upload-status ${csvUploadStatus.includes('Successfully') ? 'success' : 'processing'}`}>
+                                    {csvUploadStatus}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="modal-actions">
+                            <button
+                                className="template-btn"
+                                onClick={downloadCsvTemplate}
+                                disabled={csvUploadStatus === 'Processing...'}
+                            >
+                                <FileText size={16} />
+                                Download Template
+                            </button>
+                            <button
+                                className="cancel-btn"
+                                onClick={() => {
+                                    setShowCsvUploadModal(false)
+                                    setCsvFile(null)
+                                    setCsvUploadStatus('')
+                                }}
+                                disabled={csvUploadStatus === 'Processing...'}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="upload-btn"
+                                onClick={processCsvUpload}
+                                disabled={csvUploadStatus === 'Processing...'}
+                            >
+                                <Upload size={16} />
+                                {csvUploadStatus === 'Processing...' ? 'Processing...' : 'Import Products'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Delete Modal */}
             {showDeleteModal && (

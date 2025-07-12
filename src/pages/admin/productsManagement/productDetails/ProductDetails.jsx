@@ -63,6 +63,14 @@ const ProductDetails = () => {
                         revenue: 19604.55,
                         createdAt: '2024-01-15T10:30:00Z',
                         updatedAt: '2024-01-25T14:22:00Z',
+                        shipping: {
+                            type: 'flat',
+                            flatRate: 9.99,
+                            percentage: null,
+                            shippingClass: 'Standard',
+                            processTime: '2-3 business days',
+                            deliveryDriverPickup: 'Warehouse A - Downtown'
+                        },
                         specifications: {
                             brand: 'AudioTech',
                             model: 'AT-BT500',
@@ -127,7 +135,7 @@ const ProductDetails = () => {
                         }
                     }
                     setProduct(mockProduct)
-                    
+
                     // Mock coupons data
                     const mockCoupons = [
                         {
@@ -254,6 +262,35 @@ const ProductDetails = () => {
         )
     }
 
+    const getShippingDisplay = (shipping) => {
+        switch (shipping.type) {
+            case 'free':
+                return {
+                    badge: 'FREE SHIPPING',
+                    badgeClass: 'shipping-badge--free',
+                    details: 'No shipping charges applied to this product'
+                }
+            case 'flat':
+                return {
+                    badge: `FLAT RATE - $${shipping.flatRate}`,
+                    badgeClass: 'shipping-badge--flat',
+                    details: `Fixed shipping cost of $${shipping.flatRate} per order`
+                }
+            case 'percentage':
+                return {
+                    badge: `${shipping.percentage}% OF ORDER`,
+                    badgeClass: 'shipping-badge--percentage',
+                    details: `${shipping.percentage}% of the order total will be charged for shipping`
+                }
+            default:
+                return {
+                    badge: 'NOT CONFIGURED',
+                    badgeClass: 'shipping-badge--unknown',
+                    details: 'Shipping method not configured'
+                }
+        }
+    }
+
     const renderStars = (rating) => {
         return (
             <div className="stars">
@@ -295,6 +332,8 @@ const ProductDetails = () => {
             </div>
         )
     }
+
+    const shippingDisplay = getShippingDisplay(product.shipping)
 
     return (
         <div className="product-details">
@@ -446,7 +485,7 @@ const ProductDetails = () => {
                                 <span>Active Coupons: {coupons.filter(c => c.isActive).length}</span>
                                 <span>Total Coupons: {coupons.length}</span>
                             </div>
-                            <button 
+                            <button
                                 className="add-coupon-btn"
                                 onClick={() => setShowCouponForm(!showCouponForm)}
                             >
@@ -466,7 +505,7 @@ const ProductDetails = () => {
                                         <input
                                             type="text"
                                             value={newCoupon.code}
-                                            onChange={(e) => setNewCoupon({...newCoupon, code: e.target.value.toUpperCase()})}
+                                            onChange={(e) => setNewCoupon({ ...newCoupon, code: e.target.value.toUpperCase() })}
                                             placeholder="e.g., SAVE20"
                                         />
                                     </div>
@@ -474,7 +513,7 @@ const ProductDetails = () => {
                                         <label>Discount Type*</label>
                                         <select
                                             value={newCoupon.type}
-                                            onChange={(e) => setNewCoupon({...newCoupon, type: e.target.value})}
+                                            onChange={(e) => setNewCoupon({ ...newCoupon, type: e.target.value })}
                                         >
                                             <option value="percentage">Percentage (%)</option>
                                             <option value="fixed">Fixed Amount ($)</option>
@@ -485,7 +524,7 @@ const ProductDetails = () => {
                                         <input
                                             type="number"
                                             value={newCoupon.value}
-                                            onChange={(e) => setNewCoupon({...newCoupon, value: e.target.value})}
+                                            onChange={(e) => setNewCoupon({ ...newCoupon, value: e.target.value })}
                                             placeholder={newCoupon.type === 'percentage' ? '20' : '15'}
                                             min="0"
                                             step={newCoupon.type === 'percentage' ? '1' : '0.01'}
@@ -496,7 +535,7 @@ const ProductDetails = () => {
                                         <input
                                             type="date"
                                             value={newCoupon.expiryDate}
-                                            onChange={(e) => setNewCoupon({...newCoupon, expiryDate: e.target.value})}
+                                            onChange={(e) => setNewCoupon({ ...newCoupon, expiryDate: e.target.value })}
                                             min={new Date().toISOString().split('T')[0]}
                                         />
                                     </div>
@@ -505,7 +544,7 @@ const ProductDetails = () => {
                                         <input
                                             type="number"
                                             value={newCoupon.usageLimit}
-                                            onChange={(e) => setNewCoupon({...newCoupon, usageLimit: e.target.value})}
+                                            onChange={(e) => setNewCoupon({ ...newCoupon, usageLimit: e.target.value })}
                                             placeholder="100"
                                             min="0"
                                         />
@@ -515,7 +554,7 @@ const ProductDetails = () => {
                                         <input
                                             type="number"
                                             value={newCoupon.minOrderAmount}
-                                            onChange={(e) => setNewCoupon({...newCoupon, minOrderAmount: e.target.value})}
+                                            onChange={(e) => setNewCoupon({ ...newCoupon, minOrderAmount: e.target.value })}
                                             placeholder="50.00"
                                             min="0"
                                             step="0.01"
@@ -527,7 +566,7 @@ const ProductDetails = () => {
                                     <input
                                         type="text"
                                         value={newCoupon.description}
-                                        onChange={(e) => setNewCoupon({...newCoupon, description: e.target.value})}
+                                        onChange={(e) => setNewCoupon({ ...newCoupon, description: e.target.value })}
                                         placeholder="Brief description of the coupon"
                                     />
                                 </div>
@@ -535,8 +574,8 @@ const ProductDetails = () => {
                                     <button className="save-btn" onClick={handleAddCoupon}>
                                         Save Coupon
                                     </button>
-                                    <button 
-                                        className="cancel-btn" 
+                                    <button
+                                        className="cancel-btn"
                                         onClick={() => setShowCouponForm(false)}
                                     >
                                         Cancel
@@ -651,6 +690,42 @@ const ProductDetails = () => {
                                 <div className="pricing-item">
                                     <span>Low Stock Alert</span>
                                     <span>≤ {product.lowStockThreshold} units</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="content-section">
+                    <h2>Shipping Information</h2>
+                    <div className="info-grid">
+                        <div className="info-card">
+                            <h3>Shipping Rate</h3>
+                            <div className="shipping-rate-display">
+                                <div className={`shipping-type-badge ${shippingDisplay.badgeClass}`}>
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                    </svg>
+                                    {shippingDisplay.badge}
+                                </div>
+                                <p className="shipping-description">{shippingDisplay.details}</p>
+                            </div>
+                        </div>
+
+                        <div className="info-card">
+                            <h3>Shipping Details</h3>
+                            <div className="info-list">
+                                <div className="info-item">
+                                    <span className="label">Shipping Class</span>
+                                    <span className="value">{product.shipping.shippingClass}</span>
+                                </div>
+                                <div className="info-item">
+                                    <span className="label">Processing Time</span>
+                                    <span className="value">{product.shipping.processTime}</span>
+                                </div>
+                                <div className="info-item">
+                                    <span className="label">Pickup Location</span>
+                                    <span className="value">{product.shipping.deliveryDriverPickup}</span>
                                 </div>
                             </div>
                         </div>

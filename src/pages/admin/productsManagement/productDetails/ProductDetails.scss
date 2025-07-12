@@ -797,6 +797,61 @@
                         }
                     }
                 }
+
+                // Shipping Rate Display Styles
+                .shipping-rate-display {
+                    .shipping-type-badge {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        padding: 1rem 1.5rem;
+                        border-radius: $radius-lg;
+                        font-size: 1rem;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        margin-bottom: 1rem;
+                        border: 2px solid transparent;
+
+                        svg {
+                            width: 20px;
+                            height: 20px;
+                            flex-shrink: 0;
+                        }
+
+                        &.shipping-badge--free {
+                            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+                            color: #16a34a;
+                            border-color: rgba(34, 197, 94, 0.2);
+                        }
+
+                        &.shipping-badge--flat {
+                            background: linear-gradient(135deg, rgba(66, 103, 178, 0.1) 0%, rgba(66, 103, 178, 0.05) 100%);
+                            color: $primary-color;
+                            border-color: rgba(66, 103, 178, 0.2);
+                        }
+
+                        &.shipping-badge--percentage {
+                            background: linear-gradient(135deg, rgba(206, 128, 45, 0.1) 0%, rgba(206, 128, 45, 0.05) 100%);
+                            color: $orange-color;
+                            border-color: rgba(206, 128, 45, 0.2);
+                        }
+
+                        &.shipping-badge--unknown {
+                            background: linear-gradient(135deg, rgba(75, 85, 99, 0.1) 0%, rgba(75, 85, 99, 0.05) 100%);
+                            color: $gray-500;
+                            border-color: rgba(75, 85, 99, 0.2);
+                        }
+                    }
+
+                    .shipping-description {
+                        font-size: 0.875rem;
+                        color: $gray-600;
+                        line-height: 1.5;
+                        margin: 0;
+                        font-style: italic;
+                    }
+                }
             }
 
             .reviews-section {
@@ -1083,6 +1138,18 @@
 
                     .value {
                         text-align: left;
+                    }
+                }
+
+                .shipping-rate-display {
+                    .shipping-type-badge {
+                        padding: 0.75rem 1rem;
+                        font-size: 0.875rem;
+
+                        svg {
+                            width: 16px;
+                            height: 16px;
+                        }
                     }
                 }
             }

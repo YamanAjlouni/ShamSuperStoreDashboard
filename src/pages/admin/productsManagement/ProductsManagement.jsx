@@ -36,7 +36,12 @@ const ProductsManagement = () => {
                         status: 'active',
                         totalSales: 245,
                         createdAt: '2024-01-15',
-                        category: 'Electronics'
+                        category: 'Electronics',
+                        shipping: {
+                            type: 'flat',
+                            flatRate: 9.99,
+                            percentage: null
+                        }
                     },
                     {
                         id: 'PRD002',
@@ -56,7 +61,12 @@ const ProductsManagement = () => {
                         status: 'pending',
                         totalSales: 89,
                         createdAt: '2024-01-20',
-                        category: 'Clothing'
+                        category: 'Clothing',
+                        shipping: {
+                            type: 'free',
+                            flatRate: null,
+                            percentage: null
+                        }
                     },
                     {
                         id: 'PRD003',
@@ -76,7 +86,12 @@ const ProductsManagement = () => {
                         status: 'active',
                         totalSales: 432,
                         createdAt: '2024-01-10',
-                        category: 'Electronics'
+                        category: 'Electronics',
+                        shipping: {
+                            type: 'percentage',
+                            flatRate: null,
+                            percentage: 5.5
+                        }
                     },
                     {
                         id: 'PRD004',
@@ -96,7 +111,12 @@ const ProductsManagement = () => {
                         status: 'archived',
                         totalSales: 156,
                         createdAt: '2024-01-05',
-                        category: 'Home & Garden'
+                        category: 'Home & Garden',
+                        shipping: {
+                            type: 'flat',
+                            flatRate: 12.50,
+                            percentage: null
+                        }
                     },
                     {
                         id: 'PRD005',
@@ -116,7 +136,12 @@ const ProductsManagement = () => {
                         status: 'pending',
                         totalSales: 23,
                         createdAt: '2024-01-25',
-                        category: 'Electronics'
+                        category: 'Electronics',
+                        shipping: {
+                            type: 'free',
+                            flatRate: null,
+                            percentage: null
+                        }
                     }
                 ]
                 setProducts(mockProducts)
@@ -206,6 +231,54 @@ const ProductsManagement = () => {
         }
     }
 
+    const getShippingInfo = (shipping) => {
+        switch (shipping.type) {
+            case 'free':
+                return (
+                    <div className="shipping-info">
+                        <span className="shipping-badge shipping-badge--free">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                            FREE
+                        </span>
+                        <span className="shipping-details">No shipping charges</span>
+                    </div>
+                )
+            case 'flat':
+                return (
+                    <div className="shipping-info">
+                        <span className="shipping-badge shipping-badge--flat">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                            </svg>
+                            FLAT
+                        </span>
+                        <span className="shipping-details">${shipping.flatRate} per order</span>
+                    </div>
+                )
+            case 'percentage':
+                return (
+                    <div className="shipping-info">
+                        <span className="shipping-badge shipping-badge--percentage">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                            {shipping.percentage}%
+                        </span>
+                        <span className="shipping-details">{shipping.percentage}% of order total</span>
+                    </div>
+                )
+            default:
+                return (
+                    <div className="shipping-info">
+                        <span className="shipping-badge shipping-badge--unknown">N/A</span>
+                        <span className="shipping-details">Not configured</span>
+                    </div>
+                )
+        }
+    }
+
     if (loading) {
         return (
             <div className="products-management">
@@ -290,6 +363,7 @@ const ProductsManagement = () => {
                                 <th>SKU</th>
                                 <th>Pricing</th>
                                 <th>Stock</th>
+                                <th>Shipping</th>
                                 <th>Seller</th>
                                 <th>Sales</th>
                                 <th>Status</th>
@@ -330,6 +404,9 @@ const ProductsManagement = () => {
                                     </td>
                                     <td className="stock">
                                         {getStockStatus(product.stock)}
+                                    </td>
+                                    <td className="shipping">
+                                        {getShippingInfo(product.shipping)}
                                     </td>
                                     <td className="seller">
                                         <div className="seller-info">

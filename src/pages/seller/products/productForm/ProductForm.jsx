@@ -39,6 +39,9 @@ const ProductForm = ({ mode = 'add' }) => {
         shippingClass: '',
         processTime: '',
         deliveryDriverPickup: '',
+        shippingType: 'free', // Keep original default
+        shippingFlatRate: '',
+        shippingPercentage: '',
         color: '',
         customColor: '',
         condition: '',
@@ -85,7 +88,7 @@ const ProductForm = ({ mode = 'add' }) => {
     }
 
     const commonColors = [
-        'Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Orange', 'Purple', 
+        'Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Orange', 'Purple',
         'Pink', 'Gray', 'Brown', 'Navy', 'Maroon', 'Teal', 'Gold', 'Silver'
     ]
 
@@ -95,6 +98,13 @@ const ProductForm = ({ mode = 'add' }) => {
         'Bulky Goods',
         'Fragile Items',
         'Hazardous Materials'
+    ]
+
+    const shippingTypes = [
+        { value: 'admin_default', label: 'System Default (Admin Configured)' },
+        { value: 'free', label: 'Free Shipping' },
+        { value: 'flat', label: 'Flat Rate' },
+        { value: 'percentage', label: 'Percentage of Order Total' }
     ]
 
     const processTimes = [
@@ -155,6 +165,9 @@ const ProductForm = ({ mode = 'add' }) => {
                 shippingClass: 'Standard',
                 processTime: '2 days',
                 deliveryDriverPickup: 'Warehouse A',
+                shippingType: 'admin_default',
+                shippingFlatRate: '',
+                shippingPercentage: '',
                 color: 'Black',
                 customColor: '',
                 condition: 'New',
@@ -186,6 +199,16 @@ const ProductForm = ({ mode = 'add' }) => {
                 [field]: value
             }))
         }
+    }
+
+    const handleShippingTypeChange = (value) => {
+        setFormData(prev => ({
+            ...prev,
+            shippingType: value,
+            // Reset type-specific fields
+            shippingFlatRate: '',
+            shippingPercentage: ''
+        }))
     }
 
     const handleImageUpload = (files) => {
@@ -257,9 +280,19 @@ const ProductForm = ({ mode = 'add' }) => {
     const updateQuantityPricing = (index, field, value) => {
         setFormData(prev => ({
             ...prev,
-            quantityPricing: prev.quantityPricing.map((item, i) => 
+            quantityPricing: prev.quantityPricing.map((item, i) =>
                 i === index ? { ...item, [field]: value } : item
             )
+        }))
+    }
+
+    // Carrier handlers
+    const handleCarrierToggle = (carrierValue, checked) => {
+        setFormData(prev => ({
+            ...prev,
+            enabledCarriers: checked
+                ? [...prev.enabledCarriers, carrierValue]
+                : prev.enabledCarriers.filter(c => c !== carrierValue)
         }))
     }
 
@@ -288,6 +321,50 @@ const ProductForm = ({ mode = 'add' }) => {
         } else {
             setShowCustomColor(false)
             setFormData(prev => ({ ...prev, color, customColor: '' }))
+        }
+    }
+
+    const calculateShippingPreview = (scenario) => {
+        if (!formData.shippingType) return 'Select shipping method'
+
+        switch (formData.shippingType) {
+            case 'free':
+                return 'Free'
+
+            case 'flat':
+                return formData.shippingFlatRate ? `$${formData.shippingFlatRate}` : 'Set flat rate'
+
+            case 'percentage':
+                if (!formData.shippingPercentage) return 'Set percentage'
+                const orderValues = { local: 100, regional: 100, international: 100 }
+                const cost = (orderValues[scenario] * parseFloat(formData.shippingPercentage) / 100).toFixed(2)
+                return `$${cost}`
+
+            case 'distance_based':
+                if (!formData.baseDistanceRate) return 'Set distance rate'
+                const distances = { local: 10, regional: 50, international: 0 }
+                const distanceCost = (distances[scenario] * parseFloat(formData.baseDistanceRate)).toFixed(2)
+                const minCharge = parseFloat(formData.minimumDistanceCharge || 0)
+                const finalCost = Math.max(parseFloat(distanceCost), minCharge).toFixed(2)
+                return scenario === 'international' ? 'Not available' : `$${finalCost}`
+
+            case 'weight_based':
+                if (!formData.weightTiers.length) return 'Set weight tiers'
+                const weight = 2 // 2kg example
+                const tier = formData.weightTiers.find(t =>
+                    weight >= parseFloat(t.minWeight || 0) &&
+                    (!t.maxWeight || weight <= parseFloat(t.maxWeight))
+                )
+                return tier && tier.rate ? `$${tier.rate}` : 'No matching tier'
+
+            case 'admin_default':
+                return 'System calculated'
+
+            case 'realtime_carrier':
+                return formData.enabledCarriers.length ? 'Live rates' : 'Select carriers'
+
+            default:
+                return 'Unknown method'
         }
     }
 
@@ -671,7 +748,7 @@ const ProductForm = ({ mode = 'add' }) => {
                                                             <X size={14} />
                                                         </button>
                                                     </div>
-                                                    
+
                                                     <div className="pricing-inputs">
                                                         <div className="pricing-input-group quantity-input">
                                                             <label className="input-label">
@@ -706,7 +783,7 @@ const ProductForm = ({ mode = 'add' }) => {
                                                     {pricing.minQuantity && pricing.price && formData.price && (
                                                         <div className="pricing-preview">
                                                             <p className="preview-text">
-                                                                Buy {pricing.minQuantity}+ units at ${pricing.price} each 
+                                                                Buy {pricing.minQuantity}+ units at ${pricing.price} each
                                                                 {parseFloat(pricing.price) < parseFloat(formData.price) && (
                                                                     <span className="savings">
                                                                         {' '}(Save ${(parseFloat(formData.price) - parseFloat(pricing.price)).toFixed(2)} per unit)
@@ -878,6 +955,130 @@ const ProductForm = ({ mode = 'add' }) => {
                                             placeholder="Enter pickup location"
                                         />
                                     </div>
+                                </div>
+                            </div>
+
+                            <div className="form-section">
+                                <h3>Shipping Rates</h3>
+
+                                <div className="form-grid">
+                                    <div className="form-group">
+                                        <label htmlFor="shippingType">Shipping Type *</label>
+                                        <select
+                                            id="shippingType"
+                                            value={formData.shippingType}
+                                            onChange={(e) => handleShippingTypeChange(e.target.value)}
+                                            required
+                                        >
+                                            {shippingTypes.map(type => (
+                                                <option key={type.value} value={type.value}>{type.label}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    {formData.shippingType === 'flat' && (
+                                        <div className="form-group">
+                                            <label htmlFor="shippingFlatRate">Flat Rate Amount ($) *</label>
+                                            <div className="input-with-icon">
+                                                <DollarSign size={16} className="input-icon" />
+                                                <input
+                                                    type="number"
+                                                    id="shippingFlatRate"
+                                                    value={formData.shippingFlatRate}
+                                                    onChange={(e) => handleInputChange('shippingFlatRate', e.target.value)}
+                                                    placeholder="0.00"
+                                                    step="0.01"
+                                                    min="0"
+                                                    required
+                                                />
+                                            </div>
+                                            <small className="field-help">Enter the fixed shipping cost for all orders</small>
+                                        </div>
+                                    )}
+
+                                    {formData.shippingType === 'percentage' && (
+                                        <div className="form-group">
+                                            <label htmlFor="shippingPercentage">Percentage of Order Total (%) *</label>
+                                            <input
+                                                type="number"
+                                                id="shippingPercentage"
+                                                value={formData.shippingPercentage}
+                                                onChange={(e) => handleInputChange('shippingPercentage', e.target.value)}
+                                                placeholder="5"
+                                                step="0.1"
+                                                min="0"
+                                                max="100"
+                                                required
+                                            />
+                                            <small className="field-help">Enter the percentage of order total to charge for shipping</small>
+                                        </div>
+                                    )}
+
+                                    {formData.shippingType === 'admin_default' && (
+                                        <div className="form-group full-width">
+                                            <div className="admin-default-info">
+                                                <div className="info-icon">⚙️</div>
+                                                <div className="info-content">
+                                                    <h4>Using System Default Shipping Rules</h4>
+                                                    <p>
+                                                        This product will use the shipping calculation method configured by your administrator.
+                                                        The system will automatically calculate shipping based on the global settings.
+                                                    </p>
+                                                    <div className="system-rules-preview">
+                                                        <h5>Current System Settings:</h5>
+                                                        <ul>
+                                                            <li>Calculation Method: Distance + Weight Hybrid</li>
+                                                            <li>Base Rate: $5.00</li>
+                                                            <li>Weight Multiplier: $0.50 per kg</li>
+                                                            <li>Distance Multiplier: $0.25 per km</li>
+                                                            <li>Minimum Charge: $3.00</li>
+                                                            <li>Maximum Charge: $50.00</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {formData.shippingType === 'free' && (
+                                        <div className="form-group full-width">
+                                            <div className="shipping-info-box">
+                                                <div className="info-icon">🚚</div>
+                                                <div className="info-content">
+                                                    <h4>Free Shipping Selected</h4>
+                                                    <p>No shipping charges will be applied to orders for this product. This can help increase conversion rates and customer satisfaction.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {(formData.shippingType === 'flat' && formData.shippingFlatRate) && (
+                                        <div className="form-group full-width">
+                                            <div className="shipping-preview">
+                                                <h4>Shipping Preview</h4>
+                                                <p>Customers will be charged <strong>${formData.shippingFlatRate}</strong> for shipping regardless of order size.</p>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {(formData.shippingType === 'percentage' && formData.shippingPercentage) && (
+                                        <div className="form-group full-width">
+                                            <div className="shipping-preview">
+                                                <h4>Shipping Preview</h4>
+                                                <p>Customers will be charged <strong>{formData.shippingPercentage}%</strong> of their order total for shipping.</p>
+                                                <div className="preview-examples">
+                                                    <div className="example">
+                                                        <span>$100 order:</span>
+                                                        <span>${(100 * parseFloat(formData.shippingPercentage || 0) / 100).toFixed(2)} shipping</span>
+                                                    </div>
+                                                    <div className="example">
+                                                        <span>$50 order:</span>
+                                                        <span>${(50 * parseFloat(formData.shippingPercentage || 0) / 100).toFixed(2)} shipping</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
