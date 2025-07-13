@@ -37,6 +37,7 @@ import ReportsManagement from './reportsManagement/ReportsManagement'
 import SettingsManagement from './settingsManagement/SettingsManagement'
 
 import './Admin.scss'
+import DriverResetPassword from './driversManagement/driverResetPassword/DriverResetPassowrd'
 
 const PlaceholderPage = ({ pageName }) => (
     <div className="page-placeholder">
@@ -148,6 +149,7 @@ const Admin = () => {
                         <Route path="/pending-sellers" element={<PendingSellers />} />
                         <Route path="/drivers" element={<DriversManagement />} />
                         <Route path="/drivers/details/:id" element={<DriverDetails />} />
+                        <Route path="/drivers/reset-password/:id" element={<DriverResetPassword />} />
 
                         {/* Order Management */}
                         <Route path="/orders" element={<OrdersManagement />} />
@@ -157,7 +159,7 @@ const Admin = () => {
                         {/* Product Management */}
                         <Route path="/products" element={<ProductsManagement />} />
                         <Route path="/products/details/:id" element={<ProductDetails />} />
-                        
+
                         {/* Category Management */}
                         <Route path="/categories" element={<CategoriesManagement />} />
                         <Route path="/categories/details/:id" element={<CategoryDetails />} />

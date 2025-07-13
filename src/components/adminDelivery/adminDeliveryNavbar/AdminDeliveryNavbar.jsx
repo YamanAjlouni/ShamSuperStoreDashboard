@@ -5,16 +5,63 @@ import './AdminDeliveryNavbar.scss'
 const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     const navigate = useNavigate()
     const location = useLocation()
-    const [notifications] = useState(12) // Admin notifications count
-    const [deliveryStats] = useState({ pending: 8, processing: 5, activeDrivers: 12 }) // Admin delivery stats
-    const [isProfileOpen, setIsProfileOpen] = useState(false)
-    const profileRef = useRef(null)
+    const [notifications] = useState([
+        {
+            id: 1,
+            type: 'new_order',
+            title: 'New Order Received',
+            message: 'Order #12345 from John Doe',
+            time: '2 min ago',
+            unread: true
+        },
+        {
+            id: 2,
+            type: 'driver_signup',
+            title: 'New Driver Signup',
+            message: 'Sarah Johnson applied as delivery driver',
+            time: '15 min ago',
+            unread: true
+        },
+        {
+            id: 3,
+            type: 'order_delivered',
+            title: 'Order Delivered',
+            message: 'Order #12340 successfully delivered',
+            time: '1 hour ago',
+            unread: false
+        },
+        {
+            id: 4,
+            type: 'driver_approved',
+            title: 'Driver Approved',
+            message: 'Mike Wilson has been approved as driver',
+            time: '2 hours ago',
+            unread: false
+        },
+        {
+            id: 5,
+            type: 'new_order',
+            title: 'New Order Received',
+            message: 'Order #12338 from Emma Davis',
+            time: '3 hours ago',
+            unread: true
+        }
+    ])
 
-    // Close profile dropdown when clicking outside
+    const [deliveryStats] = useState({ pending: 8, processing: 5, activeDrivers: 12 })
+    const [isProfileOpen, setIsProfileOpen] = useState(false)
+    const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
+    const profileRef = useRef(null)
+    const notificationsRef = useRef(null)
+
+    // Close dropdowns when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (profileRef.current && !profileRef.current.contains(event.target)) {
                 setIsProfileOpen(false)
+            }
+            if (notificationsRef.current && !notificationsRef.current.contains(event.target)) {
+                setIsNotificationsOpen(false)
             }
         }
 
@@ -36,7 +83,7 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     }
 
     const handleNotificationsClick = () => {
-        navigate('/adminDelivery/notifications')
+        setIsNotificationsOpen(!isNotificationsOpen)
     }
 
     const handleProfileClick = () => {
@@ -48,14 +95,6 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
         setIsProfileOpen(false)
     }
 
-    const handleOrdersHistoryClick = () => {
-        navigate('/adminDelivery/orders-history')
-    }
-
-    const handlePendingDriversClick = () => {
-        navigate('/adminDelivery/pending-drivers')
-    }
-
     const handleLogout = () => {
         console.log('Admin delivery logout clicked')
         localStorage.removeItem('isAuthenticated')
@@ -63,6 +102,43 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
         navigate('/login')
         setIsProfileOpen(false)
     }
+
+    const getNotificationIcon = (type) => {
+        switch (type) {
+            case 'new_order':
+                return (
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                )
+            case 'driver_signup':
+                return (
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                )
+            case 'order_delivered':
+                return (
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                )
+            case 'driver_approved':
+                return (
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                    </svg>
+                )
+            default:
+                return (
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                )
+        }
+    }
+
+    const unreadCount = notifications.filter(n => n.unread).length
 
     return (
         <nav className="delivery-navbar">
@@ -110,49 +186,56 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
 
                 <div className="navbar-actions">
                     {/* Notifications */}
-                    <button
-                        className="action-btn notifications-btn"
-                        onClick={handleNotificationsClick}
-                        title="View notifications"
-                    >
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM4 19h6v2H4v-2zM6 7v10H4V7h2zM20 3H8v14h12V3z" />
-                        </svg>
-                        {notifications > 0 && <span className="badge">{notifications}</span>}
-                    </button>
+                    <div className="notifications-wrapper" ref={notificationsRef}>
+                        <button
+                            className="action-btn notifications-btn"
+                            onClick={handleNotificationsClick}
+                            title="View notifications"
+                        >
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM11 19H6.5a2.5 2.5 0 010-5H11m0 0V9a2 2 0 012-2m-2 7a2 2 0 01-2-2M9 9a2 2 0 012-2m0 0V5a2 2 0 012-2m-2 2a2 2 0 00-2 2" />
+                            </svg>
+                            {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
+                        </button>
 
-                    {/* Orders History Quick Access */}
-                    <button
-                        className="action-btn history-btn"
-                        title="Orders History"
-                        onClick={handleOrdersHistoryClick}
-                    >
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                        </svg>
-                    </button>
-
-                    {/* Pending Drivers Quick Access */}
-                    <button
-                        className="action-btn pending-drivers-btn"
-                        title="Pending Drivers"
-                        onClick={handlePendingDriversClick}
-                    >
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </button>
-
-                    {/* Quick Actions Button */}
-                    <button
-                        className="action-btn quick-actions-btn"
-                        title="Quick Actions"
-                        onClick={() => navigate('/adminDelivery/orders')}
-                    >
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
-                        </svg>
-                    </button>
+                        {isNotificationsOpen && (
+                            <div className="notifications-dropdown">
+                                <div className="dropdown-header">
+                                    <h3>Notifications</h3>
+                                    <span className="unread-count">{unreadCount} unread</span>
+                                </div>
+                                <div className="notifications-list">
+                                    {notifications.map((notification) => (
+                                        <div
+                                            key={notification.id}
+                                            className={`notification-item ${notification.unread ? 'unread' : ''}`}
+                                        >
+                                            <div className="notification-icon">
+                                                {getNotificationIcon(notification.type)}
+                                            </div>
+                                            <div className="notification-content">
+                                                <h4>{notification.title}</h4>
+                                                <p>{notification.message}</p>
+                                                <span className="notification-time">{notification.time}</span>
+                                            </div>
+                                            {notification.unread && <div className="unread-indicator"></div>}
+                                        </div>
+                                    ))}
+                                </div>
+                                {/* <div className="dropdown-footer">
+                                    <button
+                                        className="view-all-btn"
+                                        onClick={() => {
+                                            navigate('/adminDelivery/notifications')
+                                            setIsNotificationsOpen(false)
+                                        }}
+                                    >
+                                        View All Notifications
+                                    </button>
+                                </div> */}
+                            </div>
+                        )}
+                    </div>
 
                     {/* User Profile */}
                     <div className="user-profile" ref={profileRef}>
@@ -195,39 +278,6 @@ const AdminDeliveryNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                     Profile
-                                </button>
-                                <button
-                                    className="dropdown-item"
-                                    onClick={handleOrdersHistoryClick}
-                                >
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                                    </svg>
-                                    Orders History
-                                </button>
-                                <button
-                                    className="dropdown-item"
-                                    onClick={() => {
-                                        handlePendingDriversClick()
-                                        setIsProfileOpen(false)
-                                    }}
-                                >
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    Pending Drivers
-                                </button>
-                                <button
-                                    className="dropdown-item"
-                                    onClick={() => {
-                                        navigate('/adminDelivery/reports')
-                                        setIsProfileOpen(false)
-                                    }}
-                                >
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                    Reports
                                 </button>
                                 <button
                                     className="dropdown-item dropdown-item--logout"

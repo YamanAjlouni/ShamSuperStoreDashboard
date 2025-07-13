@@ -212,7 +212,11 @@ const DriverDetails = () => {
     }
 
     const handleResetPassword = () => {
-        navigate(`/admin/drivers/reset-password/${driver.id}`)
+        // Show confirmation before navigating
+        if (window.confirm(`Are you sure you want to reset password for ${driver.name}?`)) {
+            console.log('Navigating to reset password page for driver:', driver.id)
+            navigate(`/admin/drivers/reset-password/${driver.id}`)
+        }
     }
 
     const handleDeleteDriver = () => {
@@ -340,7 +344,14 @@ const DriverDetails = () => {
                                 Suspend
                             </button>
                         )}
-                        <button className="action-btn action-btn--reset" onClick={handleResetPassword}>
+                        <button
+                            className="action-btn action-btn--reset"
+                            onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                handleResetPassword()
+                            }}
+                        >
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z" />
                             </svg>

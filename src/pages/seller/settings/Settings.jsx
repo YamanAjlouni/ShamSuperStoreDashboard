@@ -6,9 +6,10 @@ import './Settings.scss'
 const Settings = () => {
     const [activeTab, setActiveTab] = useState('store')
     const [showPassword, setShowPassword] = useState(false)
-    
+
     // Store Information State
     const [storeData, setStoreData] = useState({
+        storeNumber: 'STR-2024-001258', // Read-only store number from backend
         storeName: 'ShamSuperStore',
         description: 'Your one-stop shop for quality products',
         email: 'store@shamsuperstore.com',
@@ -79,7 +80,7 @@ const Settings = () => {
 
     const countries = [
         'Syria', 'Lebanon', 'Jordan', 'Turkey', 'Iraq', 'Egypt',
-        'Saudi Arabia', 'UAE', 'Kuwait', 'Qatar', 'United States', 
+        'Saudi Arabia', 'UAE', 'Kuwait', 'Qatar', 'United States',
         'Canada', 'United Kingdom', 'Germany', 'France'
     ]
 
@@ -135,7 +136,19 @@ const Settings = () => {
                                     </div>
                                 </div>
 
-                                <div className="form-group full-width">
+                                <div className="form-group">
+                                    <label htmlFor="storeNumber">Store Number</label>
+                                    <input
+                                        type="text"
+                                        id="storeNumber"
+                                        value={storeData.storeNumber}
+                                        readOnly
+                                        className="readonly-field"
+                                    />
+                                    <small className="helper-text">This number is assigned by the system and cannot be changed</small>
+                                </div>
+
+                                <div className="form-group">
                                     <label htmlFor="storeName">Store Name *</label>
                                     <input
                                         type="text"
@@ -355,8 +368,8 @@ const Settings = () => {
                                         {personalData.idDocument ? (
                                             <div className="document-preview">
                                                 <img src={personalData.idDocument} alt="ID Document" />
-                                                <button 
-                                                    type="button" 
+                                                <button
+                                                    type="button"
                                                     onClick={() => handlePersonalChange('idDocument', null)}
                                                     className="remove-document"
                                                 >

@@ -143,6 +143,16 @@
                         font-weight: 600;
                         font-family: 'Courier New', monospace;
                     }
+
+                    .refund-indicator {
+                        background: rgba(249, 115, 22, 0.1);
+                        color: #f97316;
+                        padding: 0.25rem 0.75rem;
+                        border-radius: $radius-sm;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                        animation: pulse 2s infinite;
+                    }
                 }
             }
 
@@ -309,6 +319,11 @@
             border: 1px solid $gray-200;
             padding: 2rem;
 
+            &.refund-section {
+                border-left: 4px solid #f97316;
+                background: linear-gradient(135deg, rgba(249, 115, 22, 0.02) 0%, rgba(255, 255, 255, 1) 100%);
+            }
+
             h2 {
                 font-size: 1.25rem;
                 font-weight: 600;
@@ -316,6 +331,296 @@
                 margin: 0 0 1.5rem 0;
                 padding-bottom: 0.5rem;
                 border-bottom: 2px solid $primary-color;
+            }
+
+            // Refund Section Styles
+            .refund-content {
+                .refund-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 1.5rem;
+                    padding: 1rem;
+                    background: rgba(249, 115, 22, 0.05);
+                    border-radius: $radius-md;
+                    border: 1px solid rgba(249, 115, 22, 0.2);
+
+                    .refund-info {
+                        h3 {
+                            font-size: 1.125rem;
+                            font-weight: 600;
+                            color: $gray-800;
+                            margin: 0 0 0.5rem 0;
+                        }
+
+                        p {
+                            color: $gray-500;
+                            margin: 0 0 0.5rem 0;
+                            font-size: 0.875rem;
+                        }
+                    }
+
+                    .refund-amount {
+                        text-align: right;
+
+                        .amount-label {
+                            display: block;
+                            font-size: 0.75rem;
+                            color: $gray-500;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                            margin-bottom: 0.25rem;
+                        }
+
+                        .amount-value {
+                            font-size: 1.5rem;
+                            font-weight: 700;
+                            color: #f97316;
+                            font-family: 'Courier New', monospace;
+                        }
+                    }
+                }
+
+                .refund-details {
+                    display: grid;
+                    gap: 1rem;
+                    margin-bottom: 1.5rem;
+
+                    .refund-card {
+                        background: $gray-50;
+                        padding: 1rem;
+                        border-radius: $radius-md;
+                        border: 1px solid $gray-200;
+
+                        h4 {
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            color: $gray-700;
+                            margin: 0 0 0.5rem 0;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+
+                        p {
+                            margin: 0;
+                            color: $gray-800;
+                            line-height: 1.5;
+
+                            &.refund-reason {
+                                font-weight: 500;
+                                color: #f97316;
+                            }
+
+                            &.admin-notes {
+                                font-style: italic;
+                                color: $primary-color;
+                            }
+                        }
+                    }
+                }
+
+                .refund-actions {
+                    display: flex;
+                    gap: 0.75rem;
+                    flex-wrap: wrap;
+
+                    .refund-btn {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        padding: 0.75rem 1rem;
+                        border: none;
+                        border-radius: $radius-md;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: $transition-all;
+
+                        svg {
+                            width: 16px;
+                            height: 16px;
+                        }
+
+                        &--approve {
+                            background: rgba(16, 185, 129, 0.1);
+                            color: #059669;
+                            border: 1px solid rgba(16, 185, 129, 0.3);
+
+                            &:hover {
+                                background: rgba(16, 185, 129, 0.2);
+                                transform: translateY(-1px);
+                            }
+                        }
+
+                        &--reject {
+                            background: rgba(239, 68, 68, 0.1);
+                            color: #dc2626;
+                            border: 1px solid rgba(239, 68, 68, 0.3);
+
+                            &:hover {
+                                background: rgba(239, 68, 68, 0.2);
+                                transform: translateY(-1px);
+                            }
+                        }
+
+                        &--process {
+                            background: rgba(249, 115, 22, 0.1);
+                            color: #f97316;
+                            border: 1px solid rgba(249, 115, 22, 0.3);
+
+                            &:hover {
+                                background: rgba(249, 115, 22, 0.2);
+                                transform: translateY(-1px);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Delivery Photos Styles
+            .delivery-photos {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                gap: 2rem;
+
+                .photo-card {
+                    background: $gray-50;
+                    border-radius: $radius-lg;
+                    padding: 1.5rem;
+                    border: 1px solid $gray-200;
+
+                    h3 {
+                        font-size: 1rem;
+                        font-weight: 600;
+                        color: $gray-800;
+                        margin: 0 0 1rem 0;
+                        text-align: center;
+                    }
+
+                    .photo-container {
+                        img {
+                            width: 100%;
+                            height: 250px;
+                            object-fit: cover;
+                            border-radius: $radius-md;
+                            border: 2px solid $gray-200;
+                            margin-bottom: 1rem;
+                            transition: $transition-all;
+
+                            &:hover {
+                                border-color: $primary-color;
+                                transform: scale(1.02);
+                            }
+                        }
+
+                        .photo-info {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 0.25rem;
+
+                            .photo-label {
+                                font-size: 0.875rem;
+                                font-weight: 600;
+                                color: $primary-color;
+                            }
+
+                            .photo-timestamp {
+                                font-size: 0.75rem;
+                                color: $gray-500;
+                                font-family: 'Courier New', monospace;
+                            }
+
+                            .photo-description {
+                                font-size: 0.75rem;
+                                color: $gray-400;
+                                font-style: italic;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Reviews Styles
+            .reviews-grid {
+                display: grid;
+                gap: 1.5rem;
+
+                .review-card {
+                    background: $gray-50;
+                    border-radius: $radius-lg;
+                    padding: 1.5rem;
+                    border: 1px solid $gray-200;
+                    transition: $transition-all;
+
+                    &:hover {
+                        transform: translateY(-2px);
+                        box-shadow: $shadow-md;
+                    }
+
+                    .review-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 1rem;
+                        padding-bottom: 0.75rem;
+                        border-bottom: 1px solid $gray-200;
+
+                        h3 {
+                            font-size: 1rem;
+                            font-weight: 600;
+                            color: $gray-800;
+                            margin: 0;
+                        }
+
+                        .rating {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.25rem;
+
+                            .star {
+                                font-size: 1rem;
+                                filter: grayscale(100%);
+                                transition: filter 0.2s ease;
+
+                                &.filled {
+                                    filter: grayscale(0%);
+                                }
+                            }
+
+                            .rating-number {
+                                font-size: 0.875rem;
+                                color: $gray-500;
+                                margin-left: 0.5rem;
+                                font-weight: 500;
+                            }
+                        }
+                    }
+
+                    .review-content {
+                        .review-comment {
+                            color: $gray-700;
+                            line-height: 1.6;
+                            margin: 0 0 1rem 0;
+                            font-style: italic;
+                        }
+
+                        .review-meta {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            font-size: 0.75rem;
+                            color: $gray-500;
+
+                            .reviewer {
+                                font-weight: 500;
+                            }
+
+                            .review-date {
+                                font-family: 'Courier New', monospace;
+                            }
+                        }
+                    }
+                }
             }
 
             .info-grid {
@@ -608,6 +913,18 @@
     }
 }
 
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
 // Responsive Design
 @media (max-width: 1024px) {
     .order-details {
@@ -624,8 +941,24 @@
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         }
 
-        .order-content .content-section .info-grid {
-            grid-template-columns: 1fr;
+        .order-content .content-section {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .delivery-photos {
+                grid-template-columns: 1fr;
+            }
+
+            .refund-content .refund-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: left;
+
+                .refund-amount {
+                    text-align: left;
+                }
+            }
         }
     }
 }
@@ -660,6 +993,33 @@
 
         .order-content .content-section {
             padding: 1rem;
+
+            .refund-content {
+                .refund-actions {
+                    .refund-btn {
+                        flex: 1;
+                        justify-content: center;
+                    }
+                }
+            }
+
+            .delivery-photos .photo-card {
+                padding: 1rem;
+
+                .photo-container img {
+                    height: 200px;
+                }
+            }
+
+            .reviews-grid .review-card {
+                padding: 1rem;
+
+                .review-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 0.5rem;
+                }
+            }
 
             .info-card {
                 padding: 1rem;

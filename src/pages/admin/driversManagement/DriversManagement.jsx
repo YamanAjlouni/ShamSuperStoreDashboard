@@ -184,8 +184,11 @@ const DriversManagement = () => {
         }
     }
 
-    const handleResetPassword = (driverId) => {
-        navigate(`/admin/drivers/reset-password/${driverId}`)
+    const handleResetPassword = (driverId, driverName) => {
+        // Show confirmation before navigating
+        if (window.confirm(`Are you sure you want to reset password for ${driverName}?`)) {
+            navigate(`/admin/drivers/reset-password/${driverId}`)
+        }
     }
 
     const getStatusBadge = (status) => {
@@ -398,7 +401,11 @@ const DriversManagement = () => {
                                             )}
                                             <button
                                                 className="action-btn action-btn--reset"
-                                                onClick={() => handleResetPassword(driver.id)}
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    e.stopPropagation()
+                                                    handleResetPassword(driver.id, driver.name)
+                                                }}
                                                 title="Reset Password"
                                             >
                                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">

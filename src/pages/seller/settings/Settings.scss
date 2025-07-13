@@ -140,6 +140,26 @@
                             &::placeholder {
                                 color: $text-light;
                             }
+
+                            // Read-only field styling
+                            &.readonly-field {
+                                background: $gray-50;
+                                color: $text-dark;
+                                cursor: not-allowed;
+                                font-weight: 500;
+                                border-color: $gray-200;
+
+                                &:hover {
+                                    border-color: $gray-200;
+                                    transform: none;
+                                }
+
+                                &:focus {
+                                    border-color: $gray-200;
+                                    box-shadow: none;
+                                    transform: none;
+                                }
+                            }
                         }
 
                         textarea {
@@ -256,84 +276,6 @@
                         }
 
                         // Document Upload
-                        .document-upload {
-                            .upload-placeholder {
-                                border: 2px dashed $gray-300;
-                                border-radius: $radius-lg;
-                                padding: 2rem;
-                                text-align: center;
-                                background: $gray-50;
-                                transition: $transition-all;
-
-                                &:hover {
-                                    border-color: $primary-color;
-                                    background: $primary-blue-light;
-                                }
-
-                                svg {
-                                    color: $text-light;
-                                    margin-bottom: 1rem;
-                                }
-
-                                p {
-                                    color: $text-dark;
-                                    margin: 0 0 1rem 0;
-                                    font-weight: 500;
-                                }
-
-                                .file-input {
-                                    display: none;
-                                }
-
-                                .upload-btn {
-                                    background: $primary-color;
-                                    color: $white;
-                                    border: none;
-                                    border-radius: $radius-md;
-                                    padding: 0.75rem 1.5rem;
-                                    font-size: 0.875rem;
-                                    cursor: pointer;
-                                    transition: $transition-all;
-
-                                    &:hover {
-                                        background: $primary-blue-hover;
-                                        transform: translateY(-1px);
-                                    }
-                                }
-                            }
-
-                            .document-preview {
-                                position: relative;
-                                border-radius: $radius-lg;
-                                overflow: hidden;
-                                border: 1px solid $gray-200;
-                                max-width: 300px;
-
-                                img {
-                                    width: 100%;
-                                    height: auto;
-                                    display: block;
-                                }
-
-                                .remove-document {
-                                    position: absolute;
-                                    top: 0.5rem;
-                                    right: 0.5rem;
-                                    background: rgba(239, 68, 68, 0.9);
-                                    color: $white;
-                                    border: none;
-                                    border-radius: $radius-sm;
-                                    padding: 0.5rem 0.75rem;
-                                    font-size: 0.75rem;
-                                    cursor: pointer;
-                                    transition: $transition-all;
-
-                                    &:hover {
-                                        background: #dc2626;
-                                    }
-                                }
-                            }
-                        }
                         .document-upload {
                             .upload-placeholder {
                                 border: 2px dashed $gray-300;

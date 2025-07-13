@@ -149,7 +149,58 @@ const OrderDetails = () => {
                 description: 'Order delivered to customer',
                 actor: 'Driver'
             }
-        ]
+        ],
+
+        // Delivery Photos
+        deliveryPhotos: {
+            pickupPhoto: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=300&fit=crop',
+            deliveryPhoto: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop',
+            pickupTimestamp: '2024-06-25T13:30:00',
+            deliveryTimestamp: '2024-06-25T15:45:00'
+        },
+
+        // Reviews and Ratings
+        reviews: {
+            customer: {
+                rating: 5,
+                comment: 'Excellent service! The delivery was fast and the products arrived in perfect condition. The driver was very professional and polite.',
+                timestamp: '2024-06-25T16:00:00',
+                reviewerName: 'Alice Johnson'
+            },
+            driver: {
+                rating: 4,
+                comment: 'Good customer, clear instructions for delivery location. Easy pickup from both sellers.',
+                timestamp: '2024-06-25T16:15:00',
+                reviewerName: 'Michael Johnson'
+            },
+            sellers: [
+                {
+                    sellerId: 'SEL001',
+                    sellerName: 'Tech Paradise',
+                    rating: 5,
+                    comment: 'Professional driver, on time pickup. Order was well-packaged and ready.',
+                    timestamp: '2024-06-25T16:30:00'
+                },
+                {
+                    sellerId: 'SEL002',
+                    sellerName: 'Fashion Hub',
+                    rating: 4,
+                    comment: 'Smooth transaction, driver arrived as scheduled.',
+                    timestamp: '2024-06-25T16:45:00'
+                }
+            ]
+        },
+
+        // Refund Information
+        refundRequest: {
+            requested: true,
+            requestDate: '2024-06-26T09:15:00',
+            reason: 'One item was damaged during delivery',
+            customerComment: 'The gaming mouse packaging was damaged and the mouse has scratches.',
+            status: 'pending', // pending, approved, rejected, processed
+            requestedAmount: 159.98,
+            adminNotes: ''
+        }
     }
 
     useEffect(() => {
@@ -174,6 +225,48 @@ const OrderDetails = () => {
         }
     }
 
+    const handleProcessRefund = () => {
+        const adminNotes = window.prompt('Add admin notes for the refund:')
+        if (adminNotes !== null) {
+            setOrder({
+                ...order,
+                refundRequest: {
+                    ...order.refundRequest,
+                    status: 'processed',
+                    adminNotes: adminNotes,
+                    processedDate: new Date().toISOString()
+                }
+            })
+            alert('Refund has been processed successfully!')
+        }
+    }
+
+    const handleApproveRefund = () => {
+        if (window.confirm('Are you sure you want to approve this refund request?')) {
+            setOrder({
+                ...order,
+                refundRequest: {
+                    ...order.refundRequest,
+                    status: 'approved'
+                }
+            })
+        }
+    }
+
+    const handleRejectRefund = () => {
+        const reason = window.prompt('Please provide a reason for rejecting this refund:')
+        if (reason) {
+            setOrder({
+                ...order,
+                refundRequest: {
+                    ...order.refundRequest,
+                    status: 'rejected',
+                    adminNotes: reason
+                }
+            })
+        }
+    }
+
     const getStatusBadge = (status) => {
         const statusConfig = {
             pending: { class: 'warning', label: 'Pending', icon: '⏳' },
@@ -190,6 +283,30 @@ const OrderDetails = () => {
                 {config.label}
             </span>
         )
+    }
+
+    const getRefundStatusBadge = (status) => {
+        const statusConfig = {
+            pending: { class: 'warning', label: 'Pending Review', icon: '⏳' },
+            approved: { class: 'info', label: 'Approved', icon: '✅' },
+            rejected: { class: 'danger', label: 'Rejected', icon: '❌' },
+            processed: { class: 'success', label: 'Processed', icon: '💰' }
+        }
+        const config = statusConfig[status] || statusConfig.pending
+        return (
+            <span className={`status-badge status-badge--${config.class}`}>
+                <span className="status-icon">{config.icon}</span>
+                {config.label}
+            </span>
+        )
+    }
+
+    const renderStars = (rating) => {
+        return Array.from({ length: 5 }, (_, index) => (
+            <span key={index} className={`star ${index < rating ? 'filled' : ''}`}>
+                ⭐
+            </span>
+        ))
     }
 
     const formatDateTime = (dateTimeString) => {
@@ -269,6 +386,11 @@ const OrderDetails = () => {
                         <div className="order-meta">
                             <span className="order-id">ID: {order.id}</span>
                             {getStatusBadge(order.status)}
+                            {order.refundRequest?.requested && (
+                                <span className="refund-indicator">
+                                    🔄 Refund Requested
+                                </span>
+                            )}
                         </div>
                     </div>
                     <div className="header-actions">
@@ -351,6 +473,168 @@ const OrderDetails = () => {
 
             {/* Main Content */}
             <div className="order-content">
+                {/* Refund Request Section */}
+                {order.refundRequest?.requested && (
+                    <div className="content-section refund-section">
+                        <h2>Refund Request</h2>
+                        <div className="refund-content">
+                            <div className="refund-header">
+                                <div className="refund-info">
+                                    <h3>Customer Refund Request</h3>
+                                    <p>Requested on {formatDateTime(order.refundRequest.requestDate)}</p>
+                                    {getRefundStatusBadge(order.refundRequest.status)}
+                                </div>
+                                <div className="refund-amount">
+                                    <span className="amount-label">Requested Amount:</span>
+                                    <span className="amount-value">${order.refundRequest.requestedAmount.toFixed(2)}</span>
+                                </div>
+                            </div>
+
+                            <div className="refund-details">
+                                <div className="refund-card">
+                                    <h4>Reason for Refund</h4>
+                                    <p className="refund-reason">{order.refundRequest.reason}</p>
+                                </div>
+
+                                <div className="refund-card">
+                                    <h4>Customer Comment</h4>
+                                    <p className="customer-comment">{order.refundRequest.customerComment}</p>
+                                </div>
+
+                                {order.refundRequest.adminNotes && (
+                                    <div className="refund-card">
+                                        <h4>Admin Notes</h4>
+                                        <p className="admin-notes">{order.refundRequest.adminNotes}</p>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="refund-actions">
+                                {order.refundRequest.status === 'pending' && (
+                                    <>
+                                        <button className="refund-btn refund-btn--approve" onClick={handleApproveRefund}>
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            Approve Refund
+                                        </button>
+                                        <button className="refund-btn refund-btn--reject" onClick={handleRejectRefund}>
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                            Reject Request
+                                        </button>
+                                    </>
+                                )}
+                                {order.refundRequest.status === 'approved' && (
+                                    <button className="refund-btn refund-btn--process" onClick={handleProcessRefund}>
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                                        </svg>
+                                        Process Refund
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Delivery Photos Section */}
+                {order.deliveryPhotos && (
+                    <div className="content-section">
+                        <h2>Delivery Photos</h2>
+                        <div className="delivery-photos">
+                            <div className="photo-card">
+                                <h3>Pickup Verification</h3>
+                                <div className="photo-container">
+                                    <img src={order.deliveryPhotos.pickupPhoto} alt="Pickup verification" />
+                                    <div className="photo-info">
+                                        <span className="photo-label">📸 Pickup Photo</span>
+                                        <span className="photo-timestamp">{formatDateTime(order.deliveryPhotos.pickupTimestamp)}</span>
+                                        <span className="photo-description">Photo taken by driver during pickup</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="photo-card">
+                                <h3>Delivery Verification</h3>
+                                <div className="photo-container">
+                                    <img src={order.deliveryPhotos.deliveryPhoto} alt="Delivery verification" />
+                                    <div className="photo-info">
+                                        <span className="photo-label">📦 Delivery Photo</span>
+                                        <span className="photo-timestamp">{formatDateTime(order.deliveryPhotos.deliveryTimestamp)}</span>
+                                        <span className="photo-description">Photo taken by driver upon delivery</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Reviews Section */}
+                {order.reviews && (
+                    <div className="content-section">
+                        <h2>Reviews & Ratings</h2>
+                        <div className="reviews-grid">
+                            {/* Customer Review */}
+                            <div className="review-card">
+                                <div className="review-header">
+                                    <h3>Customer Review</h3>
+                                    <div className="rating">
+                                        {renderStars(order.reviews.customer.rating)}
+                                        <span className="rating-number">({order.reviews.customer.rating}/5)</span>
+                                    </div>
+                                </div>
+                                <div className="review-content">
+                                    <p className="review-comment">{order.reviews.customer.comment}</p>
+                                    <div className="review-meta">
+                                        <span className="reviewer">By {order.reviews.customer.reviewerName}</span>
+                                        <span className="review-date">{formatDateTime(order.reviews.customer.timestamp)}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Driver Review */}
+                            <div className="review-card">
+                                <div className="review-header">
+                                    <h3>Driver Review</h3>
+                                    <div className="rating">
+                                        {renderStars(order.reviews.driver.rating)}
+                                        <span className="rating-number">({order.reviews.driver.rating}/5)</span>
+                                    </div>
+                                </div>
+                                <div className="review-content">
+                                    <p className="review-comment">{order.reviews.driver.comment}</p>
+                                    <div className="review-meta">
+                                        <span className="reviewer">By {order.reviews.driver.reviewerName}</span>
+                                        <span className="review-date">{formatDateTime(order.reviews.driver.timestamp)}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Seller Reviews */}
+                            {order.reviews.sellers.map((sellerReview) => (
+                                <div key={sellerReview.sellerId} className="review-card">
+                                    <div className="review-header">
+                                        <h3>Seller Review - {sellerReview.sellerName}</h3>
+                                        <div className="rating">
+                                            {renderStars(sellerReview.rating)}
+                                            <span className="rating-number">({sellerReview.rating}/5)</span>
+                                        </div>
+                                    </div>
+                                    <div className="review-content">
+                                        <p className="review-comment">{sellerReview.comment}</p>
+                                        <div className="review-meta">
+                                            <span className="reviewer">By {sellerReview.sellerName}</span>
+                                            <span className="review-date">{formatDateTime(sellerReview.timestamp)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 {/* Customer & Shipping Information */}
                 <div className="content-section">
                     <h2>Customer & Shipping Information</h2>
