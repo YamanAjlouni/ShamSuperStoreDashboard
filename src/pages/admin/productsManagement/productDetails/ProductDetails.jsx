@@ -64,8 +64,8 @@ const ProductDetails = () => {
                         createdAt: '2024-01-15T10:30:00Z',
                         updatedAt: '2024-01-25T14:22:00Z',
                         shipping: {
-                            type: 'flat',
-                            flatRate: 9.99,
+                            type: 'system',
+                            flatRate: null,
                             percentage: null,
                             shippingClass: 'Standard',
                             processTime: '2-3 business days',
@@ -281,6 +281,12 @@ const ProductDetails = () => {
                     badge: `${shipping.percentage}% OF ORDER`,
                     badgeClass: 'shipping-badge--percentage',
                     details: `${shipping.percentage}% of the order total will be charged for shipping`
+                }
+            case 'system':
+                return {
+                    badge: 'SYSTEM CHOICE',
+                    badgeClass: 'shipping-badge--system',
+                    details: 'Shipping rate configured by admin in system settings'
                 }
             default:
                 return {

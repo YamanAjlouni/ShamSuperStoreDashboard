@@ -837,6 +837,12 @@
                             border-color: rgba(206, 128, 45, 0.2);
                         }
 
+                        &.shipping-badge--system {
+                            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(147, 51, 234, 0.05) 100%);
+                            color: #7c3aed;
+                            border-color: rgba(147, 51, 234, 0.2);
+                        }
+
                         &.shipping-badge--unknown {
                             background: linear-gradient(135deg, rgba(75, 85, 99, 0.1) 0%, rgba(75, 85, 99, 0.05) 100%);
                             color: $gray-500;

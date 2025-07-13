@@ -388,6 +388,11 @@
                                             color: $orange-color;
                                         }
 
+                                        &--system {
+                                            background: rgba(147, 51, 234, 0.1);
+                                            color: #7c3aed;
+                                        }
+
                                         &--unknown {
                                             background: rgba(75, 85, 99, 0.1);
                                             color: $gray-500;
