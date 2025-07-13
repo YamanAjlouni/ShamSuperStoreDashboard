@@ -25,13 +25,13 @@ const Payments = () => {
             details: 'Perfect for local deliveries and in-person transactions. No processing fees or delays.'
         },
         {
-            id: 'visa',
-            name: 'Visa Card',
-            description: 'Accept payments via Visa credit and debit cards',
+            id: 'paysham',
+            name: 'PaySham',
+            description: 'Accept payments via PaySham Application',
             icon: <CreditCard size={24} />,
-            available: false,
-            processingTime: '1-3 business days',
-            fees: '2.9% + $0.30',
+            available: true,
+            processingTime: 'Instant',
+            fees: 'No fees',
             details: 'Secure online payments with instant confirmation. Perfect for online orders.'
         },
         {

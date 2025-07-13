@@ -28,7 +28,7 @@ const OrdersView = () => {
                 id: 1,
                 name: 'Wireless Bluetooth Headphones',
                 sku: 'WBH-001',
-                image: 'https://via.placeholder.com/80',
+                image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&h=80&fit=crop&crop=center',
                 quantity: 2,
                 price: 99.99,
                 total: 199.98
@@ -37,7 +37,7 @@ const OrdersView = () => {
                 id: 2,
                 name: 'Premium Phone Case',
                 sku: 'PPC-002',
-                image: 'https://via.placeholder.com/80',
+                image: 'https://images.unsplash.com/photo-1556656793-08538906a9f8?w=80&h=80&fit=crop&crop=center',
                 quantity: 1,
                 price: 24.99,
                 total: 24.99
@@ -61,6 +61,7 @@ const OrdersView = () => {
         },
         payment: {
             method: 'Credit Card',
+            cardLast4: '4242',
             total: 224.97,
             subtotal: 224.97,
             tax: 0,
@@ -108,10 +109,10 @@ const OrdersView = () => {
 
     const getStatusBadge = (status) => {
         const statusConfig = {
-            pending: { class: 'status--pending', icon: <Clock size={16} />, text: 'Pending' },
-            completed: { class: 'status--completed', icon: <CheckCircle size={16} />, text: 'Completed' },
-            processing: { class: 'status--processing', icon: <PlayCircle size={16} />, text: 'Processing' },
-            rejected: { class: 'status--rejected', icon: <XCircle size={16} />, text: 'Rejected' }
+            pending: { class: 'status--pending', icon: <Clock size={14} />, text: 'Pending' },
+            completed: { class: 'status--completed', icon: <CheckCircle size={14} />, text: 'Completed' },
+            processing: { class: 'status--processing', icon: <PlayCircle size={14} />, text: 'Processing' },
+            rejected: { class: 'status--rejected', icon: <XCircle size={14} />, text: 'Rejected' }
         }
 
         const config = statusConfig[status] || statusConfig.pending
@@ -166,7 +167,7 @@ const OrdersView = () => {
             <div className="address-format">
                 <div className="street">
                     {address.street}
-                    {address.street2 && <br />}{address.street2}
+                    {address.street2 && <><br />{address.street2}</>}
                 </div>
                 <div className="city-state">
                     {address.city}, {address.state} {address.zip}
@@ -210,11 +211,25 @@ const OrdersView = () => {
             </button>
         )
 
+        buttons.push(
+            <button key="download" className="action-btn secondary-btn">
+                <Download size={16} />
+                Export
+            </button>
+        )
+
         return buttons
     }
 
     if (!orderData) {
-        return <div className="loading">Loading order details...</div>
+        return (
+            <div className="orders-view-page">
+                <div className="loading">
+                    <div className="loading-spinner"></div>
+                    <span>Loading order details...</span>
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -234,7 +249,13 @@ const OrdersView = () => {
                             {getStatusBadge(orderData.status)}
                             <span className="order-date">
                                 <Calendar size={14} />
-                                {new Date(orderData.dates.ordered).toLocaleDateString()}
+                                {new Date(orderData.dates.ordered).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                })}
                             </span>
                             <span className="store-name">
                                 <Package size={14} />
@@ -249,12 +270,15 @@ const OrdersView = () => {
             </div>
 
             <div className="order-content">
-                {/* Left Column */}
-                <div className="order-details">
+                {/* Left Column - Order Details */}
+                <div className="order-main">
                     {/* Order Items */}
                     <div className="section order-items">
-                        <h3>Order Items</h3>
-                        <div className="items-list">
+                        <h3>
+                            <Package size={18} />
+                            Order Items ({orderData.items.length})
+                        </h3>
+                        <div className="items-container">
                             {orderData.items.map(item => (
                                 <div key={item.id} className="item-row">
                                     <div className="item-image">
@@ -263,9 +287,9 @@ const OrdersView = () => {
                                     <div className="item-details">
                                         <h4>{item.name}</h4>
                                         <p className="sku">SKU: {item.sku}</p>
-                                        <div className="quantity-price">
+                                        <div className="item-meta">
                                             <span className="quantity">Qty: {item.quantity}</span>
-                                            <span className="price">${item.price.toFixed(2)} each</span>
+                                            <span className="unit-price">${item.price.toFixed(2)} each</span>
                                         </div>
                                     </div>
                                     <div className="item-total">
@@ -278,28 +302,38 @@ const OrdersView = () => {
 
                     {/* Addresses */}
                     <div className="section addresses">
-                        <h3>Delivery Addresses</h3>
+                        <h3>
+                            <MapPin size={18} />
+                            Delivery Information
+                        </h3>
                         <div className="address-grid">
                             <div className="address-card billing">
-                                <h4>
-                                    <MapPin size={16} />
-                                    Billing Address
-                                </h4>
-                                {formatAddress(orderData.billingAddress)}
+                                <div className="address-header">
+                                    <CreditCard size={16} />
+                                    <h4>Billing Address</h4>
+                                </div>
+                                <div className="address-content">
+                                    {formatAddress(orderData.billingAddress)}
+                                </div>
                             </div>
                             <div className="address-card shipping">
-                                <h4>
+                                <div className="address-header">
                                     <Truck size={16} />
-                                    Shipping Address
-                                </h4>
-                                {formatAddress(orderData.shippingAddress)}
+                                    <h4>Shipping Address</h4>
+                                </div>
+                                <div className="address-content">
+                                    {formatAddress(orderData.shippingAddress)}
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Order Timeline */}
                     <div className="section order-timeline">
-                        <h3>Order Timeline</h3>
+                        <h3>
+                            <Clock size={18} />
+                            Order Timeline
+                        </h3>
                         <div className="timeline">
                             {orderData.timeline.map((event, index) => (
                                 <div key={index} className="timeline-item">
@@ -318,14 +352,20 @@ const OrdersView = () => {
                     </div>
                 </div>
 
-                {/* Right Column */}
+                {/* Right Column - Sidebar */}
                 <div className="order-sidebar">
                     {/* Payment Summary */}
                     <div className="section payment-summary">
-                        <h3>Payment Summary</h3>
+                        <h3>
+                            <DollarSign size={18} />
+                            Payment Summary
+                        </h3>
                         <div className="payment-method">
                             <CreditCard size={16} />
                             <span>{orderData.payment.method}</span>
+                            {orderData.payment.cardLast4 && (
+                                <span className="card-info">•••• {orderData.payment.cardLast4}</span>
+                            )}
                         </div>
                         <div className="payment-breakdown">
                             <div className="line-item">
@@ -364,31 +404,74 @@ const OrdersView = () => {
                     {/* Shipping Information */}
                     {orderData.shipping && (
                         <div className="section shipping-info">
-                            <h3>Shipping Information</h3>
-                            <div className="shipping-details">
+                            <h3>
+                                <Truck size={18} />
+                                Shipping Details
+                            </h3>
+                            <div className="shipping-content">
                                 <div className="shipping-method">
                                     <Truck size={16} />
                                     <span>{orderData.shipping.method}</span>
                                 </div>
-                                <div className="shipping-carrier">
-                                    <span className="label">Carrier:</span>
-                                    <span>{orderData.shipping.carrier}</span>
+                                <div className="shipping-details">
+                                    <div className="shipping-item">
+                                        <span className="label">Carrier:</span>
+                                        <span className="value">{orderData.shipping.carrier}</span>
+                                    </div>
+                                    {orderData.shipping.trackingNumber && (
+                                        <div className="shipping-item">
+                                            <span className="label">Tracking:</span>
+                                            <span className="value tracking">{orderData.shipping.trackingNumber}</span>
+                                        </div>
+                                    )}
+                                    {orderData.shipping.estimatedDelivery && (
+                                        <div className="shipping-item">
+                                            <span className="label">Est. Delivery:</span>
+                                            <span className="value">{new Date(orderData.shipping.estimatedDelivery).toLocaleDateString()}</span>
+                                        </div>
+                                    )}
                                 </div>
-                                {orderData.shipping.trackingNumber && (
-                                    <div className="tracking-number">
-                                        <span className="label">Tracking:</span>
-                                        <span className="tracking">{orderData.shipping.trackingNumber}</span>
-                                    </div>
-                                )}
-                                {orderData.shipping.estimatedDelivery && (
-                                    <div className="delivery-date">
-                                        <span className="label">Est. Delivery:</span>
-                                        <span>{new Date(orderData.shipping.estimatedDelivery).toLocaleDateString()}</span>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     )}
+
+                    {/* Order Notes */}
+                    <div className="section order-notes">
+                        <h3>
+                            <MessageSquare size={18} />
+                            Order Notes
+                        </h3>
+                        <div className="notes-content">
+                            {orderData.notes.map(note => (
+                                <div key={note.id} className={`note-item ${note.type}`}>
+                                    <div className="note-header">
+                                        <span className="note-author">{note.author}</span>
+                                        <span className="note-date">
+                                            {new Date(note.date).toLocaleDateString()}
+                                        </span>
+                                    </div>
+                                    <div className="note-content">
+                                        {note.content}
+                                    </div>
+                                </div>
+                            ))}
+                            <div className="add-note">
+                                <textarea
+                                    value={newNote}
+                                    onChange={(e) => setNewNote(e.target.value)}
+                                    placeholder="Add a note..."
+                                    className="note-input"
+                                />
+                                <button
+                                    onClick={addNote}
+                                    disabled={!newNote.trim()}
+                                    className="add-note-btn"
+                                >
+                                    Add Note
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -409,7 +492,7 @@ const OrdersView = () => {
                                 Cancel
                             </button>
                             <button
-                                className={`${actionType}-btn`}
+                                className={`confirm-btn ${actionType}-btn`}
                                 onClick={confirmAction}
                             >
                                 {actionType === 'accept' ? 'Accept' : 'Reject'}

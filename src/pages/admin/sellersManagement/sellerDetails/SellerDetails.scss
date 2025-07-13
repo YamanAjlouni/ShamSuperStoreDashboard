@@ -3,7 +3,6 @@
 .seller-details {
     max-width: 100%;
     margin: 0 auto;
-    // Add padding to prevent content from touching screen edges
     padding: 0 1rem;
 
     .loading-state {
@@ -78,7 +77,6 @@
         padding: 2rem;
         margin-bottom: 2rem;
         position: relative;
-        // Ensure content doesn't overflow
         overflow: hidden;
 
         &::before {
@@ -122,7 +120,7 @@
 
             .seller-info {
                 flex: 1;
-                min-width: 0; // Allow flex item to shrink
+                min-width: 0;
 
                 h1 {
                     font-size: 2rem;
@@ -280,7 +278,7 @@
             }
 
             .stat-content {
-                min-width: 0; // Allow content to shrink
+                min-width: 0;
 
                 .stat-value {
                     display: block;
@@ -442,7 +440,7 @@
 
                 .overview-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
                     gap: 2rem;
                 }
 
@@ -451,7 +449,6 @@
                     border-radius: $radius-md;
                     padding: 1.5rem;
                     border: 1px solid $gray-200;
-                    // Ensure card doesn't overflow
                     overflow: hidden;
                     word-wrap: break-word;
 
@@ -477,8 +474,6 @@
                             padding: 0.75rem 0;
                             border-bottom: 1px solid $gray-200;
                             gap: 1rem;
-                            // Allow items to wrap on very small screens
-                            flex-wrap: wrap;
 
                             &:last-child {
                                 border-bottom: none;
@@ -499,8 +494,10 @@
                                 font-weight: 500;
                                 text-align: right;
                                 flex: 1;
-                                min-width: 0; // Allow to shrink
+                                min-width: 0;
                                 word-wrap: break-word;
+                                overflow-wrap: break-word;
+                                hyphens: auto;
 
                                 &.limit-display {
                                     display: flex;
@@ -511,8 +508,6 @@
                                     padding: 0.5rem 0.75rem;
                                     border-radius: $radius-md;
                                     border: 2px dashed rgba(206, 128, 45, 0.2);
-                                    // Allow wrapping on mobile
-                                    flex-wrap: wrap;
 
                                     .limit-value {
                                         font-weight: 600;
@@ -574,8 +569,6 @@
                                     padding: 0.5rem 0.75rem;
                                     border-radius: $radius-md;
                                     border: 2px dashed rgba(59, 130, 246, 0.2);
-                                    // Allow wrapping on mobile
-                                    flex-wrap: wrap;
 
                                     .membership-info {
                                         display: flex;
@@ -620,9 +613,66 @@
                                         }
                                     }
                                 }
+
+                                &.featured-display {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.75rem;
+                                    justify-content: flex-end;
+                                    background: rgba(66, 103, 178, 0.05);
+                                    padding: 0.5rem 0.75rem;
+                                    border-radius: $radius-md;
+                                    border: 2px dashed rgba(66, 103, 178, 0.2);
+
+                                    .featured-info {
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 0.25rem;
+                                        align-items: flex-end;
+                                        min-width: 0;
+
+                                        .featured-details {
+                                            font-size: 0.75rem;
+                                            color: $gray-500;
+                                            font-weight: 500;
+                                            word-break: break-word;
+                                        }
+                                    }
+
+                                    .edit-featured-btn {
+                                        width: 28px;
+                                        height: 28px;
+                                        border: 2px solid $primary-color;
+                                        background: $primary-color;
+                                        color: $white;
+                                        border-radius: $radius-md;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        cursor: pointer;
+                                        transition: $transition-all;
+                                        box-shadow: 0 2px 4px rgba(66, 103, 178, 0.2);
+                                        flex-shrink: 0;
+
+                                        &:hover {
+                                            background: darken($primary-color, 10%);
+                                            border-color: darken($primary-color, 10%);
+                                            transform: translateY(-1px);
+                                            box-shadow: 0 4px 8px rgba(66, 103, 178, 0.3);
+                                        }
+
+                                        svg {
+                                            width: 14px;
+                                            height: 14px;
+                                        }
+                                    }
+                                }
                             }
 
-                            .membership-editor {
+                            // Editor styles
+                            .membership-editor,
+                            .limit-editor,
+                            .featured-editor {
                                 flex: 1;
                                 background: $white;
                                 border: 3px solid #3b82f6;
@@ -632,7 +682,21 @@
                                 margin: 0.5rem 0;
                                 width: 100%;
                                 min-width: 0;
+                                max-width: 100%;
+                                box-sizing: border-box;
+                            }
 
+                            .limit-editor {
+                                border-color: $orange-color;
+                                box-shadow: 0 4px 12px rgba(206, 128, 45, 0.15);
+                            }
+
+                            .featured-editor {
+                                border-color: $primary-color;
+                                box-shadow: 0 4px 12px rgba(66, 103, 178, 0.15);
+                            }
+
+                            .membership-editor {
                                 .membership-options {
                                     margin-bottom: 1.5rem;
 
@@ -655,6 +719,7 @@
                                         font-weight: 600;
                                         background: $white;
                                         transition: $transition-all;
+                                        box-sizing: border-box;
 
                                         &:focus {
                                             outline: none;
@@ -717,19 +782,24 @@
                                     display: flex;
                                     gap: 0.75rem;
 
-                                    .save-btn {
+                                    .save-btn,
+                                    .cancel-btn {
                                         flex: 1;
                                         padding: 0.75rem 1.5rem;
-                                        background: #3b82f6;
-                                        color: $white;
-                                        border: none;
                                         border-radius: $radius-md;
                                         font-size: 0.875rem;
                                         font-weight: 600;
                                         cursor: pointer;
                                         transition: $transition-all;
-                                        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
                                         min-width: 0;
+                                        box-sizing: border-box;
+                                    }
+
+                                    .save-btn {
+                                        background: #3b82f6;
+                                        color: $white;
+                                        border: none;
+                                        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
 
                                         &:hover {
                                             background: darken(#3b82f6, 10%);
@@ -739,17 +809,9 @@
                                     }
 
                                     .cancel-btn {
-                                        flex: 1;
-                                        padding: 0.75rem 1.5rem;
                                         background: $gray-100;
                                         color: $gray-700;
                                         border: 2px solid $gray-300;
-                                        border-radius: $radius-md;
-                                        font-size: 0.875rem;
-                                        font-weight: 600;
-                                        cursor: pointer;
-                                        transition: $transition-all;
-                                        min-width: 0;
 
                                         &:hover {
                                             background: $gray-200;
@@ -761,16 +823,6 @@
                             }
 
                             .limit-editor {
-                                flex: 1;
-                                background: $white;
-                                border: 3px solid $orange-color;
-                                border-radius: $radius-lg;
-                                padding: 1.5rem;
-                                box-shadow: 0 4px 12px rgba(206, 128, 45, 0.15);
-                                margin: 0.5rem 0;
-                                width: 100%;
-                                min-width: 0;
-
                                 .preset-options {
                                     margin-bottom: 1.5rem;
 
@@ -859,19 +911,24 @@
                                     display: flex;
                                     gap: 0.75rem;
 
-                                    .save-btn {
+                                    .save-btn,
+                                    .cancel-btn {
                                         flex: 1;
                                         padding: 0.75rem 1.5rem;
-                                        background: $orange-color;
-                                        color: $white;
-                                        border: none;
                                         border-radius: $radius-md;
                                         font-size: 0.875rem;
                                         font-weight: 600;
                                         cursor: pointer;
                                         transition: $transition-all;
-                                        box-shadow: 0 2px 4px rgba(206, 128, 45, 0.2);
                                         min-width: 0;
+                                        box-sizing: border-box;
+                                    }
+
+                                    .save-btn {
+                                        background: $orange-color;
+                                        color: $white;
+                                        border: none;
+                                        box-shadow: 0 2px 4px rgba(206, 128, 45, 0.2);
 
                                         &:hover {
                                             background: darken($orange-color, 10%);
@@ -881,17 +938,161 @@
                                     }
 
                                     .cancel-btn {
-                                        flex: 1;
-                                        padding: 0.75rem 1.5rem;
                                         background: $gray-100;
                                         color: $gray-700;
                                         border: 2px solid $gray-300;
+
+                                        &:hover {
+                                            background: $gray-200;
+                                            border-color: $gray-400;
+                                            transform: translateY(-1px);
+                                        }
+                                    }
+                                }
+                            }
+
+                            .featured-editor {
+                                .featured-toggle-section {
+                                    margin-bottom: 1.5rem;
+
+                                    .toggle-label {
+                                        display: block;
+                                        font-size: 0.875rem;
+                                        color: $gray-700;
+                                        margin-bottom: 0.75rem;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.5px;
+                                    }
+
+                                    .toggle-container {
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 0.75rem;
+                                        cursor: pointer;
+
+                                        input[type="checkbox"] {
+                                            display: none;
+                                        }
+
+                                        .toggle-slider {
+                                            position: relative;
+                                            width: 48px;
+                                            height: 24px;
+                                            background: $gray-300;
+                                            border-radius: 12px;
+                                            transition: $transition-all;
+                                            flex-shrink: 0;
+
+                                            &::before {
+                                                content: '';
+                                                position: absolute;
+                                                top: 2px;
+                                                left: 2px;
+                                                width: 20px;
+                                                height: 20px;
+                                                background: $white;
+                                                border-radius: 50%;
+                                                transition: $transition-all;
+                                            }
+                                        }
+
+                                        input[type="checkbox"]:checked+.toggle-slider {
+                                            background: $primary-color;
+
+                                            &::before {
+                                                transform: translateX(24px);
+                                            }
+                                        }
+
+                                        .toggle-text {
+                                            font-size: 0.875rem;
+                                            font-weight: 500;
+                                            color: $gray-700;
+                                            user-select: none;
+                                        }
+                                    }
+                                }
+
+                                .featured-settings {
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 1rem;
+
+                                    .form-group {
+                                        label {
+                                            display: block;
+                                            font-size: 0.875rem;
+                                            color: $gray-700;
+                                            margin-bottom: 0.5rem;
+                                            font-weight: 600;
+                                        }
+
+                                        .form-input,
+                                        .form-textarea {
+                                            width: 100%;
+                                            padding: 0.75rem 1rem;
+                                            border: 2px solid $gray-300;
+                                            border-radius: $radius-md;
+                                            font-size: 0.875rem;
+                                            background: $white;
+                                            transition: $transition-all;
+                                            box-sizing: border-box;
+                                            font-family: inherit;
+
+                                            &:focus {
+                                                outline: none;
+                                                border-color: $primary-color;
+                                                box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                                            }
+
+                                            &::placeholder {
+                                                color: $gray-400;
+                                            }
+                                        }
+
+                                        .form-textarea {
+                                            resize: vertical;
+                                            min-height: 80px;
+                                        }
+                                    }
+                                }
+
+                                .featured-actions {
+                                    display: flex;
+                                    gap: 0.75rem;
+                                    margin-top: 1rem;
+
+                                    .save-btn,
+                                    .cancel-btn {
+                                        flex: 1;
+                                        padding: 0.75rem 1.5rem;
                                         border-radius: $radius-md;
                                         font-size: 0.875rem;
                                         font-weight: 600;
                                         cursor: pointer;
                                         transition: $transition-all;
                                         min-width: 0;
+                                        box-sizing: border-box;
+                                    }
+
+                                    .save-btn {
+                                        background: $primary-color;
+                                        color: $white;
+                                        border: none;
+                                        box-shadow: 0 2px 4px rgba(66, 103, 178, 0.2);
+
+                                        &:hover {
+                                            background: darken($primary-color, 10%);
+                                            transform: translateY(-1px);
+                                            box-shadow: 0 4px 8px rgba(66, 103, 178, 0.3);
+                                        }
+                                    }
+
+                                    .cancel-btn {
+                                        background: $gray-100;
+                                        color: $gray-700;
+                                        border: 2px solid $gray-300;
 
                                         &:hover {
                                             background: $gray-200;
@@ -943,7 +1144,7 @@
                         table {
                             width: 100%;
                             border-collapse: collapse;
-                            min-width: 600px; // Reduced from 900px
+                            min-width: 600px;
 
                             thead {
                                 background: $gray-50;
@@ -1149,11 +1350,11 @@
 
                 .business-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
                     gap: 2rem;
                 }
 
-                // Featured Settings Card - Standalone
+                // Featured Settings Card
                 .featured-settings-card {
                     border: 2px solid rgba(66, 103, 178, 0.2) !important;
                     background: linear-gradient(135deg, rgba(66, 103, 178, 0.02) 0%, rgba(66, 103, 178, 0.05) 100%) !important;
@@ -1212,7 +1413,7 @@
                                 }
                             }
 
-                            input[type="checkbox"]:checked + .toggle-switch {
+                            input[type="checkbox"]:checked+.toggle-switch {
                                 background: $primary-color;
 
                                 &::before {
@@ -1274,7 +1475,7 @@
                                         }
                                     }
 
-                                    input[type="checkbox"]:checked + .field-checkbox {
+                                    input[type="checkbox"]:checked+.field-checkbox {
                                         background: $primary-color;
                                         border-color: $primary-color;
 
@@ -1451,9 +1652,10 @@
 // Responsive Design
 @media (max-width: 1200px) {
     .seller-details {
+
         .overview-grid,
         .business-grid {
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
+            grid-template-columns: 1fr !important;
         }
     }
 }
@@ -1475,17 +1677,10 @@
         .seller-stats {
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         }
-
-        .tabs-content .tab-content {
-            .overview-grid,
-            .business-grid {
-                grid-template-columns: 1fr;
-            }
-        }
     }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 768px) {
     .seller-details {
         padding: 0 0.5rem;
 
@@ -1514,6 +1709,7 @@
 
         .seller-stats {
             grid-template-columns: 1fr;
+            gap: 1rem;
 
             .stat-card {
                 padding: 1rem;
@@ -1537,24 +1733,17 @@
 
         .tabs-container {
             .tabs-header {
-                flex-direction: column;
+                flex-wrap: wrap;
 
                 .tab-btn {
-                    border-right: none;
-                    border-bottom: 1px solid $gray-200;
+                    flex: 1 1 auto;
+                    min-width: 0;
                     padding: 0.875rem 1rem;
-
-                    &:last-child {
-                        border-bottom: none;
-                    }
+                    text-align: center;
 
                     &.active::after {
                         left: 0;
-                        right: auto;
-                        width: 4px;
-                        height: 100%;
-                        top: 0;
-                        bottom: 0;
+                        right: 0;
                     }
                 }
             }
@@ -1565,14 +1754,20 @@
                 .info-card {
                     padding: 1rem;
 
+                    h3 {
+                        font-size: 1rem;
+                    }
+
                     .info-list .info-item {
                         flex-direction: column;
-                        align-items: flex-start;
+                        align-items: stretch;
                         gap: 0.5rem;
+                        padding: 0.75rem 0;
 
                         .label {
                             min-width: auto;
                             font-size: 0.8rem;
+                            text-align: left;
                         }
 
                         .value {
@@ -1581,8 +1776,10 @@
                             font-size: 0.8rem;
 
                             &.limit-display,
-                            &.membership-display {
+                            &.membership-display,
+                            &.featured-display {
                                 justify-content: flex-start;
+                                flex-wrap: wrap;
                                 width: 100%;
                                 padding: 0.5rem;
                                 gap: 0.5rem;
@@ -1590,7 +1787,8 @@
                         }
 
                         .limit-editor,
-                        .membership-editor {
+                        .membership-editor,
+                        .featured-editor {
                             margin: 0.5rem 0 0 0;
                             padding: 1rem;
                             width: 100%;
@@ -1606,7 +1804,8 @@
                             }
 
                             .limit-actions,
-                            .membership-actions {
+                            .membership-actions,
+                            .featured-actions {
                                 gap: 0.5rem;
                                 flex-direction: column;
 
@@ -1645,7 +1844,7 @@
                                 }
                             }
 
-                            input[type="checkbox"]:checked + .toggle-switch::before {
+                            input[type="checkbox"]:checked+.toggle-switch::before {
                                 transform: translateX(24px);
                             }
 
@@ -1691,7 +1890,7 @@
 
                     .products-table {
                         table {
-                            min-width: 500px; // Further reduced for mobile
+                            min-width: 500px;
                             font-size: 0.75rem;
 
                             th,
@@ -1750,6 +1949,12 @@
                     p {
                         font-size: 1rem;
                     }
+
+                    .seller-meta {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 0.5rem;
+                    }
                 }
 
                 .header-actions {
@@ -1757,6 +1962,7 @@
                         padding: 0.5rem 0.5rem;
                         font-size: 0.75rem;
                         gap: 0.25rem;
+                        flex: 1 1 100%;
 
                         svg {
                             width: 14px;
@@ -1767,40 +1973,76 @@
             }
         }
 
-        .tabs-container .tabs-content .tab-content {
-            padding: 0.75rem;
+        .tabs-container {
+            .tabs-header {
+                .tab-btn {
+                    padding: 0.75rem 0.5rem;
+                    font-size: 0.8rem;
+                }
+            }
 
-            .info-card {
+            .tabs-content .tab-content {
                 padding: 0.75rem;
 
-                h3 {
-                    font-size: 1rem;
-                }
+                .info-card {
+                    padding: 0.75rem;
 
-                .info-list .info-item {
-                    .limit-editor,
-                    .membership-editor {
-                        padding: 0.75rem;
+                    h3 {
+                        font-size: 0.9rem;
+                    }
 
-                        .limit-actions,
-                        .membership-actions {
-                            .save-btn,
-                            .cancel-btn {
-                                padding: 0.625rem 0.75rem;
+                    .info-list .info-item {
+                        padding: 0.5rem 0;
+
+                        .label {
+                            font-size: 0.75rem;
+                        }
+
+                        .value {
+                            font-size: 0.75rem;
+                        }
+
+                        .limit-editor,
+                        .membership-editor,
+                        .featured-editor {
+                            padding: 0.75rem;
+
+                            .limit-actions,
+                            .membership-actions,
+                            .featured-actions {
+
+                                .save-btn,
+                                .cancel-btn {
+                                    padding: 0.625rem 0.75rem;
+                                    font-size: 0.8rem;
+                                }
+                            }
+
+                            .custom-limit-input,
+                            .membership-select,
+                            .featured-input,
+                            .featured-textarea {
+                                padding: 0.5rem 0.75rem;
                                 font-size: 0.8rem;
+                            }
+
+                            .preset-options .preset-buttons .preset-btn {
+                                padding: 0.375rem 0.5rem;
+                                font-size: 0.7rem;
+                                min-width: 40px;
                             }
                         }
                     }
                 }
-            }
 
-            .products-table table {
-                min-width: 450px;
-                font-size: 0.7rem;
+                .products-table table {
+                    min-width: 450px;
+                    font-size: 0.7rem;
 
-                th,
-                td {
-                    padding: 0.375rem 0.25rem;
+                    th,
+                    td {
+                        padding: 0.375rem 0.25rem;
+                    }
                 }
             }
         }

@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './ActiveDeliveries.scss'
+import MapModal from '../../../components/mapModal/MapModal'
 
 const ActiveDeliveries = () => {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
     const [activeDelivery, setActiveDelivery] = useState(null)
     const [showContactModal, setShowContactModal] = useState(false)
+    const [showMapModal, setShowMapModal] = useState(false)
     const [contactType, setContactType] = useState(null) // 'customer' or 'seller'
     const [pickupPhoto, setPickupPhoto] = useState(null)
     const [deliveryPhoto, setDeliveryPhoto] = useState(null)
@@ -101,7 +103,7 @@ const ActiveDeliveries = () => {
             alert('Please take a photo of the order after picking it up from the seller')
             return
         }
-        
+
         if (newStatus === 'delivered' && !deliveryPhoto) {
             alert('Please take a photo after delivering to the customer')
             return
@@ -109,10 +111,10 @@ const ActiveDeliveries = () => {
 
         setActiveDelivery(prev => {
             if (!prev) return null
-            
+
             const updatedDelivery = { ...prev, status: newStatus }
             const now = new Date().toISOString()
-            
+
             if (newStatus === 'picked_up' && !prev.timing.actualPickup) {
                 updatedDelivery.timing.actualPickup = now
             } else if (newStatus === 'delivered' && !prev.timing.actualDelivery) {
@@ -120,7 +122,7 @@ const ActiveDeliveries = () => {
                 // Start the completion flow with reviews
                 setCompletionStep('reviews')
             }
-            
+
             return updatedDelivery
         })
     }
@@ -131,7 +133,7 @@ const ActiveDeliveries = () => {
             [target]: { rating, comment, submitted: true }
         }))
         setShowReviewModal(false)
-        
+
         // Check if both reviews are completed
         const updatedReviews = { ...reviews, [target]: { rating, comment, submitted: true } }
         if (updatedReviews.seller?.submitted && updatedReviews.customer?.submitted) {
@@ -239,6 +241,17 @@ const ActiveDeliveries = () => {
         }
     }
 
+    // Add function to handle opening map
+    const handleOpenMap = () => {
+        setShowMapModal(true)
+    }
+
+    // Simulate driver location (you can get this from GPS)
+    const getDriverLocation = () => {
+        // This would come from GPS in a real app
+        return { lat: 40.7300, lng: -73.9950 }
+    }
+
     if (loading) {
         return (
             <div className="active-deliveries">
@@ -326,7 +339,7 @@ const ActiveDeliveries = () => {
                         {/* Left Column - Location Info */}
                         <div className="locations-section">
                             <h3>Route Information</h3>
-                            
+
                             {/* Pickup Location */}
                             <div className="location-card pickup">
                                 <div className="location-header">
@@ -339,7 +352,7 @@ const ActiveDeliveries = () => {
                                         <h4>Pickup Location</h4>
                                         <p>{activeDelivery.seller.name}</p>
                                     </div>
-                                    <button 
+                                    <button
                                         className="contact-btn"
                                         onClick={handleContactSeller}
                                         title="Contact Seller"
@@ -380,7 +393,7 @@ const ActiveDeliveries = () => {
                                         <h4>Delivery Location</h4>
                                         <p>{activeDelivery.customer.name}</p>
                                     </div>
-                                    <button 
+                                    <button
                                         className="contact-btn"
                                         onClick={handleContactCustomer}
                                         title="Contact Customer"
@@ -423,7 +436,7 @@ const ActiveDeliveries = () => {
                                         <div className="step-content">
                                             <span className="step-title">Picked Up</span>
                                             <span className="step-time">
-                                                {activeDelivery.timing.actualPickup 
+                                                {activeDelivery.timing.actualPickup
                                                     ? formatTime(activeDelivery.timing.actualPickup)
                                                     : formatTime(activeDelivery.timing.estimatedPickup)
                                                 }
@@ -435,7 +448,7 @@ const ActiveDeliveries = () => {
                                         <div className="step-content">
                                             <span className="step-title">Delivered</span>
                                             <span className="step-time">
-                                                {activeDelivery.timing.actualDelivery 
+                                                {activeDelivery.timing.actualDelivery
                                                     ? formatTime(activeDelivery.timing.actualDelivery)
                                                     : formatTime(activeDelivery.timing.estimatedDelivery)
                                                 }
@@ -552,80 +565,80 @@ const ActiveDeliveries = () => {
                             </div>
 
                             {/* Photo Requirements */}
-                            {(activeDelivery.status === 'picked_up' || 
-                              (activeDelivery.status === 'assigned' && pickupPhoto)) && (
-                                <div className="photo-section">
-                                    <h4>Pickup Photo Required</h4>
-                                    <p>Take a photo showing the condition of the order</p>
-                                    <div className="photo-upload">
-                                        {pickupPhoto ? (
-                                            <div className="photo-preview">
-                                                <img src={pickupPhoto} alt="Pickup verification" />
-                                                <button 
-                                                    className="retake-btn"
-                                                    onClick={() => setPickupPhoto(null)}
-                                                >
-                                                    Retake Photo
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <label className="upload-btn">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                </svg>
-                                                Take Pickup Photo
-                                                <input
-                                                    type="file"
-                                                    accept="image/*"
-                                                    capture="camera"
-                                                    onChange={(e) => handlePhotoUpload('pickup', e)}
-                                                    hidden
-                                                />
-                                            </label>
-                                        )}
+                            {(activeDelivery.status === 'picked_up' ||
+                                (activeDelivery.status === 'assigned' && pickupPhoto)) && (
+                                    <div className="photo-section">
+                                        <h4>Pickup Photo Required</h4>
+                                        <p>Take a photo showing the condition of the order</p>
+                                        <div className="photo-upload">
+                                            {pickupPhoto ? (
+                                                <div className="photo-preview">
+                                                    <img src={pickupPhoto} alt="Pickup verification" />
+                                                    <button
+                                                        className="retake-btn"
+                                                        onClick={() => setPickupPhoto(null)}
+                                                    >
+                                                        Retake Photo
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <label className="upload-btn">
+                                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                    Take Pickup Photo
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        capture="camera"
+                                                        onChange={(e) => handlePhotoUpload('pickup', e)}
+                                                        hidden
+                                                    />
+                                                </label>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
 
-                            {(activeDelivery.status === 'en_route' || 
-                              (activeDelivery.status === 'delivered' && deliveryPhoto)) && (
-                                <div className="photo-section">
-                                    <h4>Delivery Photo Required</h4>
-                                    <p>Take a photo confirming successful delivery</p>
-                                    <div className="photo-upload">
-                                        {deliveryPhoto ? (
-                                            <div className="photo-preview">
-                                                <img src={deliveryPhoto} alt="Delivery confirmation" />
-                                                <button 
-                                                    className="retake-btn"
-                                                    onClick={() => setDeliveryPhoto(null)}
-                                                >
-                                                    Retake Photo
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <label className="upload-btn">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                </svg>
-                                                Take Delivery Photo
-                                                <input
-                                                    type="file"
-                                                    accept="image/*"
-                                                    capture="camera"
-                                                    onChange={(e) => handlePhotoUpload('delivery', e)}
-                                                    hidden
-                                                />
-                                            </label>
-                                        )}
+                            {(activeDelivery.status === 'en_route' ||
+                                (activeDelivery.status === 'delivered' && deliveryPhoto)) && (
+                                    <div className="photo-section">
+                                        <h4>Delivery Photo Required</h4>
+                                        <p>Take a photo confirming successful delivery</p>
+                                        <div className="photo-upload">
+                                            {deliveryPhoto ? (
+                                                <div className="photo-preview">
+                                                    <img src={deliveryPhoto} alt="Delivery confirmation" />
+                                                    <button
+                                                        className="retake-btn"
+                                                        onClick={() => setDeliveryPhoto(null)}
+                                                    >
+                                                        Retake Photo
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <label className="upload-btn">
+                                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                    Take Delivery Photo
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        capture="camera"
+                                                        onChange={(e) => handlePhotoUpload('delivery', e)}
+                                                        hidden
+                                                    />
+                                                </label>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
 
                             {/* Navigation Button */}
-                            <button className="nav-btn">
+                            <button className="nav-btn" onClick={handleOpenMap}>
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                                 </svg>
@@ -729,6 +742,15 @@ const ActiveDeliveries = () => {
                     </div>
                 </div>
             )}
+
+            {/* Map Modal */}
+            <MapModal
+                isOpen={showMapModal}
+                onClose={() => setShowMapModal(false)}
+                pickupLocation={activeDelivery.pickupLocation}
+                deliveryLocation={activeDelivery.deliveryLocation}
+                driverLocation={getDriverLocation()}
+            />
         </div>
     )
 }
@@ -755,7 +777,7 @@ const ReviewForm = ({ target, targetInfo, onSubmit }) => {
                 <h4>{targetInfo.name}</h4>
                 <p>{target === 'seller' ? 'Store Experience' : 'Customer Experience'}</p>
             </div>
-            
+
             <form onSubmit={handleSubmit}>
                 <div className="rating-section">
                     <label>Rating *</label>
@@ -788,16 +810,16 @@ const ReviewForm = ({ target, targetInfo, onSubmit }) => {
                 </div>
 
                 <div className="form-actions">
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         className="cancel-btn"
                         onClick={() => setShowReviewModal(false)}
                     >
                         Cancel
                     </button>
-                    <button 
-                        type="submit" 
-                        className="submit-btn" 
+                    <button
+                        type="submit"
+                        className="submit-btn"
                         disabled={rating === 0}
                     >
                         Submit Review

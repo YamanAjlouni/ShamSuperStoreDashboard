@@ -1209,10 +1209,13 @@
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
         opacity: 1;
     }
+
     50% {
         transform: scale(1.05);
         opacity: 0.8;
@@ -1224,6 +1227,7 @@
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1316,6 +1320,7 @@
             padding: 1rem;
 
             .locations-section .location-card .location-header {
+
                 .location-title,
                 .contact-btn {
                     align-self: flex-start;

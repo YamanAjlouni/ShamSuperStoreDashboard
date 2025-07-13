@@ -357,10 +357,9 @@ const PaymentsManagement = () => {
                                         <div className="method-summary-item coming-soon">
                                             <span className="method-icon">📱</span>
                                             <div className="method-info">
-                                                <span className="method-name">Pay Sham</span>
+                                                <span className="method-name">PaySham</span>
                                                 <span className="method-status">Coming April 2026</span>
                                             </div>
-                                            <span className="method-count">PayPal, Apple Pay, Google Pay</span>
                                         </div>
                                         <div className="method-summary-item coming-soon">
                                             <span className="method-icon">📱</span>

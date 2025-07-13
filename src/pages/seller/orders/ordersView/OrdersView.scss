@@ -3,40 +3,65 @@
 .orders-view-page {
     padding: 2rem;
     background: $gray-50;
+    min-height: 100vh;
 
     .loading {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 50vh;
+        height: 60vh;
+        gap: 1rem;
         color: $text-light;
         font-size: 1.125rem;
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid $gray-200;
+            border-top: 3px solid $primary-color;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     }
 
     .order-header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         background: $white;
         border-radius: $radius-xl;
-        padding: 1.5rem 2rem;
+        padding: 2rem;
         box-shadow: $shadow-sm;
         border: 1px solid $gray-200;
         margin-bottom: 2rem;
 
         .header-left {
             display: flex;
-            align-items: center;
-            gap: 1rem;
+            align-items: flex-start;
+            gap: 1.5rem;
 
             .back-btn {
                 background: $gray-100;
                 border: none;
-                border-radius: $radius-md;
-                padding: 0.75rem;
+                border-radius: $radius-lg;
+                padding: 1rem;
                 cursor: pointer;
                 transition: $transition-all;
                 color: $text-dark;
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
                 &:hover {
                     background: $gray-200;
@@ -46,45 +71,49 @@
 
             .order-info {
                 h1 {
-                    font-size: 1.75rem;
+                    font-size: 2rem;
                     font-weight: 700;
                     color: $text-dark;
-                    margin: 0 0 0.5rem 0;
+                    margin: 0 0 1rem 0;
                 }
 
                 .order-meta {
                     display: flex;
                     align-items: center;
-                    gap: 1rem;
+                    gap: 1.5rem;
                     flex-wrap: wrap;
 
                     .status-badge {
                         display: flex;
                         align-items: center;
-                        gap: 0.25rem;
-                        padding: 0.25rem 0.75rem;
-                        border-radius: $radius-sm;
-                        font-size: 0.75rem;
+                        gap: 0.5rem;
+                        padding: 0.5rem 1rem;
+                        border-radius: $radius-lg;
+                        font-size: 0.875rem;
                         font-weight: 600;
 
                         &.status--pending {
                             background: rgba(245, 158, 11, 0.1);
                             color: #d97706;
+                            border: 1px solid rgba(245, 158, 11, 0.2);
                         }
 
                         &.status--completed {
                             background: rgba(16, 185, 129, 0.1);
                             color: #059669;
+                            border: 1px solid rgba(16, 185, 129, 0.2);
                         }
 
                         &.status--processing {
                             background: rgba(59, 130, 246, 0.1);
                             color: #2563eb;
+                            border: 1px solid rgba(59, 130, 246, 0.2);
                         }
 
                         &.status--rejected {
                             background: rgba(239, 68, 68, 0.1);
                             color: #dc2626;
+                            border: 1px solid rgba(239, 68, 68, 0.2);
                         }
                     }
 
@@ -92,12 +121,15 @@
                     .store-name {
                         display: flex;
                         align-items: center;
-                        gap: 0.25rem;
+                        gap: 0.5rem;
                         color: $text-light;
                         font-size: 0.875rem;
+                        padding: 0.5rem 0.75rem;
+                        background: $gray-50;
+                        border-radius: $radius-md;
 
                         svg {
-                            color: $text-light;
+                            color: $primary-color;
                         }
                     }
                 }
@@ -106,7 +138,7 @@
 
         .header-actions {
             display: flex;
-            gap: 0.75rem;
+            gap: 1rem;
             flex-wrap: wrap;
 
             .action-btn {
@@ -115,9 +147,9 @@
                 gap: 0.5rem;
                 border: none;
                 border-radius: $radius-lg;
-                padding: 0.75rem 1rem;
+                padding: 0.875rem 1.25rem;
                 font-size: 0.875rem;
-                font-weight: 500;
+                font-weight: 600;
                 cursor: pointer;
                 transition: $transition-all;
                 white-space: nowrap;
@@ -128,7 +160,8 @@
 
                     &:hover {
                         background: #059669;
-                        transform: translateY(-1px);
+                        transform: translateY(-2px);
+                        box-shadow: $shadow-md;
                     }
                 }
 
@@ -138,16 +171,19 @@
 
                     &:hover {
                         background: #dc2626;
-                        transform: translateY(-1px);
+                        transform: translateY(-2px);
+                        box-shadow: $shadow-md;
                     }
                 }
 
                 &.secondary-btn {
                     background: $gray-100;
                     color: $text-dark;
+                    border: 1px solid $gray-200;
 
                     &:hover {
                         background: $gray-200;
+                        transform: translateY(-1px);
                     }
                 }
             }
@@ -156,52 +192,69 @@
 
     .order-content {
         display: grid;
-        grid-template-columns: 1fr 350px;
+        grid-template-columns: 1fr 400px;
         gap: 2rem;
+        align-items: start;
 
         .section {
             background: $white;
             border-radius: $radius-xl;
-            padding: 1.5rem;
+            padding: 2rem;
             box-shadow: $shadow-sm;
             border: 1px solid $gray-200;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
 
             &:last-child {
                 margin-bottom: 0;
             }
 
             h3 {
-                font-size: 1.125rem;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                font-size: 1.25rem;
                 font-weight: 600;
                 color: $text-dark;
-                margin: 0 0 1rem 0;
-                padding-bottom: 0.75rem;
-                border-bottom: 1px solid $gray-200;
+                margin: 0 0 1.5rem 0;
+                padding-bottom: 1rem;
+                border-bottom: 2px solid $gray-100;
+
+                svg {
+                    color: $primary-color;
+                }
             }
         }
 
-        .order-details {
+        .order-main {
             .order-items {
-                .items-list {
+                .items-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1.5rem;
+
                     .item-row {
                         display: flex;
                         align-items: center;
-                        gap: 1rem;
-                        padding: 1rem 0;
-                        border-bottom: 1px solid $gray-100;
+                        gap: 1.5rem;
+                        padding: 1.5rem;
+                        background: $gray-50;
+                        border-radius: $radius-lg;
+                        border: 1px solid $gray-100;
+                        transition: $transition-all;
 
-                        &:last-child {
-                            border-bottom: none;
+                        &:hover {
+                            box-shadow: $shadow-sm;
+                            border-color: $gray-200;
                         }
 
                         .item-image {
                             img {
-                                width: 60px;
-                                height: 60px;
+                                width: 80px;
+                                height: 80px;
                                 object-fit: cover;
-                                border-radius: $radius-md;
-                                border: 1px solid $gray-200;
+                                border-radius: $radius-lg;
+                                border: 2px solid $white;
+                                box-shadow: $shadow-sm;
                             }
                         }
 
@@ -209,38 +262,45 @@
                             flex: 1;
 
                             h4 {
-                                font-size: 0.875rem;
+                                font-size: 1rem;
                                 font-weight: 600;
                                 color: $text-dark;
-                                margin: 0 0 0.25rem 0;
+                                margin: 0 0 0.5rem 0;
+                                line-height: 1.4;
                             }
 
                             .sku {
                                 color: $text-light;
                                 font-size: 0.75rem;
-                                margin: 0 0 0.5rem 0;
+                                margin: 0 0 0.75rem 0;
                                 font-family: monospace;
+                                background: $white;
+                                padding: 0.25rem 0.5rem;
+                                border-radius: $radius-sm;
+                                display: inline-block;
                             }
 
-                            .quantity-price {
+                            .item-meta {
                                 display: flex;
-                                gap: 1rem;
-                                font-size: 0.75rem;
+                                gap: 1.5rem;
+                                font-size: 0.875rem;
 
                                 .quantity {
                                     color: $text-light;
+                                    font-weight: 500;
                                 }
 
-                                .price {
+                                .unit-price {
                                     color: $text-dark;
-                                    font-weight: 500;
+                                    font-weight: 600;
                                 }
                             }
                         }
 
                         .item-total {
-                            font-weight: 600;
+                            font-weight: 700;
                             color: $primary-color;
+                            font-size: 1.125rem;
                         }
                     }
                 }
@@ -250,35 +310,56 @@
                 .address-grid {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
-                    gap: 1.5rem;
+                    gap: 2rem;
 
                     .address-card {
                         background: $gray-50;
                         border-radius: $radius-lg;
-                        padding: 1rem;
+                        padding: 1.5rem;
+                        border: 1px solid $gray-100;
 
-                        h4 {
+                        .address-header {
                             display: flex;
                             align-items: center;
-                            gap: 0.5rem;
-                            font-size: 0.875rem;
-                            font-weight: 600;
-                            color: $text-dark;
-                            margin: 0 0 0.75rem 0;
+                            gap: 0.75rem;
+                            margin-bottom: 1rem;
 
                             svg {
                                 color: $primary-color;
                             }
+
+                            h4 {
+                                font-size: 1rem;
+                                font-weight: 600;
+                                color: $text-dark;
+                                margin: 0;
+                            }
                         }
 
-                        .address-format {
-                            .street,
-                            .city-state,
-                            .country {
-                                color: $text-dark;
-                                font-size: 0.875rem;
-                                line-height: 1.4;
-                                margin-bottom: 0.25rem;
+                        .address-content {
+                            .address-format {
+
+                                .street,
+                                .city-state,
+                                .country {
+                                    color: $text-dark;
+                                    font-size: 0.875rem;
+                                    line-height: 1.5;
+                                    margin-bottom: 0.25rem;
+
+                                    &:last-child {
+                                        margin-bottom: 0;
+                                    }
+                                }
+
+                                .street {
+                                    font-weight: 500;
+                                }
+
+                                .country {
+                                    color: $text-light;
+                                    font-weight: 500;
+                                }
                             }
                         }
                     }
@@ -289,16 +370,16 @@
                 .timeline {
                     .timeline-item {
                         display: flex;
-                        gap: 1rem;
-                        padding: 1rem 0;
+                        gap: 1.5rem;
+                        padding: 1.5rem 0;
 
                         &:not(:last-child) {
                             border-bottom: 1px solid $gray-100;
                         }
 
                         .timeline-icon {
-                            width: 40px;
-                            height: 40px;
+                            width: 48px;
+                            height: 48px;
                             background: $primary-blue-light;
                             border-radius: 50%;
                             display: flex;
@@ -306,21 +387,25 @@
                             justify-content: center;
                             color: $primary-color;
                             flex-shrink: 0;
+                            border: 3px solid $white;
+                            box-shadow: $shadow-sm;
                         }
 
                         .timeline-content {
                             flex: 1;
-                            padding-top: 0.5rem;
+                            padding-top: 0.75rem;
 
                             .timeline-description {
                                 color: $text-dark;
-                                font-weight: 500;
-                                margin: 0 0 0.25rem 0;
+                                font-weight: 600;
+                                margin: 0 0 0.5rem 0;
+                                font-size: 0.875rem;
                             }
 
                             .timeline-date {
                                 color: $text-light;
                                 font-size: 0.75rem;
+                                font-weight: 500;
                             }
                         }
                     }
@@ -333,14 +418,22 @@
                 .payment-method {
                     display: flex;
                     align-items: center;
-                    gap: 0.5rem;
-                    padding: 0.75rem;
+                    gap: 0.75rem;
+                    padding: 1rem 1.25rem;
                     background: $gray-50;
-                    border-radius: $radius-md;
-                    margin-bottom: 1rem;
+                    border-radius: $radius-lg;
+                    margin-bottom: 1.5rem;
+                    border: 1px solid $gray-100;
 
                     svg {
                         color: $primary-color;
+                    }
+
+                    .card-info {
+                        margin-left: auto;
+                        color: $text-light;
+                        font-family: monospace;
+                        font-size: 0.875rem;
                     }
                 }
 
@@ -349,8 +442,9 @@
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
-                        padding: 0.5rem 0;
+                        padding: 0.75rem 0;
                         border-bottom: 1px solid $gray-100;
+                        font-size: 0.875rem;
 
                         &:last-child {
                             border-bottom: none;
@@ -361,8 +455,8 @@
                         }
 
                         &.total {
-                            font-weight: 600;
-                            font-size: 1.125rem;
+                            font-weight: 700;
+                            font-size: 1.25rem;
                             color: $primary-color;
                             border-top: 2px solid $gray-200;
                             padding-top: 1rem;
@@ -371,49 +465,150 @@
 
                         &.admin-fee {
                             color: $text-light;
-                            font-size: 0.875rem;
+                            font-size: 0.75rem;
+                            padding-top: 0.5rem;
                         }
                     }
                 }
             }
 
             .shipping-info {
-                .shipping-details {
+                .shipping-content {
                     .shipping-method {
                         display: flex;
                         align-items: center;
-                        gap: 0.5rem;
-                        padding: 0.75rem;
+                        gap: 0.75rem;
+                        padding: 1rem 1.25rem;
                         background: $gray-50;
-                        border-radius: $radius-md;
-                        margin-bottom: 1rem;
+                        border-radius: $radius-lg;
+                        margin-bottom: 1.5rem;
+                        border: 1px solid $gray-100;
 
                         svg {
                             color: $primary-color;
                         }
                     }
 
-                    .shipping-carrier,
-                    .tracking-number,
-                    .delivery-date {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        padding: 0.5rem 0;
-                        border-bottom: 1px solid $gray-100;
+                    .shipping-details {
+                        .shipping-item {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 0.75rem 0;
+                            border-bottom: 1px solid $gray-100;
+                            font-size: 0.875rem;
+
+                            &:last-child {
+                                border-bottom: none;
+                            }
+
+                            .label {
+                                color: $text-light;
+                                font-weight: 500;
+                            }
+
+                            .value {
+                                color: $text-dark;
+                                font-weight: 600;
+
+                                &.tracking {
+                                    font-family: monospace;
+                                    background: $gray-50;
+                                    padding: 0.25rem 0.5rem;
+                                    border-radius: $radius-sm;
+                                    font-size: 0.75rem;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .order-notes {
+                .notes-content {
+                    .note-item {
+                        padding: 1rem;
+                        background: $gray-50;
+                        border-radius: $radius-lg;
+                        margin-bottom: 1rem;
+                        border: 1px solid $gray-100;
 
                         &:last-child {
-                            border-bottom: none;
+                            margin-bottom: 1.5rem;
                         }
 
-                        .label {
-                            color: $text-light;
+                        &.system {
+                            background: rgba(59, 130, 246, 0.05);
+                            border-color: rgba(59, 130, 246, 0.1);
+                        }
+
+                        .note-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 0.5rem;
+
+                            .note-author {
+                                font-weight: 600;
+                                color: $text-dark;
+                                font-size: 0.75rem;
+                            }
+
+                            .note-date {
+                                color: $text-light;
+                                font-size: 0.75rem;
+                            }
+                        }
+
+                        .note-content {
+                            color: $text-dark;
                             font-size: 0.875rem;
+                            line-height: 1.4;
+                        }
+                    }
+
+                    .add-note {
+                        .note-input {
+                            width: 100%;
+                            min-height: 80px;
+                            padding: 1rem;
+                            border: 1px solid $gray-200;
+                            border-radius: $radius-lg;
+                            font-size: 0.875rem;
+                            resize: vertical;
+                            margin-bottom: 1rem;
+
+                            &:focus {
+                                outline: none;
+                                border-color: $primary-color;
+                                box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
+                            }
+
+                            &::placeholder {
+                                color: $text-light;
+                            }
                         }
 
-                        .tracking {
-                            font-family: monospace;
-                            font-weight: 500;
+                        .add-note-btn {
+                            width: 100%;
+                            background: $primary-color;
+                            color: $white;
+                            border: none;
+                            border-radius: $radius-lg;
+                            padding: 0.75rem 1rem;
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: $transition-all;
+
+                            &:hover:not(:disabled) {
+                                background: darken($primary-color, 10%);
+                            }
+
+                            &:disabled {
+                                opacity: 0.5;
+                                cursor: not-allowed;
+                            }
                         }
                     }
                 }
@@ -433,26 +628,28 @@
         align-items: center;
         justify-content: center;
         z-index: 1000;
+        backdrop-filter: blur(4px);
 
         .modal {
             background: $white;
             border-radius: $radius-xl;
-            padding: 2rem;
-            max-width: 400px;
+            padding: 2.5rem;
+            max-width: 450px;
             width: 90%;
             box-shadow: $shadow-2xl;
 
             h3 {
                 margin: 0 0 1rem 0;
                 color: $text-dark;
-                font-size: 1.25rem;
-                font-weight: 600;
+                font-size: 1.5rem;
+                font-weight: 700;
             }
 
             p {
                 margin: 0 0 2rem 0;
                 color: $text-light;
-                line-height: 1.5;
+                line-height: 1.6;
+                font-size: 0.875rem;
             }
 
             .modal-actions {
@@ -463,10 +660,11 @@
                 .cancel-btn {
                     background: $gray-100;
                     color: $text-dark;
-                    border: none;
-                    border-radius: $radius-md;
-                    padding: 0.75rem 1.5rem;
+                    border: 1px solid $gray-200;
+                    border-radius: $radius-lg;
+                    padding: 0.875rem 1.5rem;
                     font-size: 0.875rem;
+                    font-weight: 600;
                     cursor: pointer;
                     transition: $transition-all;
 
@@ -475,33 +673,30 @@
                     }
                 }
 
-                .accept-btn {
-                    background: #10b981;
-                    color: $white;
+                .confirm-btn {
                     border: none;
-                    border-radius: $radius-md;
-                    padding: 0.75rem 1.5rem;
+                    border-radius: $radius-lg;
+                    padding: 0.875rem 1.5rem;
                     font-size: 0.875rem;
+                    font-weight: 600;
                     cursor: pointer;
                     transition: $transition-all;
+                    color: $white;
 
-                    &:hover {
-                        background: #059669;
+                    &.accept-btn {
+                        background: #10b981;
+
+                        &:hover {
+                            background: #059669;
+                        }
                     }
-                }
 
-                .reject-btn {
-                    background: #ef4444;
-                    color: $white;
-                    border: none;
-                    border-radius: $radius-md;
-                    padding: 0.75rem 1.5rem;
-                    font-size: 0.875rem;
-                    cursor: pointer;
-                    transition: $transition-all;
+                    &.reject-btn {
+                        background: #ef4444;
 
-                    &:hover {
-                        background: #dc2626;
+                        &:hover {
+                            background: #dc2626;
+                        }
                     }
                 }
             }
@@ -510,10 +705,19 @@
 }
 
 // Responsive Design
+@media (max-width: 1400px) {
+    .orders-view-page {
+        .order-content {
+            grid-template-columns: 1fr 350px;
+        }
+    }
+}
+
 @media (max-width: 1200px) {
     .orders-view-page {
         .order-content {
             grid-template-columns: 1fr;
+            gap: 1.5rem;
 
             .order-sidebar {
                 order: -1;
@@ -528,12 +732,24 @@
 
         .order-header {
             flex-direction: column;
-            gap: 1rem;
-            padding: 1rem;
+            gap: 1.5rem;
+            padding: 1.5rem;
 
             .header-left {
                 align-self: flex-start;
                 width: 100%;
+
+                .order-info {
+                    h1 {
+                        font-size: 1.5rem;
+                    }
+
+                    .order-meta {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 0.75rem;
+                    }
+                }
             }
 
             .header-actions {
@@ -543,6 +759,7 @@
                 .action-btn {
                     flex: 1;
                     justify-content: center;
+                    padding: 1rem;
                 }
             }
         }
@@ -551,13 +768,33 @@
             gap: 1rem;
 
             .section {
-                padding: 1rem;
+                padding: 1.5rem;
                 margin-bottom: 1rem;
+
+                h3 {
+                    font-size: 1.125rem;
+                }
             }
 
-            .order-details {
+            .order-main {
                 .addresses .address-grid {
                     grid-template-columns: 1fr;
+                    gap: 1rem;
+                }
+
+                .order-items .items-container .item-row {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 1rem;
+                    text-align: left;
+
+                    .item-details {
+                        width: 100%;
+                    }
+
+                    .item-total {
+                        align-self: flex-end;
+                    }
                 }
             }
         }
@@ -569,17 +806,20 @@
         padding: 0.5rem;
 
         .order-header {
-            padding: 0.75rem;
+            padding: 1rem;
 
-            .header-left .order-info {
-                h1 {
-                    font-size: 1.5rem;
-                }
+            .header-left {
+                flex-direction: column;
+                gap: 1rem;
 
-                .order-meta {
-                    flex-direction: column;
-                    align-items: flex-start;
-                    gap: 0.5rem;
+                .order-info {
+                    h1 {
+                        font-size: 1.25rem;
+                    }
+
+                    .order-meta {
+                        gap: 0.5rem;
+                    }
                 }
             }
 
@@ -591,25 +831,23 @@
 
         .order-content {
             .section {
-                padding: 0.75rem;
+                padding: 1rem;
 
                 h3 {
                     font-size: 1rem;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 0.5rem;
                 }
             }
 
-            .order-details {
-                .order-items .items-list .item-row {
-                    flex-direction: column;
-                    align-items: flex-start;
-                    gap: 0.75rem;
+            .order-main {
+                .order-items .items-container .item-row {
+                    padding: 1rem;
 
-                    .item-details {
-                        width: 100%;
-                    }
-
-                    .item-total {
-                        align-self: flex-end;
+                    .item-image img {
+                        width: 60px;
+                        height: 60px;
                     }
                 }
             }
