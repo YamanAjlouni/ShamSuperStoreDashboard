@@ -31,7 +31,7 @@ const Payments = () => {
             icon: <CreditCard size={24} />,
             available: true,
             processingTime: 'Instant',
-            fees: 'No fees',
+            fees: '3%',
             details: 'Secure online payments with instant confirmation. Perfect for online orders.'
         },
         {
