@@ -88,9 +88,11 @@
         left: -280px;
         z-index: 100000000000;
         width: 280px;
-        height: 100vh;
+        height: 100dvh; // Changed from vh to dvh
         top: 0;
         transition: left 0.3s ease;
+        display: flex;
+        flex-direction: column;
 
         &.delivery-sidebar--open {
             left: 0;
@@ -104,6 +106,7 @@
         padding: 1rem 1.5rem;
         border-bottom: 1px solid rgba(206, 128, 45, 0.2);
         background: linear-gradient(135deg, rgba(206, 128, 45, 0.1) 0%, rgba(206, 128, 45, 0.05) 100%);
+        flex-shrink: 0; // Prevent header from shrinking
 
         .brand-section {
             display: flex;
@@ -159,12 +162,21 @@
 
     .sidebar-content {
         padding: 1rem 0;
-        height: calc(100vh - 70px);
+        flex: 1; // Take remaining space
         overflow-y: auto;
+        overflow-x: hidden;
+        // Add momentum scrolling for iOS
+        -webkit-overflow-scrolling: touch;
 
         .delivery-sidebar:not(.delivery-sidebar--mobile) & {
             height: 100vh;
             padding-top: 1rem;
+        }
+
+        // For mobile, remove fixed height and use flex
+        .delivery-sidebar--mobile & {
+            height: auto;
+            min-height: 0; // Allow flex item to shrink
         }
     }
 
@@ -184,6 +196,7 @@
         font-weight: 500;
         position: relative;
         text-align: left;
+        flex-shrink: 0; // Prevent items from shrinking
 
         &::after,
         &::before {
@@ -337,6 +350,20 @@
     // Ensure main content doesn't scroll when sidebar is open
     body.sidebar-open {
         overflow: hidden;
+    }
+}
+
+// Additional mobile optimizations
+@media (max-width: 480px) {
+    .delivery-sidebar {
+        &--mobile {
+            width: 100vw;
+            left: -100vw;
+
+            &.delivery-sidebar--open {
+                left: 0;
+            }
+        }
     }
 }
 
