@@ -4,24 +4,76 @@
     padding: 1.5rem;
     background-color: $gray-50;
 
+    // Enhanced responsive breakpoints
+    @media (max-width: 1200px) {
+        padding: 1.25rem;
+    }
+
     @media (max-width: 768px) {
+        padding: 1rem;
+    }
+
+    @media (max-width: 480px) {
+        padding: 0.75rem;
+    }
+
+    @media (max-width: 360px) {
         padding: 0.5rem;
     }
 
     .dashboard-header {
         margin-bottom: 2rem;
 
+        @media (max-width: 768px) {
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 480px) {
+            margin-bottom: 1rem;
+        }
+
         h1 {
             color: $dark-blue-color;
             font-size: 2rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
+
+            @media (max-width: 1024px) {
+                font-size: 1.75rem;
+                margin-bottom: 1.25rem;
+            }
+
+            @media (max-width: 768px) {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            @media (max-width: 480px) {
+                font-size: 1.25rem;
+                margin-bottom: 0.75rem;
+                text-align: center;
+            }
         }
 
         .dashboard-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
+
+            @media (max-width: 1024px) {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 0.875rem;
+            }
+
+            @media (max-width: 768px) {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            @media (max-width: 480px) {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
 
             .stat-card {
                 background: $white;
@@ -31,9 +83,25 @@
                 text-align: center;
                 transition: $transition-all;
 
+                @media (max-width: 1024px) {
+                    padding: 1.25rem;
+                }
+
+                @media (max-width: 768px) {
+                    padding: 1rem;
+                }
+
+                @media (max-width: 480px) {
+                    padding: 1.25rem;
+                }
+
                 &:hover {
                     box-shadow: $shadow-md;
                     transform: translateY(-2px);
+
+                    @media (max-width: 768px) {
+                        transform: none; // Disable hover transform on mobile
+                    }
                 }
 
                 h3 {
@@ -41,12 +109,28 @@
                     font-weight: 700;
                     color: $primary-color;
                     margin-bottom: 0.5rem;
+
+                    @media (max-width: 1024px) {
+                        font-size: 1.75rem;
+                    }
+
+                    @media (max-width: 768px) {
+                        font-size: 1.5rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        font-size: 1.75rem;
+                    }
                 }
 
                 p {
                     color: $text-light;
                     font-size: 0.875rem;
                     font-weight: 500;
+
+                    @media (max-width: 480px) {
+                        font-size: 0.8125rem;
+                    }
                 }
             }
         }
@@ -57,6 +141,18 @@
         gap: 0.5rem;
         margin-bottom: 2rem;
         border-bottom: 2px solid $gray-200;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+
+        @media (max-width: 768px) {
+            margin-bottom: 1.5rem;
+            gap: 0.25rem;
+            padding-bottom: 0.5rem;
+        }
+
+        @media (max-width: 480px) {
+            margin-bottom: 1rem;
+        }
 
         .tab-btn {
             padding: 0.75rem 1.5rem;
@@ -67,10 +163,31 @@
             cursor: pointer;
             border-radius: $radius-md $radius-md 0 0;
             transition: $transition-all;
+            white-space: nowrap;
+            flex-shrink: 0;
+
+            @media (max-width: 1024px) {
+                padding: 0.625rem 1.25rem;
+                font-size: 0.875rem;
+            }
+
+            @media (max-width: 768px) {
+                padding: 0.5rem 1rem;
+                font-size: 0.8125rem;
+            }
+
+            @media (max-width: 480px) {
+                padding: 0.625rem 0.875rem;
+                font-size: 0.75rem;
+            }
 
             &:hover {
                 background-color: $gray-100;
                 color: $text-dark;
+
+                @media (max-width: 768px) {
+                    background-color: transparent; // Disable hover on mobile
+                }
             }
 
             &.active {
@@ -87,8 +204,13 @@
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
 
+            @media (max-width: 1024px) {
+                gap: 1.5rem;
+            }
+
             @media (max-width: 768px) {
                 grid-template-columns: 1fr;
+                gap: 1.25rem;
             }
         }
 
@@ -98,11 +220,29 @@
             border-radius: $radius-lg;
             box-shadow: $shadow-sm;
 
+            @media (max-width: 1024px) {
+                padding: 1.25rem;
+            }
+
+            @media (max-width: 768px) {
+                padding: 1rem;
+            }
+
             h3 {
                 color: $dark-blue-color;
                 margin-bottom: 1rem;
                 font-size: 1.25rem;
                 font-weight: 600;
+
+                @media (max-width: 768px) {
+                    font-size: 1.125rem;
+                    margin-bottom: 0.875rem;
+                }
+
+                @media (max-width: 480px) {
+                    font-size: 1rem;
+                    margin-bottom: 0.75rem;
+                }
             }
 
             .drivers-list,
@@ -116,6 +256,17 @@
                     padding: 0.75rem 0;
                     border-bottom: 1px solid $gray-200;
 
+                    @media (max-width: 768px) {
+                        padding: 0.625rem 0;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 0.5rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        padding: 0.5rem 0;
+                    }
+
                     &:last-child {
                         border-bottom: none;
                     }
@@ -126,26 +277,57 @@
                         flex-direction: column;
                         gap: 0.25rem;
 
+                        @media (max-width: 768px) {
+                            width: 100%;
+                        }
+
                         .driver-name,
                         .order-id {
                             font-weight: 600;
                             color: $text-dark;
+
+                            @media (max-width: 768px) {
+                                font-size: 0.9375rem;
+                            }
+
+                            @media (max-width: 480px) {
+                                font-size: 0.875rem;
+                            }
                         }
 
                         .customer-name {
                             font-size: 0.875rem;
                             color: $text-light;
+
+                            @media (max-width: 480px) {
+                                font-size: 0.8125rem;
+                            }
                         }
 
                         .order-total {
                             font-weight: 600;
                             color: $orange-color;
+
+                            @media (max-width: 768px) {
+                                font-size: 0.9375rem;
+                            }
                         }
 
                         .driver-rating {
                             display: flex;
                             align-items: center;
                             gap: 0.5rem;
+
+                            @media (max-width: 480px) {
+                                gap: 0.375rem;
+                            }
+                        }
+                    }
+
+                    .status {
+                        @media (max-width: 768px) {
+                            align-self: flex-end;
+                            margin-top: -0.5rem;
                         }
                     }
                 }
@@ -158,10 +340,30 @@
             align-items: center;
             margin-bottom: 1.5rem;
 
+            @media (max-width: 768px) {
+                margin-bottom: 1.25rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            @media (max-width: 480px) {
+                margin-bottom: 1rem;
+                gap: 0.75rem;
+            }
+
             h3 {
                 color: $dark-blue-color;
                 font-size: 1.5rem;
                 font-weight: 600;
+
+                @media (max-width: 768px) {
+                    font-size: 1.25rem;
+                }
+
+                @media (max-width: 480px) {
+                    font-size: 1.125rem;
+                }
             }
 
             .add-btn,
@@ -174,6 +376,18 @@
                 font-weight: 500;
                 cursor: pointer;
                 transition: $transition-all;
+
+                @media (max-width: 768px) {
+                    padding: 0.625rem 1.25rem;
+                    font-size: 0.875rem;
+                    align-self: flex-end;
+                }
+
+                @media (max-width: 480px) {
+                    width: 100%;
+                    padding: 0.75rem;
+                    text-align: center;
+                }
 
                 &:hover {
                     background-color: $primary-blue-hover;
@@ -196,6 +410,12 @@
                 color: $text-dark;
                 gap: 1rem;
 
+                @media (max-width: 1200px) {
+                    grid-template-columns: 2fr 1.2fr 0.8fr 0.8fr 0.8fr 1fr 1fr;
+                    font-size: 0.875rem;
+                    padding: 0.875rem;
+                }
+
                 @media (max-width: 768px) {
                     display: none;
                 }
@@ -209,12 +429,38 @@
                 align-items: center;
                 gap: 1rem;
 
+                @media (max-width: 1200px) {
+                    grid-template-columns: 2fr 1.2fr 0.8fr 0.8fr 0.8fr 1fr 1fr;
+                    padding: 0.875rem;
+                    font-size: 0.875rem;
+                }
+
                 @media (max-width: 768px) {
                     grid-template-columns: 1fr;
                     gap: 0.5rem;
+                    padding: 1rem;
 
                     span {
                         padding: 0.25rem 0;
+
+                        &:before {
+                            content: attr(data-label) ": ";
+                            font-weight: 600;
+                            color: $dark-blue-color;
+                            display: inline-block;
+                            min-width: 120px;
+                        }
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    padding: 0.75rem;
+
+                    span {
+                        &:before {
+                            min-width: 100px;
+                            font-size: 0.8125rem;
+                        }
                     }
                 }
 
@@ -224,6 +470,10 @@
 
                 &:hover {
                     background-color: $gray-50;
+
+                    @media (max-width: 768px) {
+                        background-color: transparent;
+                    }
                 }
 
                 .driver-name {
@@ -235,11 +485,29 @@
                     display: flex;
                     align-items: center;
                     gap: 0.5rem;
+
+                    @media (max-width: 768px) {
+                        gap: 0.375rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        flex-wrap: wrap;
+                    }
                 }
 
                 .actions {
                     display: flex;
                     gap: 0.5rem;
+
+                    @media (max-width: 768px) {
+                        gap: 0.375rem;
+                        margin-top: 0.5rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        flex-direction: column;
+                        gap: 0.5rem;
+                    }
 
                     .edit-btn,
                     .view-btn {
@@ -250,6 +518,17 @@
                         font-weight: 500;
                         cursor: pointer;
                         transition: $transition-all;
+
+                        @media (max-width: 768px) {
+                            padding: 0.5rem 0.875rem;
+                            font-size: 0.8125rem;
+                        }
+
+                        @media (max-width: 480px) {
+                            width: 100%;
+                            padding: 0.625rem;
+                            text-align: center;
+                        }
                     }
 
                     .edit-btn {
@@ -278,6 +557,21 @@
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 1.5rem;
 
+            @media (max-width: 1200px) {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 1.25rem;
+            }
+
+            @media (max-width: 768px) {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 1rem;
+            }
+
+            @media (max-width: 480px) {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
             .order-card {
                 background: $white;
                 padding: 1.5rem;
@@ -285,9 +579,21 @@
                 box-shadow: $shadow-sm;
                 transition: $transition-all;
 
+                @media (max-width: 768px) {
+                    padding: 1.25rem;
+                }
+
+                @media (max-width: 480px) {
+                    padding: 1rem;
+                }
+
                 &:hover {
                     box-shadow: $shadow-md;
                     transform: translateY(-2px);
+
+                    @media (max-width: 768px) {
+                        transform: none;
+                    }
                 }
 
                 .order-header {
@@ -296,19 +602,44 @@
                     align-items: center;
                     margin-bottom: 1rem;
 
+                    @media (max-width: 480px) {
+                        margin-bottom: 0.875rem;
+                    }
+
                     .order-id {
                         font-weight: 700;
                         font-size: 1.125rem;
                         color: $dark-blue-color;
+
+                        @media (max-width: 768px) {
+                            font-size: 1rem;
+                        }
+
+                        @media (max-width: 480px) {
+                            font-size: 0.9375rem;
+                        }
                     }
                 }
 
                 .order-details-dashboard {
                     margin-bottom: 1.5rem;
 
+                    @media (max-width: 480px) {
+                        margin-bottom: 1.25rem;
+                    }
+
                     p {
                         margin-bottom: 0.5rem;
                         color: $text-dark;
+
+                        @media (max-width: 768px) {
+                            font-size: 0.875rem;
+                        }
+
+                        @media (max-width: 480px) {
+                            font-size: 0.8125rem;
+                            margin-bottom: 0.375rem;
+                        }
 
                         strong {
                             color: $dark-blue-color;
@@ -320,6 +651,11 @@
                     display: flex;
                     gap: 0.75rem;
 
+                    @media (max-width: 480px) {
+                        flex-direction: column;
+                        gap: 0.5rem;
+                    }
+
                     .assign-btn,
                     .view-btn {
                         flex: 1;
@@ -329,6 +665,16 @@
                         font-weight: 500;
                         cursor: pointer;
                         transition: $transition-all;
+
+                        @media (max-width: 768px) {
+                            padding: 0.625rem;
+                            font-size: 0.875rem;
+                        }
+
+                        @media (max-width: 480px) {
+                            padding: 0.75rem;
+                            font-size: 0.875rem;
+                        }
                     }
 
                     .assign-btn {
@@ -357,8 +703,13 @@
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
 
+            @media (max-width: 1024px) {
+                gap: 1.5rem;
+            }
+
             @media (max-width: 768px) {
                 grid-template-columns: 1fr;
+                gap: 1.25rem;
             }
 
             .reviews-card {
@@ -367,17 +718,43 @@
                 border-radius: $radius-lg;
                 box-shadow: $shadow-sm;
 
+                @media (max-width: 768px) {
+                    padding: 1.25rem;
+                }
+
+                @media (max-width: 480px) {
+                    padding: 1rem;
+                }
+
                 h3 {
                     color: $dark-blue-color;
                     margin-bottom: 1.5rem;
                     font-size: 1.25rem;
                     font-weight: 600;
+
+                    @media (max-width: 768px) {
+                        font-size: 1.125rem;
+                        margin-bottom: 1.25rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        font-size: 1rem;
+                        margin-bottom: 1rem;
+                    }
                 }
 
                 .reviews-list {
                     .review-item {
                         padding: 1rem 0;
                         border-bottom: 1px solid $gray-200;
+
+                        @media (max-width: 768px) {
+                            padding: 0.875rem 0;
+                        }
+
+                        @media (max-width: 480px) {
+                            padding: 0.75rem 0;
+                        }
 
                         &:last-child {
                             border-bottom: none;
@@ -389,21 +766,49 @@
                             align-items: center;
                             margin-bottom: 0.5rem;
 
+                            @media (max-width: 480px) {
+                                flex-direction: column;
+                                align-items: flex-start;
+                                gap: 0.375rem;
+                                margin-bottom: 0.375rem;
+                            }
+
                             .reviewer {
                                 font-weight: 600;
                                 color: $text-dark;
+
+                                @media (max-width: 768px) {
+                                    font-size: 0.9375rem;
+                                }
+
+                                @media (max-width: 480px) {
+                                    font-size: 0.875rem;
+                                }
                             }
 
                             .rating {
                                 display: flex;
                                 align-items: center;
                                 gap: 0.5rem;
+
+                                @media (max-width: 480px) {
+                                    gap: 0.375rem;
+                                }
                             }
                         }
 
                         p {
                             margin-bottom: 0.5rem;
                             color: $text-dark;
+
+                            @media (max-width: 768px) {
+                                font-size: 0.875rem;
+                            }
+
+                            @media (max-width: 480px) {
+                                font-size: 0.8125rem;
+                                margin-bottom: 0.375rem;
+                            }
 
                             strong {
                                 color: $dark-blue-color;
@@ -414,11 +819,24 @@
                             font-style: italic;
                             color: $text-light;
                             margin-bottom: 0.75rem;
+
+                            @media (max-width: 768px) {
+                                font-size: 0.875rem;
+                            }
+
+                            @media (max-width: 480px) {
+                                font-size: 0.8125rem;
+                                margin-bottom: 0.5rem;
+                            }
                         }
 
                         .review-date {
                             font-size: 0.75rem;
                             color: $text-light;
+
+                            @media (max-width: 480px) {
+                                font-size: 0.6875rem;
+                            }
                         }
                     }
                 }
@@ -433,6 +851,16 @@
         font-size: 0.75rem;
         font-weight: 600;
         text-transform: uppercase;
+
+        @media (max-width: 768px) {
+            padding: 0.375rem 0.875rem;
+            font-size: 0.6875rem;
+        }
+
+        @media (max-width: 480px) {
+            padding: 0.25rem 0.625rem;
+            font-size: 0.625rem;
+        }
 
         &.status-available {
             background-color: rgba(34, 197, 94, 0.1);
@@ -458,6 +886,16 @@
         font-weight: 600;
         text-transform: uppercase;
 
+        @media (max-width: 768px) {
+            padding: 0.375rem 0.875rem;
+            font-size: 0.6875rem;
+        }
+
+        @media (max-width: 480px) {
+            padding: 0.25rem 0.625rem;
+            font-size: 0.625rem;
+        }
+
         &.priority-high {
             background-color: rgba(239, 68, 68, 0.1);
             color: rgb(185, 28, 28);
@@ -479,6 +917,14 @@
         color: $gray-300;
         font-size: 1rem;
 
+        @media (max-width: 768px) {
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 480px) {
+            font-size: 0.8125rem;
+        }
+
         &.filled {
             color: $yellow-color;
         }
@@ -489,10 +935,23 @@
         align-items: center;
         gap: 0.25rem;
 
+        @media (max-width: 480px) {
+            gap: 0.1875rem;
+        }
+
         span:last-child {
             margin-left: 0.25rem;
             font-weight: 600;
             color: $text-dark;
+
+            @media (max-width: 768px) {
+                font-size: 0.875rem;
+            }
+
+            @media (max-width: 480px) {
+                font-size: 0.8125rem;
+                margin-left: 0.1875rem;
+            }
         }
     }
 }
