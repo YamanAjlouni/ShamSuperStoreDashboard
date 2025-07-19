@@ -199,6 +199,14 @@
                     background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
                 }
 
+                &.repeat-purchase {
+                    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+                }
+
+                &.provider-ratio {
+                    background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+                }
+
                 svg {
                     width: 24px;
                     height: 24px;
@@ -574,6 +582,107 @@
         }
     }
 
+    // Repeat Purchase Section
+    .repeat-purchase-section {
+        margin-bottom: 2rem;
+
+        .section-header {
+            background: $white;
+            border-radius: $radius-lg;
+            box-shadow: $shadow-md;
+            border: 1px solid $gray-200;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, #10B981 0%, #059669 50%, #047857 100%);
+                border-radius: $radius-lg $radius-lg 0 0;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+                font-weight: 700;
+                color: $gray-800;
+                margin: 0 0 0.5rem 0;
+                background: linear-gradient(135deg, $gray-800 0%, #10B981 100%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            p {
+                font-size: 1.125rem;
+                color: $gray-500;
+                margin: 0;
+                font-weight: 500;
+            }
+        }
+
+        .repeat-purchase-charts {
+            margin-bottom: 2rem;
+
+            .chart-card {
+                background: $white;
+                border-radius: $radius-lg;
+                box-shadow: $shadow-md;
+                border: 1px solid $gray-200;
+                overflow: hidden;
+                transition: $transition-all;
+
+                &:hover {
+                    box-shadow: $shadow-lg;
+                    border-color: #10B981;
+                }
+
+                .chart-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1.5rem;
+                    border-bottom: 1px solid $gray-200;
+                    background: $white;
+
+                    h3 {
+                        font-size: 1.125rem;
+                        font-weight: 600;
+                        color: $gray-800;
+                        margin: 0;
+                    }
+
+                    .export-chart-btn {
+                        padding: 0.5rem 1rem;
+                        background: rgba(16, 185, 129, 0.1);
+                        color: #10B981;
+                        border: 1px solid #10B981;
+                        border-radius: $radius-md;
+                        font-size: 0.75rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: $transition-all;
+
+                        &:hover {
+                            background: #10B981;
+                            color: $white;
+                            transform: translateY(-1px);
+                        }
+                    }
+                }
+
+                .chart-container {
+                    padding: 1.5rem;
+                    background: $white;
+                }
+            }
+        }
+    }
+
     .returns-section {
         .section-header {
             background: $white;
@@ -889,6 +998,10 @@
         .returns-section .returns-lists {
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         }
+
+        .repeat-purchase-section .repeat-purchase-lists {
+            grid-template-columns: 1fr;
+        }
     }
 }
 
@@ -950,6 +1063,12 @@
                         min-width: 50px;
                     }
                 }
+            }
+        }
+
+        .repeat-purchase-section {
+            .section-header {
+                padding: 1.5rem;
             }
         }
     }
@@ -1126,6 +1245,35 @@
                 }
             }
         }
+
+        .repeat-purchase-section {
+            .section-header {
+                padding: 1rem;
+
+                h2 {
+                    font-size: 1.5rem;
+                }
+            }
+
+            .repeat-purchase-charts .chart-card {
+                .chart-header {
+                    padding: 1rem;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 1rem;
+
+                    .export-chart-btn {
+                        align-self: stretch;
+                        text-align: center;
+                    }
+                }
+
+                .chart-container {
+                    padding: 1rem;
+                }
+            }
+
+        }
     }
 }
 
@@ -1181,6 +1329,19 @@
                 .stat-item {
                     min-width: auto;
                     flex: 1;
+                }
+            }
+        }
+
+        .repeat-purchase-section .repeat-purchase-lists .list-card .list-content .list-item {
+            .item-stats {
+                gap: 0.5rem;
+                flex-wrap: wrap;
+
+                .stat-item {
+                    min-width: auto;
+                    flex: 1;
+                    min-width: 45%;
                 }
             }
         }

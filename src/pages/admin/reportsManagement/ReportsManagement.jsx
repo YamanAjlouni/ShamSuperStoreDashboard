@@ -22,12 +22,16 @@ const ReportsManagement = () => {
                         totalRevenue: 156789.50,
                         averageOrderValue: 127.15,
                         totalReturns: 89,
+                        repeatPurchaseRatio: 68.5,
+                        providerToCustomerRatio: 0.041,
                         usersGrowth: 15.7,
                         sellersGrowth: 8.2,
                         driversGrowth: 12.4,
                         ordersGrowth: 8.3,
                         revenueGrowth: 12.5,
-                        returnsGrowth: -5.3
+                        returnsGrowth: -5.3,
+                        repeatPurchaseGrowth: 12.8,
+                        providerRatioGrowth: -2.1
                     },
                     salesData: [
                         { month: 'Jan', revenue: 12000, orders: 95, users: 450 },
@@ -44,6 +48,24 @@ const ReportsManagement = () => {
                         { month: 'Apr', returns: 14, returnRate: 8.1 },
                         { month: 'May', returns: 11, returnRate: 7.4 },
                         { month: 'Jun', returns: 19, returnRate: 9.7 }
+                    ],
+                    repeatPurchaseData: [
+                        { month: 'Jan', repeatRate: 62.4, newCustomers: 125, returningCustomers: 203 },
+                        { month: 'Feb', repeatRate: 64.8, newCustomers: 142, returningCustomers: 258 },
+                        { month: 'Mar', repeatRate: 66.2, newCustomers: 158, returningCustomers: 312 },
+                        { month: 'Apr', repeatRate: 67.5, newCustomers: 134, returningCustomers: 278 },
+                        { month: 'May', repeatRate: 68.1, newCustomers: 145, returningCustomers: 318 },
+                        { month: 'Jun', repeatRate: 68.5, newCustomers: 156, returningCustomers: 342 }
+                    ],
+                    customersByRepeatPurchase: [
+                        { name: 'Sarah Thompson', email: 'sarah.thompson@email.com', totalOrders: 18, repeatOrders: 15, firstOrderDate: '2023-02-15', lastOrderDate: '2024-06-12', totalSpent: 2450.75, avgOrderValue: 136.15 },
+                        { name: 'Michael Rodriguez', email: 'michael.r@email.com', totalOrders: 22, repeatOrders: 19, firstOrderDate: '2023-01-08', lastOrderDate: '2024-06-10', totalSpent: 3120.40, avgOrderValue: 141.84 },
+                        { name: 'Emily Chen', email: 'emily.chen@email.com', totalOrders: 15, repeatOrders: 12, firstOrderDate: '2023-03-22', lastOrderDate: '2024-06-08', totalSpent: 1875.25, avgOrderValue: 125.02 },
+                        { name: 'David Wilson', email: 'david.wilson@email.com', totalOrders: 20, repeatOrders: 16, firstOrderDate: '2023-01-30', lastOrderDate: '2024-06-05', totalSpent: 2680.90, avgOrderValue: 134.05 },
+                        { name: 'Jennifer Adams', email: 'jennifer.adams@email.com', totalOrders: 14, repeatOrders: 11, firstOrderDate: '2023-04-10', lastOrderDate: '2024-06-03', totalSpent: 1620.80, avgOrderValue: 115.77 },
+                        { name: 'Robert Johnson', email: 'robert.j@email.com', totalOrders: 16, repeatOrders: 12, firstOrderDate: '2023-02-28', lastOrderDate: '2024-05-28', totalSpent: 2140.60, avgOrderValue: 133.79 },
+                        { name: 'Lisa Martinez', email: 'lisa.martinez@email.com', totalOrders: 19, repeatOrders: 14, firstOrderDate: '2023-01-15', lastOrderDate: '2024-05-25', totalSpent: 2320.45, avgOrderValue: 122.13 },
+                        { name: 'Christopher Lee', email: 'chris.lee@email.com', totalOrders: 13, repeatOrders: 9, firstOrderDate: '2023-03-05', lastOrderDate: '2024-05-20', totalSpent: 1450.30, avgOrderValue: 111.56 }
                     ],
                     categoryData: [
                         { name: 'Electronics', value: 35, color: '#4267B2' },
@@ -126,6 +148,14 @@ const ReportsManagement = () => {
 
     const formatNumber = (num) => {
         return new Intl.NumberFormat('en-US').format(num)
+    }
+
+    const formatPercentage = (num) => {
+        return `${num.toFixed(1)}%`
+    }
+
+    const formatRatio = (ratio) => {
+        return `1:${Math.round(1 / ratio)}`
     }
 
     const getGrowthColor = (growth) => {
@@ -342,6 +372,42 @@ const ReportsManagement = () => {
                             {getGrowthIcon(overview.returnsGrowth)}
                             <span style={{ color: getGrowthColor(overview.returnsGrowth) }}>
                                 {overview.returnsGrowth > 0 ? '+' : ''}{overview.returnsGrowth}%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="stat-card">
+                    <div className="stat-icon repeat-purchase">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </div>
+                    <div className="stat-content">
+                        <div className="stat-value">{formatPercentage(overview.repeatPurchaseRatio)}</div>
+                        <div className="stat-label">Repeat Purchase Ratio</div>
+                        <div className="stat-growth">
+                            {getGrowthIcon(overview.repeatPurchaseGrowth)}
+                            <span style={{ color: getGrowthColor(overview.repeatPurchaseGrowth) }}>
+                                {overview.repeatPurchaseGrowth > 0 ? '+' : ''}{overview.repeatPurchaseGrowth}%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="stat-card">
+                    <div className="stat-icon provider-ratio">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <div className="stat-content">
+                        <div className="stat-value">{formatRatio(overview.providerToCustomerRatio)}</div>
+                        <div className="stat-label">Provider to Customer Ratio</div>
+                        <div className="stat-growth">
+                            {getGrowthIcon(overview.providerRatioGrowth)}
+                            <span style={{ color: getGrowthColor(overview.providerRatioGrowth) }}>
+                                {overview.providerRatioGrowth > 0 ? '+' : ''}{overview.providerRatioGrowth}%
                             </span>
                         </div>
                     </div>
@@ -597,6 +663,68 @@ const ReportsManagement = () => {
                             </div>
                         </div>
                     )}
+                </div>
+            </div>
+
+            {/* Repeat Purchase Analytics Section */}
+            <div className="repeat-purchase-section">
+                <div className="section-header">
+                    <h2>Repeat Purchase Analytics</h2>
+                    <p>Customer loyalty and repeat purchase behavior analysis</p>
+                </div>
+
+                <div className="repeat-purchase-charts">
+                    <div className="chart-card large">
+                        <div className="chart-header">
+                            <h3>Repeat Purchase Trend</h3>
+                            <button
+                                className="export-chart-btn"
+                                onClick={() => exportReport('repeat-purchase-trend')}
+                            >
+                                Export
+                            </button>
+                        </div>
+                        <div className="chart-container">
+                            <ResponsiveContainer width="100%" height={300}>
+                                <LineChart data={reportsData.repeatPurchaseData}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                                    <XAxis dataKey="month" stroke="#6B7280" />
+                                    <YAxis yAxisId="left" stroke="#6B7280" />
+                                    <YAxis yAxisId="right" orientation="right" stroke="#6B7280" />
+                                    <Tooltip
+                                        contentStyle={{
+                                            backgroundColor: '#FFFFFF',
+                                            border: '1px solid #E5E7EB',
+                                            borderRadius: '8px'
+                                        }}
+                                    />
+                                    <Legend />
+                                    <Bar
+                                        yAxisId="left"
+                                        dataKey="newCustomers"
+                                        fill="#3B82F6"
+                                        name="New Customers"
+                                        radius={[2, 2, 0, 0]}
+                                    />
+                                    <Bar
+                                        yAxisId="left"
+                                        dataKey="returningCustomers"
+                                        fill="#10B981"
+                                        name="Returning Customers"
+                                        radius={[2, 2, 0, 0]}
+                                    />
+                                    <Line
+                                        yAxisId="right"
+                                        type="monotone"
+                                        dataKey="repeatRate"
+                                        stroke="#F59E0B"
+                                        strokeWidth={3}
+                                        name="Repeat Rate (%)"
+                                    />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
                 </div>
             </div>
 
