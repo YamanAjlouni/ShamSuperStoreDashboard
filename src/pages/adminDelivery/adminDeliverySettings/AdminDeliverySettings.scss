@@ -1,0 +1,489 @@
+@use '../../../assets/styles/vars.scss' as *;
+
+.admin-settings {
+    padding: 1.5rem;
+    background-color: $gray-50;
+    min-height: calc(100vh - 80px);
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
+
+    .settings-header {
+        margin-bottom: 2rem;
+
+        h1 {
+            color: $dark-blue-color;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: $text-light;
+            font-size: 1rem;
+        }
+    }
+
+    .settings-container {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 2rem;
+
+        @media (max-width: 1024px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .settings-sidebar {
+        background: $white;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-sm;
+        height: fit-content;
+        position: sticky;
+        top: 2rem;
+
+        @media (max-width: 1024px) {
+            position: static;
+            order: 2;
+        }
+
+        .settings-menu {
+            padding: 1rem;
+
+            .menu-item {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                width: 100%;
+                padding: 0.875rem 1rem;
+                border: none;
+                background: none;
+                color: $text-dark;
+                font-size: 0.875rem;
+                font-weight: 500;
+                cursor: pointer;
+                border-radius: $radius-md;
+                margin-bottom: 0.5rem;
+                transition: $transition-all;
+                text-align: left;
+
+                &:hover {
+                    background-color: $gray-100;
+                    color: $primary-color;
+                }
+
+                &.active {
+                    background-color: $primary-color;
+                    color: $white;
+                }
+
+                .menu-icon {
+                    font-size: 1.25rem;
+                }
+
+                .menu-label {
+                    flex: 1;
+                }
+            }
+        }
+    }
+
+    .settings-content {
+        background: $white;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-sm;
+        overflow: hidden;
+
+        @media (max-width: 1024px) {
+            order: 1;
+        }
+    }
+
+    .settings-section {
+        padding: 2rem;
+
+        @media (max-width: 768px) {
+            padding: 1.5rem;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid $gray-200;
+
+            h2 {
+                color: $dark-blue-color;
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                color: $text-light;
+                font-size: 0.875rem;
+            }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+
+            @media (max-width: 768px) {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                &.full-width {
+                    grid-column: 1 / -1;
+                }
+
+                label {
+                    font-weight: 600;
+                    color: $text-dark;
+                    font-size: 0.875rem;
+                }
+
+                input,
+                select,
+                textarea {
+                    padding: 0.75rem;
+                    border: 2px solid $gray-200;
+                    border-radius: $radius-md;
+                    font-size: 0.875rem;
+                    transition: $transition-all;
+
+                    &:focus {
+                        outline: none;
+                        border-color: $primary-color;
+                        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+                    }
+
+                    &::placeholder {
+                        color: $text-light;
+                    }
+                }
+
+                textarea {
+                    resize: vertical;
+                    min-height: 100px;
+                }
+            }
+        }
+
+        .password-section {
+            background: $gray-50;
+            padding: 1.5rem;
+            border-radius: $radius-md;
+            margin-bottom: 2rem;
+
+            h3 {
+                color: $dark-blue-color;
+                font-size: 1.125rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+
+            .change-password-btn {
+                background-color: $orange-color;
+                color: $white;
+                border: none;
+                padding: 0.75rem 1.5rem;
+                border-radius: $radius-md;
+                font-weight: 500;
+                cursor: pointer;
+                transition: $transition-all;
+                margin-bottom: 1.5rem;
+
+                &:hover {
+                    background-color: darken($orange-color, 10%);
+                }
+            }
+
+            .password-form {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+
+                @media (max-width: 768px) {
+                    grid-template-columns: 1fr;
+                }
+
+                .form-group:last-child {
+                    grid-column: 1 / -1;
+                }
+
+                .update-password-btn {
+                    background-color: $primary-color;
+                    color: $white;
+                    border: none;
+                    padding: 0.75rem 1.5rem;
+                    border-radius: $radius-md;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: $transition-all;
+                    margin-top: 0.5rem;
+
+                    &:hover {
+                        background-color: $primary-blue-hover;
+                    }
+                }
+            }
+        }
+
+        .notifications-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+
+            @media (max-width: 768px) {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .notification-category {
+                background: $gray-50;
+                padding: 1.5rem;
+                border-radius: $radius-md;
+
+                h3 {
+                    color: $dark-blue-color;
+                    font-size: 1.125rem;
+                    font-weight: 600;
+                    margin-bottom: 1rem;
+                }
+
+                .toggle-group {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+
+                    .toggle-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+
+                        span {
+                            color: $text-dark;
+                            font-weight: 500;
+                        }
+                    }
+                }
+            }
+        }
+
+        .security-grid {
+            margin-bottom: 2rem;
+
+            .security-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: $gray-50;
+                padding: 1.5rem;
+                border-radius: $radius-md;
+                margin-bottom: 1.5rem;
+
+                @media (max-width: 768px) {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 1rem;
+                }
+
+                .security-info {
+                    h3 {
+                        color: $dark-blue-color;
+                        font-size: 1.125rem;
+                        font-weight: 600;
+                        margin-bottom: 0.25rem;
+                    }
+
+                    p {
+                        color: $text-light;
+                        font-size: 0.875rem;
+                    }
+                }
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+
+                label {
+                    font-weight: 600;
+                    color: $text-dark;
+                    font-size: 0.875rem;
+                    margin-bottom: 0.5rem;
+                    display: block;
+                }
+
+                select {
+                    width: 100%;
+                    padding: 0.75rem;
+                    border: 2px solid $gray-200;
+                    border-radius: $radius-md;
+                    font-size: 0.875rem;
+                    transition: $transition-all;
+
+                    &:focus {
+                        outline: none;
+                        border-color: $primary-color;
+                        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+                    }
+                }
+            }
+        }
+
+        .section-actions {
+            padding-top: 1.5rem;
+            border-top: 2px solid $gray-200;
+
+            .save-btn {
+                background-color: $primary-color;
+                color: $white;
+                border: none;
+                padding: 0.875rem 2rem;
+                border-radius: $radius-md;
+                font-weight: 600;
+                cursor: pointer;
+                transition: $transition-all;
+                font-size: 0.875rem;
+
+                &:hover {
+                    background-color: $primary-blue-hover;
+                    transform: translateY(-1px);
+                    box-shadow: $shadow-md;
+                }
+            }
+        }
+    }
+
+    // Toggle Switch Component
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+
+        input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: $gray-300;
+            transition: $transition-all;
+            border-radius: 24px;
+
+            &:before {
+                position: absolute;
+                content: "";
+                height: 18px;
+                width: 18px;
+                left: 3px;
+                bottom: 3px;
+                background-color: $white;
+                transition: $transition-all;
+                border-radius: 50%;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        input:checked+.slider {
+            background-color: $primary-color;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+    }
+
+    // Mobile Responsive Adjustments
+    @media (max-width: 1024px) {
+        .settings-container {
+            .settings-sidebar {
+                .settings-menu {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                    gap: 0.5rem;
+
+                    .menu-item {
+                        margin-bottom: 0;
+                        text-align: center;
+                        justify-content: center;
+
+                        .menu-label {
+                            display: none;
+                        }
+
+                        .menu-icon {
+                            font-size: 1.5rem;
+                        }
+
+                        @media (min-width: 640px) {
+                            .menu-label {
+                                display: block;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @media (max-width: 480px) {
+        padding: 0.5rem;
+
+        .settings-container {
+            gap: 1rem;
+        }
+
+        .settings-section {
+            padding: 1rem;
+
+            .section-header {
+                margin-bottom: 1.5rem;
+
+                h2 {
+                    font-size: 1.25rem;
+                }
+            }
+
+            .form-grid {
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .notifications-grid {
+                gap: 1rem;
+            }
+
+            .section-actions {
+                padding-top: 1rem;
+
+                .save-btn {
+                    width: 100%;
+                    padding: 1rem;
+                }
+            }
+        }
+    }
+}

@@ -10,6 +10,7 @@ import AdminDeliveryDrivers from './adminDeliveryDrivers/AdminDeliveryDrivers'
 import AdminRevenueReports from './adminRevenueReports/AdminRevenueReports'
 import AdminOrdersHistory from './adminOrdersHistory/AdminOrdersHistory'
 import PendingDeliveryDrivers from './pendingDeliveryDrivers/PendingDeliveryDrivers'
+import AdminDeliverySettings from './adminDeliverySettings/AdminDeliverySettings'
 
 const PlaceholderPage = ({ pageName }) => (
     <div className="page-placeholder">
@@ -123,7 +124,7 @@ const AdminDelivery = () => {
                         <Route path="/reports" element={<AdminRevenueReports />} />
 
                         {/* Admin Settings */}
-                        <Route path="/settings" element={<PlaceholderPage pageName="Admin Settings" />} />
+                        <Route path="/settings" element={<AdminDeliverySettings />} />
                         <Route path="/profile" element={<PlaceholderPage pageName="Admin Profile" />} />
 
                         {/* Notifications */}
