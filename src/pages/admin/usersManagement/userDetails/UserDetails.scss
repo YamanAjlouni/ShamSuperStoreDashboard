@@ -385,7 +385,7 @@
 
                 .overview-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
                     gap: 2rem;
                 }
 
@@ -425,6 +425,7 @@
                                 font-weight: 500;
                                 color: $gray-500;
                                 min-width: 120px;
+                                flex-shrink: 0;
                             }
 
                             .value {
@@ -433,6 +434,7 @@
                                 font-weight: 500;
                                 text-align: right;
                                 flex: 1;
+                                margin-left: 1rem;
 
                                 .category-tag {
                                     display: inline-block;
@@ -606,7 +608,7 @@
 
                 .preferences-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
                     gap: 2rem;
 
                     .payment-methods {
@@ -739,7 +741,19 @@
 
             .overview-grid,
             .preferences-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+
+            .info-card {
+                .info-list .info-item {
+                    .label {
+                        min-width: 100px;
+                    }
+
+                    .value {
+                        margin-left: 0.75rem;
+                    }
+                }
             }
         }
     }
@@ -801,13 +815,20 @@
             .tabs-content .tab-content {
                 padding: 1rem;
 
+                .overview-grid,
+                .preferences-grid {
+                    grid-template-columns: 1fr;
+                    gap: 1.5rem;
+                }
+
                 .info-card {
                     padding: 1rem;
 
                     .info-list .info-item {
                         flex-direction: column;
                         align-items: flex-start;
-                        gap: 0.25rem;
+                        gap: 0.5rem;
+                        padding: 0.5rem 0;
 
                         .label {
                             min-width: auto;
@@ -815,6 +836,20 @@
 
                         .value {
                             text-align: left;
+                            margin-left: 0;
+                        }
+                    }
+                }
+
+                .orders-section {
+                    .orders-header {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 1rem;
+
+                        .orders-summary {
+                            flex-wrap: wrap;
+                            gap: 0.75rem;
                         }
                     }
                 }
@@ -828,6 +863,28 @@
                             padding: 0.5rem;
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .user-details {
+        .tabs-content .tab-content {
+            .info-card {
+                .info-list .info-item {
+                    padding: 0.75rem 0;
+
+                    .value {
+                        word-break: break-word;
+                    }
+                }
+            }
+
+            .orders-table {
+                table {
+                    min-width: 600px; // Ensures horizontal scroll on very small screens
                 }
             }
         }

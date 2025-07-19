@@ -3,7 +3,7 @@
 .category-details {
     max-width: 100%;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 0.5rem;
 
     .loading-state {
         display: flex;
@@ -26,6 +26,14 @@
         p {
             font-size: 1.125rem;
             margin: 0;
+
+            @media (max-width: 768px) {
+                font-size: 1rem;
+            }
+
+            @media (max-width: 480px) {
+                font-size: 0.9375rem;
+            }
         }
     }
 
@@ -36,15 +44,36 @@
         border-radius: $radius-lg;
         box-shadow: $shadow-md;
 
+        @media (max-width: 768px) {
+            padding: 3rem 1.5rem;
+        }
+
+        @media (max-width: 480px) {
+            padding: 2rem 1rem;
+        }
+
         h2 {
             font-size: 1.5rem;
             color: #dc2626;
             margin-bottom: 1rem;
+
+            @media (max-width: 768px) {
+                font-size: 1.375rem;
+            }
+
+            @media (max-width: 480px) {
+                font-size: 1.25rem;
+            }
         }
 
         p {
             color: $gray-500;
             margin-bottom: 2rem;
+
+            @media (max-width: 768px) {
+                font-size: 0.9375rem;
+                margin-bottom: 1.5rem;
+            }
         }
 
         button {
@@ -56,6 +85,11 @@
             font-weight: 500;
             cursor: pointer;
             transition: $transition-all;
+
+            @media (max-width: 768px) {
+                padding: 0.875rem 1.75rem;
+                font-size: 0.9375rem;
+            }
 
             &:hover {
                 background: darken($orange-color, 10%);
@@ -71,6 +105,16 @@
         padding: 2rem;
         margin-bottom: 2rem;
         position: relative;
+
+        @media (max-width: 768px) {
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 480px) {
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
 
         &::before {
             content: '';
@@ -97,6 +141,17 @@
             padding: 0.5rem;
             border-radius: $radius-md;
 
+            @media (max-width: 768px) {
+                padding: 0.75rem;
+                margin-bottom: 1.25rem;
+                font-size: 0.9375rem;
+            }
+
+            @media (max-width: 480px) {
+                padding: 0.625rem;
+                margin-bottom: 1rem;
+            }
+
             &:hover {
                 color: $orange-color;
                 background: rgba(206, 128, 45, 0.05);
@@ -105,6 +160,11 @@
             svg {
                 width: 16px;
                 height: 16px;
+
+                @media (max-width: 768px) {
+                    width: 18px;
+                    height: 18px;
+                }
             }
         }
 
@@ -113,6 +173,20 @@
             justify-content: space-between;
             align-items: flex-start;
             gap: 2rem;
+
+            @media (max-width: 1024px) {
+                flex-direction: column;
+                gap: 1.5rem;
+                align-items: stretch;
+            }
+
+            @media (max-width: 768px) {
+                gap: 1.25rem;
+            }
+
+            @media (max-width: 480px) {
+                gap: 1rem;
+            }
 
             .category-info {
                 flex: 1;
@@ -128,6 +202,18 @@
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                     word-wrap: break-word;
+
+                    @media (max-width: 768px) {
+                        font-size: 1.75rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        font-size: 1.5rem;
+                    }
+
+                    @media (max-width: 380px) {
+                        font-size: 1.375rem;
+                    }
                 }
 
                 p {
@@ -137,6 +223,16 @@
                     font-weight: 500;
                     line-height: 1.5;
                     word-wrap: break-word;
+
+                    @media (max-width: 768px) {
+                        font-size: 1rem;
+                        margin-bottom: 0.875rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        font-size: 0.9375rem;
+                        margin-bottom: 0.75rem;
+                    }
                 }
 
                 .category-meta {
@@ -144,6 +240,14 @@
                     gap: 1rem;
                     align-items: center;
                     flex-wrap: wrap;
+
+                    @media (max-width: 768px) {
+                        gap: 0.75rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        gap: 0.5rem;
+                    }
 
                     .category-id {
                         background: rgba(206, 128, 45, 0.1);
@@ -153,6 +257,15 @@
                         font-size: 0.875rem;
                         font-weight: 600;
                         font-family: 'Courier New', monospace;
+
+                        @media (max-width: 768px) {
+                            padding: 0.375rem 0.875rem;
+                        }
+
+                        @media (max-width: 480px) {
+                            font-size: 0.8125rem;
+                            padding: 0.3125rem 0.75rem;
+                        }
                     }
                 }
             }
@@ -161,6 +274,21 @@
                 display: flex;
                 gap: 0.75rem;
                 flex-wrap: wrap;
+
+                @media (max-width: 1024px) {
+                    align-self: flex-start;
+                    justify-content: flex-start;
+                }
+
+                @media (max-width: 768px) {
+                    gap: 0.625rem;
+                    width: 100%;
+                }
+
+                @media (max-width: 480px) {
+                    gap: 0.5rem;
+                    flex-direction: column;
+                }
 
                 .action-btn {
                     display: flex;
@@ -175,9 +303,26 @@
                     transition: $transition-all;
                     white-space: nowrap;
 
+                    @media (max-width: 768px) {
+                        padding: 0.875rem 1.125rem;
+                        font-size: 0.9375rem;
+                        min-height: 44px; // Touch target
+                    }
+
+                    @media (max-width: 480px) {
+                        flex: 1;
+                        justify-content: center;
+                        padding: 1rem;
+                    }
+
                     svg {
                         width: 16px;
                         height: 16px;
+
+                        @media (max-width: 768px) {
+                            width: 18px;
+                            height: 18px;
+                        }
                     }
 
                     &--add {
@@ -230,6 +375,23 @@
         gap: 1.5rem;
         margin-bottom: 2rem;
 
+        @media (max-width: 1024px) {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 480px) {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
         .stat-card {
             background: $white;
             border-radius: $radius-lg;
@@ -240,6 +402,18 @@
             align-items: center;
             gap: 1rem;
             transition: $transition-all;
+
+            @media (max-width: 768px) {
+                padding: 1.25rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 0.75rem;
+            }
+
+            @media (max-width: 480px) {
+                padding: 1rem;
+                gap: 0.5rem;
+            }
 
             &:hover {
                 transform: translateY(-2px);
@@ -257,15 +431,39 @@
                 color: $white;
                 flex-shrink: 0;
 
+                @media (max-width: 768px) {
+                    width: 44px;
+                    height: 44px;
+                }
+
+                @media (max-width: 480px) {
+                    width: 40px;
+                    height: 40px;
+                }
+
                 svg {
                     width: 24px;
                     height: 24px;
+
+                    @media (max-width: 768px) {
+                        width: 22px;
+                        height: 22px;
+                    }
+
+                    @media (max-width: 480px) {
+                        width: 20px;
+                        height: 20px;
+                    }
                 }
             }
 
             .stat-content {
                 flex: 1;
                 min-width: 0;
+
+                @media (max-width: 768px) {
+                    width: 100%;
+                }
 
                 .stat-value {
                     display: block;
@@ -274,12 +472,28 @@
                     color: $gray-800;
                     margin-bottom: 0.25rem;
                     word-wrap: break-word;
+
+                    @media (max-width: 768px) {
+                        font-size: 1.375rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        font-size: 1.25rem;
+                    }
                 }
 
                 .stat-label {
                     font-size: 0.875rem;
                     color: $gray-500;
                     font-weight: 500;
+
+                    @media (max-width: 768px) {
+                        font-size: 0.8125rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        font-size: 0.75rem;
+                    }
                 }
             }
         }
@@ -295,6 +509,11 @@
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+
+        @media (max-width: 768px) {
+            padding: 0.375rem 0.875rem;
+            font-size: 0.8125rem;
+        }
 
         &--success {
             background: rgba(66, 103, 178, 0.1);
@@ -324,6 +543,10 @@
             background: $gray-50;
             border-bottom: 1px solid $gray-200;
 
+            @media (max-width: 768px) {
+                flex-direction: column;
+            }
+
             .tab-btn {
                 flex: 1;
                 padding: 1rem 1.5rem;
@@ -336,6 +559,17 @@
                 transition: $transition-all;
                 position: relative;
                 min-height: 44px; // Touch target
+
+                @media (max-width: 768px) {
+                    padding: 1rem;
+                    border-right: none;
+                    border-bottom: 1px solid $gray-200;
+                    font-size: 0.9375rem;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                }
 
                 &:hover {
                     color: $orange-color;
@@ -354,6 +588,15 @@
                         right: 0;
                         height: 2px;
                         background: $orange-color;
+
+                        @media (max-width: 768px) {
+                            left: 0;
+                            right: auto;
+                            width: 4px;
+                            height: 100%;
+                            top: 0;
+                            bottom: 0;
+                        }
                     }
                 }
             }
@@ -363,10 +606,27 @@
             .tab-content {
                 padding: 2rem;
 
+                @media (max-width: 768px) {
+                    padding: 1.5rem;
+                }
+
+                @media (max-width: 480px) {
+                    padding: 1rem;
+                }
+
                 .overview-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
                     gap: 2rem;
+
+                    @media (max-width: 768px) {
+                        grid-template-columns: 1fr;
+                        gap: 1.5rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        gap: 1rem;
+                    }
                 }
 
                 .info-card {
@@ -375,6 +635,14 @@
                     padding: 1.5rem;
                     border: 1px solid $gray-200;
 
+                    @media (max-width: 768px) {
+                        padding: 1.25rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        padding: 1rem;
+                    }
+
                     h3 {
                         font-size: 1.125rem;
                         font-weight: 600;
@@ -382,10 +650,28 @@
                         margin: 0 0 1rem 0;
                         padding-bottom: 0.5rem;
                         border-bottom: 2px solid $orange-color;
+
+                        @media (max-width: 768px) {
+                            font-size: 1rem;
+                            margin-bottom: 0.875rem;
+                        }
+
+                        @media (max-width: 480px) {
+                            font-size: 0.9375rem;
+                            margin-bottom: 0.75rem;
+                        }
                     }
 
                     .category-image-section {
                         margin-bottom: 1.5rem;
+
+                        @media (max-width: 768px) {
+                            margin-bottom: 1.25rem;
+                        }
+
+                        @media (max-width: 480px) {
+                            margin-bottom: 1rem;
+                        }
 
                         img {
                             width: 100%;
@@ -393,6 +679,14 @@
                             object-fit: cover;
                             border-radius: $radius-md;
                             border: 1px solid $gray-200;
+
+                            @media (max-width: 768px) {
+                                height: 175px;
+                            }
+
+                            @media (max-width: 480px) {
+                                height: 150px;
+                            }
                         }
                     }
 
@@ -401,12 +695,32 @@
                         flex-direction: column;
                         gap: 0.75rem;
 
+                        @media (max-width: 768px) {
+                            gap: 0.625rem;
+                        }
+
+                        @media (max-width: 480px) {
+                            gap: 0.5rem;
+                        }
+
                         .info-item {
                             display: flex;
                             justify-content: space-between;
                             align-items: flex-start;
                             padding: 0.75rem 0;
                             border-bottom: 1px solid $gray-200;
+
+                            @media (max-width: 768px) {
+                                flex-direction: column;
+                                align-items: flex-start;
+                                gap: 0.375rem;
+                                padding: 0.625rem 0;
+                            }
+
+                            @media (max-width: 480px) {
+                                padding: 0.5rem 0;
+                                gap: 0.25rem;
+                            }
 
                             &:last-child {
                                 border-bottom: none;
@@ -417,6 +731,15 @@
                                 font-weight: 500;
                                 color: $gray-500;
                                 min-width: 120px;
+
+                                @media (max-width: 768px) {
+                                    min-width: auto;
+                                    font-size: 0.8125rem;
+                                }
+
+                                @media (max-width: 480px) {
+                                    font-size: 0.75rem;
+                                }
                             }
 
                             .value {
@@ -427,54 +750,31 @@
                                 flex: 1;
                                 line-height: 1.4;
                                 word-wrap: break-word;
-                            }
-                        }
-                    }
 
-                    .analytics-list {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 0.75rem;
-                        margin-bottom: 1.5rem;
+                                @media (max-width: 768px) {
+                                    text-align: left;
+                                    font-size: 0.8125rem;
+                                }
 
-                        .analytics-item {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            padding: 0.75rem;
-                            background: $white;
-                            border-radius: $radius-md;
-                            border: 1px solid $gray-200;
-
-                            .label {
-                                font-size: 0.875rem;
-                                color: $gray-500;
-                                font-weight: 500;
-                            }
-
-                            .value {
-                                font-size: 1rem;
-                                font-weight: 600;
-                                color: $gray-800;
-
-                                &.growth-positive {
-                                    color: $primary-color;
+                                @media (max-width: 480px) {
+                                    font-size: 0.75rem;
                                 }
                             }
                         }
-                    }
-
-                    h4 {
-                        font-size: 1rem;
-                        font-weight: 600;
-                        color: $gray-800;
-                        margin: 0 0 1rem 0;
                     }
 
                     .top-products {
                         display: flex;
                         flex-direction: column;
                         gap: 0.75rem;
+
+                        @media (max-width: 768px) {
+                            gap: 0.625rem;
+                        }
+
+                        @media (max-width: 480px) {
+                            gap: 0.5rem;
+                        }
 
                         .product-item {
                             display: flex;
@@ -484,6 +784,18 @@
                             background: $white;
                             border-radius: $radius-md;
                             border: 1px solid $gray-200;
+
+                            @media (max-width: 768px) {
+                                padding: 0.875rem;
+                                gap: 0.875rem;
+                            }
+
+                            @media (max-width: 480px) {
+                                padding: 0.75rem;
+                                gap: 0.75rem;
+                                flex-direction: column;
+                                text-align: center;
+                            }
 
                             .product-rank {
                                 width: 32px;
@@ -497,22 +809,50 @@
                                 font-weight: 600;
                                 font-size: 0.875rem;
                                 flex-shrink: 0;
+
+                                @media (max-width: 768px) {
+                                    width: 30px;
+                                    height: 30px;
+                                    font-size: 0.8125rem;
+                                }
+
+                                @media (max-width: 480px) {
+                                    width: 28px;
+                                    height: 28px;
+                                    font-size: 0.75rem;
+                                }
                             }
 
                             .product-info {
                                 flex: 1;
                                 min-width: 0;
 
+                                @media (max-width: 480px) {
+                                    width: 100%;
+                                }
+
                                 .product-name {
                                     font-weight: 600;
                                     color: $gray-800;
                                     margin-bottom: 0.25rem;
                                     word-wrap: break-word;
+
+                                    @media (max-width: 768px) {
+                                        font-size: 0.9375rem;
+                                    }
+
+                                    @media (max-width: 480px) {
+                                        font-size: 0.875rem;
+                                    }
                                 }
 
                                 .product-stats {
                                     font-size: 0.75rem;
                                     color: $gray-500;
+
+                                    @media (max-width: 480px) {
+                                        font-size: 0.6875rem;
+                                    }
                                 }
                             }
                         }
@@ -528,17 +868,46 @@
                         gap: 1rem;
                         flex-wrap: wrap;
 
+                        @media (max-width: 768px) {
+                            flex-direction: column;
+                            align-items: stretch;
+                            gap: 1rem;
+                            margin-bottom: 1.25rem;
+                        }
+
+                        @media (max-width: 480px) {
+                            margin-bottom: 1rem;
+                        }
+
                         h3 {
                             font-size: 1.25rem;
                             font-weight: 600;
                             color: $gray-800;
                             margin: 0;
+
+                            @media (max-width: 768px) {
+                                font-size: 1.125rem;
+                            }
+
+                            @media (max-width: 480px) {
+                                font-size: 1rem;
+                            }
                         }
 
                         .header-actions {
                             display: flex;
                             gap: 0.75rem;
                             flex-wrap: wrap;
+
+                            @media (max-width: 768px) {
+                                width: 100%;
+                                gap: 0.625rem;
+                            }
+
+                            @media (max-width: 480px) {
+                                flex-direction: column;
+                                gap: 0.5rem;
+                            }
 
                             .add-btn,
                             .add-subcategory-btn {
@@ -556,9 +925,26 @@
                                 transition: $transition-all;
                                 white-space: nowrap;
 
+                                @media (max-width: 768px) {
+                                    padding: 0.875rem 1.125rem;
+                                    font-size: 0.9375rem;
+                                    min-height: 44px;
+                                }
+
+                                @media (max-width: 480px) {
+                                    flex: 1;
+                                    justify-content: center;
+                                    padding: 1rem;
+                                }
+
                                 svg {
                                     width: 16px;
                                     height: 16px;
+
+                                    @media (max-width: 768px) {
+                                        width: 18px;
+                                        height: 18px;
+                                    }
                                 }
 
                                 &:hover {
@@ -582,12 +968,28 @@
                         flex-direction: column;
                         gap: 1.5rem;
 
+                        @media (max-width: 768px) {
+                            gap: 1.25rem;
+                        }
+
+                        @media (max-width: 480px) {
+                            gap: 1rem;
+                        }
+
                         .subcategory-card {
                             background: $gray-50;
                             border: 1px solid $gray-200;
                             border-radius: $radius-lg;
                             padding: 1.5rem;
                             transition: $transition-all;
+
+                            @media (max-width: 768px) {
+                                padding: 1.25rem;
+                            }
+
+                            @media (max-width: 480px) {
+                                padding: 1rem;
+                            }
 
                             &:hover {
                                 transform: translateY(-2px);
@@ -601,6 +1003,18 @@
                                 margin-bottom: 1rem;
                                 gap: 1rem;
 
+                                @media (max-width: 768px) {
+                                    flex-direction: column;
+                                    align-items: stretch;
+                                    gap: 0.875rem;
+                                    margin-bottom: 0.875rem;
+                                }
+
+                                @media (max-width: 480px) {
+                                    gap: 0.75rem;
+                                    margin-bottom: 0.75rem;
+                                }
+
                                 .subcategory-info {
                                     flex: 1;
                                     min-width: 0;
@@ -611,6 +1025,16 @@
                                         color: $gray-800;
                                         margin: 0 0 0.5rem 0;
                                         word-wrap: break-word;
+
+                                        @media (max-width: 768px) {
+                                            font-size: 1rem;
+                                            margin-bottom: 0.375rem;
+                                        }
+
+                                        @media (max-width: 480px) {
+                                            font-size: 0.9375rem;
+                                            margin-bottom: 0.25rem;
+                                        }
                                     }
 
                                     p {
@@ -619,6 +1043,16 @@
                                         line-height: 1.4;
                                         margin: 0 0 0.5rem 0;
                                         word-wrap: break-word;
+
+                                        @media (max-width: 768px) {
+                                            font-size: 0.8125rem;
+                                            margin-bottom: 0.375rem;
+                                        }
+
+                                        @media (max-width: 480px) {
+                                            font-size: 0.75rem;
+                                            margin-bottom: 0.25rem;
+                                        }
                                     }
 
                                     .subcategory-id {
@@ -628,6 +1062,15 @@
                                         background: $gray-200;
                                         padding: 0.25rem 0.5rem;
                                         border-radius: $radius-sm;
+
+                                        @media (max-width: 768px) {
+                                            padding: 0.375rem 0.625rem;
+                                        }
+
+                                        @media (max-width: 480px) {
+                                            font-size: 0.6875rem;
+                                            padding: 0.3125rem 0.5rem;
+                                        }
                                     }
                                 }
 
@@ -636,6 +1079,11 @@
                                     align-items: center;
                                     gap: 0.5rem;
                                     flex-shrink: 0;
+
+                                    @media (max-width: 768px) {
+                                        align-self: flex-end;
+                                        justify-content: flex-end;
+                                    }
 
                                     .expand-btn {
                                         width: 32px;
@@ -649,11 +1097,31 @@
                                         cursor: pointer;
                                         transition: $transition-all;
 
+                                        @media (max-width: 768px) {
+                                            width: 40px;
+                                            height: 40px;
+                                        }
+
+                                        @media (max-width: 480px) {
+                                            width: 44px;
+                                            height: 44px;
+                                        }
+
                                         svg {
                                             width: 16px;
                                             height: 16px;
                                             color: $gray-500;
                                             transition: transform 0.2s ease;
+
+                                            @media (max-width: 768px) {
+                                                width: 18px;
+                                                height: 18px;
+                                            }
+
+                                            @media (max-width: 480px) {
+                                                width: 20px;
+                                                height: 20px;
+                                            }
 
                                             &.rotated {
                                                 transform: rotate(180deg);
@@ -680,9 +1148,35 @@
                                 border-top: 1px solid $gray-200;
                                 border-bottom: 1px solid $gray-200;
 
+                                @media (max-width: 768px) {
+                                    flex-direction: column;
+                                    gap: 0.75rem;
+                                    padding: 0.875rem 0;
+                                    margin-bottom: 0.875rem;
+                                }
+
+                                @media (max-width: 480px) {
+                                    display: grid;
+                                    grid-template-columns: 1fr 1fr;
+                                    gap: 0.75rem;
+                                    padding: 0.75rem;
+                                    border: 1px solid $gray-200;
+                                    border-radius: $radius-sm;
+                                    background: $white;
+                                    margin: 0.75rem 0;
+
+                                    .stat:nth-child(3) {
+                                        grid-column: 1 / -1;
+                                    }
+                                }
+
                                 .stat {
                                     text-align: center;
                                     flex: 1;
+
+                                    @media (max-width: 480px) {
+                                        padding: 0.5rem;
+                                    }
 
                                     .stat-value {
                                         display: block;
@@ -691,6 +1185,14 @@
                                         color: $primary-color;
                                         margin-bottom: 0.25rem;
                                         word-wrap: break-word;
+
+                                        @media (max-width: 768px) {
+                                            font-size: 1.125rem;
+                                        }
+
+                                        @media (max-width: 480px) {
+                                            font-size: 1rem;
+                                        }
                                     }
 
                                     .stat-label {
@@ -699,6 +1201,14 @@
                                         font-weight: 500;
                                         text-transform: uppercase;
                                         letter-spacing: 0.5px;
+
+                                        @media (max-width: 768px) {
+                                            font-size: 0.6875rem;
+                                        }
+
+                                        @media (max-width: 480px) {
+                                            font-size: 0.625rem;
+                                        }
                                     }
                                 }
                             }
@@ -707,6 +1217,14 @@
                                 display: flex;
                                 gap: 0.5rem;
                                 justify-content: center;
+
+                                @media (max-width: 768px) {
+                                    gap: 1rem;
+                                }
+
+                                @media (max-width: 480px) {
+                                    gap: 1.5rem;
+                                }
 
                                 .action-btn {
                                     width: 36px;
@@ -719,9 +1237,29 @@
                                     cursor: pointer;
                                     transition: $transition-all;
 
+                                    @media (max-width: 768px) {
+                                        width: 40px;
+                                        height: 40px;
+                                    }
+
+                                    @media (max-width: 480px) {
+                                        width: 44px;
+                                        height: 44px;
+                                    }
+
                                     svg {
                                         width: 18px;
                                         height: 18px;
+
+                                        @media (max-width: 768px) {
+                                            width: 20px;
+                                            height: 20px;
+                                        }
+
+                                        @media (max-width: 480px) {
+                                            width: 22px;
+                                            height: 22px;
+                                        }
                                     }
 
                                     &--activate {
@@ -762,6 +1300,16 @@
                                 padding-top: 1.5rem;
                                 border-top: 2px solid $gray-200;
 
+                                @media (max-width: 768px) {
+                                    margin-top: 1.25rem;
+                                    padding-top: 1.25rem;
+                                }
+
+                                @media (max-width: 480px) {
+                                    margin-top: 1rem;
+                                    padding-top: 1rem;
+                                }
+
                                 .sub-subcategories-header {
                                     display: flex;
                                     justify-content: space-between;
@@ -769,11 +1317,30 @@
                                     margin-bottom: 1rem;
                                     gap: 1rem;
 
+                                    @media (max-width: 768px) {
+                                        flex-direction: column;
+                                        gap: 0.75rem;
+                                        margin-bottom: 0.875rem;
+                                    }
+
+                                    @media (max-width: 480px) {
+                                        gap: 0.5rem;
+                                        margin-bottom: 0.75rem;
+                                    }
+
                                     h5 {
                                         font-size: 1rem;
                                         font-weight: 600;
                                         color: $gray-700;
                                         margin: 0;
+
+                                        @media (max-width: 768px) {
+                                            font-size: 0.9375rem;
+                                        }
+
+                                        @media (max-width: 480px) {
+                                            font-size: 0.875rem;
+                                        }
                                     }
 
                                     .add-sub-subcategory-btn {
@@ -791,9 +1358,26 @@
                                         transition: $transition-all;
                                         white-space: nowrap;
 
+                                        @media (max-width: 768px) {
+                                            padding: 0.75rem 1rem;
+                                            font-size: 0.875rem;
+                                            align-self: stretch;
+                                            justify-content: center;
+                                            min-height: 44px;
+                                        }
+
+                                        @media (max-width: 480px) {
+                                            padding: 0.875rem 1rem;
+                                        }
+
                                         svg {
                                             width: 14px;
                                             height: 14px;
+
+                                            @media (max-width: 768px) {
+                                                width: 16px;
+                                                height: 16px;
+                                            }
                                         }
 
                                         &:hover {
@@ -807,12 +1391,30 @@
                                     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
                                     gap: 1rem;
 
+                                    @media (max-width: 768px) {
+                                        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                                        gap: 0.875rem;
+                                    }
+
+                                    @media (max-width: 480px) {
+                                        grid-template-columns: 1fr;
+                                        gap: 0.75rem;
+                                    }
+
                                     .sub-subcategory-card {
                                         background: $white;
                                         border: 1px solid $gray-200;
                                         border-radius: $radius-md;
                                         padding: 1rem;
                                         transition: $transition-all;
+
+                                        @media (max-width: 768px) {
+                                            padding: 0.875rem;
+                                        }
+
+                                        @media (max-width: 480px) {
+                                            padding: 0.75rem;
+                                        }
 
                                         &:hover {
                                             transform: translateY(-1px);
@@ -826,6 +1428,17 @@
                                             margin-bottom: 0.75rem;
                                             gap: 0.75rem;
 
+                                            @media (max-width: 768px) {
+                                                flex-direction: column;
+                                                gap: 0.625rem;
+                                                margin-bottom: 0.625rem;
+                                            }
+
+                                            @media (max-width: 480px) {
+                                                gap: 0.5rem;
+                                                margin-bottom: 0.5rem;
+                                            }
+
                                             .sub-subcategory-info {
                                                 flex: 1;
                                                 min-width: 0;
@@ -836,6 +1449,14 @@
                                                     color: $gray-800;
                                                     margin: 0 0 0.25rem 0;
                                                     word-wrap: break-word;
+
+                                                    @media (max-width: 768px) {
+                                                        font-size: 0.9375rem;
+                                                    }
+
+                                                    @media (max-width: 480px) {
+                                                        font-size: 0.875rem;
+                                                    }
                                                 }
 
                                                 p {
@@ -844,6 +1465,14 @@
                                                     line-height: 1.4;
                                                     margin: 0 0 0.25rem 0;
                                                     word-wrap: break-word;
+
+                                                    @media (max-width: 768px) {
+                                                        font-size: 0.75rem;
+                                                    }
+
+                                                    @media (max-width: 480px) {
+                                                        font-size: 0.6875rem;
+                                                    }
                                                 }
 
                                                 .sub-subcategory-id {
@@ -853,6 +1482,15 @@
                                                     background: $gray-100;
                                                     padding: 0.125rem 0.375rem;
                                                     border-radius: $radius-sm;
+
+                                                    @media (max-width: 768px) {
+                                                        padding: 0.1875rem 0.4375rem;
+                                                    }
+
+                                                    @media (max-width: 480px) {
+                                                        font-size: 0.625rem;
+                                                        padding: 0.15625rem 0.375rem;
+                                                    }
                                                 }
                                             }
                                         }
@@ -865,9 +1503,31 @@
                                             border-top: 1px solid $gray-200;
                                             border-bottom: 1px solid $gray-200;
 
+                                            @media (max-width: 768px) {
+                                                flex-direction: column;
+                                                gap: 0.5rem;
+                                                padding: 0.625rem 0;
+                                                margin-bottom: 0.625rem;
+                                            }
+
+                                            @media (max-width: 480px) {
+                                                display: grid;
+                                                grid-template-columns: 1fr 1fr;
+                                                gap: 0.5rem;
+                                                padding: 0.5rem;
+                                                border: 1px solid $gray-200;
+                                                border-radius: $radius-sm;
+                                                background: $gray-50;
+                                                margin: 0.5rem 0;
+                                            }
+
                                             .stat {
                                                 text-align: center;
                                                 flex: 1;
+
+                                                @media (max-width: 480px) {
+                                                    padding: 0.375rem;
+                                                }
 
                                                 .stat-value {
                                                     display: block;
@@ -876,6 +1536,14 @@
                                                     color: $orange-color;
                                                     margin-bottom: 0.125rem;
                                                     word-wrap: break-word;
+
+                                                    @media (max-width: 768px) {
+                                                        font-size: 0.9375rem;
+                                                    }
+
+                                                    @media (max-width: 480px) {
+                                                        font-size: 0.875rem;
+                                                    }
                                                 }
 
                                                 .stat-label {
@@ -884,6 +1552,14 @@
                                                     font-weight: 500;
                                                     text-transform: uppercase;
                                                     letter-spacing: 0.5px;
+
+                                                    @media (max-width: 768px) {
+                                                        font-size: 0.625rem;
+                                                    }
+
+                                                    @media (max-width: 480px) {
+                                                        font-size: 0.5625rem;
+                                                    }
                                                 }
                                             }
                                         }
@@ -892,6 +1568,14 @@
                                             display: flex;
                                             gap: 0.5rem;
                                             justify-content: center;
+
+                                            @media (max-width: 768px) {
+                                                gap: 1rem;
+                                            }
+
+                                            @media (max-width: 480px) {
+                                                gap: 1.25rem;
+                                            }
 
                                             .action-btn {
                                                 width: 32px;
@@ -904,9 +1588,29 @@
                                                 cursor: pointer;
                                                 transition: $transition-all;
 
+                                                @media (max-width: 768px) {
+                                                    width: 36px;
+                                                    height: 36px;
+                                                }
+
+                                                @media (max-width: 480px) {
+                                                    width: 40px;
+                                                    height: 40px;
+                                                }
+
                                                 svg {
                                                     width: 16px;
                                                     height: 16px;
+
+                                                    @media (max-width: 768px) {
+                                                        width: 18px;
+                                                        height: 18px;
+                                                    }
+
+                                                    @media (max-width: 480px) {
+                                                        width: 20px;
+                                                        height: 20px;
+                                                    }
                                                 }
 
                                                 &--activate {
@@ -946,83 +1650,6 @@
                         }
                     }
                 }
-
-                .products-section {
-                    h3 {
-                        font-size: 1.25rem;
-                        font-weight: 600;
-                        color: $gray-800;
-                        margin: 0 0 1.5rem 0;
-                    }
-
-                    .products-table {
-                        overflow-x: auto;
-                        border-radius: $radius-md;
-                        border: 1px solid $gray-200;
-
-                        table {
-                            width: 100%;
-                            border-collapse: collapse;
-                            min-width: 800px;
-
-                            thead {
-                                background: $gray-50;
-
-                                th {
-                                    padding: 1rem 0.75rem;
-                                    text-align: left;
-                                    font-weight: 600;
-                                    font-size: 0.875rem;
-                                    color: $gray-700;
-                                    border-bottom: 2px solid $gray-200;
-                                    white-space: nowrap;
-                                }
-                            }
-
-                            tbody {
-                                tr {
-                                    border-bottom: 1px solid $gray-100;
-                                    transition: background-color 0.2s ease;
-
-                                    &:hover {
-                                        background: $gray-50;
-                                    }
-
-                                    td {
-                                        padding: 1rem 0.75rem;
-                                        vertical-align: top;
-                                        font-size: 0.875rem;
-
-                                        &.product-name {
-                                            font-weight: 600;
-                                            color: $gray-800;
-                                        }
-
-                                        &.product-sku {
-                                            font-family: 'Courier New', monospace;
-                                            color: $orange-color;
-                                            font-weight: 500;
-                                        }
-
-                                        &.product-subcategory {
-                                            color: $gray-600;
-                                        }
-
-                                        &.product-price {
-                                            font-weight: 600;
-                                            color: $primary-color;
-                                            font-family: 'Courier New', monospace;
-                                        }
-
-                                        &.product-date {
-                                            color: $gray-500;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }
@@ -1041,6 +1668,14 @@
         z-index: 1000;
         padding: 1rem;
 
+        @media (max-width: 768px) {
+            padding: 0.75rem;
+        }
+
+        @media (max-width: 480px) {
+            padding: 0.5rem;
+        }
+
         .modal {
             background: $white;
             border-radius: $radius-lg;
@@ -1050,12 +1685,24 @@
             max-height: 90vh;
             overflow-y: auto;
 
+            @media (max-width: 768px) {
+                max-height: 95vh;
+            }
+
             .modal-header {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 padding: 1.5rem;
                 border-bottom: 1px solid $gray-200;
+
+                @media (max-width: 768px) {
+                    padding: 1.25rem;
+                }
+
+                @media (max-width: 480px) {
+                    padding: 1rem;
+                }
 
                 h2 {
                     font-size: 1.25rem;
@@ -1065,6 +1712,15 @@
                     word-wrap: break-word;
                     flex: 1;
                     padding-right: 1rem;
+
+                    @media (max-width: 768px) {
+                        font-size: 1.125rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        font-size: 1rem;
+                        padding-right: 0.75rem;
+                    }
                 }
 
                 .close-btn {
@@ -1078,6 +1734,16 @@
                     transition: $transition-all;
                     flex-shrink: 0;
 
+                    @media (max-width: 768px) {
+                        width: 40px;
+                        height: 40px;
+                    }
+
+                    @media (max-width: 480px) {
+                        width: 44px;
+                        height: 44px;
+                    }
+
                     &:hover {
                         background: $gray-100;
                         color: $gray-700;
@@ -1086,6 +1752,16 @@
                     svg {
                         width: 20px;
                         height: 20px;
+
+                        @media (max-width: 768px) {
+                            width: 22px;
+                            height: 22px;
+                        }
+
+                        @media (max-width: 480px) {
+                            width: 24px;
+                            height: 24px;
+                        }
                     }
                 }
             }
@@ -1093,8 +1769,24 @@
             .modal-body {
                 padding: 1.5rem;
 
+                @media (max-width: 768px) {
+                    padding: 1.25rem;
+                }
+
+                @media (max-width: 480px) {
+                    padding: 1rem;
+                }
+
                 .form-group {
                     margin-bottom: 1.5rem;
+
+                    @media (max-width: 768px) {
+                        margin-bottom: 1.25rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        margin-bottom: 1rem;
+                    }
 
                     &:last-child {
                         margin-bottom: 0;
@@ -1106,9 +1798,19 @@
                         font-weight: 500;
                         color: $gray-700;
                         margin-bottom: 0.5rem;
+
+                        @media (max-width: 768px) {
+                            font-size: 0.9375rem;
+                            margin-bottom: 0.625rem;
+                        }
+
+                        @media (max-width: 480px) {
+                            margin-bottom: 0.75rem;
+                        }
                     }
 
                     input,
+                    select,
                     textarea {
                         width: 100%;
                         padding: 0.75rem;
@@ -1116,6 +1818,15 @@
                         border-radius: $radius-md;
                         font-size: 0.875rem;
                         transition: $transition-all;
+
+                        @media (max-width: 768px) {
+                            padding: 0.875rem;
+                            font-size: 16px; // Prevents zoom on iOS
+                        }
+
+                        @media (max-width: 480px) {
+                            padding: 1rem;
+                        }
 
                         &:focus {
                             outline: none;
@@ -1127,6 +1838,14 @@
                     textarea {
                         resize: vertical;
                         min-height: 80px;
+
+                        @media (max-width: 768px) {
+                            min-height: 90px;
+                        }
+
+                        @media (max-width: 480px) {
+                            min-height: 100px;
+                        }
                     }
                 }
             }
@@ -1138,6 +1857,17 @@
                 border-top: 1px solid $gray-200;
                 justify-content: flex-end;
 
+                @media (max-width: 768px) {
+                    padding: 1.25rem;
+                    flex-direction: column;
+                    gap: 0.75rem;
+                }
+
+                @media (max-width: 480px) {
+                    padding: 1rem;
+                    gap: 0.5rem;
+                }
+
                 .btn {
                     padding: 0.75rem 1.5rem;
                     border: none;
@@ -1146,6 +1876,17 @@
                     font-weight: 500;
                     cursor: pointer;
                     transition: $transition-all;
+
+                    @media (max-width: 768px) {
+                        width: 100%;
+                        padding: 0.875rem 1rem;
+                        font-size: 0.9375rem;
+                        min-height: 44px;
+                    }
+
+                    @media (max-width: 480px) {
+                        padding: 1rem;
+                    }
 
                     &--secondary {
                         background: $gray-100;
@@ -1176,410 +1917,27 @@
     }
 }
 
-// Enhanced Responsive Design
-@media (max-width: 1200px) {
-    .category-details {
-        .category-stats {
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        }
-
-        .tabs-content .tab-content {
-            .overview-grid {
-                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            }
-
-            .subcategories-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            }
-        }
-    }
-}
-
-@media (max-width: 1024px) {
-    .category-details {
-        padding: 0 0.75rem;
-
-        .category-header {
-            padding: 1.5rem;
-
-            .header-content {
-                flex-direction: column;
-                gap: 1.5rem;
-                align-items: stretch;
-
-                .header-actions {
-                    align-self: flex-start;
-                    justify-content: flex-start;
-                }
-            }
-        }
-
-        .category-stats {
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
-
-            .stat-card {
-                padding: 1rem;
-            }
-        }
-
-        .tabs-content .tab-content {
-            padding: 1.5rem;
-
-            .overview-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .subcategories-grid {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            }
-        }
-    }
-}
-
-@media (max-width: 768px) {
-    .category-details {
-        padding: 0 0.5rem;
-
-        .category-header {
-            padding: 1rem;
-            margin-bottom: 1rem;
-
-            .back-btn {
-                padding: 0.75rem;
-                margin-bottom: 1rem;
-                font-size: 0.9375rem;
-
-                svg {
-                    width: 18px;
-                    height: 18px;
-                }
-            }
-
-            .header-content {
-                .category-info {
-                    h1 {
-                        font-size: 1.5rem;
-                    }
-
-                    p {
-                        font-size: 1rem;
-                    }
-
-                    .category-meta {
-                        flex-wrap: wrap;
-                        gap: 0.5rem;
-                    }
-                }
-
-                .header-actions {
-                    gap: 0.5rem;
-
-                    .action-btn {
-                        padding: 0.875rem 1rem; // Larger touch targets
-                        font-size: 0.875rem;
-
-                        svg {
-                            width: 18px;
-                            height: 18px;
-                        }
-                    }
-                }
-            }
-        }
-
-        .category-stats {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
-
-            .stat-card {
-                padding: 1rem;
-                flex-direction: column;
-                text-align: center;
-                gap: 0.75rem;
-
-                .stat-icon {
-                    width: 40px;
-                    height: 40px;
-
-                    svg {
-                        width: 20px;
-                        height: 20px;
-                    }
-                }
-
-                .stat-content {
-                    .stat-value {
-                        font-size: 1.25rem;
-                    }
-
-                    .stat-label {
-                        font-size: 0.8125rem;
-                    }
-                }
-            }
-        }
-
-        .tabs-container {
-            .tabs-header {
-                .tab-btn {
-                    padding: 0.875rem 1rem; // Larger touch targets
-                    font-size: 0.875rem;
-                }
-            }
-
-            .tabs-content {
-                .tab-content {
-                    padding: 1rem;
-
-                    .info-card {
-                        padding: 1rem;
-
-                        .category-image-section img {
-                            height: 150px;
-                        }
-
-                        .info-list .info-item {
-                            flex-direction: column;
-                            align-items: flex-start;
-                            gap: 0.25rem;
-                            padding: 0.5rem 0;
-
-                            .label {
-                                min-width: auto;
-                                font-size: 0.8125rem;
-                            }
-
-                            .value {
-                                text-align: left;
-                                font-size: 0.8125rem;
-                            }
-                        }
-
-                        .top-products .product-item {
-                            padding: 0.75rem;
-                            flex-direction: column;
-                            text-align: center;
-                            gap: 0.75rem;
-
-                            .product-rank {
-                                width: 28px;
-                                height: 28px;
-                                font-size: 0.8125rem;
-                            }
-                        }
-                    }
-
-                    .subcategories-section {
-                        .subcategories-header {
-                            flex-direction: column;
-                            align-items: stretch;
-                            gap: 1rem;
-
-                            .header-actions {
-                                justify-content: stretch;
-
-                                .add-btn,
-                                .add-subcategory-btn {
-                                    flex: 1;
-                                    padding: 0.875rem 1rem; // Larger touch targets
-                                    justify-content: center;
-                                }
-                            }
-                        }
-
-                        .subcategories-list {
-                            gap: 1rem;
-
-                            .subcategory-card {
-                                padding: 1rem;
-
-                                .subcategory-header {
-                                    flex-direction: column;
-                                    align-items: stretch;
-                                    gap: 0.75rem;
-
-                                    .subcategory-meta {
-                                        align-self: flex-end;
-                                        justify-content: flex-end;
-
-                                        .expand-btn {
-                                            width: 40px; // Larger touch target
-                                            height: 40px;
-
-                                            svg {
-                                                width: 18px;
-                                                height: 18px;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                .subcategory-stats {
-                                    flex-direction: column;
-                                    gap: 0.75rem;
-                                    padding: 0.75rem 0;
-
-                                    .stat {
-                                        .stat-value {
-                                            font-size: 1.125rem;
-                                        }
-
-                                        .stat-label {
-                                            font-size: 0.6875rem;
-                                        }
-                                    }
-                                }
-
-                                .subcategory-actions {
-                                    gap: 1rem;
-
-                                    .action-btn {
-                                        width: 40px; // Larger touch targets
-                                        height: 40px;
-
-                                        svg {
-                                            width: 20px;
-                                            height: 20px;
-                                        }
-                                    }
-                                }
-
-                                .sub-subcategories-section {
-                                    margin-top: 1rem;
-                                    padding-top: 1rem;
-
-                                    .sub-subcategories-header {
-                                        flex-direction: column;
-                                        gap: 0.75rem;
-
-                                        .add-sub-subcategory-btn {
-                                            padding: 0.75rem 1rem; // Larger touch target
-                                            align-self: stretch;
-                                            justify-content: center;
-                                        }
-                                    }
-
-                                    .sub-subcategories-grid {
-                                        grid-template-columns: 1fr;
-                                        gap: 0.75rem;
-
-                                        .sub-subcategory-card {
-                                            padding: 0.75rem;
-
-                                            .sub-subcategory-header {
-                                                flex-direction: column;
-                                                gap: 0.5rem;
-                                            }
-
-                                            .sub-subcategory-stats {
-                                                flex-direction: column;
-                                                gap: 0.5rem;
-                                                padding: 0.5rem 0;
-
-                                                .stat {
-                                                    .stat-value {
-                                                        font-size: 0.9375rem;
-                                                    }
-
-                                                    .stat-label {
-                                                        font-size: 0.625rem;
-                                                    }
-                                                }
-                                            }
-
-                                            .sub-subcategory-actions {
-                                                gap: 1rem;
-
-                                                .action-btn {
-                                                    width: 36px; // Larger touch targets
-                                                    height: 36px;
-
-                                                    svg {
-                                                        width: 18px;
-                                                        height: 18px;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    .products-section {
-                        .products-table {
-                            table {
-                                font-size: 0.8125rem;
-
-                                th,
-                                td {
-                                    padding: 0.75rem 0.5rem;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        .modal-overlay {
-            padding: 0.5rem;
-
-            .modal {
-                max-height: 95vh;
-
-                .modal-header {
-                    padding: 1rem;
-
-                    h2 {
-                        font-size: 1.125rem;
-                    }
-                }
-
-                .modal-body {
-                    padding: 1rem;
-
-                    .form-group {
-                        input,
-                        textarea {
-                            font-size: 16px; // Prevents zoom on iOS
-                            padding: 0.875rem; // Larger touch targets
-                        }
-                    }
-                }
-
-                .modal-footer {
-                    padding: 1rem;
-                    flex-direction: column;
-
-                    .btn {
-                        width: 100%;
-                        padding: 0.875rem 1rem; // Larger touch targets
-                        font-size: 0.9375rem;
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media (max-width: 480px) {
+// Additional responsive breakpoints for very small devices
+@media (max-width: 320px) {
     .category-details {
         padding: 0 0.25rem;
 
         .category-header {
-            margin-bottom: 0.75rem;
-
             .header-content {
+                .category-info {
+                    h1 {
+                        font-size: 1.25rem;
+                    }
+
+                    p {
+                        font-size: 0.875rem;
+                    }
+                }
+
                 .header-actions {
                     .action-btn {
-                        flex: 1;
-                        min-width: calc(50% - 0.25rem);
-                        justify-content: center;
+                        font-size: 0.8125rem;
+                        padding: 0.875rem 0.75rem;
                     }
                 }
             }
@@ -1591,99 +1949,126 @@
                     .stat-value {
                         font-size: 1.125rem;
                     }
+
+                    .stat-label {
+                        font-size: 0.6875rem;
+                    }
                 }
             }
         }
 
         .tabs-container {
-            .tabs-header {
-                flex-direction: column;
-
-                .tab-btn {
-                    border-right: none;
-                    border-bottom: 1px solid $gray-200;
-
-                    &:last-child {
-                        border-bottom: none;
-                    }
-
-                    &.active::after {
-                        left: 0;
-                        right: auto;
-                        width: 4px;
-                        height: 100%;
-                        top: 0;
-                        bottom: 0;
-                    }
-                }
-            }
-
             .tabs-content .tab-content {
                 padding: 0.75rem;
 
-                .subcategories-section {
-                    .subcategories-header {
-                        .header-actions {
-                            flex-direction: column;
-                            gap: 0.5rem;
+                .info-card {
+                    padding: 0.75rem;
+
+                    h3 {
+                        font-size: 0.875rem;
+                    }
+
+                    .category-image-section img {
+                        height: 125px;
+                    }
+
+                    .info-list .info-item {
+                        padding: 0.375rem 0;
+
+                        .label,
+                        .value {
+                            font-size: 0.6875rem;
                         }
                     }
 
+                    .top-products .product-item {
+                        padding: 0.5rem;
+
+                        .product-rank {
+                            width: 24px;
+                            height: 24px;
+                            font-size: 0.6875rem;
+                        }
+
+                        .product-info {
+                            .product-name {
+                                font-size: 0.8125rem;
+                            }
+
+                            .product-stats {
+                                font-size: 0.625rem;
+                            }
+                        }
+                    }
+                }
+
+                .subcategories-section {
                     .subcategories-list {
                         .subcategory-card {
-                            .subcategory-stats {
-                                display: grid;
-                                grid-template-columns: 1fr 1fr;
-                                gap: 0.75rem;
-                                padding: 0.75rem;
-                                border: 1px solid $gray-200;
-                                border-radius: $radius-sm;
-                                background: $white;
-                                margin: 0.75rem 0;
+                            padding: 0.75rem;
 
-                                .stat {
-                                    padding: 0.5rem;
-
-                                    &:nth-child(3) {
-                                        grid-column: 1 / -1;
+                            .subcategory-header {
+                                .subcategory-info {
+                                    h4 {
+                                        font-size: 0.875rem;
                                     }
+
+                                    p {
+                                        font-size: 0.6875rem;
+                                    }
+
+                                    .subcategory-id {
+                                        font-size: 0.625rem;
+                                    }
+                                }
+
+                                .subcategory-meta .expand-btn {
+                                    width: 40px;
+                                    height: 40px;
                                 }
                             }
 
-                            .subcategory-actions {
-                                gap: 1.5rem;
-
-                                .action-btn {
-                                    width: 44px; // Even larger for very small screens
-                                    height: 44px;
-                                }
+                            .subcategory-actions .action-btn {
+                                width: 40px;
+                                height: 40px;
                             }
 
                             .sub-subcategories-section {
                                 .sub-subcategories-grid {
                                     .sub-subcategory-card {
-                                        .sub-subcategory-stats {
-                                            display: grid;
-                                            grid-template-columns: 1fr 1fr;
-                                            gap: 0.5rem;
-                                            padding: 0.5rem;
-                                            border: 1px solid $gray-200;
-                                            border-radius: $radius-sm;
-                                            background: $gray-50;
-                                            margin: 0.5rem 0;
+                                        padding: 0.5rem;
 
-                                            .stat {
-                                                padding: 0.375rem;
+                                        .sub-subcategory-header {
+                                            .sub-subcategory-info {
+                                                h6 {
+                                                    font-size: 0.8125rem;
+                                                }
+
+                                                p {
+                                                    font-size: 0.625rem;
+                                                }
+
+                                                .sub-subcategory-id {
+                                                    font-size: 0.5625rem;
+                                                }
                                             }
                                         }
 
-                                        .sub-subcategory-actions {
-                                            gap: 1.25rem;
+                                        .sub-subcategory-stats {
+                                            .stat {
+                                                .stat-value {
+                                                    font-size: 0.8125rem;
+                                                }
 
-                                            .action-btn {
-                                                width: 40px;
-                                                height: 40px;
+                                                .stat-label {
+                                                    font-size: 0.5rem;
+                                                }
                                             }
+                                        }
+
+                                        .sub-subcategory-actions .action-btn {
+                                            width: 36px;
+                                            height: 36px;
                                         }
                                     }
                                 }
@@ -1696,32 +2081,43 @@
     }
 }
 
-// Landscape orientation on mobile
+// Landscape orientation improvements for mobile
 @media (max-width: 768px) and (orientation: landscape) {
     .category-details {
         .category-stats {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(4, 1fr);
 
             .stat-card {
                 flex-direction: row;
                 text-align: left;
+                padding: 1rem;
             }
         }
 
         .tabs-container .tabs-content .tab-content {
-            .subcategories-section .subcategories-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    }
-}
+            .subcategories-section {
+                .subcategories-list {
+                    .subcategory-card {
+                        .subcategory-stats {
+                            flex-direction: row;
+                            justify-content: space-around;
+                        }
 
-// High DPI screens
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .category-details {
-        .info-card .category-image-section img {
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
+                        .sub-subcategories-section {
+                            .sub-subcategories-grid {
+                                grid-template-columns: repeat(2, 1fr);
+
+                                .sub-subcategory-card {
+                                    .sub-subcategory-stats {
+                                        flex-direction: row;
+                                        justify-content: space-around;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
