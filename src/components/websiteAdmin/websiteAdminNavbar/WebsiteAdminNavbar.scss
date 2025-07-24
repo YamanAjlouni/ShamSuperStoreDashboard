@@ -1,8 +1,8 @@
 @use '../../../assets/styles/vars.scss' as *;
 
-.admin-navbar {
+.website-admin-navbar {
     height: 70px;
-    background: linear-gradient(135deg, #1e293b 0%, #334155 100%); // Darker slate gradient for admin
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); // Dark blue gradient for website admin
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -11,7 +11,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    border-bottom: 2px solid #f59e0b; // Golden border for admin distinction
+    border-bottom: 2px solid #06b6d4; // Cyan border for website admin distinction
 
     .navbar-left {
         display: flex;
@@ -21,7 +21,7 @@
         .sidebar-toggle {
             width: 40px;
             height: 40px;
-            background: rgba(245, 158, 11, 0.15); // Golden tint
+            background: rgba(6, 182, 212, 0.15); // Cyan tint
             border: none;
             border-radius: $radius-md;
             display: flex;
@@ -32,8 +32,8 @@
             transition: $transition-all;
 
             &:hover {
-                background: rgba(245, 158, 11, 0.25);
-                color: #f59e0b;
+                background: rgba(6, 182, 212, 0.25);
+                color: #06b6d4;
                 transform: translateY(-1px);
             }
 
@@ -51,16 +51,16 @@
             .brand-icon {
                 width: 40px;
                 height: 40px;
-                background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); // Golden gradient
+                background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); // Cyan gradient
                 border-radius: $radius-md;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 color: $white;
                 font-weight: 700;
-                font-size: 0.875rem;
+                font-size: 0.75rem;
                 letter-spacing: 1px;
-                box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+                box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
             }
 
             .brand-text {
@@ -80,7 +80,7 @@
             .breadcrumb-icon {
                 width: 16px;
                 height: 16px;
-                color: #f59e0b;
+                color: #06b6d4;
             }
 
             .breadcrumb-text {
@@ -107,7 +107,7 @@
                 font-size: 0.875rem;
 
                 .stat-value {
-                    color: #f59e0b;
+                    color: #06b6d4;
                     font-weight: 600;
                 }
 
@@ -126,7 +126,7 @@
                 position: relative;
                 width: 40px;
                 height: 40px;
-                background: rgba(245, 158, 11, 0.15);
+                background: rgba(6, 182, 212, 0.15);
                 border: none;
                 border-radius: $radius-md;
                 display: flex;
@@ -137,8 +137,8 @@
                 transition: $transition-all;
 
                 &:hover {
-                    background: rgba(245, 158, 11, 0.25);
-                    color: #f59e0b;
+                    background: rgba(6, 182, 212, 0.25);
+                    color: #06b6d4;
                     transform: translateY(-1px);
                 }
 
@@ -161,7 +161,7 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    border: 2px solid #1e293b;
+                    border: 2px solid #0f172a;
                 }
 
                 // Notifications button specific styles
@@ -212,7 +212,7 @@
                     overflow: hidden;
                     z-index: 1000;
                     animation: fadeInDown 0.3s ease-out;
-                    border: 1px solid rgba(245, 158, 11, 0.2);
+                    border: 1px solid rgba(6, 182, 212, 0.2);
 
                     // Arrow pointing up
                     &::before {
@@ -229,7 +229,7 @@
 
                     .dropdown-header {
                         padding: 1rem 1.25rem;
-                        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+                        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
                         color: $white;
                         display: flex;
                         justify-content: space-between;
@@ -290,11 +290,11 @@
                             }
 
                             &--unread {
-                                background: rgba(245, 158, 11, 0.05);
-                                border-left: 3px solid #f59e0b;
+                                background: rgba(6, 182, 212, 0.05);
+                                border-left: 3px solid #06b6d4;
 
                                 &:hover {
-                                    background: rgba(245, 158, 11, 0.1);
+                                    background: rgba(6, 182, 212, 0.1);
                                 }
                             }
 
@@ -302,7 +302,7 @@
                                 flex-shrink: 0;
                                 width: 32px;
                                 height: 32px;
-                                background: #f59e0b;
+                                background: #06b6d4;
                                 border-radius: 50%;
                                 display: flex;
                                 align-items: center;
@@ -373,8 +373,8 @@
 
                             &:hover {
                                 background: $white;
-                                color: #f59e0b;
-                                border-color: #f59e0b;
+                                color: #06b6d4;
+                                border-color: #06b6d4;
                             }
                         }
                     }
@@ -391,16 +391,16 @@
                     height: 40px;
                     border-radius: 50%;
                     overflow: hidden;
-                    border: 2px solid #f59e0b;
+                    border: 2px solid #06b6d4;
                     cursor: pointer;
                     transition: $transition-all;
                     background: none;
                     padding: 0;
 
                     &:hover {
-                        border-color: #fbbf24;
+                        border-color: #0891b2;
                         transform: scale(1.05);
-                        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+                        box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
                     }
 
                     img {
@@ -415,12 +415,12 @@
                         right: -2px;
                         width: 16px;
                         height: 16px;
-                        background: #f59e0b;
+                        background: #06b6d4;
                         border-radius: 50%;
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        border: 2px solid #1e293b;
+                        border: 2px solid #0f172a;
 
                         svg {
                             width: 10px;
@@ -441,7 +441,7 @@
                     overflow: hidden;
                     z-index: 1000;
                     animation: fadeInDown 0.2s ease-out;
-                    border: 1px solid #f59e0b;
+                    border: 1px solid #06b6d4;
 
                     // Arrow pointing up
                     &::before {
@@ -458,7 +458,7 @@
 
                     .dropdown-header {
                         padding: 0.75rem 1rem;
-                        background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+                        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
                         color: $white;
                         border-bottom: 1px solid #e5e7eb;
 
@@ -486,8 +486,8 @@
                         text-align: left;
 
                         &:hover {
-                            background: #fef3c7;
-                            color: #f59e0b;
+                            background: #cffafe;
+                            color: #06b6d4;
                         }
 
                         &--logout {
@@ -527,7 +527,7 @@
 
 // Responsive Design
 @media (max-width: 768px) {
-    .admin-navbar {
+    .website-admin-navbar {
         padding: 0 1rem;
 
         .navbar-left {
@@ -613,7 +613,7 @@
 }
 
 @media (max-width: 480px) {
-    .admin-navbar {
+    .website-admin-navbar {
         padding: 0 0.75rem;
 
         .navbar-left {

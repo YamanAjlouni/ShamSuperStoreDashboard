@@ -1,0 +1,1111 @@
+@use '../../../assets/styles/vars.scss' as *;
+
+.highlights-section {
+    .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid #e5e7eb;
+
+        .header-content {
+            h1 {
+                color: $dark-blue-color;
+                font-size: 2.25rem;
+                font-weight: 700;
+                margin: 0 0 0.5rem 0;
+            }
+
+            p {
+                color: $gray-600;
+                font-size: 1.125rem;
+                margin: 0;
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+
+            .preview-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.5rem;
+                background: $gray-100;
+                border: 1px solid $gray-300;
+                border-radius: $radius-md;
+                color: $gray-700;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background: $gray-200;
+                }
+
+                &.active {
+                    background: #06b6d4;
+                    color: $white;
+                    border-color: #06b6d4;
+                }
+
+                svg {
+                    width: 1.25rem;
+                    height: 1.25rem;
+                }
+            }
+
+            .active-sections-count {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 0.75rem 1rem;
+                background: linear-gradient(135deg, #06b6d4, #0891b2);
+                border-radius: $radius-md;
+                color: $white;
+
+                .count {
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    line-height: 1;
+                }
+
+                .label {
+                    font-size: 0.75rem;
+                    font-weight: 500;
+                    opacity: 0.9;
+                }
+            }
+        }
+    }
+
+    // Preview Mode - All Sections
+    .preview-container {
+        margin-bottom: 2rem;
+
+        .all-sections-preview {
+            background: #f8fafc;
+            border-radius: $radius-lg;
+            padding: 2rem;
+            box-shadow: $shadow-sm;
+
+            .section-preview {
+                margin-bottom: 3rem;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                .section-title {
+                    color: $dark-blue-color;
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    margin: 0 0 1.5rem 0;
+                    text-align: center;
+                }
+
+                .section-highlights {
+                    display: grid;
+                    gap: 1.5rem;
+                    align-items: start;
+                }
+
+                // Section 1, 2, 3, 6 - Three equal cards
+                &.section-1,
+                &.section-2,
+                &.section-3,
+                &.section-6 {
+                    .section-highlights {
+                        grid-template-columns: repeat(3, 1fr);
+                    }
+                }
+
+                // Section 4 - Two banners side by side
+                &.section-4 {
+                    .section-highlights {
+                        grid-template-columns: repeat(2, 1fr);
+                    }
+                }
+
+                // Section 5 - Mixed layout (2 small + 1 large)
+                &.section-5 {
+                    .section-highlights {
+                        grid-template-columns: 1fr 1fr 2fr;
+
+                        .highlight-large {
+                            grid-row: span 2;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Highlight Card Types
+    .highlight-card,
+    .highlight-small,
+    .highlight-large,
+    .highlight-banner {
+        border-radius: $radius-lg;
+        overflow: hidden;
+        box-shadow: $shadow-sm;
+        transition: all 0.3s ease;
+        position: relative;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: $shadow-md;
+        }
+
+        .highlight-content {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 2rem;
+            gap: 1.5rem;
+        }
+
+        .highlight-text {
+            flex: 1;
+
+            .highlight-category {
+                display: block;
+                font-size: 0.875rem;
+                font-weight: 500;
+                opacity: 0.8;
+                margin-bottom: 0.5rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .highlight-title {
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin: 0 0 1rem 0;
+                line-height: 1.2;
+            }
+
+            .highlight-subtitle {
+                font-size: 1rem;
+                margin: 0 0 1.5rem 0;
+                opacity: 0.9;
+            }
+
+            .highlight-button {
+                padding: 0.75rem 1.5rem;
+                border: none;
+                border-radius: $radius-sm;
+                font-size: 0.875rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+
+                &:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                }
+            }
+        }
+
+        .highlight-image {
+            flex: 0 0 150px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+        }
+    }
+
+    // Small Card Specific
+    .highlight-small {
+        .highlight-content {
+            min-height: 160px;
+            padding: 1.5rem;
+        }
+
+        .highlight-text {
+            .highlight-title {
+                font-size: 1.25rem;
+            }
+        }
+
+        .highlight-image {
+            flex: 0 0 120px;
+            height: 100px;
+        }
+    }
+
+    // Large Card Specific
+    .highlight-large {
+        .highlight-content {
+            min-height: 300px;
+            padding: 2.5rem;
+        }
+
+        .highlight-text {
+            .highlight-title {
+                font-size: 2rem;
+            }
+        }
+
+        .highlight-image {
+            flex: 0 0 180px;
+            height: 200px;
+        }
+    }
+
+    // Banner Specific
+    .highlight-banner {
+        min-height: 150px;
+
+        .highlight-content {
+            justify-content: space-between;
+            padding: 2rem 3rem;
+        }
+
+        .highlight-text {
+            .highlight-title {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .highlight-button {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+
+        .highlight-image {
+            flex: 0 0 200px;
+            height: 100px;
+        }
+    }
+
+    // Management Mode
+    .management-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        // Section Selector
+        .section-selector {
+            background: $white;
+            border-radius: $radius-lg;
+            padding: 1.5rem;
+            box-shadow: $shadow-sm;
+            border: 1px solid $gray-200;
+
+            h3 {
+                color: $dark-blue-color;
+                font-size: 1.25rem;
+                font-weight: 600;
+                margin: 0 0 1.5rem 0;
+            }
+
+            .sections-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1rem;
+
+                .section-card {
+                    background: $gray-50;
+                    border: 2px solid $gray-200;
+                    border-radius: $radius-md;
+                    padding: 1rem;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        border-color: #06b6d4;
+                        background: rgba(6, 182, 212, 0.05);
+                    }
+
+                    &.selected {
+                        border-color: #06b6d4;
+                        background: rgba(6, 182, 212, 0.1);
+                        box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+                    }
+
+                    &.inactive {
+                        opacity: 0.6;
+                        border-color: $gray-300;
+
+                        &::after {
+                            content: 'INACTIVE';
+                            position: absolute;
+                            top: 0.5rem;
+                            right: 0.5rem;
+                            background: #ef4444;
+                            color: $white;
+                            padding: 0.25rem 0.5rem;
+                            border-radius: $radius-sm;
+                            font-size: 0.75rem;
+                            font-weight: 600;
+                        }
+                    }
+
+                    .section-header {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-bottom: 1rem;
+
+                        h4 {
+                            color: $dark-blue-color;
+                            font-size: 1rem;
+                            font-weight: 600;
+                            margin: 0;
+                        }
+
+                        .status-toggle {
+                            padding: 0.25rem 0.75rem;
+                            border-radius: $radius-sm;
+                            border: none;
+                            font-size: 0.75rem;
+                            font-weight: 500;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+
+                            &.active {
+                                background: rgba(16, 185, 129, 0.1);
+                                color: #059669;
+                            }
+
+                            &.inactive {
+                                background: rgba(239, 68, 68, 0.1);
+                                color: #dc2626;
+                            }
+                        }
+                    }
+
+                    .section-highlights-preview {
+                        display: flex;
+                        gap: 0.5rem;
+                        margin-bottom: 0.75rem;
+
+                        .mini-highlight {
+                            flex: 1;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            gap: 0.25rem;
+                            text-align: center;
+
+                            img {
+                                width: 40px;
+                                height: 30px;
+                                object-fit: cover;
+                                border-radius: $radius-sm;
+                            }
+
+                            span {
+                                font-size: 0.7rem;
+                                color: $gray-600;
+                                line-height: 1.2;
+                            }
+                        }
+                    }
+
+                    .section-info {
+                        text-align: center;
+                        color: $gray-500;
+                        font-size: 0.875rem;
+                    }
+                }
+            }
+        }
+
+        // Current Section Management
+        .current-section-management {
+            background: $white;
+            border-radius: $radius-lg;
+            overflow: hidden;
+            box-shadow: $shadow-sm;
+            border: 1px solid $gray-200;
+
+            .section-management-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 1.5rem;
+                background: $gray-50;
+                border-bottom: 1px solid $gray-200;
+
+                h3 {
+                    color: $dark-blue-color;
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                    margin: 0;
+                }
+
+                .add-highlight-btn {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.75rem 1.5rem;
+                    background: linear-gradient(135deg, #06b6d4, #0891b2);
+                    border: none;
+                    border-radius: $radius-md;
+                    color: $white;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        transform: translateY(-1px);
+                        box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+                    }
+
+                    svg {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
+                }
+            }
+
+            .highlights-management {
+                padding: 1.5rem;
+
+                .highlights-list {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                    gap: 1.5rem;
+
+                    .highlight-manage-card {
+                        background: $gray-50;
+                        border-radius: $radius-lg;
+                        overflow: hidden;
+                        border: 2px solid transparent;
+                        transition: all 0.3s ease;
+
+                        &:hover {
+                            border-color: #06b6d4;
+                            transform: translateY(-2px);
+                            box-shadow: $shadow-md;
+                        }
+
+                        .manage-card-preview {
+                            position: relative;
+                            transform: scale(0.85);
+                            transform-origin: top left;
+                            width: 118%;
+                            height: 180px;
+                            overflow: hidden;
+                            margin-bottom: -20px;
+
+                            .highlight-card,
+                            .highlight-small,
+                            .highlight-large,
+                            .highlight-banner {
+                                height: 100%;
+                                margin: 0;
+                                box-shadow: none;
+
+                                &:hover {
+                                    transform: none;
+                                }
+
+                                .highlight-content {
+                                    padding: 1.5rem;
+                                }
+
+                                .highlight-text {
+                                    .highlight-title {
+                                        font-size: 1.25rem;
+                                    }
+
+                                    .highlight-button {
+                                        padding: 0.5rem 1rem;
+                                        font-size: 0.75rem;
+                                    }
+                                }
+
+                                .highlight-image {
+                                    flex: 0 0 100px;
+                                    height: 80px;
+                                }
+                            }
+
+                            .card-overlay {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                bottom: 0;
+                                background: rgba(0, 0, 0, 0.7);
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 1rem;
+                                opacity: 0;
+                                transition: opacity 0.3s ease;
+
+                                .edit-btn,
+                                .delete-btn {
+                                    width: 40px;
+                                    height: 40px;
+                                    border-radius: 50%;
+                                    border: none;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+
+                                    svg {
+                                        width: 1.25rem;
+                                        height: 1.25rem;
+                                    }
+                                }
+
+                                .edit-btn {
+                                    background: #06b6d4;
+                                    color: $white;
+
+                                    &:hover {
+                                        background: #0891b2;
+                                        transform: scale(1.1);
+                                    }
+                                }
+
+                                .delete-btn {
+                                    background: #ef4444;
+                                    color: $white;
+
+                                    &:hover {
+                                        background: #dc2626;
+                                        transform: scale(1.1);
+                                    }
+                                }
+                            }
+
+                            &:hover .card-overlay {
+                                opacity: 1;
+                            }
+                        }
+
+                        .manage-card-info {
+                            padding: 1rem 1.5rem 1.5rem;
+
+                            .card-details {
+                                h4 {
+                                    color: $dark-blue-color;
+                                    font-size: 1rem;
+                                    font-weight: 600;
+                                    margin: 0 0 0.5rem 0;
+                                }
+
+                                p {
+                                    color: $gray-600;
+                                    font-size: 0.875rem;
+                                    margin: 0 0 0.5rem 0;
+                                }
+
+                                .type-badge {
+                                    padding: 0.25rem 0.75rem;
+                                    border-radius: $radius-sm;
+                                    font-size: 0.75rem;
+                                    font-weight: 500;
+                                    text-transform: uppercase;
+
+                                    &.card {
+                                        background: rgba(59, 130, 246, 0.1);
+                                        color: #2563eb;
+                                    }
+
+                                    &.small {
+                                        background: rgba(16, 185, 129, 0.1);
+                                        color: #059669;
+                                    }
+
+                                    &.large {
+                                        background: rgba(139, 92, 246, 0.1);
+                                        color: #7c3aed;
+                                    }
+
+                                    &.banner {
+                                        background: rgba(249, 115, 22, 0.1);
+                                        color: #ea580c;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Modal Styling
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        padding: 2rem;
+
+        .modal-content {
+            background: $white;
+            border-radius: $radius-lg;
+            max-width: 900px;
+            width: 100%;
+            max-height: 95vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+
+            .modal-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 1.5rem 2rem;
+                border-bottom: 1px solid $gray-200;
+
+                h3 {
+                    color: $dark-blue-color;
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    margin: 0;
+                }
+
+                .close-btn {
+                    width: 32px;
+                    height: 32px;
+                    background: $gray-100;
+                    border: none;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        background: $gray-200;
+                    }
+
+                    svg {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
+                }
+            }
+
+            .modal-body {
+                padding: 2rem;
+
+                .form-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 2rem;
+                    margin-bottom: 2rem;
+
+                    .form-section {
+                        h4 {
+                            color: $dark-blue-color;
+                            font-size: 1.125rem;
+                            font-weight: 600;
+                            margin: 0 0 1.5rem 0;
+                            padding-bottom: 0.5rem;
+                            border-bottom: 1px solid $gray-200;
+                        }
+                    }
+                }
+
+                .form-group {
+                    margin-bottom: 1.5rem;
+
+                    label {
+                        display: block;
+                        color: $gray-700;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    input[type="text"],
+                    input[type="url"],
+                    select {
+                        width: 100%;
+                        padding: 0.75rem 1rem;
+                        border: 1px solid $gray-300;
+                        border-radius: $radius-md;
+                        font-size: 0.875rem;
+                        transition: all 0.3s ease;
+
+                        &:focus {
+                            outline: none;
+                            border-color: #06b6d4;
+                            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+                        }
+
+                        &::placeholder {
+                            color: $gray-400;
+                        }
+                    }
+                }
+
+                .image-upload {
+                    .image-preview {
+                        width: 100%;
+                        height: 150px;
+                        border: 2px dashed $gray-300;
+                        border-radius: $radius-md;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        overflow: hidden;
+
+                        &:hover {
+                            border-color: #06b6d4;
+                            background: rgba(6, 182, 212, 0.02);
+                        }
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+
+                        .upload-placeholder {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            gap: 0.75rem;
+                            color: $gray-500;
+
+                            svg {
+                                width: 2rem;
+                                height: 2rem;
+                            }
+
+                            span {
+                                font-size: 0.875rem;
+                                font-weight: 500;
+                            }
+                        }
+                    }
+                }
+
+                .themes-grid {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 0.5rem;
+
+                    .theme-btn {
+                        padding: 0.5rem;
+                        border: 1px solid transparent;
+                        border-radius: $radius-sm;
+                        font-size: 0.75rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+
+                        &:hover {
+                            border-color: $gray-400;
+                            transform: scale(1.05);
+                        }
+                    }
+                }
+
+                .color-controls {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+
+                    .color-input {
+                        display: flex;
+                        gap: 0.5rem;
+                        align-items: center;
+
+                        input[type="color"] {
+                            width: 40px;
+                            height: 40px;
+                            border: 1px solid $gray-300;
+                            border-radius: $radius-sm;
+                            cursor: pointer;
+                        }
+
+                        input[type="text"] {
+                            flex: 1;
+                        }
+                    }
+                }
+
+                .live-preview {
+                    border-top: 1px solid $gray-200;
+                    padding-top: 2rem;
+
+                    h4 {
+                        color: $dark-blue-color;
+                        font-size: 1.125rem;
+                        font-weight: 600;
+                        margin: 0 0 1rem 0;
+                    }
+
+                    .preview-wrapper {
+                        background: #f8fafc;
+                        padding: 1.5rem;
+                        border-radius: $radius-md;
+                        border: 1px solid $gray-200;
+
+                        .highlight-card,
+                        .highlight-small,
+                        .highlight-large,
+                        .highlight-banner {
+                            margin: 0;
+                            transform: scale(0.8);
+                            transform-origin: center;
+                        }
+                    }
+                }
+            }
+
+            .modal-footer {
+                display: flex;
+                justify-content: flex-end;
+                gap: 1rem;
+                padding: 1.5rem 2rem;
+                border-top: 1px solid $gray-200;
+                background: $gray-50;
+
+                .cancel-btn {
+                    padding: 0.75rem 1.5rem;
+                    background: $white;
+                    border: 1px solid $gray-300;
+                    border-radius: $radius-md;
+                    color: $gray-700;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        background: $gray-50;
+                    }
+                }
+
+                .save-btn {
+                    padding: 0.75rem 1.5rem;
+                    background: linear-gradient(135deg, #06b6d4, #0891b2);
+                    border: none;
+                    border-radius: $radius-md;
+                    color: $white;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        transform: translateY(-1px);
+                        box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+    .highlights-section {
+        .page-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+
+            .header-actions {
+                flex-direction: column;
+                width: 100%;
+                gap: 1rem;
+
+                .preview-btn {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+        }
+
+        .preview-container {
+            .all-sections-preview {
+                .section-preview {
+
+                    &.section-1,
+                    &.section-2,
+                    &.section-3,
+                    &.section-6 {
+                        .section-highlights {
+                            grid-template-columns: 1fr;
+                        }
+                    }
+
+                    &.section-4 {
+                        .section-highlights {
+                            grid-template-columns: 1fr;
+                        }
+                    }
+
+                    &.section-5 {
+                        .section-highlights {
+                            grid-template-columns: 1fr;
+                        }
+                    }
+                }
+            }
+        }
+
+        .management-container {
+            .section-selector {
+                .sections-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .current-section-management {
+                .highlights-management {
+                    .highlights-list {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            }
+        }
+
+        .modal-content {
+            .modal-body {
+                .form-grid {
+                    grid-template-columns: 1fr;
+                    gap: 1.5rem;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .highlights-section {
+        .preview-container {
+            .all-sections-preview {
+                padding: 1rem;
+            }
+        }
+
+        .highlight-card,
+        .highlight-small,
+        .highlight-large,
+        .highlight-banner {
+            .highlight-content {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .highlight-image {
+                flex: none;
+                width: 100%;
+                height: 120px;
+                margin-top: 1rem;
+            }
+        }
+
+        .management-container {
+            .section-selector {
+                .sections-grid {
+                    .section-card {
+                        .section-highlights-preview {
+                            .mini-highlight {
+                                img {
+                                    width: 30px;
+                                    height: 25px;
+                                }
+
+                                span {
+                                    font-size: 0.6rem;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .current-section-management {
+                .section-management-header {
+                    flex-direction: column;
+                    gap: 1rem;
+                    text-align: center;
+
+                    .add-highlight-btn {
+                        width: 100%;
+                        justify-content: center;
+                    }
+                }
+
+                .highlights-management {
+                    .highlights-list {
+                        .highlight-manage-card {
+                            .manage-card-preview {
+                                transform: scale(0.9);
+                                width: 111%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .modal-overlay {
+            padding: 1rem;
+
+            .modal-content {
+
+                .modal-header,
+                .modal-body,
+                .modal-footer {
+                    padding: 1rem 1.5rem;
+                }
+
+                .modal-body {
+                    .themes-grid {
+                        grid-template-columns: repeat(2, 1fr);
+                    }
+
+                    .live-preview {
+                        .preview-wrapper {
+
+                            .highlight-card,
+                            .highlight-small,
+                            .highlight-large,
+                            .highlight-banner {
+                                transform: scale(0.7);
+                            }
+                        }
+                    }
+                }
+
+                .modal-footer {
+                    flex-direction: column;
+
+                    .cancel-btn,
+                    .save-btn {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

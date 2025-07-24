@@ -5,6 +5,7 @@ import Admin from '../pages/admin/Admin'
 import Delivery from '../pages/delivery/Delivery'
 import AdminDeliverySidebar from '../components/adminDelivery/AdminDeliverySidebar/AdminDeliverySidebar'
 import AdminDelivery from '../pages/adminDelivery/AdminDelivery'
+import WebsiteAdmin from '../pages/websiteAdmin/WebsiteAdmin'
 
 const AppRoutes = () => {
     const location = useLocation()
@@ -22,6 +23,7 @@ const AppRoutes = () => {
         if (userRole === 'admin') return <Navigate to="/admin" replace />
         if (userRole === 'delivery') return <Navigate to="/delivery" replace />
         if (userRole === 'adminDelivery') return <Navigate to="/adminDelivery" replace />
+        if (userRole === 'websiteAdmin') return <Navigate to="/websiteAdmin" replace />
     }
 
     return (
@@ -31,6 +33,7 @@ const AppRoutes = () => {
             <Route path="/admin/*" element={<Admin />} />
             <Route path="/adminDelivery/*" element={<AdminDelivery />} />
             <Route path="/delivery/*" element={<Delivery />} />
+            <Route path="/websiteAdmin/*" element={<WebsiteAdmin />} />
 
             {/* Default redirects */}
             <Route
@@ -41,7 +44,8 @@ const AppRoutes = () => {
                             userRole === 'admin' ? <Navigate to="/admin" replace /> :
                                 userRole === 'delivery' ? <Navigate to="/delivery" replace /> :
                                     userRole === 'adminDelivery' ? <Navigate to="/adminDelivery" replace /> :
-                                        <Navigate to="/login" replace />
+                                        userRole === 'websiteAdmin' ? <Navigate to="/websiteAdmin" replace /> :
+                                            <Navigate to="/login" replace />
                     ) : (
                         <Navigate to="/login" replace />
                     )

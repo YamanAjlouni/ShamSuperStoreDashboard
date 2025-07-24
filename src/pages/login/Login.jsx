@@ -45,6 +45,10 @@ const Login = () => {
                 localStorage.setItem('userRole', 'adminDelivery');
                 localStorage.setItem('isAuthenticated', 'true');
                 navigate('/adminDelivery');
+            } else if (formData.email === 'websiteadmin@websiteadmin.websiteadmin' && formData.password === '123123') {
+                localStorage.setItem('userRole', 'websiteAdmin');
+                localStorage.setItem('isAuthenticated', 'true');
+                navigate('/websiteAdmin');
             } else {
                 setError('Invalid email or password');
             }
@@ -159,6 +163,7 @@ const Login = () => {
                         <p><strong>Admin:</strong> admin@admin.admin / 123123</p>
                         <p><strong>Delivery:</strong> delivery@delivery.delivery / 123123</p>
                         <p><strong>Admin Delivery:</strong> admindelivery@admindelivery.admindelivery / 123123</p>
+                        <p><strong>Website Admin:</strong> websiteadmin@websiteadmin.websiteadmin / 123123</p>
                     </div>
                 </div>
             </div>
