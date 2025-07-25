@@ -7,7 +7,6 @@ import WebsiteAdminSidebar from '../../components/websiteAdmin/websiteAdminSideb
 import WebsiteAdminDashboard from './websiteAdminDashboard/WebsiteAdminDashboard'
 import IntroSectionSwiper from './introSectionSwiper/IntroSectionSwiper'
 import FeaturesProducts from './featuresProducts/FeaturesProducts'
-import HighlightsSection from './highlightsSection/HighlightsSection'
 
 import './WebsiteAdmin.scss'
 
@@ -119,7 +118,6 @@ const WebsiteAdmin = () => {
                         <Route path="/features-products" element={<FeaturesProducts />} />
 
                         {/* Highlights Section */}
-                        <Route path="/highlights" element={<HighlightsSection />} />
                         <Route path="/first-highlight" element={<PlaceholderPage pageName="First Highlight" />} />
                         <Route path="/second-highlight" element={<PlaceholderPage pageName="Second Highlight" />} />
                         <Route path="/third-highlight" element={<PlaceholderPage pageName="Third Highlight" />} />
