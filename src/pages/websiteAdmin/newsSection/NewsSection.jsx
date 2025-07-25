@@ -1,47 +1,47 @@
 import { useState, useEffect } from 'react'
-import './FirstHighlight.scss'
+import './NewsSection.scss'
 
-const FirstHighlight = () => {
-    const [highlights, setHighlights] = useState([
+const NewsSection = () => {
+    const [newsItems, setNewsItems] = useState([
         {
             id: 1,
-            smallTitle: 'New Look',
-            bigTitle: 'Home Furniture',
-            shopLink: 'furniture',
-            image: '/api/placeholder/300/200'
+            title: 'Latest Product Launch',
+            description: 'We are excited to announce the launch of our new premium collection featuring innovative designs and sustainable materials that will revolutionize your shopping experience.',
+            image: '/api/placeholder/300/200',
+            publishDate: '2024-01-15'
         },
         {
             id: 2,
-            smallTitle: 'New Products',
-            bigTitle: 'Bags and Luggage',
-            shopLink: 'bags',
-            image: '/api/placeholder/300/200'
+            title: 'Summer Sale Event',
+            description: 'Join us for the biggest summer sale of the year! Get up to 50% off on selected items across all categories. Limited time offer with exclusive deals for our valued customers.',
+            image: '/api/placeholder/300/200',
+            publishDate: '2024-01-10'
         },
         {
             id: 3,
-            smallTitle: 'At Lowest Price',
-            bigTitle: 'Arts and Accessories',
-            shopLink: 'arts',
-            image: '/api/placeholder/300/200'
+            title: 'Store Expansion News',
+            description: 'We are thrilled to share that our company is expanding to new locations! Three new stores will be opening this quarter, bringing our products closer to you.',
+            image: '/api/placeholder/300/200',
+            publishDate: '2024-01-05'
         }
     ])
 
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [editingHighlight, setEditingHighlight] = useState(null)
+    const [editingNews, setEditingNews] = useState(null)
     const [formData, setFormData] = useState({
-        smallTitle: '',
-        bigTitle: '',
-        shopLink: '',
-        image: ''
+        title: '',
+        description: '',
+        image: '',
+        publishDate: ''
     })
 
-    const handleEdit = (highlight) => {
-        setEditingHighlight(highlight)
+    const handleEdit = (newsItem) => {
+        setEditingNews(newsItem)
         setFormData({
-            smallTitle: highlight.smallTitle,
-            bigTitle: highlight.bigTitle,
-            shopLink: highlight.shopLink,
-            image: highlight.image
+            title: newsItem.title,
+            description: newsItem.description,
+            image: newsItem.image,
+            publishDate: newsItem.publishDate
         })
         setIsModalOpen(true)
     }
@@ -49,15 +49,15 @@ const FirstHighlight = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        // Update existing highlight
-        setHighlights(highlights.map(h =>
-            h.id === editingHighlight.id
-                ? { ...h, ...formData }
-                : h
+        // Update existing news item
+        setNewsItems(newsItems.map(item =>
+            item.id === editingNews.id
+                ? { ...item, ...formData }
+                : item
         ))
 
         setIsModalOpen(false)
-        setEditingHighlight(null)
+        setEditingNews(null)
     }
 
     const handleInputChange = (e) => {
@@ -82,24 +82,29 @@ const FirstHighlight = () => {
         }
     }
 
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' }
+        return new Date(dateString).toLocaleDateString(undefined, options)
+    }
+
     return (
-        <div className="first-highlight-admin">
+        <div className="news-section-admin">
             <div className="admin-header">
                 <div className="header-content">
-                    <h1>First Highlight Section</h1>
-                    <p>Manage your website's main highlight cards with images, titles, and shop links</p>
+                    <h1>News Section</h1>
+                    <p>Manage your website's news articles and announcements</p>
                 </div>
             </div>
 
-            <div className="highlights-grid">
-                {highlights.map(highlight => (
-                    <div key={highlight.id} className="highlight-card">
+            <div className="news-grid">
+                {newsItems.map(newsItem => (
+                    <div key={newsItem.id} className="news-card">
                         <div className="card-header">
                             <div className="card-number">
-                                <span>Highlight {highlight.id}</span>
+                                <span>News {newsItem.id}</span>
                             </div>
                             <div className="card-actions">
-                                <button className="btn-icon btn-edit" onClick={() => handleEdit(highlight)}>
+                                <button className="btn-icon btn-edit" onClick={() => handleEdit(newsItem)}>
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
@@ -109,15 +114,15 @@ const FirstHighlight = () => {
 
                         <div className="card-preview">
                             <div className="preview-image">
-                                <img src={highlight.image} alt={highlight.bigTitle} />
+                                <img src={newsItem.image} alt={newsItem.title} />
                             </div>
                             <div className="preview-content">
-                                <span className="small-title">{highlight.smallTitle}</span>
-                                <h3 className="big-title">{highlight.bigTitle}</h3>
-                                <div className="shop-link">
-                                    <span className="link-preview">shop/{highlight.shopLink}</span>
-                                    <button className="shop-btn">Shop</button>
-                                </div>
+                                <div className="publish-date">{formatDate(newsItem.publishDate)}</div>
+                                <h3 className="news-title">{newsItem.title}</h3>
+                                <p className="news-description">{newsItem.description}</p>
+                                {/* <div className="read-more">
+                                    <button className="read-more-btn">Read More</button>
+                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -129,7 +134,7 @@ const FirstHighlight = () => {
                 <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h2>Edit Highlight</h2>
+                            <h2>Edit News Article</h2>
                             <button className="modal-close" onClick={() => setIsModalOpen(false)}>
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -139,44 +144,39 @@ const FirstHighlight = () => {
 
                         <form className="modal-form" onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label>Small Title</label>
+                                <label>News Title</label>
                                 <input
                                     type="text"
-                                    name="smallTitle"
-                                    value={formData.smallTitle}
+                                    name="title"
+                                    value={formData.title}
                                     onChange={handleInputChange}
-                                    placeholder="e.g. New Look, New Products"
+                                    placeholder="e.g. Latest Product Launch, Summer Sale Event"
                                     required
                                 />
                             </div>
 
                             <div className="form-group">
-                                <label>Big Title</label>
-                                <input
-                                    type="text"
-                                    name="bigTitle"
-                                    value={formData.bigTitle}
+                                <label>Description</label>
+                                <textarea
+                                    name="description"
+                                    value={formData.description}
                                     onChange={handleInputChange}
-                                    placeholder="e.g. Home Furniture, Bags and Luggage"
+                                    placeholder="Write a detailed description of the news article..."
+                                    rows={5}
                                     required
                                 />
                             </div>
 
-                            <div className="form-group">
-                                <label>Shop Link</label>
-                                <div className="link-input">
-                                    <span className="link-prefix">shop/</span>
-                                    <input
-                                        type="text"
-                                        name="shopLink"
-                                        value={formData.shopLink}
-                                        onChange={handleInputChange}
-                                        placeholder="furniture, bags, arts, etc."
-                                        required
-                                    />
-                                </div>
-                                <small>Only enter the category name. The "shop/" prefix will be added automatically.</small>
-                            </div>
+                            {/* <div className="form-group">
+                                <label>Publish Date</label>
+                                <input
+                                    type="date"
+                                    name="publishDate"
+                                    value={formData.publishDate}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </div> */}
 
                             <div className="form-group">
                                 <label>Image</label>
@@ -206,7 +206,7 @@ const FirstHighlight = () => {
                                     Cancel
                                 </button>
                                 <button type="submit" className="btn-primary">
-                                    Update Highlight
+                                    Update News Article
                                 </button>
                             </div>
                         </form>
@@ -217,4 +217,4 @@ const FirstHighlight = () => {
     )
 }
 
-export default FirstHighlight
+export default NewsSection

@@ -8,27 +8,28 @@ const IntroSectionSwiper = () => {
             image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
             smallTitle: 'SPRING AND SUMMER 2025',
             mainTitle: "Men's Fashion",
-            buttonText: 'SHOP ACCESSORIES',
-            buttonLink: '/accessories',
-            isActive: true
+            shopLink: 'mens-fashion'
         },
         {
             id: 2,
             image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
             smallTitle: 'NEW COLLECTION',
             mainTitle: "Women's Style",
-            buttonText: 'EXPLORE NOW',
-            buttonLink: '/women',
-            isActive: true
+            shopLink: 'womens-style'
         },
         {
             id: 3,
             image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
             smallTitle: 'LIMITED EDITION',
             mainTitle: 'Premium Collection',
-            buttonText: 'SHOP PREMIUM',
-            buttonLink: '/premium',
-            isActive: false
+            shopLink: 'premium'
+        },
+        {
+            id: 4,
+            image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            smallTitle: 'EXCLUSIVE DEALS',
+            mainTitle: 'Accessories Collection',
+            shopLink: 'accessories'
         }
     ])
 
@@ -43,16 +44,14 @@ const IntroSectionSwiper = () => {
         image: '',
         smallTitle: '',
         mainTitle: '',
-        buttonText: '',
-        buttonLink: '',
-        isActive: true
+        shopLink: ''
     })
 
     const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target
+        const { name, value } = e.target
         setFormData(prev => ({
             ...prev,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: value
         }))
     }
 
@@ -70,21 +69,14 @@ const IntroSectionSwiper = () => {
         }
     }
 
-    const openModal = (slide = null) => {
-        if (slide) {
-            setEditingSlide(slide)
-            setFormData(slide)
-        } else {
-            setEditingSlide(null)
-            setFormData({
-                image: '',
-                smallTitle: '',
-                mainTitle: '',
-                buttonText: '',
-                buttonLink: '',
-                isActive: true
-            })
-        }
+    const openModal = (slide) => {
+        setEditingSlide(slide)
+        setFormData({
+            image: slide.image,
+            smallTitle: slide.smallTitle,
+            mainTitle: slide.mainTitle,
+            shopLink: slide.shopLink
+        })
         setIsModalOpen(true)
     }
 
@@ -95,9 +87,7 @@ const IntroSectionSwiper = () => {
             image: '',
             smallTitle: '',
             mainTitle: '',
-            buttonText: '',
-            buttonLink: '',
-            isActive: true
+            shopLink: ''
         })
     }
 
@@ -107,51 +97,14 @@ const IntroSectionSwiper = () => {
             return
         }
 
-        if (editingSlide) {
-            // Update existing slide
-            setSlides(prev => prev.map(slide =>
-                slide.id === editingSlide.id
-                    ? { ...formData, id: editingSlide.id }
-                    : slide
-            ))
-        } else {
-            // Add new slide
-            const newSlide = {
-                ...formData,
-                id: Date.now()
-            }
-            setSlides(prev => [...prev, newSlide])
-        }
-        closeModal()
-    }
-
-    const handleDeleteSlide = (slideId) => {
-        if (slides.length <= 1) {
-            alert('You must have at least one slide')
-            return
-        }
-
-        if (window.confirm('Are you sure you want to delete this slide?')) {
-            setSlides(prev => prev.filter(slide => slide.id !== slideId))
-            if (currentSlide >= slides.length - 1) {
-                setCurrentSlide(0)
-            }
-        }
-    }
-
-    const toggleSlideStatus = (slideId) => {
+        // Update existing slide
         setSlides(prev => prev.map(slide =>
-            slide.id === slideId
-                ? { ...slide, isActive: !slide.isActive }
+            slide.id === editingSlide.id
+                ? { ...formData, id: editingSlide.id }
                 : slide
         ))
-    }
 
-    const moveSlide = (fromIndex, toIndex) => {
-        const newSlides = [...slides]
-        const [movedSlide] = newSlides.splice(fromIndex, 1)
-        newSlides.splice(toIndex, 0, movedSlide)
-        setSlides(newSlides)
+        closeModal()
     }
 
     const nextSlide = () => {
@@ -162,14 +115,12 @@ const IntroSectionSwiper = () => {
         setCurrentSlide(prev => (prev - 1 + slides.length) % slides.length)
     }
 
-    const activeSlides = slides.filter(slide => slide.isActive)
-
     return (
         <div className="intro-section-swiper">
-            <div className="page-header">
+            <div className="admin-header">
                 <div className="header-content">
                     <h1>Intro Section Swiper</h1>
-                    <p>Manage your homepage hero slider content</p>
+                    <p>Manage your homepage hero slider content with 4 fixed slides</p>
                 </div>
                 <div className="header-actions">
                     <button
@@ -182,12 +133,6 @@ const IntroSectionSwiper = () => {
                         </svg>
                         {isPreviewMode ? 'Exit Preview' : 'Preview'}
                     </button>
-                    <button className="add-slide-btn" onClick={() => openModal()}>
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                        Add New Slide
-                    </button>
                 </div>
             </div>
 
@@ -196,53 +141,47 @@ const IntroSectionSwiper = () => {
                 <div className="preview-container">
                     <div className="swiper-preview">
                         <div className="slide-container">
-                            {activeSlides.length > 0 && (
-                                <div className="slide active" key={activeSlides[currentSlide % activeSlides.length]?.id}>
-                                    <div className="slide-image">
-                                        <img
-                                            src={activeSlides[currentSlide % activeSlides.length]?.image}
-                                            alt={activeSlides[currentSlide % activeSlides.length]?.mainTitle}
-                                        />
-                                    </div>
-                                    <div className="slide-content">
-                                        <span className="small-title">
-                                            {activeSlides[currentSlide % activeSlides.length]?.smallTitle}
-                                        </span>
-                                        <h2 className="main-title">
-                                            {activeSlides[currentSlide % activeSlides.length]?.mainTitle}
-                                        </h2>
-                                        <button className="cta-button">
-                                            {activeSlides[currentSlide % activeSlides.length]?.buttonText}
-                                        </button>
-                                    </div>
+                            <div className="slide active" key={slides[currentSlide]?.id}>
+                                <div className="slide-image">
+                                    <img
+                                        src={slides[currentSlide]?.image}
+                                        alt={slides[currentSlide]?.mainTitle}
+                                    />
                                 </div>
-                            )}
+                                <div className="slide-content">
+                                    <span className="small-title">
+                                        {slides[currentSlide]?.smallTitle}
+                                    </span>
+                                    <h2 className="main-title">
+                                        {slides[currentSlide]?.mainTitle}
+                                    </h2>
+                                    <button className="cta-button">
+                                        SHOP ACCESSORIES
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
-                        {activeSlides.length > 1 && (
-                            <>
-                                <button className="nav-btn prev" onClick={prevSlide}>
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                                    </svg>
-                                </button>
-                                <button className="nav-btn next" onClick={nextSlide}>
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </button>
+                        <button className="nav-btn prev" onClick={prevSlide}>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button className="nav-btn next" onClick={nextSlide}>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
 
-                                <div className="slide-indicators">
-                                    {activeSlides.map((_, index) => (
-                                        <button
-                                            key={index}
-                                            className={`indicator ${index === currentSlide % activeSlides.length ? 'active' : ''}`}
-                                            onClick={() => setCurrentSlide(index)}
-                                        />
-                                    ))}
-                                </div>
-                            </>
-                        )}
+                        <div className="slide-indicators">
+                            {slides.map((_, index) => (
+                                <button
+                                    key={index}
+                                    className={`indicator ${index === currentSlide ? 'active' : ''}`}
+                                    onClick={() => setCurrentSlide(index)}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}
@@ -252,63 +191,30 @@ const IntroSectionSwiper = () => {
                 <div className="slides-management">
                     <div className="slides-grid">
                         {slides.map((slide, index) => (
-                            <div key={slide.id} className={`slide-card ${!slide.isActive ? 'inactive' : ''}`}>
-                                <div className="slide-preview">
-                                    <img src={slide.image} alt={slide.mainTitle} />
-                                    <div className="slide-overlay">
-                                        <button
-                                            className="edit-btn"
-                                            onClick={() => openModal(slide)}
-                                        >
+                            <div key={slide.id} className="slide-card">
+                                <div className="card-header">
+                                    <div className="card-number">
+                                        <span>Slide {index + 1}</span>
+                                    </div>
+                                    <div className="card-actions">
+                                        <button className="btn-icon btn-edit" onClick={() => openModal(slide)}>
                                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                        </button>
-                                        <button
-                                            className="delete-btn"
-                                            onClick={() => handleDeleteSlide(slide.id)}
-                                        >
-                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                             </svg>
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="slide-info">
-                                    <div className="slide-content-preview">
-                                        {slide.smallTitle && <span className="small-title">{slide.smallTitle}</span>}
-                                        <h3 className="main-title">{slide.mainTitle}</h3>
-                                        {slide.buttonText && <span className="button-text">{slide.buttonText}</span>}
+                                <div className="card-preview">
+                                    <div className="preview-image">
+                                        <img src={slide.image} alt={slide.mainTitle} />
                                     </div>
-
-                                    <div className="slide-actions">
-                                        <button
-                                            className={`status-toggle ${slide.isActive ? 'active' : 'inactive'}`}
-                                            onClick={() => toggleSlideStatus(slide.id)}
-                                        >
-                                            {slide.isActive ? 'Active' : 'Inactive'}
-                                        </button>
-
-                                        <div className="order-controls">
-                                            <button
-                                                className="move-btn"
-                                                onClick={() => moveSlide(index, Math.max(0, index - 1))}
-                                                disabled={index === 0}
-                                            >
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                                                </svg>
-                                            </button>
-                                            <span className="slide-order">#{index + 1}</span>
-                                            <button
-                                                className="move-btn"
-                                                onClick={() => moveSlide(index, Math.min(slides.length - 1, index + 1))}
-                                                disabled={index === slides.length - 1}
-                                            >
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                                </svg>
+                                    <div className="preview-content">
+                                        <span className="small-title">{slide.smallTitle}</span>
+                                        <h3 className="main-title">{slide.mainTitle}</h3>
+                                        <div className="shop-link">
+                                            <span className="link-preview">shop/{slide.shopLink}</span>
+                                            <button className="shop-btn">Shop Accessories
                                             </button>
                                         </div>
                                     </div>
@@ -319,20 +225,20 @@ const IntroSectionSwiper = () => {
                 </div>
             )}
 
-            {/* Modal for Adding/Editing Slides */}
+            {/* Modal for Editing Slides */}
             {isModalOpen && (
                 <div className="modal-overlay" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h3>{editingSlide ? 'Edit Slide' : 'Add New Slide'}</h3>
-                            <button className="close-btn" onClick={closeModal}>
+                            <h2>Edit Slide</h2>
+                            <button className="modal-close" onClick={closeModal}>
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
                         </div>
 
-                        <div className="modal-body">
+                        <form className="modal-form" onSubmit={(e) => { e.preventDefault(); handleSaveSlide(); }}>
                             <div className="form-group">
                                 <label>Slide Image</label>
                                 <div className="image-upload">
@@ -341,94 +247,71 @@ const IntroSectionSwiper = () => {
                                         ref={fileInputRef}
                                         onChange={handleImageUpload}
                                         accept="image/*"
-                                        style={{ display: 'none' }}
+                                        id="image-upload"
                                     />
-                                    <div className="image-preview" onClick={() => fileInputRef.current?.click()}>
-                                        {formData.image ? (
+                                    <label htmlFor="image-upload" className="upload-btn">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        Choose Image
+                                    </label>
+                                    {formData.image && (
+                                        <div className="image-preview">
                                             <img src={formData.image} alt="Preview" />
-                                        ) : (
-                                            <div className="upload-placeholder">
-                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                                                </svg>
-                                                <span>Click to upload image</span>
-                                            </div>
-                                        )}
-                                    </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="smallTitle">Small Title (Optional)</label>
+                                <label>Small Title</label>
                                 <input
                                     type="text"
-                                    id="smallTitle"
                                     name="smallTitle"
                                     value={formData.smallTitle}
                                     onChange={handleInputChange}
-                                    placeholder="e.g., SPRING AND SUMMER 2025"
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="mainTitle">Main Title *</label>
-                                <input
-                                    type="text"
-                                    id="mainTitle"
-                                    name="mainTitle"
-                                    value={formData.mainTitle}
-                                    onChange={handleInputChange}
-                                    placeholder="e.g., Men's Fashion"
+                                    placeholder="e.g. SPRING AND SUMMER 2025"
                                     required
                                 />
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="buttonText">Button Text (Optional)</label>
+                                <label>Main Title</label>
                                 <input
                                     type="text"
-                                    id="buttonText"
-                                    name="buttonText"
-                                    value={formData.buttonText}
+                                    name="mainTitle"
+                                    value={formData.mainTitle}
                                     onChange={handleInputChange}
-                                    placeholder="e.g., SHOP ACCESSORIES"
+                                    placeholder="e.g. Men's Fashion"
+                                    required
                                 />
                             </div>
 
-                            {/* <div className="form-group">
-                                <label htmlFor="buttonLink">Button Link (Optional)</label>
-                                <input
-                                    type="text"
-                                    id="buttonLink"
-                                    name="buttonLink"
-                                    value={formData.buttonLink}
-                                    onChange={handleInputChange}
-                                    placeholder="e.g., /accessories"
-                                />
-                            </div> */}
-
-                            <div className="form-group checkbox-group">
-                                <label className="checkbox-label">
+                            <div className="form-group">
+                                <label>Shop Link</label>
+                                <div className="link-input">
+                                    <span className="link-prefix">shop/</span>
                                     <input
-                                        type="checkbox"
-                                        name="isActive"
-                                        checked={formData.isActive}
+                                        type="text"
+                                        name="shopLink"
+                                        value={formData.shopLink}
                                         onChange={handleInputChange}
+                                        placeholder="mens-fashion, womens-style, etc."
+                                        required
                                     />
-                                    <span className="checkmark"></span>
-                                    Active (visible on website)
-                                </label>
+                                </div>
+                                <small>Only enter the category name. The "shop/" prefix will be added automatically.</small>
                             </div>
-                        </div>
 
-                        <div className="modal-footer">
-                            <button className="cancel-btn" onClick={closeModal}>
-                                Cancel
-                            </button>
-                            <button className="save-btn" onClick={handleSaveSlide}>
-                                {editingSlide ? 'Update Slide' : 'Add Slide'}
-                            </button>
-                        </div>
+                            <div className="form-actions">
+                                <button type="button" className="btn-secondary" onClick={closeModal}>
+                                    Cancel
+                                </button>
+                                <button type="submit" className="btn-primary">
+                                    Update Slide
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}

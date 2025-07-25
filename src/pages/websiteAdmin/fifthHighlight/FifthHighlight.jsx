@@ -1,28 +1,31 @@
 import { useState, useEffect } from 'react'
-import './FirstHighlight.scss'
+import './FifthHighlight.scss'
 
-const FirstHighlight = () => {
+const FifthHighlight = () => {
     const [highlights, setHighlights] = useState([
         {
             id: 1,
             smallTitle: 'New Look',
             bigTitle: 'Home Furniture',
             shopLink: 'furniture',
-            image: '/api/placeholder/300/200'
+            image: '/api/placeholder/300/200',
+            size: 'big' // This will be the big card
         },
         {
             id: 2,
             smallTitle: 'New Products',
             bigTitle: 'Bags and Luggage',
             shopLink: 'bags',
-            image: '/api/placeholder/300/200'
+            image: '/api/placeholder/300/200',
+            size: 'small' // This will be a small card
         },
         {
             id: 3,
             smallTitle: 'At Lowest Price',
             bigTitle: 'Arts and Accessories',
             shopLink: 'arts',
-            image: '/api/placeholder/300/200'
+            image: '/api/placeholder/300/200',
+            size: 'small' // This will be a small card
         }
     ])
 
@@ -83,20 +86,20 @@ const FirstHighlight = () => {
     }
 
     return (
-        <div className="first-highlight-admin">
+        <div className="fifth-highlight-admin">
             <div className="admin-header">
                 <div className="header-content">
-                    <h1>First Highlight Section</h1>
-                    <p>Manage your website's main highlight cards with images, titles, and shop links</p>
+                    <h1>Fifth Highlight Section</h1>
+                    <p>Manage your website's fifth highlight cards with images, titles, and shop links</p>
                 </div>
             </div>
 
             <div className="highlights-grid">
                 {highlights.map(highlight => (
-                    <div key={highlight.id} className="highlight-card">
+                    <div key={highlight.id} className={`highlight-card ${highlight.size === 'big' ? 'highlight-card--big' : 'highlight-card--small'}`}>
                         <div className="card-header">
                             <div className="card-number">
-                                <span>Highlight {highlight.id}</span>
+                                <span>Highlight {highlight.id} {highlight.size === 'big' ? '(Big)' : '(Small)'}</span>
                             </div>
                             <div className="card-actions">
                                 <button className="btn-icon btn-edit" onClick={() => handleEdit(highlight)}>
@@ -217,4 +220,4 @@ const FirstHighlight = () => {
     )
 }
 
-export default FirstHighlight
+export default FifthHighlight

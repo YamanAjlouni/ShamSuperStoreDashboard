@@ -7,8 +7,17 @@ import WebsiteAdminSidebar from '../../components/websiteAdmin/websiteAdminSideb
 import WebsiteAdminDashboard from './websiteAdminDashboard/WebsiteAdminDashboard'
 import IntroSectionSwiper from './introSectionSwiper/IntroSectionSwiper'
 import FeaturesProducts from './featuresProducts/FeaturesProducts'
+import FirstHighlight from './firstHighlight/FirstHighlight'
+import SecondHighlight from './secondHighlight/SecondHighlight'
+import ThirdHighlight from './thirdHighlight/ThirdHighlight'
+import FourthHighlight from './fourthHighlight/FourthHighlight'
+import FifthHighlight from './fifthHighlight/FifthHighlight'
+import SixthHighlight from './sixthHighlight/SixthHighlight'
+import NewsSection from './newsSection/NewsSection'
+
 
 import './WebsiteAdmin.scss'
+
 
 const PlaceholderPage = ({ pageName }) => (
     <div className="page-placeholder">
@@ -118,46 +127,15 @@ const WebsiteAdmin = () => {
                         <Route path="/features-products" element={<FeaturesProducts />} />
 
                         {/* Highlights Section */}
-                        <Route path="/first-highlight" element={<PlaceholderPage pageName="First Highlight" />} />
-                        <Route path="/second-highlight" element={<PlaceholderPage pageName="Second Highlight" />} />
-                        <Route path="/third-highlight" element={<PlaceholderPage pageName="Third Highlight" />} />
+                        <Route path="/first-highlight" element={<FirstHighlight />} />
+                        <Route path="/second-highlight" element={<SecondHighlight />} />
+                        <Route path="/third-highlight" element={<ThirdHighlight />} />
+                        <Route path="/fourth-highlight" element={<FourthHighlight />} />
+                        <Route path="/fifth-highlight" element={<FifthHighlight />} />
+                        <Route path="/sixth-highlight" element={<SixthHighlight />} />
 
                         {/* News Section */}
-                        <Route path="/news" element={<PlaceholderPage pageName="News Section" />} />
-
-                        {/* Website Content Management */}
-                        <Route path="/pages" element={<PlaceholderPage pageName="Pages Management" />} />
-                        <Route path="/content" element={<PlaceholderPage pageName="Content Management" />} />
-                        <Route path="/menus" element={<PlaceholderPage pageName="Menu Management" />} />
-                        <Route path="/sliders" element={<PlaceholderPage pageName="Slider Management" />} />
-                        <Route path="/banners" element={<PlaceholderPage pageName="Banner Management" />} />
-
-                        {/* SEO & Marketing */}
-                        <Route path="/seo" element={<PlaceholderPage pageName="SEO Management" />} />
-                        <Route path="/meta" element={<PlaceholderPage pageName="Meta Tags" />} />
-                        <Route path="/analytics" element={<PlaceholderPage pageName="Website Analytics" />} />
-                        <Route path="/marketing" element={<PlaceholderPage pageName="Marketing Tools" />} />
-
-                        {/* Design & Appearance */}
-                        <Route path="/themes" element={<PlaceholderPage pageName="Theme Management" />} />
-                        <Route path="/customization" element={<PlaceholderPage pageName="Website Customization" />} />
-                        <Route path="/media" element={<PlaceholderPage pageName="Media Library" />} />
-
-                        {/* Website Settings */}
-                        <Route path="/general-settings" element={<PlaceholderPage pageName="General Settings" />} />
-                        <Route path="/contact-info" element={<PlaceholderPage pageName="Contact Information" />} />
-                        <Route path="/social-media" element={<PlaceholderPage pageName="Social Media Settings" />} />
-                        <Route path="/maintenance" element={<PlaceholderPage pageName="Maintenance Mode" />} />
-
-                        {/* Security & Performance */}
-                        <Route path="/security" element={<PlaceholderPage pageName="Website Security" />} />
-                        <Route path="/backups" element={<PlaceholderPage pageName="Website Backups" />} />
-                        <Route path="/performance" element={<PlaceholderPage pageName="Performance Optimization" />} />
-
-                        {/* Notifications & Profile */}
-                        <Route path="/notifications" element={<PlaceholderPage pageName="Notifications" />} />
-                        <Route path="/profile" element={<PlaceholderPage pageName="Website Admin Profile" />} />
-
+                        <Route path="/news" element={<NewsSection />} />
                         {/* Error Pages */}
                         <Route path="/404" element={<PlaceholderPage pageName="Page Not Found" />} />
 

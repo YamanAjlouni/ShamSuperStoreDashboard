@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import './FirstHighlight.scss'
+import './ThirdHighlight.scss'
 
-const FirstHighlight = () => {
+const ThirdHighlight = () => {
     const [highlights, setHighlights] = useState([
         {
             id: 1,
@@ -83,11 +83,11 @@ const FirstHighlight = () => {
     }
 
     return (
-        <div className="first-highlight-admin">
+        <div className="third-highlight-admin">
             <div className="admin-header">
                 <div className="header-content">
-                    <h1>First Highlight Section</h1>
-                    <p>Manage your website's main highlight cards with images, titles, and shop links</p>
+                    <h1>Third Highlight Section</h1>
+                    <p>Manage your website's third highlight cards with images, titles, and shop links</p>
                 </div>
             </div>
 
@@ -217,4 +217,4 @@ const FirstHighlight = () => {
     )
 }
 
-export default FirstHighlight
+export default ThirdHighlight
