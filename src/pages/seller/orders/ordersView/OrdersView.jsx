@@ -5,9 +5,10 @@ import {
     Calendar, MapPin, Package, DollarSign, User,
     Phone, CreditCard, Truck, Clock, CheckCircle,
     XCircle, AlertCircle, PlayCircle, FileText,
-    Edit, MessageSquare
+    Edit, MessageSquare, Navigation
 } from 'lucide-react'
 import './OrdersView.scss'
+import MapModal from '../../../../components/mapModal/MapModal'
 
 const OrdersView = () => {
     const navigate = useNavigate()
@@ -17,12 +18,13 @@ const OrdersView = () => {
     const [actionType, setActionType] = useState('')
     const [orderNotes, setOrderNotes] = useState('')
     const [newNote, setNewNote] = useState('')
+    const [showMapModal, setShowMapModal] = useState(false)
 
     // Mock order data
     const mockOrderData = {
         id: 1,
         orderNumber: 'ORD-001',
-        status: 'pending',
+        status: 'processing', // Changed to processing to show the directions button
         items: [
             {
                 id: 1,
@@ -57,7 +59,16 @@ const OrdersView = () => {
             city: 'Brooklyn',
             state: 'NY',
             zip: '11201',
-            country: 'United States'
+            country: 'United States',
+            coordinates: { lat: 40.7128, lng: -74.0060 }
+        },
+        sellerAddress: {
+            street: '789 Business Plaza',
+            city: 'New York',
+            state: 'NY',
+            zip: '10002',
+            country: 'United States',
+            coordinates: { lat: 40.7589, lng: -73.9851 }
         },
         payment: {
             method: 'Credit Card',
@@ -75,9 +86,15 @@ const OrdersView = () => {
             trackingNumber: 'FX123456789',
             estimatedDelivery: '2025-06-25'
         },
+        driver: {
+            id: 'DRV001',
+            name: 'John Smith',
+            phone: '+1 (555) 123-4567',
+            vehicleType: 'Van'
+        },
         dates: {
             ordered: '2025-06-20T10:30:00Z',
-            processed: null,
+            processed: '2025-06-20T11:15:00Z',
             shipped: null,
             delivered: null
         },
@@ -88,6 +105,12 @@ const OrdersView = () => {
                 date: '2025-06-20T10:30:00Z',
                 description: 'Order placed by customer',
                 icon: <Package size={16} />
+            },
+            {
+                status: 'processing',
+                date: '2025-06-20T11:15:00Z',
+                description: 'Order accepted and being prepared',
+                icon: <PlayCircle size={16} />
             }
         ],
         notes: [
@@ -97,6 +120,13 @@ const OrdersView = () => {
                 content: 'Order automatically created from website',
                 date: '2025-06-20T10:30:00Z',
                 type: 'system'
+            },
+            {
+                id: 2,
+                author: 'Seller',
+                content: 'Order accepted and being prepared for pickup',
+                date: '2025-06-20T11:15:00Z',
+                type: 'seller'
             }
         ]
     }
@@ -147,10 +177,10 @@ const OrdersView = () => {
         if (newNote.trim()) {
             const note = {
                 id: Date.now(),
-                author: 'Admin',
+                author: 'Seller',
                 content: newNote,
                 date: new Date().toISOString(),
-                type: 'admin'
+                type: 'seller'
             }
 
             setOrderData(prev => ({
@@ -160,6 +190,39 @@ const OrdersView = () => {
 
             setNewNote('')
         }
+    }
+
+    // Handle opening map modal
+    const handleOpenMap = () => {
+        setShowMapModal(true)
+    }
+
+    // Get pickup location (seller's location)
+    const getPickupLocation = () => {
+        if (!orderData?.sellerAddress) return null
+
+        return {
+            street: orderData.sellerAddress.street,
+            full: `${orderData.sellerAddress.street}, ${orderData.sellerAddress.city}, ${orderData.sellerAddress.state} ${orderData.sellerAddress.zip}`,
+            coordinates: orderData.sellerAddress.coordinates || { lat: 40.7589, lng: -73.9851 }
+        }
+    }
+
+    // Get delivery location
+    const getDeliveryLocation = () => {
+        if (!orderData?.shippingAddress) return null
+
+        return {
+            street: orderData.shippingAddress.street,
+            full: `${orderData.shippingAddress.street}${orderData.shippingAddress.street2 ? ', ' + orderData.shippingAddress.street2 : ''}, ${orderData.shippingAddress.city}, ${orderData.shippingAddress.state} ${orderData.shippingAddress.zip}`,
+            coordinates: orderData.shippingAddress.coordinates || { lat: 40.7128, lng: -74.0060 }
+        }
+    }
+
+    // Simulate driver location (you can get this from GPS)
+    const getDriverLocation = () => {
+        // This would come from GPS in a real app
+        return { lat: 40.7300, lng: -73.9950 }
     }
 
     const formatAddress = (address) => {
@@ -203,6 +266,20 @@ const OrdersView = () => {
             )
         }
 
+        // Add directions button when order is processing and has driver
+        if (orderData?.status === 'processing' && orderData?.driver) {
+            buttons.push(
+                <button
+                    key="directions"
+                    className="action-btn directions-btn"
+                    onClick={handleOpenMap}
+                >
+                    <Navigation size={16} />
+                    Get Directions
+                </button>
+            )
+        }
+
         // Common actions for all statuses
         buttons.push(
             <button key="print" className="action-btn secondary-btn">
@@ -231,6 +308,9 @@ const OrdersView = () => {
             </div>
         )
     }
+
+    const pickupLocation = getPickupLocation()
+    const deliveryLocation = getDeliveryLocation()
 
     return (
         <div className="orders-view-page">
@@ -261,6 +341,12 @@ const OrdersView = () => {
                                 <Package size={14} />
                                 {orderData.store}
                             </span>
+                            {orderData.driver && (
+                                <span className="driver-info">
+                                    <Truck size={14} />
+                                    Driver: {orderData.driver.name}
+                                </span>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -354,6 +440,36 @@ const OrdersView = () => {
 
                 {/* Right Column - Sidebar */}
                 <div className="order-sidebar">
+                    {/* Driver Information */}
+                    {orderData.driver && (
+                        <div className="section driver-info-section">
+                            <h3>
+                                <Truck size={18} />
+                                Driver Information
+                            </h3>
+                            <div className="driver-content">
+                                <div className="driver-details">
+                                    <div className="driver-item">
+                                        <span className="label">Name:</span>
+                                        <span className="value">{orderData.driver.name}</span>
+                                    </div>
+                                    <div className="driver-item">
+                                        <span className="label">Phone:</span>
+                                        <span className="value">{orderData.driver.phone}</span>
+                                    </div>
+                                    <div className="driver-item">
+                                        <span className="label">Vehicle:</span>
+                                        <span className="value">{orderData.driver.vehicleType}</span>
+                                    </div>
+                                    <div className="driver-item">
+                                        <span className="label">Driver ID:</span>
+                                        <span className="value">{orderData.driver.id}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Payment Summary */}
                     <div className="section payment-summary">
                         <h3>
@@ -501,6 +617,15 @@ const OrdersView = () => {
                     </div>
                 </div>
             )}
+
+            {/* Map Modal */}
+            <MapModal
+                isOpen={showMapModal}
+                onClose={() => setShowMapModal(false)}
+                pickupLocation={pickupLocation}
+                deliveryLocation={deliveryLocation}
+                driverLocation={getDriverLocation()}
+            />
         </div>
     )
 }

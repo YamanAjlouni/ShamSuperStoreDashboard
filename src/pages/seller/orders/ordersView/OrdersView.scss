@@ -118,7 +118,8 @@
                     }
 
                     .order-date,
-                    .store-name {
+                    .store-name,
+                    .driver-info {
                         display: flex;
                         align-items: center;
                         gap: 0.5rem;
@@ -131,6 +132,13 @@
                         svg {
                             color: $primary-color;
                         }
+                    }
+
+                    .driver-info {
+                        background: rgba(66, 103, 178, 0.1);
+                        color: $primary-color;
+                        border: 1px solid rgba(66, 103, 178, 0.2);
+                        font-weight: 500;
                     }
                 }
             }
@@ -173,6 +181,18 @@
                         background: #dc2626;
                         transform: translateY(-2px);
                         box-shadow: $shadow-md;
+                    }
+                }
+
+                &.directions-btn {
+                    background: rgba(66, 103, 178, 0.1);
+                    color: $primary-color;
+                    border: 1px solid rgba(66, 103, 178, 0.3);
+
+                    &:hover {
+                        background: rgba(66, 103, 178, 0.2);
+                        transform: translateY(-1px);
+                        box-shadow: $shadow-sm;
                     }
                 }
 
@@ -414,6 +434,40 @@
         }
 
         .order-sidebar {
+            .driver-info-section {
+                .driver-content {
+                    .driver-details {
+                        background: $gray-50;
+                        border-radius: $radius-lg;
+                        padding: 1.5rem;
+                        border: 1px solid $gray-100;
+
+                        .driver-item {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 0.75rem 0;
+                            border-bottom: 1px solid $gray-100;
+                            font-size: 0.875rem;
+
+                            &:last-child {
+                                border-bottom: none;
+                            }
+
+                            .label {
+                                color: $text-light;
+                                font-weight: 500;
+                            }
+
+                            .value {
+                                color: $text-dark;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+                }
+            }
+
             .payment-summary {
                 .payment-method {
                     display: flex;
@@ -540,6 +594,11 @@
                         &.system {
                             background: rgba(59, 130, 246, 0.05);
                             border-color: rgba(59, 130, 246, 0.1);
+                        }
+
+                        &.seller {
+                            background: rgba(16, 185, 129, 0.05);
+                            border-color: rgba(16, 185, 129, 0.1);
                         }
 
                         .note-header {
@@ -755,11 +814,13 @@
             .header-actions {
                 align-self: stretch;
                 justify-content: space-between;
+                flex-wrap: wrap;
 
                 .action-btn {
                     flex: 1;
                     justify-content: center;
                     padding: 1rem;
+                    min-width: 120px;
                 }
             }
         }
@@ -826,6 +887,10 @@
             .header-actions {
                 flex-direction: column;
                 gap: 0.5rem;
+
+                .action-btn {
+                    min-width: auto;
+                }
             }
         }
 

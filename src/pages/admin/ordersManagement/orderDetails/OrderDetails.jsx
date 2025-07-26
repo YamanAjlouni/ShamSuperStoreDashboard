@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import './OrderDetails.scss'
+import MapModal from '../../../../components/mapModal/MapModal'
 
 const OrderDetails = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const [order, setOrder] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [showMapModal, setShowMapModal] = useState(false)
 
     // Mock order data with complete details
     const mockOrderData = {
         id: id,
         orderNumber: '#12345',
-        status: 'delivered',
+        status: 'processing', // Changed to processing to show the directions button
         orderDate: '2024-06-25T10:30:00',
         deliveryDate: '2024-06-25T15:45:00',
 
@@ -105,7 +107,8 @@ const OrderDetails = () => {
             method: 'Express Delivery',
             trackingNumber: 'TRK123456789',
             estimatedDelivery: '2024-06-25',
-            actualDelivery: '2024-06-25T15:45:00'
+            actualDelivery: '2024-06-25T15:45:00',
+            coordinates: { lat: 40.7128, lng: -74.0060 }
         },
 
         // Payment Information
@@ -267,6 +270,45 @@ const OrderDetails = () => {
         }
     }
 
+    // Handle opening map modal
+    const handleOpenMap = () => {
+        setShowMapModal(true)
+    }
+
+    // Get pickup locations from sellers
+    const getPickupLocations = () => {
+        if (!order) return []
+
+        const uniqueSellers = {}
+        order.orderItems.forEach(item => {
+            uniqueSellers[item.seller.id] = {
+                street: item.seller.address.split(',')[0],
+                full: item.seller.address,
+                coordinates: { lat: 40.7589, lng: -73.9851 }, // Mock coordinates
+                sellerName: item.seller.name
+            }
+        })
+
+        return Object.values(uniqueSellers)
+    }
+
+    // Get delivery location
+    const getDeliveryLocation = () => {
+        if (!order) return null
+
+        return {
+            street: order.shipping.address.split(',')[0],
+            full: order.shipping.address,
+            coordinates: order.shipping.coordinates || { lat: 40.7128, lng: -74.0060 }
+        }
+    }
+
+    // Simulate driver location (you can get this from GPS)
+    const getDriverLocation = () => {
+        // This would come from GPS in a real app
+        return { lat: 40.7300, lng: -73.9950 }
+    }
+
     const getStatusBadge = (status) => {
         const statusConfig = {
             pending: { class: 'warning', label: 'Pending', icon: '⏳' },
@@ -368,6 +410,8 @@ const OrderDetails = () => {
     }
 
     const sellerGroups = getSellerGroups()
+    const pickupLocations = getPickupLocations()
+    const deliveryLocation = getDeliveryLocation()
 
     return (
         <div className="order-details">
@@ -409,6 +453,14 @@ const OrderDetails = () => {
                                     Reject Order
                                 </button>
                             </>
+                        )}
+                        {order.status === 'processing' && order.driver && (
+                            <button className="action-btn action-btn--directions" onClick={handleOpenMap}>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                                </svg>
+                                Get Directions
+                            </button>
                         )}
                     </div>
                 </div>
@@ -839,6 +891,17 @@ const OrderDetails = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Map Modal */}
+            <MapModal
+                isOpen={showMapModal}
+                onClose={() => setShowMapModal(false)}
+                pickupLocation={pickupLocations[0]} // Using first pickup location for simplicity
+                deliveryLocation={deliveryLocation}
+                driverLocation={getDriverLocation()}
+                multiple={pickupLocations.length > 1}
+                pickupLocations={pickupLocations}
+            />
         </div>
     )
 }
