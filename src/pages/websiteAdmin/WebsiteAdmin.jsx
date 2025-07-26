@@ -14,10 +14,10 @@ import FourthHighlight from './fourthHighlight/FourthHighlight'
 import FifthHighlight from './fifthHighlight/FifthHighlight'
 import SixthHighlight from './sixthHighlight/SixthHighlight'
 import NewsSection from './newsSection/NewsSection'
-
+import BestSellers from './bestSellers/BestSellers'
+import Settings from './settings/Settings'
 
 import './WebsiteAdmin.scss'
-
 
 const PlaceholderPage = ({ pageName }) => (
     <div className="page-placeholder">
@@ -126,6 +126,9 @@ const WebsiteAdmin = () => {
                         <Route path="/intro-section" element={<IntroSectionSwiper />} />
                         <Route path="/features-products" element={<FeaturesProducts />} />
 
+                        {/* Best Sellers Configuration */}
+                        <Route path="/best-sellers" element={<BestSellers />} />
+
                         {/* Highlights Section */}
                         <Route path="/first-highlight" element={<FirstHighlight />} />
                         <Route path="/second-highlight" element={<SecondHighlight />} />
@@ -136,6 +139,10 @@ const WebsiteAdmin = () => {
 
                         {/* News Section */}
                         <Route path="/news" element={<NewsSection />} />
+
+                        {/* Settings Section */}
+                        <Route path="/settings" element={<Settings />} />
+
                         {/* Error Pages */}
                         <Route path="/404" element={<PlaceholderPage pageName="Page Not Found" />} />
 
