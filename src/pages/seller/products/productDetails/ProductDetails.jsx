@@ -39,7 +39,9 @@ const ProductDetails = () => {
             const mockProduct = {
                 id: parseInt(id),
                 name: 'Wireless Bluetooth Headphones',
+                nameAr: 'سماعات رأس لاسلكية بلوتوث',
                 shortDescription: 'High-quality wireless headphones with noise cancellation',
+                shortDescriptionAr: 'سماعات رأس لاسلكية عالية الجودة مع إلغاء الضوضاء',
                 longDescription: 'These premium wireless headphones feature advanced noise cancellation technology, superior sound quality, and comfortable over-ear design. Perfect for music lovers and professionals who demand the best audio experience.',
                 images: [
                     'https://via.placeholder.com/600',
@@ -77,11 +79,18 @@ const ProductDetails = () => {
                 size: 'One Size',
                 brand: 'SoundMax',
                 tags: ['wireless', 'bluetooth', 'noise-canceling'],
+                tagsAr: ['لاسلكي', 'بلوتوث', 'إلغاء-الضوضاء'],
                 customAttributes: [
                     { name: 'Warranty', value: '2 years' },
                     { name: 'Battery Life', value: '30 hours' },
                     { name: 'Charging Time', value: '2 hours' },
                     { name: 'Bluetooth Version', value: '5.0' }
+                ],
+                customAttributesAr: [
+                    { name: 'الضمان', value: 'سنتان' },
+                    { name: 'عمر البطارية', value: '30 ساعة' },
+                    { name: 'وقت الشحن', value: 'ساعتان' },
+                    { name: 'إصدار البلوتوث', value: '5.0' }
                 ],
                 rating: 4.5,
                 reviewCount: 128,
@@ -251,7 +260,13 @@ const ProductDetails = () => {
                     <div className="product-info">
                         <div className="product-title">
                             <h2>{product.name}</h2>
+                            {product.nameAr && (
+                                <h3 className="arabic-name" dir="rtl">{product.nameAr}</h3>
+                            )}
                             <p className="short-description">{product.shortDescription}</p>
+                            {product.shortDescriptionAr && (
+                                <p className="short-description arabic-description" dir="rtl">{product.shortDescriptionAr}</p>
+                            )}
                         </div>
 
                         {!isPreviewMode && (
@@ -381,10 +396,24 @@ const ProductDetails = () => {
 
                                 {product.customAttributes && product.customAttributes.length > 0 && (
                                     <div className="custom-attributes">
-                                        <h4>Additional Specifications</h4>
+                                        <h4>Additional Specifications (English)</h4>
                                         <div className="spec-grid">
                                             {product.customAttributes.map((attr, index) => (
                                                 <div key={index} className="spec-item">
+                                                    <span className="spec-label">{attr.name}:</span>
+                                                    <span className="spec-value">{attr.value}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {product.customAttributesAr && product.customAttributesAr.length > 0 && (
+                                    <div className="custom-attributes">
+                                        <h4>Additional Specifications (Arabic)</h4>
+                                        <div className="spec-grid">
+                                            {product.customAttributesAr.map((attr, index) => (
+                                                <div key={index} className="spec-item arabic-spec" dir="rtl">
                                                     <span className="spec-label">{attr.name}:</span>
                                                     <span className="spec-value">{attr.value}</span>
                                                 </div>
@@ -498,18 +527,33 @@ const ProductDetails = () => {
                                     </div>
                                 </div>
 
-                                {product.tags && product.tags.length > 0 && (
-                                    <div className="tags">
-                                        <h4>Tags</h4>
-                                        <div className="tags-list">
-                                            {product.tags.map((tag, index) => (
-                                                <span key={index} className="tag">
-                                                    {tag}
-                                                </span>
-                                            ))}
+                                <div className="tags-section">
+                                    {product.tags && product.tags.length > 0 && (
+                                        <div className="tags">
+                                            <h4>Tags (English)</h4>
+                                            <div className="tags-list">
+                                                {product.tags.map((tag, index) => (
+                                                    <span key={index} className="tag">
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
+
+                                    {product.tagsAr && product.tagsAr.length > 0 && (
+                                        <div className="tags">
+                                            <h4>Tags (Arabic)</h4>
+                                            <div className="tags-list arabic-tags" dir="rtl">
+                                                {product.tagsAr.map((tag, index) => (
+                                                    <span key={index} className="tag">
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

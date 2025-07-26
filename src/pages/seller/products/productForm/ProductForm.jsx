@@ -14,7 +14,9 @@ const ProductForm = ({ mode = 'add' }) => {
 
     const [formData, setFormData] = useState({
         name: '',
+        nameAr: '',
         shortDescription: '',
+        shortDescriptionAr: '',
         longDescription: '',
         images: [],
         price: '',
@@ -39,7 +41,7 @@ const ProductForm = ({ mode = 'add' }) => {
         shippingClass: '',
         processTime: '',
         deliveryDriverPickup: '',
-        shippingType: 'free', // Keep original default
+        shippingType: 'free',
         shippingFlatRate: '',
         shippingPercentage: '',
         color: '',
@@ -48,7 +50,9 @@ const ProductForm = ({ mode = 'add' }) => {
         size: '',
         brand: '',
         tags: [],
-        customAttributes: []
+        tagsAr: [],
+        customAttributes: [],
+        customAttributesAr: []
     })
 
     const [dragActive, setDragActive] = useState(false)
@@ -137,7 +141,9 @@ const ProductForm = ({ mode = 'add' }) => {
             // Mock loading existing product data
             const mockProduct = {
                 name: 'Wireless Bluetooth Headphones',
+                nameAr: 'سماعات رأس لاسلكية بلوتوث',
                 shortDescription: 'High-quality wireless headphones with noise cancellation',
+                shortDescriptionAr: 'سماعات رأس لاسلكية عالية الجودة مع إلغاء الضوضاء',
                 longDescription: 'These premium wireless headphones feature advanced noise cancellation technology, superior sound quality, and comfortable over-ear design. Perfect for music lovers and professionals.',
                 images: ['https://via.placeholder.com/400', 'https://via.placeholder.com/400'],
                 price: '99.99',
@@ -174,9 +180,14 @@ const ProductForm = ({ mode = 'add' }) => {
                 size: 'One Size',
                 brand: 'SoundMax',
                 tags: ['wireless', 'bluetooth', 'noise-canceling'],
+                tagsAr: ['لاسلكي', 'بلوتوث', 'إلغاء-الضوضاء'],
                 customAttributes: [
                     { name: 'Warranty', value: '2 years' },
                     { name: 'Battery Life', value: '30 hours' }
+                ],
+                customAttributesAr: [
+                    { name: 'الضمان', value: 'سنتان' },
+                    { name: 'عمر البطارية', value: '30 ساعة' }
                 ]
             }
             setFormData(mockProduct)
@@ -246,20 +257,22 @@ const ProductForm = ({ mode = 'add' }) => {
         }
     }
 
-    const addTag = () => {
-        const newTag = prompt('Enter tag name:')
-        if (newTag && !formData.tags.includes(newTag.toLowerCase())) {
+    const addTag = (isArabic = false) => {
+        const newTag = prompt(isArabic ? 'أدخل اسم العلامة:' : 'Enter tag name:')
+        const tagField = isArabic ? 'tagsAr' : 'tags'
+        if (newTag && !formData[tagField].includes(newTag.toLowerCase())) {
             setFormData(prev => ({
                 ...prev,
-                tags: [...prev.tags, newTag.toLowerCase()]
+                [tagField]: [...prev[tagField], newTag.toLowerCase()]
             }))
         }
     }
 
-    const removeTag = (tagToRemove) => {
+    const removeTag = (tagToRemove, isArabic = false) => {
+        const tagField = isArabic ? 'tagsAr' : 'tags'
         setFormData(prev => ({
             ...prev,
-            tags: prev.tags.filter(tag => tag !== tagToRemove)
+            [tagField]: prev[tagField].filter(tag => tag !== tagToRemove)
         }))
     }
 
@@ -296,21 +309,23 @@ const ProductForm = ({ mode = 'add' }) => {
         }))
     }
 
-    const addCustomAttribute = () => {
-        const name = prompt('Enter attribute name:')
-        const value = prompt('Enter attribute value:')
+    const addCustomAttribute = (isArabic = false) => {
+        const name = prompt(isArabic ? 'أدخل اسم الخاصية:' : 'Enter attribute name:')
+        const value = prompt(isArabic ? 'أدخل قيمة الخاصية:' : 'Enter attribute value:')
+        const attrField = isArabic ? 'customAttributesAr' : 'customAttributes'
         if (name && value) {
             setFormData(prev => ({
                 ...prev,
-                customAttributes: [...prev.customAttributes, { name, value }]
+                [attrField]: [...prev[attrField], { name, value }]
             }))
         }
     }
 
-    const removeCustomAttribute = (index) => {
+    const removeCustomAttribute = (index, isArabic = false) => {
+        const attrField = isArabic ? 'customAttributesAr' : 'customAttributes'
         setFormData(prev => ({
             ...prev,
-            customAttributes: prev.customAttributes.filter((_, i) => i !== index)
+            [attrField]: prev[attrField].filter((_, i) => i !== index)
         }))
     }
 
@@ -457,6 +472,18 @@ const ProductForm = ({ mode = 'add' }) => {
                                         />
                                     </div>
 
+                                    <div className="form-group full-width">
+                                        <label htmlFor="nameAr">Product Name (Arabic)</label>
+                                        <input
+                                            type="text"
+                                            id="nameAr"
+                                            dir="rtl"
+                                            value={formData.nameAr}
+                                            onChange={(e) => handleInputChange('nameAr', e.target.value)}
+                                            placeholder="أدخل اسم المنتج"
+                                        />
+                                    </div>
+
                                     <div className="form-group">
                                         <label htmlFor="sku">SKU</label>
                                         <input
@@ -480,12 +507,25 @@ const ProductForm = ({ mode = 'add' }) => {
                                     </div>
 
                                     <div className="form-group full-width">
-                                        <label htmlFor="shortDescription">Short Description</label>
+                                        <label htmlFor="shortDescription">Short Description *</label>
                                         <textarea
                                             id="shortDescription"
                                             value={formData.shortDescription}
                                             onChange={(e) => handleInputChange('shortDescription', e.target.value)}
                                             placeholder="Brief product description"
+                                            rows="3"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="form-group full-width">
+                                        <label htmlFor="shortDescriptionAr">Short Description (Arabic)</label>
+                                        <textarea
+                                            id="shortDescriptionAr"
+                                            dir="rtl"
+                                            value={formData.shortDescriptionAr}
+                                            onChange={(e) => handleInputChange('shortDescriptionAr', e.target.value)}
+                                            placeholder="وصف مختصر للمنتج"
                                             rows="3"
                                         />
                                     </div>
@@ -559,7 +599,7 @@ const ProductForm = ({ mode = 'add' }) => {
                                     </div>
 
                                     <div className="form-group full-width">
-                                        <label>Tags</label>
+                                        <label>Tags (English)</label>
                                         <div className="tags-container">
                                             <div className="tags-list">
                                                 {formData.tags.map((tag, index) => (
@@ -567,7 +607,7 @@ const ProductForm = ({ mode = 'add' }) => {
                                                         {tag}
                                                         <button
                                                             type="button"
-                                                            onClick={() => removeTag(tag)}
+                                                            onClick={() => removeTag(tag, false)}
                                                             className="remove-tag"
                                                         >
                                                             <X size={12} />
@@ -576,11 +616,39 @@ const ProductForm = ({ mode = 'add' }) => {
                                                 ))}
                                                 <button
                                                     type="button"
-                                                    onClick={addTag}
+                                                    onClick={() => addTag(false)}
                                                     className="add-tag-btn"
                                                 >
                                                     <Plus size={16} />
                                                     Add Tag
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group full-width">
+                                        <label>Tags (Arabic)</label>
+                                        <div className="tags-container">
+                                            <div className="tags-list">
+                                                {formData.tagsAr.map((tag, index) => (
+                                                    <span key={index} className="tag">
+                                                        {tag}
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeTag(tag, true)}
+                                                            className="remove-tag"
+                                                        >
+                                                            <X size={12} />
+                                                        </button>
+                                                    </span>
+                                                ))}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => addTag(true)}
+                                                    className="add-tag-btn"
+                                                >
+                                                    <Plus size={16} />
+                                                    إضافة علامة
                                                 </button>
                                             </div>
                                         </div>
@@ -1148,7 +1216,7 @@ const ProductForm = ({ mode = 'add' }) => {
                             </div>
 
                             <div className="form-section">
-                                <h3>Custom Attributes</h3>
+                                <h3>Custom Attributes (English)</h3>
                                 <div className="custom-attributes">
                                     {formData.customAttributes.map((attr, index) => (
                                         <div key={index} className="custom-attribute-row">
@@ -1158,7 +1226,7 @@ const ProductForm = ({ mode = 'add' }) => {
                                             </div>
                                             <button
                                                 type="button"
-                                                onClick={() => removeCustomAttribute(index)}
+                                                onClick={() => removeCustomAttribute(index, false)}
                                                 className="remove-attribute-btn"
                                             >
                                                 <X size={16} />
@@ -1167,11 +1235,40 @@ const ProductForm = ({ mode = 'add' }) => {
                                     ))}
                                     <button
                                         type="button"
-                                        onClick={addCustomAttribute}
+                                        onClick={() => addCustomAttribute(false)}
                                         className="add-attribute-btn"
                                     >
                                         <Plus size={16} />
                                         Add Custom Attribute
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="form-section">
+                                <h3>Custom Attributes (Arabic)</h3>
+                                <div className="custom-attributes">
+                                    {formData.customAttributesAr.map((attr, index) => (
+                                        <div key={index} className="custom-attribute-row">
+                                            <div className="attribute-info" dir="rtl">
+                                                <span className="attribute-name">{attr.name}:</span>
+                                                <span className="attribute-value">{attr.value}</span>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => removeCustomAttribute(index, true)}
+                                                className="remove-attribute-btn"
+                                            >
+                                                <X size={16} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                    <button
+                                        type="button"
+                                        onClick={() => addCustomAttribute(true)}
+                                        className="add-attribute-btn"
+                                    >
+                                        <Plus size={16} />
+                                        إضافة خاصية مخصصة
                                     </button>
                                 </div>
                             </div>

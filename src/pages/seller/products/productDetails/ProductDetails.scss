@@ -246,11 +246,28 @@
                         line-height: 1.2;
                     }
 
+                    .arabic-name {
+                        font-size: 1.5rem;
+                        font-weight: 600;
+                        color: $primary-color;
+                        margin: 0 0 0.75rem 0;
+                        line-height: 1.3;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans Arabic', sans-serif;
+                    }
+
                     .short-description {
                         color: $text-light;
                         font-size: 1rem;
                         line-height: 1.5;
                         margin: 0;
+
+                        &.arabic-description {
+                            color: $text-light;
+                            margin-top: 0.5rem;
+                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans Arabic', sans-serif;
+                            border-top: 1px solid $gray-200;
+                            padding-top: 0.75rem;
+                        }
                     }
                 }
 
@@ -367,6 +384,7 @@
                 }
 
                 .seller-info-section {
+
                     .stock-info,
                     .sale-type-info {
                         margin-bottom: 1.5rem;
@@ -466,6 +484,12 @@
                                 border-radius: $radius-md;
                                 border: 1px solid $gray-200;
 
+                                &.arabic-spec {
+                                    background: rgba(66, 103, 178, 0.05);
+                                    border-color: rgba(66, 103, 178, 0.1);
+                                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans Arabic', sans-serif;
+                                }
+
                                 .spec-label {
                                     font-weight: 600;
                                     color: $text-dark;
@@ -476,6 +500,10 @@
                                     color: $text-light;
                                     font-size: 0.875rem;
                                     text-align: right;
+
+                                    .arabic-spec & {
+                                        text-align: left;
+                                    }
                                 }
                             }
                         }
@@ -568,17 +596,14 @@
                         grid-template-columns: 1fr 1fr;
                         gap: 2rem;
 
-                        .categories,
-                        .tags {
+                        .categories {
                             h4 {
                                 font-size: 1.125rem;
                                 font-weight: 600;
                                 color: $text-dark;
                                 margin: 0 0 1rem 0;
                             }
-                        }
 
-                        .categories {
                             .category-path {
                                 display: flex;
                                 align-items: center;
@@ -603,11 +628,28 @@
                             }
                         }
 
+                        .tags-section {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 1.5rem;
+                        }
+
                         .tags {
+                            h4 {
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                color: $text-dark;
+                                margin: 0 0 1rem 0;
+                            }
+
                             .tags-list {
                                 display: flex;
                                 flex-wrap: wrap;
                                 gap: 0.5rem;
+
+                                &.arabic-tags {
+                                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans Arabic', sans-serif;
+                                }
 
                                 .tag {
                                     padding: 0.5rem 1rem;
@@ -616,6 +658,12 @@
                                     border-radius: $radius-md;
                                     font-size: 0.875rem;
                                     border: 1px solid $gray-200;
+
+                                    .arabic-tags & {
+                                        background: rgba(66, 103, 178, 0.1);
+                                        color: $primary-color;
+                                        border-color: rgba(66, 103, 178, 0.2);
+                                    }
                                 }
                             }
                         }
@@ -781,11 +829,18 @@
                 .product-info {
                     padding: 1.5rem;
 
-                    .product-title h2 {
-                        font-size: 1.5rem;
+                    .product-title {
+                        h2 {
+                            font-size: 1.5rem;
+                        }
+
+                        .arabic-name {
+                            font-size: 1.25rem;
+                        }
                     }
 
                     .pricing .price-main {
+
                         .sale-price,
                         .regular-price {
                             font-size: 1.5rem;
@@ -818,6 +873,12 @@
 
                     .product-data .data-grid {
                         grid-template-columns: repeat(2, 1fr);
+                    }
+
+                    .categories-tags {
+                        .tags-section {
+                            gap: 1rem;
+                        }
                     }
                 }
             }
@@ -863,8 +924,14 @@
                 .product-info {
                     padding: 1rem;
 
-                    .product-title h2 {
-                        font-size: 1.25rem;
+                    .product-title {
+                        h2 {
+                            font-size: 1.25rem;
+                        }
+
+                        .arabic-name {
+                            font-size: 1.125rem;
+                        }
                     }
 
                     .product-stats .rating {
@@ -892,6 +959,10 @@
 
                         .spec-value {
                             text-align: left;
+                        }
+
+                        &.arabic-spec .spec-value {
+                            text-align: right;
                         }
                     }
 

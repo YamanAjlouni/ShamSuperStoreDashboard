@@ -16,10 +16,13 @@ const CategoriesManagement = () => {
     const [selectedParentCategory, setSelectedParentCategory] = useState('')
     const [selectedParentSubcategory, setSelectedParentSubcategory] = useState('')
     const [newCategoryName, setNewCategoryName] = useState('')
+    const [newCategoryNameAr, setNewCategoryNameAr] = useState('')
     const [newCategoryDescription, setNewCategoryDescription] = useState('')
     const [newSubcategoryName, setNewSubcategoryName] = useState('')
+    const [newSubcategoryNameAr, setNewSubcategoryNameAr] = useState('')
     const [newSubcategoryDescription, setNewSubcategoryDescription] = useState('')
     const [newSubSubcategoryName, setNewSubSubcategoryName] = useState('')
+    const [newSubSubcategoryNameAr, setNewSubSubcategoryNameAr] = useState('')
     const [newSubSubcategoryDescription, setNewSubSubcategoryDescription] = useState('')
 
     // Mock data - replace with actual API call
@@ -32,6 +35,7 @@ const CategoriesManagement = () => {
                     {
                         id: 'CAT001',
                         name: 'Electronics',
+                        nameAr: 'الإلكترونيات',
                         description: 'Electronic devices and accessories',
                         image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=300&h=200&fit=crop',
                         status: 'active',
@@ -43,6 +47,7 @@ const CategoriesManagement = () => {
                             {
                                 id: 'SUB001',
                                 name: 'Smartphones',
+                                nameAr: 'الهواتف الذكية',
                                 description: 'Mobile phones and accessories',
                                 status: 'active',
                                 productsCount: 89,
@@ -52,6 +57,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB001',
                                         name: 'iPhone',
+                                        nameAr: 'آيفون',
                                         description: 'Apple iPhone devices and accessories',
                                         status: 'active',
                                         productsCount: 45,
@@ -60,6 +66,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB002',
                                         name: 'Android',
+                                        nameAr: 'أندرويد',
                                         description: 'Android smartphone devices',
                                         status: 'active',
                                         productsCount: 32,
@@ -68,6 +75,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB003',
                                         name: 'Phone Cases',
+                                        nameAr: 'أغطية الهواتف',
                                         description: 'Protective cases for smartphones',
                                         status: 'active',
                                         productsCount: 12,
@@ -78,6 +86,7 @@ const CategoriesManagement = () => {
                             {
                                 id: 'SUB002',
                                 name: 'Laptops',
+                                nameAr: 'أجهزة الكمبيوتر المحمولة',
                                 description: 'Portable computers and accessories',
                                 status: 'active',
                                 productsCount: 56,
@@ -87,6 +96,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB004',
                                         name: 'Gaming Laptops',
+                                        nameAr: 'أجهزة كمبيوتر الألعاب',
                                         description: 'High-performance gaming laptops',
                                         status: 'active',
                                         productsCount: 28,
@@ -95,6 +105,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB005',
                                         name: 'Business Laptops',
+                                        nameAr: 'أجهزة كمبيوتر الأعمال',
                                         description: 'Professional laptops for business use',
                                         status: 'active',
                                         productsCount: 28,
@@ -105,6 +116,7 @@ const CategoriesManagement = () => {
                             {
                                 id: 'SUB003',
                                 name: 'Audio & Headphones',
+                                nameAr: 'الصوتيات وسماعات الرأس',
                                 description: 'Headphones, speakers, and audio equipment',
                                 status: 'active',
                                 productsCount: 67,
@@ -114,6 +126,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB006',
                                         name: 'Wireless Headphones',
+                                        nameAr: 'سماعات رأس لاسلكية',
                                         description: 'Bluetooth and wireless audio devices',
                                         status: 'active',
                                         productsCount: 40,
@@ -122,6 +135,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB007',
                                         name: 'Speakers',
+                                        nameAr: 'مكبرات الصوت',
                                         description: 'Portable and home speakers',
                                         status: 'active',
                                         productsCount: 27,
@@ -132,6 +146,7 @@ const CategoriesManagement = () => {
                             {
                                 id: 'SUB004',
                                 name: 'Gaming',
+                                nameAr: 'الألعاب',
                                 description: 'Gaming consoles and accessories',
                                 status: 'inactive',
                                 productsCount: 33,
@@ -141,6 +156,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB008',
                                         name: 'Gaming Consoles',
+                                        nameAr: 'أجهزة الألعاب',
                                         description: 'Video game consoles and controllers',
                                         status: 'inactive',
                                         productsCount: 33,
@@ -153,6 +169,7 @@ const CategoriesManagement = () => {
                     {
                         id: 'CAT002',
                         name: 'Clothing & Fashion',
+                        nameAr: 'الملابس والأزياء',
                         description: 'Apparel and fashion accessories',
                         image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&h=200&fit=crop',
                         status: 'active',
@@ -164,6 +181,7 @@ const CategoriesManagement = () => {
                             {
                                 id: 'SUB005',
                                 name: "Men's Clothing",
+                                nameAr: 'ملابس رجالية',
                                 description: 'Clothing for men',
                                 status: 'active',
                                 productsCount: 78,
@@ -173,6 +191,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB009',
                                         name: 'Shirts',
+                                        nameAr: 'قمصان',
                                         description: 'Casual and formal shirts',
                                         status: 'active',
                                         productsCount: 45,
@@ -181,6 +200,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB010',
                                         name: 'Pants',
+                                        nameAr: 'بناطيل',
                                         description: 'Jeans, trousers, and casual pants',
                                         status: 'active',
                                         productsCount: 33,
@@ -191,6 +211,7 @@ const CategoriesManagement = () => {
                             {
                                 id: 'SUB006',
                                 name: "Women's Clothing",
+                                nameAr: 'ملابس نسائية',
                                 description: 'Clothing for women',
                                 status: 'active',
                                 productsCount: 65,
@@ -200,6 +221,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB011',
                                         name: 'Dresses',
+                                        nameAr: 'فساتين',
                                         description: 'Casual and formal dresses',
                                         status: 'active',
                                         productsCount: 35,
@@ -208,6 +230,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB012',
                                         name: 'Tops',
+                                        nameAr: 'بلوزات',
                                         description: 'Blouses, t-shirts, and tops',
                                         status: 'active',
                                         productsCount: 30,
@@ -218,6 +241,7 @@ const CategoriesManagement = () => {
                             {
                                 id: 'SUB007',
                                 name: 'Accessories',
+                                nameAr: 'إكسسوارات',
                                 description: 'Fashion accessories and jewelry',
                                 status: 'active',
                                 productsCount: 13,
@@ -227,6 +251,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB013',
                                         name: 'Jewelry',
+                                        nameAr: 'مجوهرات',
                                         description: 'Necklaces, rings, and bracelets',
                                         status: 'active',
                                         productsCount: 8,
@@ -235,6 +260,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB014',
                                         name: 'Bags',
+                                        nameAr: 'حقائب',
                                         description: 'Handbags, backpacks, and purses',
                                         status: 'active',
                                         productsCount: 5,
@@ -247,6 +273,7 @@ const CategoriesManagement = () => {
                     {
                         id: 'CAT003',
                         name: 'Home & Garden',
+                        nameAr: 'المنزل والحديقة',
                         description: 'Home improvement and garden supplies',
                         image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&h=200&fit=crop',
                         status: 'active',
@@ -258,6 +285,7 @@ const CategoriesManagement = () => {
                             {
                                 id: 'SUB008',
                                 name: 'Furniture',
+                                nameAr: 'أثاث',
                                 description: 'Home and office furniture',
                                 status: 'active',
                                 productsCount: 45,
@@ -267,6 +295,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB015',
                                         name: 'Living Room',
+                                        nameAr: 'غرفة المعيشة',
                                         description: 'Sofas, chairs, and living room furniture',
                                         status: 'active',
                                         productsCount: 25,
@@ -275,6 +304,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB016',
                                         name: 'Bedroom',
+                                        nameAr: 'غرفة النوم',
                                         description: 'Beds, dressers, and bedroom furniture',
                                         status: 'active',
                                         productsCount: 20,
@@ -285,6 +315,7 @@ const CategoriesManagement = () => {
                             {
                                 id: 'SUB009',
                                 name: 'Garden Tools',
+                                nameAr: 'أدوات الحديقة',
                                 description: 'Tools and equipment for gardening',
                                 status: 'active',
                                 productsCount: 53,
@@ -294,6 +325,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB017',
                                         name: 'Hand Tools',
+                                        nameAr: 'أدوات يدوية',
                                         description: 'Shovels, pruners, and hand tools',
                                         status: 'active',
                                         productsCount: 30,
@@ -302,6 +334,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB018',
                                         name: 'Power Tools',
+                                        nameAr: 'أدوات كهربائية',
                                         description: 'Electric and battery-powered garden tools',
                                         status: 'active',
                                         productsCount: 23,
@@ -314,6 +347,7 @@ const CategoriesManagement = () => {
                     {
                         id: 'CAT004',
                         name: 'Sports & Fitness',
+                        nameAr: 'الرياضة واللياقة البدنية',
                         description: 'Sports equipment and fitness gear',
                         image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop',
                         status: 'inactive',
@@ -325,6 +359,7 @@ const CategoriesManagement = () => {
                             {
                                 id: 'SUB010',
                                 name: 'Fitness Equipment',
+                                nameAr: 'معدات اللياقة البدنية',
                                 description: 'Exercise and fitness equipment',
                                 status: 'active',
                                 productsCount: 34,
@@ -334,6 +369,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB019',
                                         name: 'Cardio Equipment',
+                                        nameAr: 'معدات كارديو',
                                         description: 'Treadmills, bikes, and cardio machines',
                                         status: 'active',
                                         productsCount: 20,
@@ -342,6 +378,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB020',
                                         name: 'Strength Training',
+                                        nameAr: 'تدريب القوة',
                                         description: 'Weights, resistance bands, and strength equipment',
                                         status: 'active',
                                         productsCount: 14,
@@ -352,6 +389,7 @@ const CategoriesManagement = () => {
                             {
                                 id: 'SUB011',
                                 name: 'Outdoor Sports',
+                                nameAr: 'الرياضات الخارجية',
                                 description: 'Equipment for outdoor sports activities',
                                 status: 'inactive',
                                 productsCount: 33,
@@ -361,6 +399,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB021',
                                         name: 'Team Sports',
+                                        nameAr: 'الرياضات الجماعية',
                                         description: 'Soccer, basketball, and team sports equipment',
                                         status: 'inactive',
                                         productsCount: 18,
@@ -369,6 +408,7 @@ const CategoriesManagement = () => {
                                     {
                                         id: 'SUBSUB022',
                                         name: 'Individual Sports',
+                                        nameAr: 'الرياضات الفردية',
                                         description: 'Tennis, golf, and individual sports equipment',
                                         status: 'inactive',
                                         productsCount: 15,
@@ -390,6 +430,7 @@ const CategoriesManagement = () => {
     // Filter categories based on search and status
     const filteredCategories = categories.filter(category => {
         const matchesSearch = category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            category.nameAr.toLowerCase().includes(searchTerm.toLowerCase()) ||
             category.description.toLowerCase().includes(searchTerm.toLowerCase())
         const matchesStatus = statusFilter === 'all' || category.status === statusFilter
         return matchesSearch && matchesStatus
@@ -421,10 +462,11 @@ const CategoriesManagement = () => {
     }
 
     const handleAddCategory = () => {
-        if (newCategoryName.trim()) {
+        if (newCategoryName.trim() && newCategoryNameAr.trim()) {
             const newCategory = {
                 id: `CAT${String(categories.length + 1).padStart(3, '0')}`,
                 name: newCategoryName,
+                nameAr: newCategoryNameAr,
                 description: newCategoryDescription,
                 image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=200&fit=crop',
                 status: 'active',
@@ -436,16 +478,18 @@ const CategoriesManagement = () => {
             }
             setCategories([...categories, newCategory])
             setNewCategoryName('')
+            setNewCategoryNameAr('')
             setNewCategoryDescription('')
             setShowAddCategory(false)
         }
     }
 
     const handleAddSubcategory = () => {
-        if (newSubcategoryName.trim() && selectedParentCategory) {
+        if (newSubcategoryName.trim() && newSubcategoryNameAr.trim() && selectedParentCategory) {
             const newSubcategory = {
                 id: `SUB${String(Date.now()).slice(-3)}`,
                 name: newSubcategoryName,
+                nameAr: newSubcategoryNameAr,
                 description: newSubcategoryDescription,
                 status: 'active',
                 productsCount: 0,
@@ -465,6 +509,7 @@ const CategoriesManagement = () => {
             ))
 
             setNewSubcategoryName('')
+            setNewSubcategoryNameAr('')
             setNewSubcategoryDescription('')
             setSelectedParentCategory('')
             setShowAddSubcategory(false)
@@ -472,10 +517,11 @@ const CategoriesManagement = () => {
     }
 
     const handleAddSubSubcategory = () => {
-        if (newSubSubcategoryName.trim() && selectedParentCategory && selectedParentSubcategory) {
+        if (newSubSubcategoryName.trim() && newSubSubcategoryNameAr.trim() && selectedParentCategory && selectedParentSubcategory) {
             const newSubSubcategory = {
                 id: `SUBSUB${String(Date.now()).slice(-3)}`,
                 name: newSubSubcategoryName,
+                nameAr: newSubSubcategoryNameAr,
                 description: newSubSubcategoryDescription,
                 status: 'active',
                 productsCount: 0,
@@ -501,6 +547,7 @@ const CategoriesManagement = () => {
             ))
 
             setNewSubSubcategoryName('')
+            setNewSubSubcategoryNameAr('')
             setNewSubSubcategoryDescription('')
             setSelectedParentCategory('')
             setSelectedParentSubcategory('')
@@ -634,6 +681,9 @@ const CategoriesManagement = () => {
                                 </div>
                                 <div className="category-info">
                                     <h3 className="category-name">{category.name}</h3>
+                                    {category.nameAr && (
+                                        <h4 className="category-name-ar" dir="rtl">{category.nameAr}</h4>
+                                    )}
                                     <p className="category-description">{category.description}</p>
                                     <div className="category-meta">
                                         <span className="category-id">ID: {category.id}</span>
@@ -669,7 +719,12 @@ const CategoriesManagement = () => {
                                             <div key={sub.id} className="subcategory-item">
                                                 <div className="subcategory-info">
                                                     <div className="subcategory-header">
-                                                        <span className="subcategory-name">{sub.name}</span>
+                                                        <div className="subcategory-names">
+                                                            <span className="subcategory-name">{sub.name}</span>
+                                                            {sub.nameAr && (
+                                                                <span className="subcategory-name-ar" dir="rtl">{sub.nameAr}</span>
+                                                            )}
+                                                        </div>
                                                         {getStatusBadge(sub.status)}
                                                     </div>
                                                     <span className="subcategory-count">
@@ -678,9 +733,12 @@ const CategoriesManagement = () => {
                                                     {sub.subSubcategories && sub.subSubcategories.length > 0 && (
                                                         <div className="sub-subcategories-preview">
                                                             {sub.subSubcategories.slice(0, 2).map((subSub, index) => (
-                                                                <span key={subSub.id} className="sub-subcategory-tag">
-                                                                    {subSub.name}
-                                                                </span>
+                                                                <div key={subSub.id} className="sub-subcategory-tag">
+                                                                    <span className="sub-subcategory-name">{subSub.name}</span>
+                                                                    {subSub.nameAr && (
+                                                                        <span className="sub-subcategory-name-ar" dir="rtl">{subSub.nameAr}</span>
+                                                                    )}
+                                                                </div>
                                                             ))}
                                                             {sub.subSubcategories.length > 2 && (
                                                                 <span className="more-tags">+{sub.subSubcategories.length - 2}</span>
@@ -787,12 +845,22 @@ const CategoriesManagement = () => {
                         </div>
                         <div className="modal-body">
                             <div className="form-group">
-                                <label>Category Name</label>
+                                <label>Category Name (English)*</label>
                                 <input
                                     type="text"
                                     value={newCategoryName}
                                     onChange={(e) => setNewCategoryName(e.target.value)}
-                                    placeholder="Enter category name"
+                                    placeholder="Enter category name in English"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Category Name (Arabic)*</label>
+                                <input
+                                    type="text"
+                                    dir="rtl"
+                                    value={newCategoryNameAr}
+                                    onChange={(e) => setNewCategoryNameAr(e.target.value)}
+                                    placeholder="أدخل اسم الفئة بالعربية"
                                 />
                             </div>
                             <div className="form-group">
@@ -848,18 +916,28 @@ const CategoriesManagement = () => {
                                     <option value="">Select a category</option>
                                     {categories.filter(cat => cat.status === 'active').map(category => (
                                         <option key={category.id} value={category.id}>
-                                            {category.name}
+                                            {category.name} ({category.nameAr})
                                         </option>
                                     ))}
                                 </select>
                             </div>
                             <div className="form-group">
-                                <label>Subcategory Name</label>
+                                <label>Subcategory Name (English)*</label>
                                 <input
                                     type="text"
                                     value={newSubcategoryName}
                                     onChange={(e) => setNewSubcategoryName(e.target.value)}
-                                    placeholder="Enter subcategory name"
+                                    placeholder="Enter subcategory name in English"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Subcategory Name (Arabic)*</label>
+                                <input
+                                    type="text"
+                                    dir="rtl"
+                                    value={newSubcategoryNameAr}
+                                    onChange={(e) => setNewSubcategoryNameAr(e.target.value)}
+                                    placeholder="أدخل اسم الفئة الفرعية بالعربية"
                                 />
                             </div>
                             <div className="form-group">
@@ -918,7 +996,7 @@ const CategoriesManagement = () => {
                                     <option value="">Select a category</option>
                                     {categories.filter(cat => cat.status === 'active').map(category => (
                                         <option key={category.id} value={category.id}>
-                                            {category.name}
+                                            {category.name} ({category.nameAr})
                                         </option>
                                     ))}
                                 </select>
@@ -933,18 +1011,28 @@ const CategoriesManagement = () => {
                                     <option value="">Select a subcategory</option>
                                     {getAvailableSubcategories().map(subcategory => (
                                         <option key={subcategory.id} value={subcategory.id}>
-                                            {subcategory.name}
+                                            {subcategory.name} ({subcategory.nameAr})
                                         </option>
                                     ))}
                                 </select>
                             </div>
                             <div className="form-group">
-                                <label>Sub-subcategory Name</label>
+                                <label>Sub-subcategory Name (English)*</label>
                                 <input
                                     type="text"
                                     value={newSubSubcategoryName}
                                     onChange={(e) => setNewSubSubcategoryName(e.target.value)}
-                                    placeholder="Enter sub-subcategory name"
+                                    placeholder="Enter sub-subcategory name in English"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Sub-subcategory Name (Arabic)*</label>
+                                <input
+                                    type="text"
+                                    dir="rtl"
+                                    value={newSubSubcategoryNameAr}
+                                    onChange={(e) => setNewSubSubcategoryNameAr(e.target.value)}
+                                    placeholder="أدخل اسم الفئة الفرعية الثانوية بالعربية"
                                 />
                             </div>
                             <div className="form-group">

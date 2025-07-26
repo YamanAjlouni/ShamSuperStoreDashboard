@@ -260,10 +260,21 @@
                             font-size: 1.25rem;
                             font-weight: 600;
                             color: $gray-800;
+                            margin: 0 0 0.25rem 0;
+                            word-break: break-word;
+                            overflow-wrap: break-word;
+                            hyphens: auto;
+                        }
+
+                        .category-name-ar {
+                            font-size: 1.125rem;
+                            font-weight: 500;
+                            color: $primary-color;
                             margin: 0 0 0.5rem 0;
                             word-break: break-word;
                             overflow-wrap: break-word;
                             hyphens: auto;
+                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans Arabic', sans-serif;
                         }
 
                         .category-description {
@@ -275,7 +286,7 @@
                             overflow-wrap: break-word;
                             hyphens: auto;
                             display: -webkit-box;
-                            -webkit-line-clamp: 2;
+                            line-clamp: 2;
                             -webkit-box-orient: vertical;
                             overflow: hidden;
                         }
@@ -363,17 +374,35 @@
 
                                 .subcategory-header {
                                     display: flex;
-                                    align-items: center;
+                                    align-items: flex-start;
+                                    justify-content: space-between;
                                     gap: 0.5rem;
-                                    margin-bottom: 0.25rem;
+                                    margin-bottom: 0.5rem;
                                     flex-wrap: wrap;
 
-                                    .subcategory-name {
-                                        font-weight: 500;
-                                        color: $gray-800;
-                                        word-break: break-word;
-                                        overflow-wrap: break-word;
+                                    .subcategory-names {
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 0.25rem;
                                         flex: 1;
+                                        min-width: 0;
+
+                                        .subcategory-name {
+                                            font-weight: 500;
+                                            color: $gray-800;
+                                            word-break: break-word;
+                                            overflow-wrap: break-word;
+                                            font-size: 0.875rem;
+                                        }
+
+                                        .subcategory-name-ar {
+                                            font-weight: 400;
+                                            color: $primary-color;
+                                            word-break: break-word;
+                                            overflow-wrap: break-word;
+                                            font-size: 0.8125rem;
+                                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans Arabic', sans-serif;
+                                        }
                                     }
                                 }
 
@@ -395,6 +424,20 @@
                                         padding: 0.125rem 0.375rem;
                                         border-radius: $radius-sm;
                                         word-break: break-word;
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 0.125rem;
+                                        min-width: 0;
+
+                                        .sub-subcategory-name {
+                                            font-weight: 500;
+                                        }
+
+                                        .sub-subcategory-name-ar {
+                                            font-size: 0.5625rem;
+                                            opacity: 0.9;
+                                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans Arabic', sans-serif;
+                                        }
                                     }
 
                                     .more-tags {
@@ -656,6 +699,16 @@
                             border-color: $primary-color;
                             box-shadow: 0 0 0 3px rgba(66, 103, 178, 0.1);
                         }
+
+                        &[dir="rtl"] {
+                            text-align: right;
+                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans Arabic', sans-serif;
+
+                            &::placeholder {
+                                text-align: right;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans Arabic', sans-serif;
+                            }
+                        }
                     }
 
                     textarea {
@@ -734,6 +787,10 @@
                     .category-info {
                         .category-name {
                             font-size: 1.125rem;
+                        }
+
+                        .category-name-ar {
+                            font-size: 1rem;
                         }
 
                         .category-description {
@@ -824,6 +881,10 @@
                     .category-info {
                         .category-name {
                             font-size: 1rem;
+                        }
+
+                        .category-name-ar {
+                            font-size: 0.9375rem;
                         }
 
                         .category-description {
@@ -938,9 +999,13 @@
                             font-size: 1.125rem;
                         }
 
+                        .category-name-ar {
+                            font-size: 1rem;
+                        }
+
                         .category-description {
                             font-size: 0.8125rem;
-                            -webkit-line-clamp: 3;
+                            line-clamp: 3;
                         }
 
                         .category-meta {
@@ -987,7 +1052,12 @@
                             .subcategory-header {
                                 flex-direction: column;
                                 align-items: flex-start;
-                                gap: 0.25rem;
+                                gap: 0.5rem;
+
+                                .subcategory-names {
+                                    width: 100%;
+                                    gap: 0.375rem;
+                                }
                             }
                         }
                     }
@@ -1108,6 +1178,22 @@
                         }
                     }
                 }
+
+                .subcategories-section {
+                    .subcategory-item {
+                        .subcategory-info {
+                            .subcategory-header {
+                                .subcategory-names {
+                                    text-align: left;
+
+                                    .subcategory-name-ar {
+                                        text-align: right;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -1153,6 +1239,10 @@
                             font-size: 1rem;
                         }
 
+                        .category-name-ar {
+                            font-size: 0.9375rem;
+                        }
+
                         .category-description {
                             font-size: 0.75rem;
                         }
@@ -1175,6 +1265,22 @@
 
                 .subcategories-section {
                     padding: 0.75rem;
+
+                    .subcategory-item {
+                        .subcategory-info {
+                            .subcategory-header {
+                                .subcategory-names {
+                                    .subcategory-name {
+                                        font-size: 0.8125rem;
+                                    }
+
+                                    .subcategory-name-ar {
+                                        font-size: 0.75rem;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 .card-actions {
@@ -1229,6 +1335,23 @@
                             }
                         }
                     }
+
+                    .subcategories-section {
+                        .subcategory-item {
+                            .subcategory-info {
+                                .sub-subcategories-preview {
+                                    .sub-subcategory-tag {
+                                        font-size: 0.5625rem;
+                                        padding: 0.125rem 0.25rem;
+
+                                        .sub-subcategory-name-ar {
+                                            font-size: 0.5rem;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1248,6 +1371,24 @@
 
                     &:last-child {
                         border-bottom: none;
+                    }
+                }
+            }
+
+            .subcategories-section {
+                .subcategory-item {
+                    .subcategory-info {
+                        .subcategory-header {
+                            .subcategory-names {
+                                .subcategory-name {
+                                    font-size: 0.75rem;
+                                }
+
+                                .subcategory-name-ar {
+                                    font-size: 0.6875rem;
+                                }
+                            }
+                        }
                     }
                 }
             }

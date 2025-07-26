@@ -32,7 +32,9 @@ const ProductDetails = () => {
                         id: 'PRD001',
                         sku: 'SKU-001-2024',
                         name: 'Wireless Bluetooth Headphones',
+                        nameAr: 'سماعات رأس لاسلكية بلوتوث',
                         shortDescription: 'High-quality wireless headphones with noise cancellation',
+                        shortDescriptionAr: 'سماعات رأس لاسلكية عالية الجودة مع إلغاء الضوضاء',
                         longDescription: 'Experience premium audio quality with these advanced wireless Bluetooth headphones. Featuring active noise cancellation technology, 30-hour battery life, and premium materials for all-day comfort. Perfect for music lovers, commuters, and professionals who demand the best in audio technology. The headphones come with multiple ear cup sizes and a premium carrying case.',
                         images: [
                             'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop',
@@ -89,6 +91,15 @@ const ProductDetails = () => {
                             'Premium carrying case',
                             'Quick charge (5 min = 2 hours)',
                             'Multi-device connectivity'
+                        ],
+                        featuresAr: [
+                            'إلغاء الضوضاء النشط',
+                            'عمر بطارية 30 ساعة',
+                            'مواد عالية الجودة',
+                            'أحجام متعددة لأكواب الأذن',
+                            'حقيبة حمل مميزة',
+                            'شحن سريع (5 دقائق = ساعتان)',
+                            'اتصال متعدد الأجهزة'
                         ],
                         reviews: {
                             totalCount: 89,
@@ -354,7 +365,13 @@ const ProductDetails = () => {
                 <div className="header-content">
                     <div className="product-info">
                         <h1>{product.name}</h1>
+                        {product.nameAr && (
+                            <h2 className="arabic-name" dir="rtl">{product.nameAr}</h2>
+                        )}
                         <p>{product.shortDescription}</p>
+                        {product.shortDescriptionAr && (
+                            <p className="arabic-description" dir="rtl">{product.shortDescriptionAr}</p>
+                        )}
                         <div className="product-meta">
                             <span className="product-id">ID: {product.id}</span>
                             <span className="product-sku">SKU: {product.sku}</span>
@@ -787,7 +804,7 @@ const ProductDetails = () => {
                         </div>
 
                         <div className="info-card">
-                            <h3>Key Features</h3>
+                            <h3>Tags (English)</h3>
                             <div className="features-list">
                                 {product.features.map((feature, index) => (
                                     <div key={index} className="feature-item">
@@ -799,6 +816,22 @@ const ProductDetails = () => {
                                 ))}
                             </div>
                         </div>
+
+                        {product.featuresAr && (
+                            <div className="info-card arabic-card">
+                                <h3>Tags (Arabic)</h3>
+                                <div className="features-list arabic-features" dir="rtl">
+                                    {product.featuresAr.map((feature, index) => (
+                                        <div key={index} className="feature-item">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            {feature}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
