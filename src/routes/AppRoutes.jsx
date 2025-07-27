@@ -24,7 +24,7 @@ const AppRoutes = () => {
         if (userRole === 'admin') return <Navigate to="/admin" replace />
         if (userRole === 'delivery') return <Navigate to="/delivery" replace />
         if (userRole === 'adminDelivery') return <Navigate to="/adminDelivery" replace />
-        if (userRole === 'websiteAdmin') return <Navigate to="/websiteAdmin" replace />
+        if (userRole === 'websiteAdmin') return <Navigate to="/websiteAdmin/intro-section" replace />
         if (userRole === 'customerService') return <Navigate to="/customerService" replace />
     }
 
@@ -47,7 +47,7 @@ const AppRoutes = () => {
                             userRole === 'admin' ? <Navigate to="/admin" replace /> :
                                 userRole === 'delivery' ? <Navigate to="/delivery" replace /> :
                                     userRole === 'adminDelivery' ? <Navigate to="/adminDelivery" replace /> :
-                                        userRole === 'websiteAdmin' ? <Navigate to="/websiteAdmin" replace /> :
+                                        userRole === 'websiteAdmin' ? <Navigate to="/websiteAdmin/intro-section" replace /> :
                                             userRole === 'customerService' ? <Navigate to="/customerService" replace /> :
                                                 <Navigate to="/login" replace />
                     ) : (

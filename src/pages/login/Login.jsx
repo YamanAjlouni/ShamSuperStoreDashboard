@@ -48,7 +48,7 @@ const Login = () => {
             } else if (formData.email === 'websiteadmin@websiteadmin.websiteadmin' && formData.password === '123123') {
                 localStorage.setItem('userRole', 'websiteAdmin');
                 localStorage.setItem('isAuthenticated', 'true');
-                navigate('/websiteAdmin');
+                navigate('/websiteAdmin/intro-section');
             } else if (formData.email === 'customerservice@customerservice.customerservice' && formData.password === '123123') {
                 localStorage.setItem('userRole', 'customerService');
                 localStorage.setItem('isAuthenticated', 'true');
