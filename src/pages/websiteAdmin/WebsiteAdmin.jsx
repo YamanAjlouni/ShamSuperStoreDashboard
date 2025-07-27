@@ -119,8 +119,8 @@ const WebsiteAdmin = () => {
                     {/* Website Admin Routes */}
                     <Routes>
                         {/* Dashboard */}
-                        <Route path="/" element={<WebsiteAdminDashboard />} />
-                        <Route path="/dashboard" element={<Navigate to="/websiteAdmin" replace />} />
+                        {/* <Route path="/" element={<WebsiteAdminDashboard />} />
+                        <Route path="/dashboard" element={<Navigate to="/websiteAdmin" replace />} /> */}
 
                         {/* Homepage Sections */}
                         <Route path="/intro-section" element={<IntroSectionSwiper />} />
