@@ -14,7 +14,6 @@ import UserDetails from './usersManagement/userDetails/UserDetails'
 import ResetPassword from './usersManagement/resetPassword/ResetPassword'
 import DriversManagement from './driversManagement/DriversManagement'
 import DriverDetails from './driversManagement/driverDetails/DriverDetails'
-import CustomerServiceManagement from './customerServiceManagement/CustomerServiceManagement'
 import OrdersManagement from './ordersManagement/OrdersManagement'
 import OrderDetails from './ordersManagement/orderDetails/OrderDetails'
 import ProductsManagement from './productsManagement/ProductsManagement'
@@ -151,9 +150,6 @@ const Admin = () => {
                         <Route path="/drivers" element={<DriversManagement />} />
                         <Route path="/drivers/details/:id" element={<DriverDetails />} />
                         <Route path="/drivers/reset-password/:id" element={<DriverResetPassword />} />
-
-                        {/* Customer Service Management */}
-                        <Route path="/customer-service" element={<CustomerServiceManagement />} />
 
                         {/* Order Management */}
                         <Route path="/orders" element={<OrdersManagement />} />
