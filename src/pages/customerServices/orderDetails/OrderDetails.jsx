@@ -34,6 +34,17 @@ const OrderDetails = ({ order, onBack, onUpdateOrder }) => {
         return <span className={`ticket-status-badge ${config.class}`}>{config.text}</span>
     }
 
+    const getPaymentStatusBadge = (status) => {
+        const paymentConfig = {
+            paid: { class: 'payment-paid', text: 'Paid' },
+            pending: { class: 'payment-pending', text: 'Pending' },
+            failed: { class: 'payment-failed', text: 'Failed' },
+            refunded: { class: 'payment-refunded', text: 'Refunded' }
+        }
+        const config = paymentConfig[status] || { class: 'payment-unknown', text: status }
+        return <span className={`payment-status-badge ${config.class}`}>{config.text}</span>
+    }
+
     const handleCreateTicket = async (e) => {
         e.preventDefault()
         if (!ticketForm.reason || !ticketForm.description) {
@@ -289,6 +300,41 @@ const OrderDetails = ({ order, onBack, onUpdateOrder }) => {
                             <div className="info-row">
                                 <span className="label">Delivery Address:</span>
                                 <span className="value">{currentOrder.customer.address}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Payment Method Section */}
+                <div className="details-card payment-card">
+                    <div className="card-header">
+                        <div className="card-icon payment-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h3>Payment Information</h3>
+                    </div>
+                    <div className="card-content">
+                        <div className="payment-method-info">
+                            <div className="info-row">
+                                <span className="label">Payment Method:</span>
+                                <span className="value payment-method">
+                                    <span className="method-type">Cash Payment</span>
+                                    <span className="method-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                    </span>
+                                </span>
+                            </div>
+                            <div className="info-row">
+                                <span className="label">Total Amount:</span>
+                                <span className="value amount-value">${currentOrder.totalAmount}</span>
+                            </div>
+                            <div className="info-row">
+                                <span className="label">Payment Status:</span>
+                                <span className="value">{getPaymentStatusBadge(currentOrder.payment?.status || 'pending')}</span>
                             </div>
                         </div>
                     </div>
@@ -550,6 +596,7 @@ const OrderDetails = ({ order, onBack, onUpdateOrder }) => {
                                     <option value="Damaged item">Damaged item</option>
                                     <option value="Refund request">Refund request</option>
                                     <option value="Order cancellation">Order cancellation</option>
+                                    <option value="Payment issue">Payment issue</option>
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
