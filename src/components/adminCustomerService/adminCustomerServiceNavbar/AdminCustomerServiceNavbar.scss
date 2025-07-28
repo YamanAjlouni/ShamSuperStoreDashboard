@@ -1,0 +1,459 @@
+@use '../../../assets/styles/vars.scss' as *;
+
+.admin-cs-navbar {
+    background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+    border-bottom: 2px solid #06b6d4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 70px;
+    position: relative;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.1);
+
+    @media (max-width: 768px) {
+        padding: 0 1rem;
+        height: 60px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 0 0.75rem;
+    }
+
+    .navbar-left {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex: 1;
+
+        @media (max-width: 768px) {
+            gap: 1rem;
+        }
+
+        .sidebar-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: $radius-md;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background: rgba(6, 182, 212, 0.25);
+                color: #06b6d4;
+                border-color: #06b6d4;
+            }
+
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            @media (max-width: 768px) {
+                width: 36px;
+                height: 36px;
+
+                svg {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+
+            .brand-icon {
+                width: 40px;
+                height: 40px;
+                background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+                border-radius: $radius-md;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: 700;
+                font-size: 0.75rem;
+                letter-spacing: 0.5px;
+                box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+
+                @media (max-width: 768px) {
+                    width: 36px;
+                    height: 36px;
+                    font-size: 0.65rem;
+                }
+            }
+
+            .brand-text {
+                color: white;
+                font-size: 1rem;
+                font-weight: 600;
+                white-space: nowrap;
+
+                @media (max-width: 768px) {
+                    font-size: 0.875rem;
+                }
+
+                @media (max-width: 480px) {
+                    display: none;
+                }
+            }
+        }
+
+        .navbar-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: 1rem;
+            padding-left: 1rem;
+            border-left: 1px solid rgba(6, 182, 212, 0.3);
+
+            @media (max-width: 1024px) {
+                display: none;
+            }
+
+            .breadcrumb-icon {
+                width: 16px;
+                height: 16px;
+                color: rgba(6, 182, 212, 0.6);
+            }
+
+            .breadcrumb-text {
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 0.875rem;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .navbar-right {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+
+        @media (max-width: 768px) {
+            gap: 1rem;
+        }
+
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .notifications-wrapper {
+                position: relative;
+
+                .notifications-btn {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    height: 40px;
+                    background: rgba(6, 182, 212, 0.1);
+                    border: 1px solid rgba(6, 182, 212, 0.2);
+                    border-radius: $radius-md;
+                    color: rgba(255, 255, 255, 0.8);
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+
+                    &:hover {
+                        background: rgba(6, 182, 212, 0.2);
+                        color: #06b6d4;
+                        border-color: #06b6d4;
+                    }
+
+                    svg {
+                        width: 20px;
+                        height: 20px;
+                    }
+
+                    .badge {
+                        position: absolute;
+                        top: -2px;
+                        right: -2px;
+                        background: #ef4444;
+                        color: white;
+                        border-radius: 50%;
+                        width: 18px;
+                        height: 18px;
+                        font-size: 0.65rem;
+                        font-weight: 600;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 2px solid #0f172a;
+                    }
+
+                    @media (max-width: 768px) {
+                        width: 36px;
+                        height: 36px;
+
+                        svg {
+                            width: 18px;
+                            height: 18px;
+                        }
+
+                        .badge {
+                            width: 16px;
+                            height: 16px;
+                            font-size: 0.6rem;
+                        }
+                    }
+                }
+
+                .notifications-dropdown {
+                    position: absolute;
+                    top: calc(100% + 10px);
+                    right: 0;
+                    background: white;
+                    border-radius: $radius-lg;
+                    box-shadow: $shadow-lg;
+                    border: 1px solid #e2e8f0;
+                    width: 320px;
+                    max-height: 400px;
+                    overflow-y: auto;
+                    z-index: 1000;
+
+                    @media (max-width: 480px) {
+                        width: 280px;
+                        right: -100px;
+                    }
+
+                    .dropdown-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 1rem 1.5rem;
+                        border-bottom: 1px solid #e2e8f0;
+                        background: #f8fafc;
+                        border-radius: $radius-lg $radius-lg 0 0;
+
+                        .dropdown-title {
+                            font-size: 1rem;
+                            font-weight: 600;
+                            color: #1e293b;
+                        }
+
+                        .notifications-count {
+                            font-size: 0.75rem;
+                            color: #06b6d4;
+                            font-weight: 500;
+                        }
+                    }
+
+                    .notifications-list {
+                        max-height: 300px;
+                        overflow-y: auto;
+
+                        .notification-item {
+                            display: flex;
+                            align-items: flex-start;
+                            gap: 0.75rem;
+                            padding: 1rem 1.5rem;
+                            border-bottom: 1px solid #f1f5f9;
+                            transition: all 0.2s ease;
+                            position: relative;
+
+                            &:hover {
+                                background: #f8fafc;
+                            }
+
+                            &:last-child {
+                                border-bottom: none;
+                            }
+
+                            &--unread {
+                                background: rgba(6, 182, 212, 0.02);
+                            }
+
+                            .notification-icon {
+                                width: 32px;
+                                height: 32px;
+                                background: rgba(6, 182, 212, 0.1);
+                                border-radius: $radius-md;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: #06b6d4;
+                                flex-shrink: 0;
+
+                                svg {
+                                    width: 16px;
+                                    height: 16px;
+                                }
+                            }
+
+                            .notification-content {
+                                flex: 1;
+
+                                .notification-title {
+                                    font-size: 0.875rem;
+                                    font-weight: 600;
+                                    color: #1e293b;
+                                    margin-bottom: 0.25rem;
+                                }
+
+                                .notification-message {
+                                    font-size: 0.75rem;
+                                    color: #64748b;
+                                    margin-bottom: 0.25rem;
+                                    line-height: 1.4;
+                                }
+
+                                .notification-time {
+                                    font-size: 0.65rem;
+                                    color: #94a3b8;
+                                }
+                            }
+
+                            .notification-dot {
+                                position: absolute;
+                                top: 1rem;
+                                right: 1rem;
+                                width: 8px;
+                                height: 8px;
+                                background: #06b6d4;
+                                border-radius: 50%;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .user-profile {
+                position: relative;
+
+                .user-avatar {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    border: 2px solid rgba(6, 182, 212, 0.3);
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    overflow: hidden;
+
+                    &:hover {
+                        border-color: #06b6d4;
+                        box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
+                    }
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        border-radius: 50%;
+                    }
+
+                    .admin-indicator {
+                        position: absolute;
+                        bottom: -2px;
+                        right: -2px;
+                        width: 16px;
+                        height: 16px;
+                        background: #06b6d4;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        border: 2px solid #0f172a;
+
+                        svg {
+                            width: 10px;
+                            height: 10px;
+                        }
+                    }
+
+                    @media (max-width: 768px) {
+                        width: 36px;
+                        height: 36px;
+
+                        .admin-indicator {
+                            width: 14px;
+                            height: 14px;
+
+                            svg {
+                                width: 8px;
+                                height: 8px;
+                            }
+                        }
+                    }
+                }
+
+                .profile-dropdown {
+                    position: absolute;
+                    top: calc(100% + 10px);
+                    right: 0;
+                    background: white;
+                    border-radius: $radius-lg;
+                    box-shadow: $shadow-lg;
+                    border: 1px solid #e2e8f0;
+                    min-width: 200px;
+                    overflow: hidden;
+                    z-index: 1000;
+
+                    .dropdown-header {
+                        padding: 1rem 1.5rem;
+                        border-bottom: 1px solid #e2e8f0;
+                        background: #f8fafc;
+
+                        .user-role {
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            color: #1e293b;
+                        }
+                    }
+
+                    .dropdown-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                        width: 100%;
+                        padding: 0.75rem 1.5rem;
+                        background: none;
+                        border: none;
+                        color: #64748b;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                        text-align: left;
+
+                        &:hover {
+                            background: #f8fafc;
+                            color: #1e293b;
+                        }
+
+                        &--logout {
+                            color: #ef4444;
+
+                            &:hover {
+                                background: rgba(239, 68, 68, 0.05);
+                                color: #dc2626;
+                            }
+                        }
+
+                        svg {
+                            width: 16px;
+                            height: 16px;
+                            flex-shrink: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

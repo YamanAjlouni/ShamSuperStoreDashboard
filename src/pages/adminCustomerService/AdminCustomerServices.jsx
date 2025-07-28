@@ -1,10 +1,13 @@
-import { useState } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
-import CustomerServiceNavbar from '../../components/customerService/customerServiceNavbar/CustomerServiceNavbar'
-import OrderDetails from './orderDetails/OrderDetails'
-import './CustomerServices.scss'
+import { useState, useEffect } from 'react'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import AdminCustomerServiceNavbar from '../../components/adminCustomerService/adminCustomerServiceNavbar/AdminCustomerServiceNavbar'
+import AdminCustomerServiceSidebar from '../../components/adminCustomerService/adminCustomerServiceSidebar/AdminCustomerServiceSidebar'
+import AdminOrderDetails from './adminOrderDetails/AdminOrderDetails'
+import CustomerServiceUsers from './customerServiceUsers/CustomerServiceUsers'
+import './AdminCustomerServices.scss'
 
-const CustomerServices = () => {
+const AdminCustomerServices = () => {
+    const location = useLocation()
     const [selectedOrder, setSelectedOrder] = useState(null)
     const [searchTerm, setSearchTerm] = useState('')
     const [statusFilter, setStatusFilter] = useState('all')
@@ -19,6 +22,72 @@ const CustomerServices = () => {
         priority: 'medium',
         createdBy: 'customerService'
     })
+
+    // Sidebar state management
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
+    useEffect(() => {
+        const checkMobile = () => {
+            // Changed breakpoint: treat tablets as mobile for sidebar behavior
+            const mobile = window.innerWidth <= 1024 // Changed from 768 to 1024
+            setIsMobile(mobile)
+
+            // Only auto-collapse on true desktop screens
+            if (window.innerWidth > 1024) {
+                // Reset mobile states when on desktop
+                setIsSidebarOpen(false)
+            } else {
+                // Reset desktop states when on mobile/tablet
+                setIsSidebarCollapsed(false)
+                setIsSidebarOpen(false)
+            }
+        }
+
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
+    // Add/remove body class when sidebar is open on mobile/tablet
+    useEffect(() => {
+        if (isMobile && isSidebarOpen) {
+            document.body.classList.add('sidebar-open')
+        } else {
+            document.body.classList.remove('sidebar-open')
+        }
+
+        // Cleanup on unmount
+        return () => {
+            document.body.classList.remove('sidebar-open')
+        }
+    }, [isMobile, isSidebarOpen])
+
+    // Handle sidebar toggle from navbar
+    const handleToggleSidebar = () => {
+        if (isMobile) {
+            // Mobile/Tablet behavior: toggle overlay sidebar
+            setIsSidebarOpen(!isSidebarOpen)
+        } else {
+            // Desktop behavior: toggle collapse/expand
+            setIsSidebarCollapsed(!isSidebarCollapsed)
+        }
+    }
+
+    // Close mobile sidebar
+    const handleCloseMobileSidebar = () => {
+        if (isMobile) {
+            setIsSidebarOpen(false)
+        }
+    }
+
+    // Close mobile sidebar when clicking on main content
+    const handleMainContentClick = () => {
+        if (isMobile && isSidebarOpen) {
+            setIsSidebarOpen(false)
+        }
+    }
 
     // Sample orders data - now with delivery drivers
     const [orders, setOrders] = useState([
@@ -367,13 +436,28 @@ const CustomerServices = () => {
         alert('Ticket created successfully!')
     }
 
+    // Check if we're viewing order details
     if (selectedOrder) {
         return (
-            <div className="customer-services-layout">
-                <CustomerServiceNavbar />
-                <div className="customer-services-content">
-                    <main className="main-content">
-                        <OrderDetails
+            <div className="admin-cs-layout">
+                <AdminCustomerServiceNavbar
+                    onToggleSidebar={handleToggleSidebar}
+                    isSidebarCollapsed={isSidebarCollapsed}
+                />
+
+                <div className="admin-cs-content">
+                    <AdminCustomerServiceSidebar
+                        isCollapsed={isSidebarCollapsed}
+                        isMobile={isMobile}
+                        isOpen={isSidebarOpen}
+                        onClose={handleCloseMobileSidebar}
+                    />
+
+                    <main
+                        className={`main-content ${isSidebarCollapsed ? 'main-content--expanded' : ''} ${isMobile ? 'main-content--mobile' : ''}`}
+                        onClick={handleMainContentClick}
+                    >
+                        <AdminOrderDetails
                             order={selectedOrder}
                             onBack={handleBackToList}
                             onUpdateOrder={handleUpdateOrder}
@@ -470,224 +554,224 @@ const CustomerServices = () => {
         return pages
     }
 
-    return (
-        <div className="customer-services-layout">
-            <CustomerServiceNavbar />
+    // Main dashboard component
+    const Dashboard = () => (
+        <main
+            className={`main-content ${isSidebarCollapsed ? 'main-content--expanded' : ''} ${isMobile ? 'main-content--mobile' : ''}`}
+            onClick={handleMainContentClick}
+        >
+            <div className='dashboard-main-page'>
+                <div className="dashboard-header">
+                    <div className="header-title">
+                        <h1>Admin Customer Service Dashboard</h1>
+                        <p>Manage orders with support tickets</p>
+                    </div>
 
-            <div className="customer-services-content">
-                <main className="main-content">
-                    <div className="dashboard-header">
-                        <div className="header-title">
-                            <h1>Customer Service Dashboard</h1>
-                            <p>Manage orders with support tickets</p>
+                    <div className="dashboard-stats">
+                        <div className="stat-card">
+                            <div className="stat-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                            </div>
+                            <div className="stat-content">
+                                <div className="stat-number">{ordersWithTickets.length}</div>
+                                <div className="stat-label">Orders with Tickets</div>
+                            </div>
                         </div>
 
-                        <div className="dashboard-stats">
-                            <div className="stat-card">
-                                <div className="stat-icon">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                    </svg>
-                                </div>
-                                <div className="stat-content">
-                                    <div className="stat-number">{ordersWithTickets.length}</div>
-                                    <div className="stat-label">Orders with Tickets</div>
-                                </div>
+                        <div className="stat-card">
+                            <div className="stat-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                                </svg>
                             </div>
-
-                            <div className="stat-card">
-                                <div className="stat-icon">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                                    </svg>
-                                </div>
-                                <div className="stat-content">
-                                    <div className="stat-number">{ordersWithTickets.filter(o => o.ticket && o.ticket.status === 'open').length}</div>
-                                    <div className="stat-label">Open Tickets</div>
-                                </div>
+                            <div className="stat-content">
+                                <div className="stat-number">{ordersWithTickets.filter(o => o.ticket && o.ticket.status === 'open').length}</div>
+                                <div className="stat-label">Open Tickets</div>
                             </div>
+                        </div>
 
-                            <div className="stat-card">
-                                <div className="stat-icon">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <div className="stat-content">
-                                    <div className="stat-number">{ordersWithTickets.filter(o => o.ticket && o.ticket.status === 'resolved').length}</div>
-                                    <div className="stat-label">Resolved</div>
-                                </div>
+                        <div className="stat-card">
+                            <div className="stat-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
                             </div>
+                            <div className="stat-content">
+                                <div className="stat-number">{ordersWithTickets.filter(o => o.ticket && o.ticket.status === 'resolved').length}</div>
+                                <div className="stat-label">Resolved</div>
+                            </div>
+                        </div>
 
-                            <div className="stat-card">
-                                <div className="stat-icon">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <div className="stat-card">
+                            <div className="stat-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div className="stat-content">
+                                <div className="stat-number">{ordersWithTickets.filter(o => o.ticket && o.ticket.status === 'closed').length}</div>
+                                <div className="stat-label">Closed Tickets</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="orders-section">
+                    <div className="section-header">
+                        <h2>Orders with Tickets</h2>
+
+                        <div className="header-actions">
+                            <button className="create-ticket-btn" onClick={handleCreateTicket}>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                </svg>
+                                Create New Ticket
+                            </button>
+
+                            <div className="filters">
+                                <div className="search-box">
+                                    <svg className="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
+                                    <input
+                                        type="text"
+                                        placeholder="Search orders, sellers, customers, drivers..."
+                                        value={searchTerm}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value)
+                                            handleFiltersChange()
+                                        }}
+                                    />
                                 </div>
-                                <div className="stat-content">
-                                    <div className="stat-number">{ordersWithTickets.filter(o => o.ticket && o.ticket.status === 'closed').length}</div>
-                                    <div className="stat-label">Closed Tickets</div>
-                                </div>
+
+                                <select
+                                    value={statusFilter}
+                                    onChange={(e) => {
+                                        setStatusFilter(e.target.value)
+                                        handleFiltersChange()
+                                    }}
+                                    className="status-filter"
+                                >
+                                    <option value="all">All Status</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="done">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+
+                                <select
+                                    value={ticketFilter}
+                                    onChange={(e) => {
+                                        setTicketFilter(e.target.value)
+                                        handleFiltersChange()
+                                    }}
+                                    className="ticket-filter"
+                                >
+                                    <option value="all">All Tickets</option>
+                                    <option value="open-ticket">Open Tickets</option>
+                                    <option value="resolved-ticket">Resolved Tickets</option>
+                                    <option value="closed-ticket">Closed Tickets</option>
+                                </select>
                             </div>
                         </div>
                     </div>
 
-                    <div className="orders-section">
-                        <div className="section-header">
-                            <h2>Orders with Tickets</h2>
-
-                            <div className="header-actions">
-                                <button className="create-ticket-btn" onClick={handleCreateTicket}>
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                                    </svg>
-                                    Create New Ticket
-                                </button>
-
-                                <div className="filters">
-                                    <div className="search-box">
-                                        <svg className="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                        </svg>
-                                        <input
-                                            type="text"
-                                            placeholder="Search orders, sellers, customers, drivers..."
-                                            value={searchTerm}
-                                            onChange={(e) => {
-                                                setSearchTerm(e.target.value)
-                                                handleFiltersChange()
-                                            }}
-                                        />
-                                    </div>
-
-                                    <select
-                                        value={statusFilter}
-                                        onChange={(e) => {
-                                            setStatusFilter(e.target.value)
-                                            handleFiltersChange()
-                                        }}
-                                        className="status-filter"
-                                    >
-                                        <option value="all">All Status</option>
-                                        <option value="processing">Processing</option>
-                                        <option value="delivered">Delivered</option>
-                                        <option value="done">Completed</option>
-                                        <option value="cancelled">Cancelled</option>
-                                    </select>
-
-                                    <select
-                                        value={ticketFilter}
-                                        onChange={(e) => {
-                                            setTicketFilter(e.target.value)
-                                            handleFiltersChange()
-                                        }}
-                                        className="ticket-filter"
-                                    >
-                                        <option value="all">All Tickets</option>
-                                        <option value="open-ticket">Open Tickets</option>
-                                        <option value="resolved-ticket">Resolved Tickets</option>
-                                        <option value="closed-ticket">Closed Tickets</option>
-                                    </select>
-                                </div>
+                    <div className="table-container">
+                        <div className="orders-table">
+                            <div className="table-header">
+                                <div className="header-cell">Order</div>
+                                <div className="header-cell">Seller</div>
+                                <div className="header-cell">Customer</div>
+                                <div className="header-cell">Driver</div>
+                                <div className="header-cell">Amount</div>
+                                <div className="header-cell">Status</div>
+                                <div className="header-cell">Ticket</div>
+                                <div className="header-cell">Actions</div>
                             </div>
-                        </div>
 
-                        <div className="table-container">
-                            <div className="orders-table">
-                                <div className="table-header">
-                                    <div className="header-cell">Order</div>
-                                    <div className="header-cell">Seller</div>
-                                    <div className="header-cell">Customer</div>
-                                    <div className="header-cell">Driver</div>
-                                    <div className="header-cell">Amount</div>
-                                    <div className="header-cell">Status</div>
-                                    <div className="header-cell">Ticket</div>
-                                    <div className="header-cell">Actions</div>
-                                </div>
-
-                                <div className="table-body">
-                                    {currentOrders.map((order) => (
-                                        <div key={order.id} className="table-row">
-                                            <div className="table-cell">
-                                                <div className="order-info">
-                                                    <div className="order-number">#{order.orderNumber}</div>
-                                                    <div className="order-date">{order.orderDate}</div>
-                                                </div>
-                                            </div>
-
-                                            <div className="table-cell">
-                                                <div className="seller-info">
-                                                    <div className="seller-name">{order.seller.name}</div>
-                                                    <div className="seller-type">{order.seller.businessType}</div>
-                                                </div>
-                                            </div>
-
-                                            <div className="table-cell">
-                                                <div className="customer-info">
-                                                    <div className="customer-name">{order.customer.name}</div>
-                                                    <div className="customer-phone">{order.customer.phone}</div>
-                                                </div>
-                                            </div>
-
-                                            <div className="table-cell">
-                                                <div className="driver-info">
-                                                    <div className="driver-name">{order.deliveryDriver.name}</div>
-                                                    <div className="driver-vehicle">{order.deliveryDriver.vehicleType}</div>
-                                                </div>
-                                            </div>
-
-                                            <div className="table-cell">
-                                                <div className="amount">${order.totalAmount}</div>
-                                            </div>
-
-                                            <div className="table-cell">
-                                                {getStatusBadge(order.status)}
-                                            </div>
-
-                                            <div className="table-cell">
-                                                {getTicketBadge(order.ticket)}
-                                            </div>
-
-                                            <div className="table-cell">
-                                                <button
-                                                    className="view-details-btn"
-                                                    onClick={() => handleViewDetails(order)}
-                                                >
-                                                    View Details
-                                                </button>
+                            <div className="table-body">
+                                {currentOrders.map((order) => (
+                                    <div key={order.id} className="table-row">
+                                        <div className="table-cell">
+                                            <div className="order-info">
+                                                <div className="order-number">#{order.orderNumber}</div>
+                                                <div className="order-date">{order.orderDate}</div>
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
+
+                                        <div className="table-cell">
+                                            <div className="seller-info">
+                                                <div className="seller-name">{order.seller.name}</div>
+                                                <div className="seller-type">{order.seller.businessType}</div>
+                                            </div>
+                                        </div>
+
+                                        <div className="table-cell">
+                                            <div className="customer-info">
+                                                <div className="customer-name">{order.customer.name}</div>
+                                                <div className="customer-phone">{order.customer.phone}</div>
+                                            </div>
+                                        </div>
+
+                                        <div className="table-cell">
+                                            <div className="driver-info">
+                                                <div className="driver-name">{order.deliveryDriver.name}</div>
+                                                <div className="driver-vehicle">{order.deliveryDriver.vehicleType}</div>
+                                            </div>
+                                        </div>
+
+                                        <div className="table-cell">
+                                            <div className="amount">${order.totalAmount}</div>
+                                        </div>
+
+                                        <div className="table-cell">
+                                            {getStatusBadge(order.status)}
+                                        </div>
+
+                                        <div className="table-cell">
+                                            {getTicketBadge(order.ticket)}
+                                        </div>
+
+                                        <div className="table-cell">
+                                            <button
+                                                className="view-details-btn"
+                                                onClick={() => handleViewDetails(order)}
+                                            >
+                                                View Details
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-
-                        {/* Pagination */}
-                        {totalPages > 1 && (
-                            <div className="pagination-container">
-                                <div className="pagination-info">
-                                    Showing {indexOfFirstOrder + 1} to {Math.min(indexOfLastOrder, filteredOrders.length)} of {filteredOrders.length} orders
-                                </div>
-                                <div className="pagination">
-                                    {renderPagination()}
-                                </div>
-                            </div>
-                        )}
-
-                        {filteredOrders.length === 0 && (
-                            <div className="no-results">
-                                <div className="no-results-icon">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                </div>
-                                <h3>No orders found</h3>
-                                <p>Try adjusting your search or filter criteria</p>
-                            </div>
-                        )}
                     </div>
-                </main>
+
+                    {/* Pagination */}
+                    {totalPages > 1 && (
+                        <div className="pagination-container">
+                            <div className="pagination-info">
+                                Showing {indexOfFirstOrder + 1} to {Math.min(indexOfLastOrder, filteredOrders.length)} of {filteredOrders.length} orders
+                            </div>
+                            <div className="pagination">
+                                {renderPagination()}
+                            </div>
+                        </div>
+                    )}
+
+                    {filteredOrders.length === 0 && (
+                        <div className="no-results">
+                            <div className="no-results-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </div>
+                            <h3>No orders found</h3>
+                            <p>Try adjusting your search or filter criteria</p>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Create Ticket Modal */}
@@ -778,8 +862,39 @@ const CustomerServices = () => {
                     </div>
                 </div>
             )}
+        </main>
+    )
+
+    return (
+        <div className="admin-cs-layout">
+            <AdminCustomerServiceNavbar
+                onToggleSidebar={handleToggleSidebar}
+                isSidebarCollapsed={isSidebarCollapsed}
+            />
+
+            <div className="admin-cs-content">
+                <AdminCustomerServiceSidebar
+                    isCollapsed={isSidebarCollapsed}
+                    isMobile={isMobile}
+                    isOpen={isSidebarOpen}
+                    onClose={handleCloseMobileSidebar}
+                />
+
+                <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/users" element={
+                        <main
+                            className={`main-content ${isSidebarCollapsed ? 'main-content--expanded' : ''} ${isMobile ? 'main-content--mobile' : ''}`}
+                            onClick={handleMainContentClick}
+                        >
+                            <CustomerServiceUsers />
+                        </main>
+                    } />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </div>
         </div>
     )
 }
 
-export default CustomerServices
+export default AdminCustomerServices
