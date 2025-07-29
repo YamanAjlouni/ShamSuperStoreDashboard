@@ -12,6 +12,30 @@ const DeliveryHistory = () => {
     const [itemsPerPage] = useState(10)
     const [selectedDelivery, setSelectedDelivery] = useState(null)
 
+    const [showTicketModal, setShowTicketModal] = useState(false)
+    const [selectedDeliveryForTicket, setSelectedDeliveryForTicket] = useState(null)
+    const [ticketForm, setTicketForm] = useState({
+        reason: '',
+        customReason: '',
+        subject: '',
+        description: ''
+    })
+    const [ticketSubmitting, setTicketSubmitting] = useState(false)
+
+    // Predefined reasons for tickets
+    const ticketReasons = [
+        'Delivery Delay',
+        'Damaged Package',
+        'Missing Items',
+        'Wrong Delivery Address',
+        'Customer Complaint',
+        'Payment Issue',
+        'Package Not Received',
+        'Quality Issue',
+        'Refund Request',
+        'Other'
+    ]
+
     useEffect(() => {
         const fetchDeliveryHistory = async () => {
             setLoading(true)
@@ -312,7 +336,7 @@ const DeliveryHistory = () => {
                     fill="currentColor"
                     viewBox="0 0 24 24"
                 >
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                 </svg>
             )
         }
@@ -332,7 +356,7 @@ const DeliveryHistory = () => {
                 delivery.customerRating || 'N/A'
             ])
         ]
-        
+
         const csvContent = csvData.map(row => row.join(',')).join('\n')
         const blob = new Blob([csvContent], { type: 'text/csv' })
         const url = window.URL.createObjectURL(blob)
@@ -343,6 +367,64 @@ const DeliveryHistory = () => {
         document.body.appendChild(a)
         a.click()
         document.body.removeChild(a)
+    }
+
+    const openTicketModal = (delivery) => {
+        setSelectedDeliveryForTicket(delivery)
+        setTicketForm({
+            reason: '',
+            customReason: '',
+            subject: '',
+            description: ''
+        })
+        setShowTicketModal(true)
+    }
+
+    const closeTicketModal = () => {
+        setShowTicketModal(false)
+        setSelectedDeliveryForTicket(null)
+        setTicketForm({
+            reason: '',
+            customReason: '',
+            subject: '',
+            description: ''
+        })
+    }
+
+    const handleTicketFormChange = (field, value) => {
+        setTicketForm(prev => ({
+            ...prev,
+            [field]: value
+        }))
+    }
+
+    const submitTicket = async () => {
+        if (!ticketForm.reason) {
+            alert('Please select a reason for the ticket')
+            return
+        }
+        if (ticketForm.reason === 'Other' && !ticketForm.customReason.trim()) {
+            alert('Please specify the custom reason')
+            return
+        }
+        if (!ticketForm.subject.trim()) {
+            alert('Please enter a subject')
+            return
+        }
+        if (!ticketForm.description.trim()) {
+            alert('Please enter a description')
+            return
+        }
+
+        setTicketSubmitting(true)
+
+        // Simulate API call
+        setTimeout(() => {
+            const ticketId = `TKT-${Date.now()}`
+            alert(`Ticket created successfully!\nTicket ID: ${ticketId}\n\nOur customer service team will review your ticket and respond within 24 hours.`)
+            setTicketSubmitting(false)
+            closeTicketModal()
+        }, 1500)
     }
 
     if (loading) {
@@ -450,7 +532,7 @@ const DeliveryHistory = () => {
                                     </div>
                                 </div>
                                 <div className="status-section">
-                                    <span 
+                                    <span
                                         className="status-badge"
                                         style={{ backgroundColor: getStatusColor(delivery.status) }}
                                     >
@@ -495,7 +577,7 @@ const DeliveryHistory = () => {
                                         <h4>Your Earnings</h4>
                                         <div className="earnings-amount">{formatCurrency(delivery.earnings)}</div>
                                     </div>
-                                    
+
                                     {delivery.customerRating && (
                                         <div className="rating-info">
                                             <h4>Customer Rating</h4>
@@ -516,7 +598,7 @@ const DeliveryHistory = () => {
                             </div>
 
                             <div className="card-actions">
-                                <button 
+                                <button
                                     className="action-btn view-details"
                                     onClick={() => setSelectedDelivery(delivery)}
                                 >
@@ -525,6 +607,15 @@ const DeliveryHistory = () => {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                     </svg>
                                     View Details
+                                </button>
+                                <button
+                                    className="action-btn create-ticket"
+                                    onClick={() => openTicketModal(delivery)}
+                                >
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                                    </svg>
+                                    Create Ticket
                                 </button>
                             </div>
                         </div>
@@ -626,6 +717,136 @@ const DeliveryHistory = () => {
                                 onClick={() => setSelectedDelivery(null)}
                             >
                                 Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {showTicketModal && selectedDeliveryForTicket && (
+                <div className="modal-overlay" onClick={closeTicketModal}>
+                    <div className="modal ticket-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <div className="header-content">
+                                <h2>Create Support Ticket</h2>
+                                <div className="ticket-delivery-info">
+                                    <span>Delivery: #{selectedDeliveryForTicket.id}</span>
+                                    <span>Order: {selectedDeliveryForTicket.orderId}</span>
+                                </div>
+                            </div>
+                            <button
+                                className="close-btn"
+                                onClick={closeTicketModal}
+                            >
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="ticket-form">
+                                <div className="form-group">
+                                    <label htmlFor="ticket-reason">Reason for Contact *</label>
+                                    <select
+                                        id="ticket-reason"
+                                        value={ticketForm.reason}
+                                        onChange={(e) => handleTicketFormChange('reason', e.target.value)}
+                                        className="form-control"
+                                    >
+                                        <option value="">Select a reason...</option>
+                                        {ticketReasons.map(reason => (
+                                            <option key={reason} value={reason}>{reason}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {ticketForm.reason === 'Other' && (
+                                    <div className="form-group">
+                                        <label htmlFor="custom-reason">Please specify the reason *</label>
+                                        <input
+                                            type="text"
+                                            id="custom-reason"
+                                            value={ticketForm.customReason}
+                                            onChange={(e) => handleTicketFormChange('customReason', e.target.value)}
+                                            className="form-control"
+                                            placeholder="Please describe your specific reason..."
+                                        />
+                                    </div>
+                                )}
+
+                                <div className="form-group">
+                                    <label htmlFor="ticket-subject">Subject *</label>
+                                    <input
+                                        type="text"
+                                        id="ticket-subject"
+                                        value={ticketForm.subject}
+                                        onChange={(e) => handleTicketFormChange('subject', e.target.value)}
+                                        className="form-control"
+                                        placeholder="Brief description of the issue..."
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="ticket-description">Description *</label>
+                                    <textarea
+                                        id="ticket-description"
+                                        value={ticketForm.description}
+                                        onChange={(e) => handleTicketFormChange('description', e.target.value)}
+                                        className="form-control"
+                                        rows="4"
+                                        placeholder="Please provide detailed information about your request or issue. Include any relevant details that might help our support team assist you better..."
+                                    ></textarea>
+                                </div>
+
+                                <div className="delivery-summary">
+                                    <h4>Order Summary</h4>
+                                    <div className="summary-content">
+                                        <div className="summary-row">
+                                            <span>Customer:</span>
+                                            <span>{selectedDeliveryForTicket.customer.name}</span>
+                                        </div>
+                                        <div className="summary-row">
+                                            <span>Delivery Address:</span>
+                                            <span>{selectedDeliveryForTicket.delivery.address}</span>
+                                        </div>
+                                        <div className="summary-row">
+                                            <span>Order Value:</span>
+                                            <span>{formatCurrency(selectedDeliveryForTicket.order.total)}</span>
+                                        </div>
+                                        <div className="summary-row">
+                                            <span>Status:</span>
+                                            <span className="status-text">{getStatusLabel(selectedDeliveryForTicket.status)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button
+                                className="btn btn--secondary"
+                                onClick={closeTicketModal}
+                                disabled={ticketSubmitting}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="btn btn--primary"
+                                onClick={submitTicket}
+                                disabled={ticketSubmitting}
+                            >
+                                {ticketSubmitting ? (
+                                    <>
+                                        <div className="btn-spinner"></div>
+                                        Creating Ticket...
+                                    </>
+                                ) : (
+                                    <>
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                        </svg>
+                                        Create Ticket
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>
