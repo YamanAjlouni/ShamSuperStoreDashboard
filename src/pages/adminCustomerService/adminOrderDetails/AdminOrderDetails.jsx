@@ -222,6 +222,57 @@ const AdminOrderDetails = ({ order, onBack, onUpdateOrder }) => {
                         <div className="status-container">
                             {getStatusBadge(currentOrder.status)}
                         </div>
+                        {currentOrder.ticket && (
+                            <div className="ticket-creator-info">
+                                <span className="creator-label">Ticket Created By:</span>
+                                <div className="creator-dropdown">
+                                    <select
+                                        value={currentOrder.ticket.createdBy}
+                                        disabled
+                                        className="creator-select"
+                                    >
+                                        <option value="customer">Customer</option>
+                                        <option value="seller">Seller</option>
+                                        <option value="deliveryDriver">Delivery Driver</option>
+                                        <option value="customerService">Customer Service</option>
+                                    </select>
+                                    <div className={`creator-badge ${currentOrder.ticket.createdBy}`}>
+                                        {currentOrder.ticket.createdBy === 'customer' && (
+                                            <>
+                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                </svg>
+                                                Customer
+                                            </>
+                                        )}
+                                        {currentOrder.ticket.createdBy === 'seller' && (
+                                            <>
+                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                </svg>
+                                                Seller
+                                            </>
+                                        )}
+                                        {currentOrder.ticket.createdBy === 'deliveryDriver' && (
+                                            <>
+                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                                                </svg>
+                                                Delivery Driver
+                                            </>
+                                        )}
+                                        {currentOrder.ticket.createdBy === 'customerService' && (
+                                            <>
+                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                Customer Service
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -303,6 +354,51 @@ const AdminOrderDetails = ({ order, onBack, onUpdateOrder }) => {
                             </div>
                         </div>
                     </div>
+
+                    {currentOrder.deliveryDriver && (
+                        <div className="details-card">
+                            <div className="card-header">
+                                <div className="card-icon driver-icon">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                                    </svg>
+                                </div>
+                                <h3>Delivery Driver</h3>
+                            </div>
+                            <div className="card-content">
+                                <div className="info-row">
+                                    <span className="label">Driver Name:</span>
+                                    <span className="value">{currentOrder.deliveryDriver.name}</span>
+                                </div>
+                                <div className="info-row">
+                                    <span className="label">Driver ID:</span>
+                                    <span className="value">{currentOrder.deliveryDriver.id}</span>
+                                </div>
+                                <div className="info-row">
+                                    <span className="label">Phone Number:</span>
+                                    <span className="value contact-link" onClick={() => window.open(`tel:${currentOrder.deliveryDriver.phone}`)}>
+                                        {currentOrder.deliveryDriver.phone}
+                                    </span>
+                                </div>
+                                <div className="info-row">
+                                    <span className="label">Vehicle Type:</span>
+                                    <span className="value vehicle-type">
+                                        <span className="vehicle-badge">
+                                            {currentOrder.deliveryDriver.vehicleType}
+                                        </span>
+                                    </span>
+                                </div>
+                                <div className="info-row">
+                                    <span className="label">Delivery Status:</span>
+                                    <span className="value">
+                                        <span className={`driver-status ${currentOrder.status === 'delivered' ? 'completed' : 'active'}`}>
+                                            {currentOrder.status === 'delivered' ? 'Delivery Completed' : 'In Transit'}
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Payment Method Section */}
@@ -452,7 +548,8 @@ const AdminOrderDetails = ({ order, onBack, onUpdateOrder }) => {
                                     <span className="label">Created By:</span>
                                     <span className="value ticket-creator">
                                         {currentOrder.ticket.createdBy === 'customer' ? 'Customer' :
-                                            currentOrder.ticket.createdBy === 'seller' ? 'Seller' : 'Customer Service'}
+                                            currentOrder.ticket.createdBy === 'seller' ? 'Seller' :
+                                                currentOrder.ticket.createdBy === 'deliveryDriver' ? 'Delivery Driver' : 'Customer Service'}
                                     </span>
                                 </div>
                                 <div className="info-row">

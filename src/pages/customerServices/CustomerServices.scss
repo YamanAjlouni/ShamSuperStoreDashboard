@@ -661,6 +661,10 @@
             padding: 1.5rem;
             border-bottom: 1px solid #e2e8f0;
 
+            @media(max-width: 768px) {
+                padding: 0.5rem;
+            }
+
             h3 {
                 font-size: 1.25rem;
                 font-weight: 600;
@@ -691,6 +695,10 @@
 
         .ticket-form {
             padding: 1.5rem;
+
+            @media(max-width: 768px) {
+                padding: 0.5rem;
+            }
 
             .form-group {
                 margin-bottom: 1.25rem;

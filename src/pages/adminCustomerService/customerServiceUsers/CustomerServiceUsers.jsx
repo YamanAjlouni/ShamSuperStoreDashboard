@@ -27,6 +27,7 @@ const CustomerServiceUsers = () => {
     const [searchTerm, setSearchTerm] = useState('')
     const [statusFilter, setStatusFilter] = useState('all')
     const [formData, setFormData] = useState({
+        name: '', // Added name field
         email: '',
         password: '',
         confirmPassword: ''
@@ -202,6 +203,7 @@ const CustomerServiceUsers = () => {
 
         // Validate form
         const errors = {}
+        if (!formData.name.trim()) errors.name = 'Name is required'
         if (!formData.email) errors.email = 'Email is required'
         if (!formData.password) errors.password = 'Password is required'
         if (formData.password !== formData.confirmPassword) {
@@ -216,10 +218,10 @@ const CustomerServiceUsers = () => {
             return
         }
 
-        // Extract first and last name from email (simple approach)
-        const emailParts = formData.email.split('@')[0].split('.')
-        const firstName = emailParts[0] ? emailParts[0].charAt(0).toUpperCase() + emailParts[0].slice(1) : 'User'
-        const lastName = emailParts[1] ? emailParts[1].charAt(0).toUpperCase() + emailParts[1].slice(1) : ''
+        // Split name into first and last name
+        const nameParts = formData.name.trim().split(' ')
+        const firstName = nameParts[0] || 'User'
+        const lastName = nameParts.slice(1).join(' ') || ''
 
         const newUser = {
             id: users.length + 1,
@@ -235,7 +237,7 @@ const CustomerServiceUsers = () => {
 
         setUsers([...users, newUser])
         setShowAddModal(false)
-        setFormData({ email: '', password: '', confirmPassword: '' })
+        setFormData({ name: '', email: '', password: '', confirmPassword: '' })
         setFormErrors({})
     }
 
@@ -266,6 +268,12 @@ const CustomerServiceUsers = () => {
                 {status === 'active' ? 'Active' : 'Pending'}
             </span>
         )
+    }
+
+    // Reset form function
+    const resetForm = () => {
+        setFormData({ name: '', email: '', password: '', confirmPassword: '' })
+        setFormErrors({})
     }
 
     // If viewing user details, render the details component
@@ -467,8 +475,7 @@ const CustomerServiceUsers = () => {
                                 className="modal-close"
                                 onClick={() => {
                                     setShowAddModal(false)
-                                    setFormData({ email: '', password: '', confirmPassword: '' })
-                                    setFormErrors({})
+                                    resetForm()
                                 }}
                             >
                                 <X size={20} />
@@ -476,6 +483,19 @@ const CustomerServiceUsers = () => {
                         </div>
 
                         <form onSubmit={handleAddUser} className="modal-form">
+                            <div className="form-group">
+                                <label htmlFor="name">Full Name</label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    value={formData.name}
+                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    className={formErrors.name ? 'error' : ''}
+                                    placeholder="Enter full name (e.g., John Doe)"
+                                />
+                                {formErrors.name && <span className="error-text">{formErrors.name}</span>}
+                            </div>
+
                             <div className="form-group">
                                 <label htmlFor="email">Email Address</label>
                                 <input
@@ -521,8 +541,7 @@ const CustomerServiceUsers = () => {
                                     className="btn btn--secondary"
                                     onClick={() => {
                                         setShowAddModal(false)
-                                        setFormData({ email: '', password: '', confirmPassword: '' })
-                                        setFormErrors({})
+                                        resetForm()
                                     }}
                                 >
                                     Cancel

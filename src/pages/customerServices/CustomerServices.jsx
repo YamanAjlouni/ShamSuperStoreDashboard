@@ -15,6 +15,7 @@ const CustomerServices = () => {
     const [newTicketForm, setNewTicketForm] = useState({
         orderNumber: '',
         reason: '',
+        customReason: '', // Added custom reason field
         description: '',
         priority: 'medium',
         createdBy: 'customerService'
@@ -314,22 +315,38 @@ const CustomerServices = () => {
         setNewTicketForm({
             orderNumber: '',
             reason: '',
+            customReason: '', // Reset custom reason
             description: '',
             priority: 'medium',
             createdBy: 'customerService'
         })
     }
 
+    // Updated form change handler to handle custom reason
     const handleFormChange = (e) => {
         const { name, value } = e.target
         setNewTicketForm(prev => ({
             ...prev,
-            [name]: value
+            [name]: value,
+            // Clear custom reason if reason is not "Other"
+            ...(name === 'reason' && value !== 'Other' && { customReason: '' })
         }))
     }
 
     const handleSubmitTicket = (e) => {
         e.preventDefault()
+
+        // Validate form
+        if (!newTicketForm.orderNumber || !newTicketForm.reason || !newTicketForm.description) {
+            alert('Please fill in all required fields!')
+            return
+        }
+
+        // If reason is "Other", validate custom reason
+        if (newTicketForm.reason === 'Other' && !newTicketForm.customReason.trim()) {
+            alert('Please specify the custom reason!')
+            return
+        }
 
         // Find the order by order number
         const targetOrder = orders.find(order => order.orderNumber === newTicketForm.orderNumber)
@@ -344,11 +361,13 @@ const CustomerServices = () => {
             return
         }
 
-        // Create new ticket
+        // Create new ticket with proper reason handling
+        const ticketReason = newTicketForm.reason === 'Other' ? newTicketForm.customReason : newTicketForm.reason
+
         const newTicket = {
             id: `T-${String(orders.length + 1).padStart(3, '0')}`,
             createdBy: newTicketForm.createdBy,
-            reason: newTicketForm.reason,
+            reason: ticketReason, // Use custom reason if "Other" was selected
             status: 'open',
             description: newTicketForm.description,
             priority: newTicketForm.priority,
@@ -690,7 +709,7 @@ const CustomerServices = () => {
                 </main>
             </div>
 
-            {/* Create Ticket Modal */}
+            {/* Create Ticket Modal - Updated with Custom Reason */}
             {showCreateTicketModal && (
                 <div className="modal-overlay" onClick={handleCloseModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -705,7 +724,7 @@ const CustomerServices = () => {
 
                         <form onSubmit={handleSubmitTicket} className="ticket-form">
                             <div className="form-group">
-                                <label htmlFor="orderNumber">Order Number</label>
+                                <label htmlFor="orderNumber">Order Number *</label>
                                 <input
                                     type="text"
                                     id="orderNumber"
@@ -714,11 +733,12 @@ const CustomerServices = () => {
                                     onChange={handleFormChange}
                                     placeholder="Enter order number (e.g., 12345)"
                                     required
+                                    autoComplete="off"
                                 />
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="reason">Reason</label>
+                                <label htmlFor="reason">Reason *</label>
                                 <select
                                     id="reason"
                                     name="reason"
@@ -738,6 +758,23 @@ const CustomerServices = () => {
                                 </select>
                             </div>
 
+                            {/* Conditional Custom Reason Field */}
+                            {newTicketForm.reason === 'Other' && (
+                                <div className="form-group">
+                                    <label htmlFor="customReason">Custom Reason *</label>
+                                    <input
+                                        type="text"
+                                        id="customReason"
+                                        name="customReason"
+                                        value={newTicketForm.customReason}
+                                        onChange={handleFormChange}
+                                        placeholder="Please specify the reason"
+                                        required
+                                        autoComplete="off"
+                                    />
+                                </div>
+                            )}
+
                             <div className="form-group">
                                 <label htmlFor="priority">Priority</label>
                                 <select
@@ -754,7 +791,7 @@ const CustomerServices = () => {
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="description">Description</label>
+                                <label htmlFor="description">Description *</label>
                                 <textarea
                                     id="description"
                                     name="description"

@@ -18,6 +18,7 @@ const AdminCustomerServices = () => {
     const [newTicketForm, setNewTicketForm] = useState({
         orderNumber: '',
         reason: '',
+        customReason: '', // Add custom reason field
         description: '',
         priority: 'medium',
         createdBy: 'customerService'
@@ -383,22 +384,38 @@ const AdminCustomerServices = () => {
         setNewTicketForm({
             orderNumber: '',
             reason: '',
+            customReason: '',
             description: '',
             priority: 'medium',
             createdBy: 'customerService'
         })
     }
 
+    // Fixed form change handler - simplified without preventDefault
     const handleFormChange = (e) => {
         const { name, value } = e.target
         setNewTicketForm(prev => ({
             ...prev,
-            [name]: value
+            [name]: value,
+            // Clear custom reason if reason is not "Other"
+            ...(name === 'reason' && value !== 'Other' && { customReason: '' })
         }))
     }
 
     const handleSubmitTicket = (e) => {
         e.preventDefault()
+
+        // Validate form
+        if (!newTicketForm.orderNumber || !newTicketForm.reason || !newTicketForm.description) {
+            alert('Please fill in all required fields!')
+            return
+        }
+
+        // If reason is "Other", validate custom reason
+        if (newTicketForm.reason === 'Other' && !newTicketForm.customReason.trim()) {
+            alert('Please specify the custom reason!')
+            return
+        }
 
         // Find the order by order number
         const targetOrder = orders.find(order => order.orderNumber === newTicketForm.orderNumber)
@@ -414,10 +431,12 @@ const AdminCustomerServices = () => {
         }
 
         // Create new ticket
+        const ticketReason = newTicketForm.reason === 'Other' ? newTicketForm.customReason : newTicketForm.reason
+
         const newTicket = {
             id: `T-${String(orders.length + 1).padStart(3, '0')}`,
             createdBy: newTicketForm.createdBy,
-            reason: newTicketForm.reason,
+            reason: ticketReason,
             status: 'open',
             description: newTicketForm.description,
             priority: newTicketForm.priority,
@@ -434,6 +453,18 @@ const AdminCustomerServices = () => {
         handleUpdateOrder(updatedOrder)
         handleCloseModal()
         alert('Ticket created successfully!')
+    }
+
+    // Prevent modal from closing when clicking inside modal content
+    const handleModalContentClick = (e) => {
+        e.stopPropagation()
+    }
+
+    // Handle modal overlay click - only close if clicking on overlay itself
+    const handleModalOverlayClick = (e) => {
+        if (e.target === e.currentTarget) {
+            handleCloseModal()
+        }
     }
 
     // Check if we're viewing order details
@@ -773,96 +804,8 @@ const AdminCustomerServices = () => {
                     )}
                 </div>
             </div>
-
-            {/* Create Ticket Modal */}
-            {showCreateTicketModal && (
-                <div className="modal-overlay" onClick={handleCloseModal}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <div className="modal-header">
-                            <h3>Create New Ticket</h3>
-                            <button className="close-btn" onClick={handleCloseModal}>
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <form onSubmit={handleSubmitTicket} className="ticket-form">
-                            <div className="form-group">
-                                <label htmlFor="orderNumber">Order Number</label>
-                                <input
-                                    type="text"
-                                    id="orderNumber"
-                                    name="orderNumber"
-                                    value={newTicketForm.orderNumber}
-                                    onChange={handleFormChange}
-                                    placeholder="Enter order number (e.g., 12345)"
-                                    required
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="reason">Reason</label>
-                                <select
-                                    id="reason"
-                                    name="reason"
-                                    value={newTicketForm.reason}
-                                    onChange={handleFormChange}
-                                    required
-                                >
-                                    <option value="">Select a reason</option>
-                                    <option value="Product quality issue">Product quality issue</option>
-                                    <option value="Delivery problem">Delivery problem</option>
-                                    <option value="Wrong item">Wrong item</option>
-                                    <option value="Damaged item">Damaged item</option>
-                                    <option value="Late delivery">Late delivery</option>
-                                    <option value="Refund request">Refund request</option>
-                                    <option value="Customer complaint">Customer complaint</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="priority">Priority</label>
-                                <select
-                                    id="priority"
-                                    name="priority"
-                                    value={newTicketForm.priority}
-                                    onChange={handleFormChange}
-                                    required
-                                >
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
-                                </select>
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="description">Description</label>
-                                <textarea
-                                    id="description"
-                                    name="description"
-                                    value={newTicketForm.description}
-                                    onChange={handleFormChange}
-                                    placeholder="Describe the issue in detail..."
-                                    rows="4"
-                                    required
-                                ></textarea>
-                            </div>
-
-                            <div className="form-actions">
-                                <button type="button" className="cancel-btn" onClick={handleCloseModal}>
-                                    Cancel
-                                </button>
-                                <button type="submit" className="submit-btn">
-                                    Create Ticket
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
         </main>
+
     )
 
     return (
@@ -893,6 +836,121 @@ const AdminCustomerServices = () => {
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </div>
+
+            {/* MOVE THE MODAL HERE - At the top level of AdminCustomerServices component */}
+            {showCreateTicketModal && (
+                <div className="modal-overlay" onClick={handleModalOverlayClick}>
+                    <div className="modal-content" onClick={handleModalContentClick}>
+                        <div className="modal-header">
+                            <h3>Create New Ticket</h3>
+                            <button
+                                className="close-btn"
+                                onClick={handleCloseModal}
+                                type="button"
+                            >
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSubmitTicket} className="ticket-form">
+                            <div className="form-group">
+                                <label htmlFor="orderNumber">Order Number *</label>
+                                <input
+                                    type="text"
+                                    id="orderNumber"
+                                    name="orderNumber"
+                                    value={newTicketForm.orderNumber}
+                                    onChange={handleFormChange}
+                                    placeholder="Enter order number (e.g., 12345)"
+                                    required
+                                    autoComplete="off"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="reason">Reason *</label>
+                                <select
+                                    id="reason"
+                                    name="reason"
+                                    value={newTicketForm.reason}
+                                    onChange={handleFormChange}
+                                    required
+                                >
+                                    <option value="">Select a reason</option>
+                                    <option value="Product quality issue">Product quality issue</option>
+                                    <option value="Delivery problem">Delivery problem</option>
+                                    <option value="Wrong item">Wrong item</option>
+                                    <option value="Damaged item">Damaged item</option>
+                                    <option value="Late delivery">Late delivery</option>
+                                    <option value="Refund request">Refund request</option>
+                                    <option value="Customer complaint">Customer complaint</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            {/* Conditional Custom Reason Field */}
+                            {newTicketForm.reason === 'Other' && (
+                                <div className="form-group">
+                                    <label htmlFor="customReason">Custom Reason *</label>
+                                    <input
+                                        type="text"
+                                        id="customReason"
+                                        name="customReason"
+                                        value={newTicketForm.customReason}
+                                        onChange={handleFormChange}
+                                        placeholder="Please specify the reason"
+                                        required
+                                        autoComplete="off"
+                                    />
+                                </div>
+                            )}
+
+                            <div className="form-group">
+                                <label htmlFor="priority">Priority</label>
+                                <select
+                                    id="priority"
+                                    name="priority"
+                                    value={newTicketForm.priority}
+                                    onChange={handleFormChange}
+                                    required
+                                >
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="description">Description *</label>
+                                <textarea
+                                    id="description"
+                                    name="description"
+                                    value={newTicketForm.description}
+                                    onChange={handleFormChange}
+                                    placeholder="Describe the issue in detail..."
+                                    rows="4"
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-actions">
+                                <button
+                                    type="button"
+                                    className="cancel-btn"
+                                    onClick={handleCloseModal}
+                                >
+                                    Cancel
+                                </button>
+                                <button type="submit" className="submit-btn">
+                                    Create Ticket
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

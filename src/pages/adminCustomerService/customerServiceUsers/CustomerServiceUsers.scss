@@ -570,6 +570,7 @@
                             }
                         }
 
+                        // Actions group - Table row actions
                         .actions-group {
                             display: flex;
                             gap: 0.5rem;
@@ -578,6 +579,83 @@
 
                             @media (max-width: 768px) {
                                 gap: 0.25rem;
+                            }
+
+                            .btn {
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                padding: 0.5rem;
+                                border: none;
+                                border-radius: $radius-md;
+                                font-size: 0.75rem;
+                                font-weight: 500;
+                                cursor: pointer;
+                                transition: $transition-all;
+                                white-space: nowrap;
+
+                                svg {
+                                    width: 1rem;
+                                    height: 1rem;
+                                }
+
+                                @media (max-width: 768px) {
+                                    padding: 0.375rem;
+
+                                    svg {
+                                        width: 0.875rem;
+                                        height: 0.875rem;
+                                    }
+                                }
+
+                                &--primary {
+                                    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+                                    color: white;
+
+                                    &:hover {
+                                        transform: translateY(-1px);
+                                        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+                                    }
+                                }
+
+                                &--secondary {
+                                    background-color: #e2e8f0;
+                                    color: #475569;
+
+                                    &:hover {
+                                        background-color: #cbd5e1;
+                                        transform: translateY(-1px);
+                                    }
+                                }
+
+                                &--danger {
+                                    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+                                    color: white;
+
+                                    &:hover {
+                                        transform: translateY(-1px);
+                                        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+                                    }
+                                }
+
+                                &--sm {
+                                    padding: 0.5rem;
+                                    font-size: 0.75rem;
+
+                                    svg {
+                                        width: 1rem;
+                                        height: 1rem;
+                                    }
+
+                                    @media (max-width: 768px) {
+                                        padding: 0.375rem;
+
+                                        svg {
+                                            width: 0.875rem;
+                                            height: 0.875rem;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -850,10 +928,12 @@
                 display: flex;
                 gap: 0.75rem;
                 justify-content: flex-end;
+                padding: 0 1.5rem 1.5rem;
 
                 @media (max-width: 768px) {
                     flex-direction: column;
                     gap: 0.5rem;
+                    padding: 0 1.25rem 1.25rem;
                 }
 
                 .btn {
@@ -953,6 +1033,10 @@
                 .modal-form,
                 .modal-content {
                     padding: 1rem;
+                }
+
+                .modal-actions {
+                    padding: 0 1rem 1rem;
                 }
             }
         }

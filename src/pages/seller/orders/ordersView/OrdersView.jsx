@@ -5,7 +5,8 @@ import {
     Calendar, MapPin, Package, DollarSign, User,
     Phone, CreditCard, Truck, Clock, CheckCircle,
     XCircle, AlertCircle, PlayCircle, FileText,
-    Edit, MessageSquare, Navigation
+    Edit, MessageSquare, Navigation, HelpCircle,
+    Send, AlertTriangle
 } from 'lucide-react'
 import './OrdersView.scss'
 import MapModal from '../../../../components/mapModal/MapModal'
@@ -19,6 +20,16 @@ const OrdersView = () => {
     const [orderNotes, setOrderNotes] = useState('')
     const [newNote, setNewNote] = useState('')
     const [showMapModal, setShowMapModal] = useState(false)
+
+    // Customer Service Ticket State
+    const [ticketForm, setTicketForm] = useState({
+        issueType: '',
+        priority: 'medium',
+        subject: '',
+        description: ''
+    })
+    const [isSubmittingTicket, setIsSubmittingTicket] = useState(false)
+    const [existingTickets, setExistingTickets] = useState([])
 
     // Mock order data
     const mockOrderData = {
@@ -131,10 +142,22 @@ const OrdersView = () => {
         ]
     }
 
+    // Mock existing tickets data
+    const mockTickets = [
+        {
+            id: 'TKT-001',
+            subject: 'Delivery Issue',
+            status: 'open',
+            priority: 'high',
+            createdAt: '2025-06-21T09:30:00Z'
+        }
+    ]
+
     useEffect(() => {
         // Simulate loading order data
         setOrderData(mockOrderData)
         setOrderNotes(mockOrderData.notes.map(note => note.content).join('\n'))
+        setExistingTickets(mockTickets)
     }, [id])
 
     const getStatusBadge = (status) => {
@@ -195,6 +218,82 @@ const OrdersView = () => {
     // Handle opening map modal
     const handleOpenMap = () => {
         setShowMapModal(true)
+    }
+
+    // Customer Service Ticket Functions
+    const handleTicketFormChange = (field, value) => {
+        setTicketForm(prev => ({
+            ...prev,
+            [field]: value
+        }))
+    }
+
+    const submitTicket = async () => {
+        if (!ticketForm.issueType || !ticketForm.subject || !ticketForm.description) {
+            alert('Please fill in all required fields')
+            return
+        }
+
+        setIsSubmittingTicket(true)
+
+        // Simulate API call
+        setTimeout(() => {
+            const newTicket = {
+                id: `TKT-${String(Date.now()).slice(-3)}`,
+                subject: ticketForm.subject,
+                issueType: ticketForm.issueType,
+                priority: ticketForm.priority,
+                description: ticketForm.description,
+                status: 'open',
+                createdAt: new Date().toISOString(),
+                orderNumber: orderData.orderNumber
+            }
+
+            setExistingTickets(prev => [...prev, newTicket])
+
+            // Reset form
+            setTicketForm({
+                issueType: '',
+                priority: 'medium',
+                subject: '',
+                description: ''
+            })
+
+            setIsSubmittingTicket(false)
+            alert('Ticket submitted successfully!')
+        }, 1500)
+    }
+
+    const getTicketStatusBadge = (status) => {
+        const statusConfig = {
+            open: { class: 'ticket-status--open', text: 'Open' },
+            in_progress: { class: 'ticket-status--progress', text: 'In Progress' },
+            resolved: { class: 'ticket-status--resolved', text: 'Resolved' },
+            closed: { class: 'ticket-status--closed', text: 'Closed' }
+        }
+
+        const config = statusConfig[status] || statusConfig.open
+        return (
+            <span className={`ticket-status-badge ${config.class}`}>
+                {config.text}
+            </span>
+        )
+    }
+
+    const getPriorityBadge = (priority) => {
+        const priorityConfig = {
+            low: { class: 'priority--low', text: 'Low' },
+            medium: { class: 'priority--medium', text: 'Medium' },
+            high: { class: 'priority--high', text: 'High' },
+            urgent: { class: 'priority--urgent', text: 'Urgent' }
+        }
+
+        const config = priorityConfig[priority] || priorityConfig.medium
+        return (
+            <span className={`priority-badge ${config.class}`}>
+                {config.text}
+            </span>
+        )
     }
 
     // Get pickup location (seller's location)
@@ -550,6 +649,112 @@ const OrdersView = () => {
                             </div>
                         </div>
                     )}
+
+                    {/* Customer Service Ticket Section */}
+                    <div className="section customer-service-ticket">
+                        <h3>
+                            <HelpCircle size={18} />
+                            Customer Service
+                        </h3>
+
+                        {/* Existing Tickets */}
+                        {existingTickets.length > 0 && (
+                            <div className="existing-tickets">
+                                <h4>Existing Tickets</h4>
+                                {existingTickets.map(ticket => (
+                                    <div key={ticket.id} className="ticket-item">
+                                        <div className="ticket-header">
+                                            <span className="ticket-id">#{ticket.id}</span>
+                                            {getTicketStatusBadge(ticket.status)}
+                                            {getPriorityBadge(ticket.priority)}
+                                        </div>
+                                        <div className="ticket-subject">{ticket.subject}</div>
+                                        <div className="ticket-date">
+                                            {new Date(ticket.createdAt).toLocaleDateString()}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Create New Ticket Form */}
+                        <div className="ticket-form">
+                            <h4>Create New Ticket</h4>
+
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label>Issue Type *</label>
+                                    <select
+                                        value={ticketForm.issueType}
+                                        onChange={(e) => handleTicketFormChange('issueType', e.target.value)}
+                                        className="form-select"
+                                    >
+                                        <option value="">Select issue type</option>
+                                        <option value="delivery">Delivery Issue</option>
+                                        <option value="payment">Payment Problem</option>
+                                        <option value="product">Product Issue</option>
+                                        <option value="refund">Refund Request</option>
+                                        <option value="technical">Technical Support</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Priority</label>
+                                    <select
+                                        value={ticketForm.priority}
+                                        onChange={(e) => handleTicketFormChange('priority', e.target.value)}
+                                        className="form-select"
+                                    >
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                        <option value="urgent">Urgent</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Subject *</label>
+                                <input
+                                    type="text"
+                                    value={ticketForm.subject}
+                                    onChange={(e) => handleTicketFormChange('subject', e.target.value)}
+                                    placeholder="Brief description of the issue"
+                                    className="form-input"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label>Description *</label>
+                                <textarea
+                                    value={ticketForm.description}
+                                    onChange={(e) => handleTicketFormChange('description', e.target.value)}
+                                    placeholder="Please provide detailed information about your issue..."
+                                    className="form-textarea"
+                                    rows="4"
+                                />
+                            </div>
+
+                            <button
+                                onClick={submitTicket}
+                                disabled={isSubmittingTicket || !ticketForm.issueType || !ticketForm.subject || !ticketForm.description}
+                                className="submit-ticket-btn"
+                            >
+                                {isSubmittingTicket ? (
+                                    <>
+                                        <div className="btn-spinner"></div>
+                                        Submitting...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Send size={16} />
+                                        Submit Ticket
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
 
                     {/* Order Notes */}
                     <div className="section order-notes">
