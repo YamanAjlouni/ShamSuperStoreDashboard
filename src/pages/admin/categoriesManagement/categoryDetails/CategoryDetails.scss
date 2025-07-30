@@ -174,7 +174,7 @@
             align-items: flex-start;
             gap: 2rem;
 
-            @media (max-width: 1024px) {
+            @media (max-width: 1600px) {
                 flex-direction: column;
                 gap: 1.5rem;
                 align-items: stretch;
@@ -335,6 +335,16 @@
                         }
                     }
 
+                    &--commission {
+                        background: rgba(34, 197, 94, 0.1);
+                        color: #059669;
+
+                        &:hover {
+                            background: rgba(34, 197, 94, 0.2);
+                            transform: translateY(-1px);
+                        }
+                    }
+
                     &--activate {
                         background: rgba(66, 103, 178, 0.1);
                         color: $primary-color;
@@ -371,12 +381,12 @@
 
     .category-stats {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1.5rem;
         margin-bottom: 2rem;
 
         @media (max-width: 1024px) {
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1.25rem;
         }
 
@@ -418,6 +428,30 @@
             &:hover {
                 transform: translateY(-2px);
                 box-shadow: $shadow-lg;
+            }
+
+            &.commission-stat-card {
+                border-color: rgba(34, 197, 94, 0.3);
+                background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(34, 197, 94, 0.02) 100%);
+
+                .commission-icon {
+                    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+                }
+
+                .commission-status {
+                    font-size: 0.75rem;
+                    color: #059669;
+                    margin-top: 0.25rem;
+                    font-weight: 500;
+
+                    @media (max-width: 768px) {
+                        font-size: 0.6875rem;
+                    }
+
+                    @media (max-width: 480px) {
+                        font-size: 0.625rem;
+                    }
+                }
             }
 
             .stat-icon {
@@ -528,6 +562,44 @@
         &--neutral {
             background: rgba(75, 85, 99, 0.1);
             color: $gray-500;
+        }
+    }
+
+    .commission-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: $radius-full;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+
+        @media (max-width: 768px) {
+            padding: 0.375rem 0.875rem;
+            font-size: 0.8125rem;
+        }
+
+        @media (max-width: 480px) {
+            font-size: 0.75rem;
+            padding: 0.3125rem 0.625rem;
+        }
+
+        &--default {
+            background: rgba(34, 197, 94, 0.1);
+            color: #059669;
+        }
+
+        &--override {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            position: relative;
+
+            &::before {
+                content: '⚠️';
+                margin-right: 0.25rem;
+                font-size: 0.625rem;
+            }
         }
     }
 
@@ -1055,26 +1127,41 @@
                                         }
                                     }
 
-                                    .subcategory-id {
-                                        font-size: 0.75rem;
-                                        color: $gray-500;
-                                        font-family: 'Courier New', monospace;
-                                        background: $gray-200;
-                                        padding: 0.25rem 0.5rem;
-                                        border-radius: $radius-sm;
+                                    .subcategory-meta {
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 0.75rem;
+                                        flex-wrap: wrap;
 
                                         @media (max-width: 768px) {
-                                            padding: 0.375rem 0.625rem;
+                                            gap: 0.5rem;
                                         }
 
                                         @media (max-width: 480px) {
-                                            font-size: 0.6875rem;
-                                            padding: 0.3125rem 0.5rem;
+                                            gap: 0.375rem;
+                                        }
+
+                                        .subcategory-id {
+                                            font-size: 0.75rem;
+                                            color: $gray-500;
+                                            font-family: 'Courier New', monospace;
+                                            background: $gray-200;
+                                            padding: 0.25rem 0.5rem;
+                                            border-radius: $radius-sm;
+
+                                            @media (max-width: 768px) {
+                                                padding: 0.375rem 0.625rem;
+                                            }
+
+                                            @media (max-width: 480px) {
+                                                font-size: 0.6875rem;
+                                                padding: 0.3125rem 0.5rem;
+                                            }
                                         }
                                     }
                                 }
 
-                                .subcategory-meta {
+                                .subcategory-controls {
                                     display: flex;
                                     align-items: center;
                                     gap: 0.5rem;
@@ -1165,7 +1252,7 @@
                                     background: $white;
                                     margin: 0.75rem 0;
 
-                                    .stat:nth-child(3) {
+                                    .stat:nth-child(4) {
                                         grid-column: 1 / -1;
                                     }
                                 }
@@ -1259,6 +1346,16 @@
                                         @media (max-width: 480px) {
                                             width: 22px;
                                             height: 22px;
+                                        }
+                                    }
+
+                                    &--commission {
+                                        background: rgba(34, 197, 94, 0.1);
+                                        color: #059669;
+
+                                        &:hover {
+                                            background: rgba(34, 197, 94, 0.2);
+                                            transform: translateY(-1px);
                                         }
                                     }
 
@@ -1475,21 +1572,36 @@
                                                     }
                                                 }
 
-                                                .sub-subcategory-id {
-                                                    font-size: 0.6875rem;
-                                                    color: $gray-500;
-                                                    font-family: 'Courier New', monospace;
-                                                    background: $gray-100;
-                                                    padding: 0.125rem 0.375rem;
-                                                    border-radius: $radius-sm;
+                                                .sub-subcategory-meta {
+                                                    display: flex;
+                                                    align-items: center;
+                                                    gap: 0.5rem;
+                                                    flex-wrap: wrap;
 
                                                     @media (max-width: 768px) {
-                                                        padding: 0.1875rem 0.4375rem;
+                                                        gap: 0.375rem;
                                                     }
 
                                                     @media (max-width: 480px) {
-                                                        font-size: 0.625rem;
-                                                        padding: 0.15625rem 0.375rem;
+                                                        gap: 0.25rem;
+                                                    }
+
+                                                    .sub-subcategory-id {
+                                                        font-size: 0.6875rem;
+                                                        color: $gray-500;
+                                                        font-family: 'Courier New', monospace;
+                                                        background: $gray-100;
+                                                        padding: 0.125rem 0.375rem;
+                                                        border-radius: $radius-sm;
+
+                                                        @media (max-width: 768px) {
+                                                            padding: 0.1875rem 0.4375rem;
+                                                        }
+
+                                                        @media (max-width: 480px) {
+                                                            font-size: 0.625rem;
+                                                            padding: 0.15625rem 0.375rem;
+                                                        }
                                                     }
                                                 }
                                             }
@@ -1519,6 +1631,10 @@
                                                 border-radius: $radius-sm;
                                                 background: $gray-50;
                                                 margin: 0.5rem 0;
+
+                                                .stat:nth-child(3) {
+                                                    grid-column: 1 / -1;
+                                                }
                                             }
 
                                             .stat {
@@ -1610,6 +1726,16 @@
                                                     @media (max-width: 480px) {
                                                         width: 20px;
                                                         height: 20px;
+                                                    }
+                                                }
+
+                                                &--commission {
+                                                    background: rgba(34, 197, 94, 0.1);
+                                                    color: #059669;
+
+                                                    &:hover {
+                                                        background: rgba(34, 197, 94, 0.2);
+                                                        transform: translateY(-1px);
                                                     }
                                                 }
 
@@ -1847,6 +1973,116 @@
                             min-height: 100px;
                         }
                     }
+
+                    &.commission-group {
+                        background: $gray-50;
+                        border: 1px solid $gray-200;
+                        border-radius: $radius-md;
+                        padding: 1rem;
+
+                        .commission-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 1rem;
+                            flex-wrap: wrap;
+                            gap: 0.5rem;
+
+                            @media (max-width: 768px) {
+                                flex-direction: column;
+                                align-items: flex-start;
+                                gap: 0.75rem;
+                            }
+
+                            label {
+                                margin: 0;
+                                font-weight: 600;
+                                color: $gray-800;
+                            }
+
+                            .commission-toggle {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+
+                                input[type="checkbox"] {
+                                    width: auto;
+                                    margin: 0;
+                                    cursor: pointer;
+                                }
+
+                                label {
+                                    font-size: 0.8125rem;
+                                    color: $gray-600;
+                                    cursor: pointer;
+                                    margin: 0;
+
+                                    @media (max-width: 768px) {
+                                        font-size: 0.875rem;
+                                    }
+                                }
+                            }
+                        }
+
+                        .commission-input {
+                            position: relative;
+
+                            input {
+                                padding-right: 2rem;
+                            }
+
+                            .commission-unit {
+                                position: absolute;
+                                right: 0.75rem;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                font-size: 0.875rem;
+                                color: $gray-500;
+                                font-weight: 500;
+                                pointer-events: none;
+                            }
+                        }
+
+                        .commission-default {
+                            padding: 0.75rem;
+                            background: rgba(34, 197, 94, 0.1);
+                            border-radius: $radius-md;
+                            border: 1px solid rgba(34, 197, 94, 0.2);
+
+                            span {
+                                font-size: 0.875rem;
+                                color: #059669;
+                                font-weight: 500;
+                            }
+                        }
+                    }
+                }
+
+                .commission-preview {
+                    margin-top: 1rem;
+                    padding: 1rem;
+                    background: $gray-50;
+                    border-radius: $radius-md;
+                    border: 1px solid $gray-200;
+
+                    .preview-label {
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        color: $gray-700;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    .preview-badge {
+                        display: inline-flex;
+                        align-items: center;
+                        padding: 0.5rem 1rem;
+                        background: $white;
+                        border: 1px solid $gray-300;
+                        border-radius: $radius-md;
+                        font-size: 0.875rem;
+                        font-weight: 600;
+                        color: $gray-800;
+                    }
                 }
             }
 
@@ -1932,6 +2168,15 @@
                     p {
                         font-size: 0.875rem;
                     }
+
+                    .category-meta {
+                        gap: 0.25rem;
+
+                        .commission-badge {
+                            font-size: 0.625rem;
+                            padding: 0.1875rem 0.375rem;
+                        }
+                    }
                 }
 
                 .header-actions {
@@ -1953,6 +2198,10 @@
                     .stat-label {
                         font-size: 0.6875rem;
                     }
+                }
+
+                &.commission-stat-card .commission-status {
+                    font-size: 0.5625rem;
                 }
             }
         }
@@ -2017,12 +2266,19 @@
                                         font-size: 0.6875rem;
                                     }
 
-                                    .subcategory-id {
-                                        font-size: 0.625rem;
+                                    .subcategory-meta {
+                                        .subcategory-id {
+                                            font-size: 0.625rem;
+                                        }
+
+                                        .commission-badge {
+                                            font-size: 0.5625rem;
+                                            padding: 0.125rem 0.25rem;
+                                        }
                                     }
                                 }
 
-                                .subcategory-meta .expand-btn {
+                                .subcategory-controls .expand-btn {
                                     width: 40px;
                                     height: 40px;
                                 }
@@ -2048,8 +2304,15 @@
                                                     font-size: 0.625rem;
                                                 }
 
-                                                .sub-subcategory-id {
-                                                    font-size: 0.5625rem;
+                                                .sub-subcategory-meta {
+                                                    .sub-subcategory-id {
+                                                        font-size: 0.5625rem;
+                                                    }
+
+                                                    .commission-badge {
+                                                        font-size: 0.5rem;
+                                                        padding: 0.0625rem 0.1875rem;
+                                                    }
                                                 }
                                             }
                                         }
@@ -2085,7 +2348,7 @@
 @media (max-width: 768px) and (orientation: landscape) {
     .category-details {
         .category-stats {
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
 
             .stat-card {
                 flex-direction: row;

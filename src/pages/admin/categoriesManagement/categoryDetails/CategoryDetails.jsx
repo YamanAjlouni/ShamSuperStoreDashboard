@@ -11,12 +11,21 @@ const CategoryDetails = () => {
     const [activeTab, setActiveTab] = useState('overview')
     const [showAddSubcategory, setShowAddSubcategory] = useState(false)
     const [showAddSubSubcategory, setShowAddSubSubcategory] = useState(false)
+    const [showEditCommission, setShowEditCommission] = useState(false)
+    const [editingItem, setEditingItem] = useState(null)
+    const [editingItemType, setEditingItemType] = useState(null) // 'category', 'subcategory', 'subsubcategory'
     const [newSubcategoryName, setNewSubcategoryName] = useState('')
     const [newSubcategoryDescription, setNewSubcategoryDescription] = useState('')
+    const [newSubcategoryCommissionRate, setNewSubcategoryCommissionRate] = useState('')
+    const [newSubcategoryUseOverride, setNewSubcategoryUseOverride] = useState(false)
     const [newSubSubcategoryName, setNewSubSubcategoryName] = useState('')
     const [newSubSubcategoryDescription, setNewSubSubcategoryDescription] = useState('')
+    const [newSubSubcategoryCommissionRate, setNewSubSubcategoryCommissionRate] = useState('')
+    const [newSubSubcategoryUseOverride, setNewSubSubcategoryUseOverride] = useState(false)
     const [selectedParentSubcategory, setSelectedParentSubcategory] = useState('')
     const [expandedSubcategories, setExpandedSubcategories] = useState(new Set())
+    const [editCommissionRate, setEditCommissionRate] = useState('')
+    const [editUseOverride, setEditUseOverride] = useState(false)
 
     useEffect(() => {
         const fetchCategory = async () => {
@@ -24,7 +33,7 @@ const CategoryDetails = () => {
             try {
                 // Simulate API call
                 setTimeout(() => {
-                    // Mock detailed category data with sub-sub categories
+                    // Mock detailed category data with sub-sub categories and commission rates
                     const mockCategory = {
                         id: 'CAT001',
                         name: 'Electronics',
@@ -36,6 +45,9 @@ const CategoryDetails = () => {
                         subSubcategoriesCount: 8,
                         createdAt: '2024-01-10T10:30:00Z',
                         updatedAt: '2024-01-25T14:22:00Z',
+                        defaultCommissionRate: 5.0,
+                        commissionRateOverride: 7.5,
+                        useCommissionOverride: true,
                         subcategories: [
                             {
                                 id: 'SUB001',
@@ -46,6 +58,9 @@ const CategoryDetails = () => {
                                 revenue: 125000,
                                 subSubcategoriesCount: 3,
                                 createdAt: '2024-01-10T10:30:00Z',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: 8.0,
+                                useCommissionOverride: true,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB001',
@@ -54,7 +69,10 @@ const CategoryDetails = () => {
                                         status: 'active',
                                         productsCount: 45,
                                         revenue: 85000,
-                                        createdAt: '2024-01-10T10:30:00Z'
+                                        createdAt: '2024-01-10T10:30:00Z',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     },
                                     {
                                         id: 'SUBSUB002',
@@ -63,7 +81,10 @@ const CategoryDetails = () => {
                                         status: 'active',
                                         productsCount: 32,
                                         revenue: 28000,
-                                        createdAt: '2024-01-10T10:30:00Z'
+                                        createdAt: '2024-01-10T10:30:00Z',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: 6.5,
+                                        useCommissionOverride: true
                                     },
                                     {
                                         id: 'SUBSUB003',
@@ -72,7 +93,10 @@ const CategoryDetails = () => {
                                         status: 'active',
                                         productsCount: 12,
                                         revenue: 12000,
-                                        createdAt: '2024-01-10T10:30:00Z'
+                                        createdAt: '2024-01-10T10:30:00Z',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     }
                                 ]
                             },
@@ -85,6 +109,9 @@ const CategoryDetails = () => {
                                 revenue: 280000,
                                 subSubcategoriesCount: 2,
                                 createdAt: '2024-01-10T10:30:00Z',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: null,
+                                useCommissionOverride: false,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB004',
@@ -93,7 +120,10 @@ const CategoryDetails = () => {
                                         status: 'active',
                                         productsCount: 28,
                                         revenue: 180000,
-                                        createdAt: '2024-01-10T10:30:00Z'
+                                        createdAt: '2024-01-10T10:30:00Z',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: 4.5,
+                                        useCommissionOverride: true
                                     },
                                     {
                                         id: 'SUBSUB005',
@@ -102,7 +132,10 @@ const CategoryDetails = () => {
                                         status: 'active',
                                         productsCount: 28,
                                         revenue: 100000,
-                                        createdAt: '2024-01-10T10:30:00Z'
+                                        createdAt: '2024-01-10T10:30:00Z',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     }
                                 ]
                             },
@@ -115,6 +148,9 @@ const CategoryDetails = () => {
                                 revenue: 95000,
                                 subSubcategoriesCount: 2,
                                 createdAt: '2024-01-10T10:30:00Z',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: 9.0,
+                                useCommissionOverride: true,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB006',
@@ -123,7 +159,10 @@ const CategoryDetails = () => {
                                         status: 'active',
                                         productsCount: 40,
                                         revenue: 60000,
-                                        createdAt: '2024-01-10T10:30:00Z'
+                                        createdAt: '2024-01-10T10:30:00Z',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     },
                                     {
                                         id: 'SUBSUB007',
@@ -132,7 +171,10 @@ const CategoryDetails = () => {
                                         status: 'active',
                                         productsCount: 27,
                                         revenue: 35000,
-                                        createdAt: '2024-01-10T10:30:00Z'
+                                        createdAt: '2024-01-10T10:30:00Z',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: 10.0,
+                                        useCommissionOverride: true
                                     }
                                 ]
                             },
@@ -145,6 +187,9 @@ const CategoryDetails = () => {
                                 revenue: 78000,
                                 subSubcategoriesCount: 1,
                                 createdAt: '2024-01-10T10:30:00Z',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: null,
+                                useCommissionOverride: false,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB008',
@@ -153,7 +198,10 @@ const CategoryDetails = () => {
                                         status: 'inactive',
                                         productsCount: 33,
                                         revenue: 78000,
-                                        createdAt: '2024-01-10T10:30:00Z'
+                                        createdAt: '2024-01-10T10:30:00Z',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     }
                                 ]
                             }
@@ -262,6 +310,66 @@ const CategoryDetails = () => {
         }
     }
 
+    const handleEditCommission = (item, type, subcategoryId = null) => {
+        setEditingItem(item)
+        setEditingItemType(type)
+        setEditCommissionRate(item.commissionRateOverride || '')
+        setEditUseOverride(item.useCommissionOverride)
+        setSelectedParentSubcategory(subcategoryId)
+        setShowEditCommission(true)
+    }
+
+    const handleSaveCommission = () => {
+        const updatedRate = editUseOverride ? parseFloat(editCommissionRate) || null : null
+
+        if (editingItemType === 'category') {
+            setCategory({
+                ...category,
+                commissionRateOverride: updatedRate,
+                useCommissionOverride: editUseOverride
+            })
+        } else if (editingItemType === 'subcategory') {
+            setCategory({
+                ...category,
+                subcategories: category.subcategories.map(sub =>
+                    sub.id === editingItem.id
+                        ? {
+                            ...sub,
+                            commissionRateOverride: updatedRate,
+                            useCommissionOverride: editUseOverride
+                        }
+                        : sub
+                )
+            })
+        } else if (editingItemType === 'subsubcategory') {
+            setCategory({
+                ...category,
+                subcategories: category.subcategories.map(sub =>
+                    sub.id === selectedParentSubcategory
+                        ? {
+                            ...sub,
+                            subSubcategories: sub.subSubcategories.map(subSub =>
+                                subSub.id === editingItem.id
+                                    ? {
+                                        ...subSub,
+                                        commissionRateOverride: updatedRate,
+                                        useCommissionOverride: editUseOverride
+                                    }
+                                    : subSub
+                            )
+                        }
+                        : sub
+                )
+            })
+        }
+
+        setShowEditCommission(false)
+        setEditingItem(null)
+        setEditingItemType(null)
+        setEditCommissionRate('')
+        setEditUseOverride(false)
+    }
+
     const handleAddSubcategory = () => {
         if (newSubcategoryName.trim()) {
             const newSubcategory = {
@@ -273,7 +381,10 @@ const CategoryDetails = () => {
                 revenue: 0,
                 subSubcategoriesCount: 0,
                 subSubcategories: [],
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                defaultCommissionRate: 5.0,
+                commissionRateOverride: newSubcategoryUseOverride ? parseFloat(newSubcategoryCommissionRate) || null : null,
+                useCommissionOverride: newSubcategoryUseOverride
             }
 
             setCategory({
@@ -284,6 +395,8 @@ const CategoryDetails = () => {
 
             setNewSubcategoryName('')
             setNewSubcategoryDescription('')
+            setNewSubcategoryCommissionRate('')
+            setNewSubcategoryUseOverride(false)
             setShowAddSubcategory(false)
         }
     }
@@ -297,7 +410,10 @@ const CategoryDetails = () => {
                 status: 'active',
                 productsCount: 0,
                 revenue: 0,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                defaultCommissionRate: 5.0,
+                commissionRateOverride: newSubSubcategoryUseOverride ? parseFloat(newSubSubcategoryCommissionRate) || null : null,
+                useCommissionOverride: newSubSubcategoryUseOverride
             }
 
             setCategory({
@@ -316,6 +432,8 @@ const CategoryDetails = () => {
 
             setNewSubSubcategoryName('')
             setNewSubSubcategoryDescription('')
+            setNewSubSubcategoryCommissionRate('')
+            setNewSubSubcategoryUseOverride(false)
             setSelectedParentSubcategory('')
             setShowAddSubSubcategory(false)
         }
@@ -335,6 +453,23 @@ const CategoryDetails = () => {
         return (
             <span className={`status-badge ${statusClasses[status]}`}>
                 {status}
+            </span>
+        )
+    }
+
+    const getCommissionRate = (item) => {
+        return item.useCommissionOverride && item.commissionRateOverride !== null
+            ? item.commissionRateOverride
+            : item.defaultCommissionRate
+    }
+
+    const getCommissionBadge = (item) => {
+        const rate = getCommissionRate(item)
+        const isOverride = item.useCommissionOverride && item.commissionRateOverride !== null
+
+        return (
+            <span className={`commission-badge ${isOverride ? 'commission-badge--override' : 'commission-badge--default'}`}>
+                {rate}% {isOverride && '(Override)'}
             </span>
         )
     }
@@ -381,10 +516,20 @@ const CategoryDetails = () => {
                         <div className="category-meta">
                             <span className="category-id">ID: {category.id}</span>
                             {getStatusBadge(category.status)}
+                            {getCommissionBadge(category)}
                         </div>
                     </div>
 
                     <div className="header-actions">
+                        <button
+                            className="action-btn action-btn--commission"
+                            onClick={() => handleEditCommission(category, 'category')}
+                        >
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                            </svg>
+                            Edit Commission
+                        </button>
                         <button
                             className="action-btn action-btn--add"
                             onClick={() => setShowAddSubSubcategory(true)}
@@ -481,6 +626,23 @@ const CategoryDetails = () => {
                         <div className="stat-label">Total Revenue</div>
                     </div>
                 </div>
+
+                <div className="stat-card commission-stat-card">
+                    <div className="stat-icon commission-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <div className="stat-content">
+                        <div className="stat-value">{getCommissionRate(category)}%</div>
+                        <div className="stat-label">Commission Rate</div>
+                        <div className="commission-status">
+                            {category.useCommissionOverride && category.commissionRateOverride !== null
+                                ? 'Override Applied'
+                                : 'Default Rate'}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div className="tabs-container">
@@ -520,6 +682,10 @@ const CategoryDetails = () => {
                                         <div className="info-item">
                                             <span className="label">Status</span>
                                             <span className="value">{getStatusBadge(category.status)}</span>
+                                        </div>
+                                        <div className="info-item">
+                                            <span className="label">Commission Rate</span>
+                                            <span className="value">{getCommissionBadge(category)}</span>
                                         </div>
                                         <div className="info-item">
                                             <span className="label">Created</span>
@@ -582,18 +748,21 @@ const CategoryDetails = () => {
                                                 <div className="subcategory-info">
                                                     <h4>{subcategory.name}</h4>
                                                     <p>{subcategory.description}</p>
-                                                    <span className="subcategory-id">ID: {subcategory.id}</span>
+                                                    <div className="subcategory-meta">
+                                                        <span className="subcategory-id">ID: {subcategory.id}</span>
+                                                        {getCommissionBadge(subcategory)}
+                                                    </div>
                                                 </div>
-                                                <div className="subcategory-meta">
+                                                <div className="subcategory-controls">
                                                     {getStatusBadge(subcategory.status)}
                                                     <button
                                                         className="expand-btn"
                                                         onClick={() => toggleSubcategoryExpansion(subcategory.id)}
                                                         title={expandedSubcategories.has(subcategory.id) ? 'Collapse' : 'Expand'}
                                                     >
-                                                        <svg 
-                                                            fill="none" 
-                                                            stroke="currentColor" 
+                                                        <svg
+                                                            fill="none"
+                                                            stroke="currentColor"
                                                             viewBox="0 0 24 24"
                                                             className={expandedSubcategories.has(subcategory.id) ? 'rotated' : ''}
                                                         >
@@ -616,9 +785,22 @@ const CategoryDetails = () => {
                                                     <span className="stat-value">${subcategory.revenue.toLocaleString()}</span>
                                                     <span className="stat-label">Revenue</span>
                                                 </div>
+                                                <div className="stat">
+                                                    <span className="stat-value">{getCommissionRate(subcategory)}%</span>
+                                                    <span className="stat-label">Commission</span>
+                                                </div>
                                             </div>
 
                                             <div className="subcategory-actions">
+                                                <button
+                                                    className="action-btn action-btn--commission"
+                                                    onClick={() => handleEditCommission(subcategory, 'subcategory')}
+                                                    title="Edit Commission"
+                                                >
+                                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                                                    </svg>
+                                                </button>
                                                 <button
                                                     className={`action-btn ${subcategory.status === 'active' ? 'action-btn--deactivate' : 'action-btn--activate'}`}
                                                     onClick={() => handleToggleSubcategoryStatus(subcategory.id)}
@@ -670,7 +852,10 @@ const CategoryDetails = () => {
                                                                     <div className="sub-subcategory-info">
                                                                         <h6>{subSubcategory.name}</h6>
                                                                         <p>{subSubcategory.description}</p>
-                                                                        <span className="sub-subcategory-id">ID: {subSubcategory.id}</span>
+                                                                        <div className="sub-subcategory-meta">
+                                                                            <span className="sub-subcategory-id">ID: {subSubcategory.id}</span>
+                                                                            {getCommissionBadge(subSubcategory)}
+                                                                        </div>
                                                                     </div>
                                                                     {getStatusBadge(subSubcategory.status)}
                                                                 </div>
@@ -684,9 +869,22 @@ const CategoryDetails = () => {
                                                                         <span className="stat-value">${subSubcategory.revenue.toLocaleString()}</span>
                                                                         <span className="stat-label">Revenue</span>
                                                                     </div>
+                                                                    <div className="stat">
+                                                                        <span className="stat-value">{getCommissionRate(subSubcategory)}%</span>
+                                                                        <span className="stat-label">Commission</span>
+                                                                    </div>
                                                                 </div>
 
                                                                 <div className="sub-subcategory-actions">
+                                                                    <button
+                                                                        className="action-btn action-btn--commission"
+                                                                        onClick={() => handleEditCommission(subSubcategory, 'subsubcategory', subcategory.id)}
+                                                                        title="Edit Commission"
+                                                                    >
+                                                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                                                                        </svg>
+                                                                    </button>
                                                                     <button
                                                                         className={`action-btn ${subSubcategory.status === 'active' ? 'action-btn--deactivate' : 'action-btn--activate'}`}
                                                                         onClick={() => handleToggleSubSubcategoryStatus(subcategory.id, subSubcategory.id)}
@@ -726,6 +924,83 @@ const CategoryDetails = () => {
                 </div>
             </div>
 
+            {/* Edit Commission Modal */}
+            {showEditCommission && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <div className="modal-header">
+                            <h2>Edit Commission Rate - {editingItem?.name}</h2>
+                            <button
+                                className="close-btn"
+                                onClick={() => setShowEditCommission(false)}
+                            >
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="form-group commission-group">
+                                <div className="commission-header">
+                                    <label>Commission Rate</label>
+                                    <div className="commission-toggle">
+                                        <input
+                                            type="checkbox"
+                                            id="editCommissionOverride"
+                                            checked={editUseOverride}
+                                            onChange={(e) => setEditUseOverride(e.target.checked)}
+                                        />
+                                        <label htmlFor="editCommissionOverride">Override default rate (5.0%)</label>
+                                    </div>
+                                </div>
+                                {editUseOverride && (
+                                    <div className="commission-input">
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            min="0"
+                                            max="100"
+                                            value={editCommissionRate}
+                                            onChange={(e) => setEditCommissionRate(e.target.value)}
+                                            placeholder="Enter commission rate (%)"
+                                        />
+                                        <span className="commission-unit">%</span>
+                                    </div>
+                                )}
+                                {!editUseOverride && (
+                                    <div className="commission-default">
+                                        <span>Using default commission rate: 5.0%</span>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="commission-preview">
+                                <div className="preview-label">Preview:</div>
+                                <div className="preview-badge">
+                                    {editUseOverride
+                                        ? `${editCommissionRate || 0}% (Override)`
+                                        : '5.0% (Default)'
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button
+                                className="btn btn--secondary"
+                                onClick={() => setShowEditCommission(false)}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="btn btn--primary"
+                                onClick={handleSaveCommission}
+                            >
+                                Save Commission
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Add Subcategory Modal */}
             {showAddSubcategory && (
                 <div className="modal-overlay">
@@ -759,6 +1034,39 @@ const CategoryDetails = () => {
                                     placeholder="Enter subcategory description"
                                     rows={3}
                                 />
+                            </div>
+                            <div className="form-group commission-group">
+                                <div className="commission-header">
+                                    <label>Commission Rate</label>
+                                    <div className="commission-toggle">
+                                        <input
+                                            type="checkbox"
+                                            id="newSubcategoryCommissionOverride"
+                                            checked={newSubcategoryUseOverride}
+                                            onChange={(e) => setNewSubcategoryUseOverride(e.target.checked)}
+                                        />
+                                        <label htmlFor="newSubcategoryCommissionOverride">Override default rate (5.0%)</label>
+                                    </div>
+                                </div>
+                                {newSubcategoryUseOverride && (
+                                    <div className="commission-input">
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            min="0"
+                                            max="100"
+                                            value={newSubcategoryCommissionRate}
+                                            onChange={(e) => setNewSubcategoryCommissionRate(e.target.value)}
+                                            placeholder="Enter commission rate (%)"
+                                        />
+                                        <span className="commission-unit">%</span>
+                                    </div>
+                                )}
+                                {!newSubcategoryUseOverride && (
+                                    <div className="commission-default">
+                                        <span>Using default commission rate: 5.0%</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="modal-footer">
@@ -826,6 +1134,39 @@ const CategoryDetails = () => {
                                     placeholder="Enter sub-subcategory description"
                                     rows={3}
                                 />
+                            </div>
+                            <div className="form-group commission-group">
+                                <div className="commission-header">
+                                    <label>Commission Rate</label>
+                                    <div className="commission-toggle">
+                                        <input
+                                            type="checkbox"
+                                            id="newSubSubcategoryCommissionOverride"
+                                            checked={newSubSubcategoryUseOverride}
+                                            onChange={(e) => setNewSubSubcategoryUseOverride(e.target.checked)}
+                                        />
+                                        <label htmlFor="newSubSubcategoryCommissionOverride">Override default rate (5.0%)</label>
+                                    </div>
+                                </div>
+                                {newSubSubcategoryUseOverride && (
+                                    <div className="commission-input">
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            min="0"
+                                            max="100"
+                                            value={newSubSubcategoryCommissionRate}
+                                            onChange={(e) => setNewSubSubcategoryCommissionRate(e.target.value)}
+                                            placeholder="Enter commission rate (%)"
+                                        />
+                                        <span className="commission-unit">%</span>
+                                    </div>
+                                )}
+                                {!newSubSubcategoryUseOverride && (
+                                    <div className="commission-default">
+                                        <span>Using default commission rate: 5.0%</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="modal-footer">

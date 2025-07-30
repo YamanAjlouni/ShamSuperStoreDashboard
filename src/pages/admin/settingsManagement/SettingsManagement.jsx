@@ -50,8 +50,8 @@ const SettingsManagement = () => {
                         allowMultipleSessions: true
                     },
                     business: {
-                        taxRate: 8.5,
-                        taxIncluded: false,
+                        commissionRate: 8.5,
+                        commissionIncluded: false,
                         shippingEnabled: true,
                         freeShippingThreshold: 50,
                         defaultShippingCost: 9.99,
@@ -551,21 +551,21 @@ const SettingsManagement = () => {
                                 <div className="form-row">
                                     <div className="form-col">
                                         {renderFormGroup(
-                                            'Tax Rate (%)',
+                                            'Commission Rate (%)',
                                             <input
                                                 type="number"
                                                 step="0.1"
                                                 min="0"
                                                 max="50"
-                                                value={settings.business?.taxRate || 8.5}
-                                                onChange={(e) => handleInputChange('business', 'taxRate', parseFloat(e.target.value))}
+                                                value={settings.business?.commissionRate || 8.5}
+                                                onChange={(e) => handleInputChange('business', 'commissionRate', parseFloat(e.target.value))}
                                             />
                                         )}
                                     </div>
                                     <div className="form-col">
                                         <div className="form-group">
-                                            <label className="form-label">Tax Configuration</label>
-                                            {renderToggle('business', 'taxIncluded', 'Tax Included in Prices', 'Display prices with tax included')}
+                                            <label className="form-label">Commission Configuration</label>
+                                            {renderToggle('business', 'commissionIncluded', 'Commission Included in Prices', 'Display prices with commission included')}
                                         </div>
                                     </div>
                                 </div>

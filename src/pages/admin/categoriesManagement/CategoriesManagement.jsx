@@ -18,12 +18,18 @@ const CategoriesManagement = () => {
     const [newCategoryName, setNewCategoryName] = useState('')
     const [newCategoryNameAr, setNewCategoryNameAr] = useState('')
     const [newCategoryDescription, setNewCategoryDescription] = useState('')
+    const [newCategoryCommissionRate, setNewCategoryCommissionRate] = useState('')
+    const [newCategoryUseOverride, setNewCategoryUseOverride] = useState(false)
     const [newSubcategoryName, setNewSubcategoryName] = useState('')
     const [newSubcategoryNameAr, setNewSubcategoryNameAr] = useState('')
     const [newSubcategoryDescription, setNewSubcategoryDescription] = useState('')
+    const [newSubcategoryCommissionRate, setNewSubcategoryCommissionRate] = useState('')
+    const [newSubcategoryUseOverride, setNewSubcategoryUseOverride] = useState(false)
     const [newSubSubcategoryName, setNewSubSubcategoryName] = useState('')
     const [newSubSubcategoryNameAr, setNewSubSubcategoryNameAr] = useState('')
     const [newSubSubcategoryDescription, setNewSubSubcategoryDescription] = useState('')
+    const [newSubSubcategoryCommissionRate, setNewSubSubcategoryCommissionRate] = useState('')
+    const [newSubSubcategoryUseOverride, setNewSubSubcategoryUseOverride] = useState(false)
 
     // Mock data - replace with actual API call
     useEffect(() => {
@@ -43,6 +49,9 @@ const CategoriesManagement = () => {
                         subcategoriesCount: 4,
                         subSubcategoriesCount: 8,
                         createdAt: '2024-01-10',
+                        defaultCommissionRate: 5.0,
+                        commissionRateOverride: 7.5,
+                        useCommissionOverride: true,
                         subcategories: [
                             {
                                 id: 'SUB001',
@@ -53,6 +62,9 @@ const CategoriesManagement = () => {
                                 productsCount: 89,
                                 subSubcategoriesCount: 3,
                                 createdAt: '2024-01-10',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: 8.0,
+                                useCommissionOverride: true,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB001',
@@ -61,7 +73,10 @@ const CategoriesManagement = () => {
                                         description: 'Apple iPhone devices and accessories',
                                         status: 'active',
                                         productsCount: 45,
-                                        createdAt: '2024-01-10'
+                                        createdAt: '2024-01-10',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     },
                                     {
                                         id: 'SUBSUB002',
@@ -70,7 +85,10 @@ const CategoriesManagement = () => {
                                         description: 'Android smartphone devices',
                                         status: 'active',
                                         productsCount: 32,
-                                        createdAt: '2024-01-10'
+                                        createdAt: '2024-01-10',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: 6.5,
+                                        useCommissionOverride: true
                                     },
                                     {
                                         id: 'SUBSUB003',
@@ -79,7 +97,10 @@ const CategoriesManagement = () => {
                                         description: 'Protective cases for smartphones',
                                         status: 'active',
                                         productsCount: 12,
-                                        createdAt: '2024-01-10'
+                                        createdAt: '2024-01-10',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     }
                                 ]
                             },
@@ -92,6 +113,9 @@ const CategoriesManagement = () => {
                                 productsCount: 56,
                                 subSubcategoriesCount: 2,
                                 createdAt: '2024-01-10',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: null,
+                                useCommissionOverride: false,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB004',
@@ -100,7 +124,10 @@ const CategoriesManagement = () => {
                                         description: 'High-performance gaming laptops',
                                         status: 'active',
                                         productsCount: 28,
-                                        createdAt: '2024-01-10'
+                                        createdAt: '2024-01-10',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: 4.5,
+                                        useCommissionOverride: true
                                     },
                                     {
                                         id: 'SUBSUB005',
@@ -109,7 +136,10 @@ const CategoriesManagement = () => {
                                         description: 'Professional laptops for business use',
                                         status: 'active',
                                         productsCount: 28,
-                                        createdAt: '2024-01-10'
+                                        createdAt: '2024-01-10',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     }
                                 ]
                             },
@@ -122,6 +152,9 @@ const CategoriesManagement = () => {
                                 productsCount: 67,
                                 subSubcategoriesCount: 2,
                                 createdAt: '2024-01-10',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: 9.0,
+                                useCommissionOverride: true,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB006',
@@ -130,7 +163,10 @@ const CategoriesManagement = () => {
                                         description: 'Bluetooth and wireless audio devices',
                                         status: 'active',
                                         productsCount: 40,
-                                        createdAt: '2024-01-10'
+                                        createdAt: '2024-01-10',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     },
                                     {
                                         id: 'SUBSUB007',
@@ -139,7 +175,10 @@ const CategoriesManagement = () => {
                                         description: 'Portable and home speakers',
                                         status: 'active',
                                         productsCount: 27,
-                                        createdAt: '2024-01-10'
+                                        createdAt: '2024-01-10',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: 10.0,
+                                        useCommissionOverride: true
                                     }
                                 ]
                             },
@@ -152,6 +191,9 @@ const CategoriesManagement = () => {
                                 productsCount: 33,
                                 subSubcategoriesCount: 1,
                                 createdAt: '2024-01-10',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: null,
+                                useCommissionOverride: false,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB008',
@@ -160,7 +202,10 @@ const CategoriesManagement = () => {
                                         description: 'Video game consoles and controllers',
                                         status: 'inactive',
                                         productsCount: 33,
-                                        createdAt: '2024-01-10'
+                                        createdAt: '2024-01-10',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     }
                                 ]
                             }
@@ -177,6 +222,9 @@ const CategoriesManagement = () => {
                         subcategoriesCount: 3,
                         subSubcategoriesCount: 6,
                         createdAt: '2024-01-12',
+                        defaultCommissionRate: 5.0,
+                        commissionRateOverride: 12.0,
+                        useCommissionOverride: true,
                         subcategories: [
                             {
                                 id: 'SUB005',
@@ -187,6 +235,9 @@ const CategoriesManagement = () => {
                                 productsCount: 78,
                                 subSubcategoriesCount: 2,
                                 createdAt: '2024-01-12',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: null,
+                                useCommissionOverride: false,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB009',
@@ -195,7 +246,10 @@ const CategoriesManagement = () => {
                                         description: 'Casual and formal shirts',
                                         status: 'active',
                                         productsCount: 45,
-                                        createdAt: '2024-01-12'
+                                        createdAt: '2024-01-12',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: 15.0,
+                                        useCommissionOverride: true
                                     },
                                     {
                                         id: 'SUBSUB010',
@@ -204,7 +258,10 @@ const CategoriesManagement = () => {
                                         description: 'Jeans, trousers, and casual pants',
                                         status: 'active',
                                         productsCount: 33,
-                                        createdAt: '2024-01-12'
+                                        createdAt: '2024-01-12',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     }
                                 ]
                             },
@@ -217,6 +274,9 @@ const CategoriesManagement = () => {
                                 productsCount: 65,
                                 subSubcategoriesCount: 2,
                                 createdAt: '2024-01-12',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: 11.5,
+                                useCommissionOverride: true,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB011',
@@ -225,7 +285,10 @@ const CategoriesManagement = () => {
                                         description: 'Casual and formal dresses',
                                         status: 'active',
                                         productsCount: 35,
-                                        createdAt: '2024-01-12'
+                                        createdAt: '2024-01-12',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     },
                                     {
                                         id: 'SUBSUB012',
@@ -234,7 +297,10 @@ const CategoriesManagement = () => {
                                         description: 'Blouses, t-shirts, and tops',
                                         status: 'active',
                                         productsCount: 30,
-                                        createdAt: '2024-01-12'
+                                        createdAt: '2024-01-12',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: 13.0,
+                                        useCommissionOverride: true
                                     }
                                 ]
                             },
@@ -247,6 +313,9 @@ const CategoriesManagement = () => {
                                 productsCount: 13,
                                 subSubcategoriesCount: 2,
                                 createdAt: '2024-01-12',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: null,
+                                useCommissionOverride: false,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB013',
@@ -255,7 +324,10 @@ const CategoriesManagement = () => {
                                         description: 'Necklaces, rings, and bracelets',
                                         status: 'active',
                                         productsCount: 8,
-                                        createdAt: '2024-01-12'
+                                        createdAt: '2024-01-12',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: 20.0,
+                                        useCommissionOverride: true
                                     },
                                     {
                                         id: 'SUBSUB014',
@@ -264,7 +336,10 @@ const CategoriesManagement = () => {
                                         description: 'Handbags, backpacks, and purses',
                                         status: 'active',
                                         productsCount: 5,
-                                        createdAt: '2024-01-12'
+                                        createdAt: '2024-01-12',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     }
                                 ]
                             }
@@ -281,6 +356,9 @@ const CategoriesManagement = () => {
                         subcategoriesCount: 2,
                         subSubcategoriesCount: 4,
                         createdAt: '2024-01-15',
+                        defaultCommissionRate: 5.0,
+                        commissionRateOverride: null,
+                        useCommissionOverride: false,
                         subcategories: [
                             {
                                 id: 'SUB008',
@@ -291,6 +369,9 @@ const CategoriesManagement = () => {
                                 productsCount: 45,
                                 subSubcategoriesCount: 2,
                                 createdAt: '2024-01-15',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: 3.5,
+                                useCommissionOverride: true,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB015',
@@ -299,7 +380,10 @@ const CategoriesManagement = () => {
                                         description: 'Sofas, chairs, and living room furniture',
                                         status: 'active',
                                         productsCount: 25,
-                                        createdAt: '2024-01-15'
+                                        createdAt: '2024-01-15',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     },
                                     {
                                         id: 'SUBSUB016',
@@ -308,7 +392,10 @@ const CategoriesManagement = () => {
                                         description: 'Beds, dressers, and bedroom furniture',
                                         status: 'active',
                                         productsCount: 20,
-                                        createdAt: '2024-01-15'
+                                        createdAt: '2024-01-15',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: 4.0,
+                                        useCommissionOverride: true
                                     }
                                 ]
                             },
@@ -321,6 +408,9 @@ const CategoriesManagement = () => {
                                 productsCount: 53,
                                 subSubcategoriesCount: 2,
                                 createdAt: '2024-01-15',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: null,
+                                useCommissionOverride: false,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB017',
@@ -329,7 +419,10 @@ const CategoriesManagement = () => {
                                         description: 'Shovels, pruners, and hand tools',
                                         status: 'active',
                                         productsCount: 30,
-                                        createdAt: '2024-01-15'
+                                        createdAt: '2024-01-15',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     },
                                     {
                                         id: 'SUBSUB018',
@@ -338,7 +431,10 @@ const CategoriesManagement = () => {
                                         description: 'Electric and battery-powered garden tools',
                                         status: 'active',
                                         productsCount: 23,
-                                        createdAt: '2024-01-15'
+                                        createdAt: '2024-01-15',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: 6.0,
+                                        useCommissionOverride: true
                                     }
                                 ]
                             }
@@ -355,6 +451,9 @@ const CategoriesManagement = () => {
                         subcategoriesCount: 2,
                         subSubcategoriesCount: 4,
                         createdAt: '2024-01-18',
+                        defaultCommissionRate: 5.0,
+                        commissionRateOverride: 8.5,
+                        useCommissionOverride: true,
                         subcategories: [
                             {
                                 id: 'SUB010',
@@ -365,6 +464,9 @@ const CategoriesManagement = () => {
                                 productsCount: 34,
                                 subSubcategoriesCount: 2,
                                 createdAt: '2024-01-18',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: null,
+                                useCommissionOverride: false,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB019',
@@ -373,7 +475,10 @@ const CategoriesManagement = () => {
                                         description: 'Treadmills, bikes, and cardio machines',
                                         status: 'active',
                                         productsCount: 20,
-                                        createdAt: '2024-01-18'
+                                        createdAt: '2024-01-18',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     },
                                     {
                                         id: 'SUBSUB020',
@@ -382,7 +487,10 @@ const CategoriesManagement = () => {
                                         description: 'Weights, resistance bands, and strength equipment',
                                         status: 'active',
                                         productsCount: 14,
-                                        createdAt: '2024-01-18'
+                                        createdAt: '2024-01-18',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: 7.0,
+                                        useCommissionOverride: true
                                     }
                                 ]
                             },
@@ -395,6 +503,9 @@ const CategoriesManagement = () => {
                                 productsCount: 33,
                                 subSubcategoriesCount: 2,
                                 createdAt: '2024-01-18',
+                                defaultCommissionRate: 5.0,
+                                commissionRateOverride: 9.0,
+                                useCommissionOverride: true,
                                 subSubcategories: [
                                     {
                                         id: 'SUBSUB021',
@@ -403,7 +514,10 @@ const CategoriesManagement = () => {
                                         description: 'Soccer, basketball, and team sports equipment',
                                         status: 'inactive',
                                         productsCount: 18,
-                                        createdAt: '2024-01-18'
+                                        createdAt: '2024-01-18',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     },
                                     {
                                         id: 'SUBSUB022',
@@ -412,7 +526,10 @@ const CategoriesManagement = () => {
                                         description: 'Tennis, golf, and individual sports equipment',
                                         status: 'inactive',
                                         productsCount: 15,
-                                        createdAt: '2024-01-18'
+                                        createdAt: '2024-01-18',
+                                        defaultCommissionRate: 5.0,
+                                        commissionRateOverride: null,
+                                        useCommissionOverride: false
                                     }
                                 ]
                             }
@@ -474,12 +591,17 @@ const CategoriesManagement = () => {
                 subcategoriesCount: 0,
                 subSubcategoriesCount: 0,
                 createdAt: new Date().toISOString().split('T')[0],
-                subcategories: []
+                subcategories: [],
+                defaultCommissionRate: 5.0,
+                commissionRateOverride: newCategoryUseOverride ? parseFloat(newCategoryCommissionRate) || null : null,
+                useCommissionOverride: newCategoryUseOverride
             }
             setCategories([...categories, newCategory])
             setNewCategoryName('')
             setNewCategoryNameAr('')
             setNewCategoryDescription('')
+            setNewCategoryCommissionRate('')
+            setNewCategoryUseOverride(false)
             setShowAddCategory(false)
         }
     }
@@ -495,7 +617,10 @@ const CategoriesManagement = () => {
                 productsCount: 0,
                 subSubcategoriesCount: 0,
                 createdAt: new Date().toISOString().split('T')[0],
-                subSubcategories: []
+                subSubcategories: [],
+                defaultCommissionRate: 5.0,
+                commissionRateOverride: newSubcategoryUseOverride ? parseFloat(newSubcategoryCommissionRate) || null : null,
+                useCommissionOverride: newSubcategoryUseOverride
             }
 
             setCategories(categories.map(category =>
@@ -511,6 +636,8 @@ const CategoriesManagement = () => {
             setNewSubcategoryName('')
             setNewSubcategoryNameAr('')
             setNewSubcategoryDescription('')
+            setNewSubcategoryCommissionRate('')
+            setNewSubcategoryUseOverride(false)
             setSelectedParentCategory('')
             setShowAddSubcategory(false)
         }
@@ -525,7 +652,10 @@ const CategoriesManagement = () => {
                 description: newSubSubcategoryDescription,
                 status: 'active',
                 productsCount: 0,
-                createdAt: new Date().toISOString().split('T')[0]
+                createdAt: new Date().toISOString().split('T')[0],
+                defaultCommissionRate: 5.0,
+                commissionRateOverride: newSubSubcategoryUseOverride ? parseFloat(newSubSubcategoryCommissionRate) || null : null,
+                useCommissionOverride: newSubSubcategoryUseOverride
             }
 
             setCategories(categories.map(category =>
@@ -549,6 +679,8 @@ const CategoriesManagement = () => {
             setNewSubSubcategoryName('')
             setNewSubSubcategoryNameAr('')
             setNewSubSubcategoryDescription('')
+            setNewSubSubcategoryCommissionRate('')
+            setNewSubSubcategoryUseOverride(false)
             setSelectedParentCategory('')
             setSelectedParentSubcategory('')
             setShowAddSubSubcategory(false)
@@ -573,6 +705,23 @@ const CategoriesManagement = () => {
         )
     }
 
+    const getCommissionRate = (item) => {
+        return item.useCommissionOverride && item.commissionRateOverride !== null
+            ? item.commissionRateOverride
+            : item.defaultCommissionRate
+    }
+
+    const getCommissionBadge = (item) => {
+        const rate = getCommissionRate(item)
+        const isOverride = item.useCommissionOverride && item.commissionRateOverride !== null
+
+        return (
+            <span className={`commission-badge ${isOverride ? 'commission-badge--override' : 'commission-badge--default'}`}>
+                {rate}% {isOverride && '(Override)'}
+            </span>
+        )
+    }
+
     if (loading) {
         return (
             <div className="categories-management">
@@ -589,7 +738,7 @@ const CategoriesManagement = () => {
             <div className="page-header">
                 <div className="header-content">
                     <h1>Category Management</h1>
-                    <p>Organize products into categories and subcategories</p>
+                    <p>Organize products into categories and subcategories with commission rates</p>
                 </div>
                 <div className="header-stats">
                     <div className="stat-item">
@@ -688,6 +837,7 @@ const CategoriesManagement = () => {
                                     <div className="category-meta">
                                         <span className="category-id">ID: {category.id}</span>
                                         {getStatusBadge(category.status)}
+                                        {getCommissionBadge(category)}
                                     </div>
                                 </div>
                             </div>
@@ -725,7 +875,10 @@ const CategoriesManagement = () => {
                                                                 <span className="subcategory-name-ar" dir="rtl">{sub.nameAr}</span>
                                                             )}
                                                         </div>
-                                                        {getStatusBadge(sub.status)}
+                                                        <div className="subcategory-badges">
+                                                            {getStatusBadge(sub.status)}
+                                                            {getCommissionBadge(sub)}
+                                                        </div>
                                                     </div>
                                                     <span className="subcategory-count">
                                                         {sub.productsCount} products • {sub.subSubcategoriesCount} sub-subs
@@ -738,6 +891,10 @@ const CategoriesManagement = () => {
                                                                     {subSub.nameAr && (
                                                                         <span className="sub-subcategory-name-ar" dir="rtl">{subSub.nameAr}</span>
                                                                     )}
+                                                                    <span className="sub-subcategory-commission">
+                                                                        {getCommissionRate(subSub)}%
+                                                                        {subSub.useCommissionOverride && subSub.commissionRateOverride !== null && ' *'}
+                                                                    </span>
                                                                 </div>
                                                             ))}
                                                             {sub.subSubcategories.length > 2 && (
@@ -872,6 +1029,39 @@ const CategoriesManagement = () => {
                                     rows={3}
                                 />
                             </div>
+                            <div className="form-group commission-group">
+                                <div className="commission-header">
+                                    <label>Commission Rate</label>
+                                    <div className="commission-toggle">
+                                        <input
+                                            type="checkbox"
+                                            id="categoryCommissionOverride"
+                                            checked={newCategoryUseOverride}
+                                            onChange={(e) => setNewCategoryUseOverride(e.target.checked)}
+                                        />
+                                        <label htmlFor="categoryCommissionOverride">Override default rate (5.0%)</label>
+                                    </div>
+                                </div>
+                                {newCategoryUseOverride && (
+                                    <div className="commission-input">
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            min="0"
+                                            max="100"
+                                            value={newCategoryCommissionRate}
+                                            onChange={(e) => setNewCategoryCommissionRate(e.target.value)}
+                                            placeholder="Enter commission rate (%)"
+                                        />
+                                        <span className="commission-unit">%</span>
+                                    </div>
+                                )}
+                                {!newCategoryUseOverride && (
+                                    <div className="commission-default">
+                                        <span>Using default commission rate: 5.0%</span>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <div className="modal-footer">
                             <button
@@ -948,6 +1138,39 @@ const CategoriesManagement = () => {
                                     placeholder="Enter subcategory description"
                                     rows={3}
                                 />
+                            </div>
+                            <div className="form-group commission-group">
+                                <div className="commission-header">
+                                    <label>Commission Rate</label>
+                                    <div className="commission-toggle">
+                                        <input
+                                            type="checkbox"
+                                            id="subcategoryCommissionOverride"
+                                            checked={newSubcategoryUseOverride}
+                                            onChange={(e) => setNewSubcategoryUseOverride(e.target.checked)}
+                                        />
+                                        <label htmlFor="subcategoryCommissionOverride">Override default rate (5.0%)</label>
+                                    </div>
+                                </div>
+                                {newSubcategoryUseOverride && (
+                                    <div className="commission-input">
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            min="0"
+                                            max="100"
+                                            value={newSubcategoryCommissionRate}
+                                            onChange={(e) => setNewSubcategoryCommissionRate(e.target.value)}
+                                            placeholder="Enter commission rate (%)"
+                                        />
+                                        <span className="commission-unit">%</span>
+                                    </div>
+                                )}
+                                {!newSubcategoryUseOverride && (
+                                    <div className="commission-default">
+                                        <span>Using default commission rate: 5.0%</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="modal-footer">
@@ -1043,6 +1266,39 @@ const CategoriesManagement = () => {
                                     placeholder="Enter sub-subcategory description"
                                     rows={3}
                                 />
+                            </div>
+                            <div className="form-group commission-group">
+                                <div className="commission-header">
+                                    <label>Commission Rate</label>
+                                    <div className="commission-toggle">
+                                        <input
+                                            type="checkbox"
+                                            id="subSubcategoryCommissionOverride"
+                                            checked={newSubSubcategoryUseOverride}
+                                            onChange={(e) => setNewSubSubcategoryUseOverride(e.target.checked)}
+                                        />
+                                        <label htmlFor="subSubcategoryCommissionOverride">Override default rate (5.0%)</label>
+                                    </div>
+                                </div>
+                                {newSubSubcategoryUseOverride && (
+                                    <div className="commission-input">
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            min="0"
+                                            max="100"
+                                            value={newSubSubcategoryCommissionRate}
+                                            onChange={(e) => setNewSubSubcategoryCommissionRate(e.target.value)}
+                                            placeholder="Enter commission rate (%)"
+                                        />
+                                        <span className="commission-unit">%</span>
+                                    </div>
+                                )}
+                                {!newSubSubcategoryUseOverride && (
+                                    <div className="commission-default">
+                                        <span>Using default commission rate: 5.0%</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="modal-footer">

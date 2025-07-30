@@ -24,6 +24,14 @@ const ReportsManagement = () => {
                         totalReturns: 89,
                         repeatPurchaseRatio: 68.5,
                         providerToCustomerRatio: 0.041,
+
+                        // New metrics
+                        sellerLiquidity: 78.5, // (products listed / products sold) * 100
+                        buyerLiquidity: 23.4, // (site visitors / users who purchased) * 100
+                        sellersVsBuyers: 4.1, // (sellers / buyers) * 100
+                        repeatedTransactions: 42.8, // (repeated transactions / total transactions) * 100
+                        grossMerchandiseVolume: 287654.30, // Total gross amount of sales
+
                         usersGrowth: 15.7,
                         sellersGrowth: 8.2,
                         driversGrowth: 12.4,
@@ -31,7 +39,14 @@ const ReportsManagement = () => {
                         revenueGrowth: 12.5,
                         returnsGrowth: -5.3,
                         repeatPurchaseGrowth: 12.8,
-                        providerRatioGrowth: -2.1
+                        providerRatioGrowth: -2.1,
+
+                        // Growth for new metrics
+                        sellerLiquidityGrowth: 6.8,
+                        buyerLiquidityGrowth: -3.2,
+                        sellersVsBuyersGrowth: 1.5,
+                        repeatedTransactionsGrowth: 8.7,
+                        grossMerchandiseVolumeGrowth: 18.4
                     },
                     salesData: [
                         { month: 'Jan', revenue: 12000, orders: 95, users: 450 },
@@ -408,6 +423,99 @@ const ReportsManagement = () => {
                             {getGrowthIcon(overview.providerRatioGrowth)}
                             <span style={{ color: getGrowthColor(overview.providerRatioGrowth) }}>
                                 {overview.providerRatioGrowth > 0 ? '+' : ''}{overview.providerRatioGrowth}%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* New Metrics */}
+                <div className="stat-card">
+                    <div className="stat-icon seller-liquidity">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                    <div className="stat-content">
+                        <div className="stat-value">{formatPercentage(overview.sellerLiquidity)}</div>
+                        <div className="stat-label">Seller Liquidity</div>
+                        <div className="stat-growth">
+                            {getGrowthIcon(overview.sellerLiquidityGrowth)}
+                            <span style={{ color: getGrowthColor(overview.sellerLiquidityGrowth) }}>
+                                {overview.sellerLiquidityGrowth > 0 ? '+' : ''}{overview.sellerLiquidityGrowth}%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="stat-card">
+                    <div className="stat-icon buyer-liquidity">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </div>
+                    <div className="stat-content">
+                        <div className="stat-value">{formatPercentage(overview.buyerLiquidity)}</div>
+                        <div className="stat-label">Buyer Liquidity</div>
+                        <div className="stat-growth">
+                            {getGrowthIcon(overview.buyerLiquidityGrowth)}
+                            <span style={{ color: getGrowthColor(overview.buyerLiquidityGrowth) }}>
+                                {overview.buyerLiquidityGrowth > 0 ? '+' : ''}{overview.buyerLiquidityGrowth}%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="stat-card">
+                    <div className="stat-icon sellers-vs-buyers">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                    </div>
+                    <div className="stat-content">
+                        <div className="stat-value">{formatPercentage(overview.sellersVsBuyers)}</div>
+                        <div className="stat-label">Sellers vs Buyers</div>
+                        <div className="stat-growth">
+                            {getGrowthIcon(overview.sellersVsBuyersGrowth)}
+                            <span style={{ color: getGrowthColor(overview.sellersVsBuyersGrowth) }}>
+                                {overview.sellersVsBuyersGrowth > 0 ? '+' : ''}{overview.sellersVsBuyersGrowth}%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="stat-card">
+                    <div className="stat-icon repeated-transactions">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </div>
+                    <div className="stat-content">
+                        <div className="stat-value">{formatPercentage(overview.repeatedTransactions)}</div>
+                        <div className="stat-label">Repeated Transactions</div>
+                        <div className="stat-growth">
+                            {getGrowthIcon(overview.repeatedTransactionsGrowth)}
+                            <span style={{ color: getGrowthColor(overview.repeatedTransactionsGrowth) }}>
+                                {overview.repeatedTransactionsGrowth > 0 ? '+' : ''}{overview.repeatedTransactionsGrowth}%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="stat-card">
+                    <div className="stat-icon gmv">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div className="stat-content">
+                        <div className="stat-value">{formatCurrency(overview.grossMerchandiseVolume)}</div>
+                        <div className="stat-label">Gross Merchandise Volume</div>
+                        <div className="stat-growth">
+                            {getGrowthIcon(overview.grossMerchandiseVolumeGrowth)}
+                            <span style={{ color: getGrowthColor(overview.grossMerchandiseVolumeGrowth) }}>
+                                {overview.grossMerchandiseVolumeGrowth > 0 ? '+' : ''}{overview.grossMerchandiseVolumeGrowth}%
                             </span>
                         </div>
                     </div>

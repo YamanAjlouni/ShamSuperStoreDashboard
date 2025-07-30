@@ -404,6 +404,14 @@
                                             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans Arabic', sans-serif;
                                         }
                                     }
+
+                                    .subcategory-badges {
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 0.25rem;
+                                        align-items: flex-end;
+                                        flex-shrink: 0;
+                                    }
                                 }
 
                                 .subcategory-count {
@@ -437,6 +445,14 @@
                                             font-size: 0.5625rem;
                                             opacity: 0.9;
                                             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans Arabic', sans-serif;
+                                        }
+
+                                        .sub-subcategory-commission {
+                                            font-size: 0.5625rem;
+                                            font-weight: 600;
+                                            opacity: 0.9;
+                                            border-top: 1px solid rgba(255, 255, 255, 0.2);
+                                            padding-top: 0.0625rem;
                                         }
                                     }
 
@@ -603,6 +619,34 @@
         }
     }
 
+    .commission-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: $radius-full;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+
+        &--default {
+            background: rgba(34, 197, 94, 0.1);
+            color: #059669;
+        }
+
+        &--override {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            position: relative;
+
+            &::before {
+                content: '⚠️';
+                margin-right: 0.25rem;
+                font-size: 0.625rem;
+            }
+        }
+    }
+
     // Modal styles
     .modal-overlay {
         position: fixed;
@@ -714,6 +758,79 @@
                     textarea {
                         resize: vertical;
                         min-height: 80px;
+                    }
+
+                    &.commission-group {
+                        background: $gray-50;
+                        border: 1px solid $gray-200;
+                        border-radius: $radius-md;
+                        padding: 1rem;
+
+                        .commission-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 1rem;
+                            flex-wrap: wrap;
+                            gap: 0.5rem;
+
+                            label {
+                                margin: 0;
+                                font-weight: 600;
+                                color: $gray-800;
+                            }
+
+                            .commission-toggle {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+
+                                input[type="checkbox"] {
+                                    width: auto;
+                                    margin: 0;
+                                    cursor: pointer;
+                                }
+
+                                label {
+                                    font-size: 0.8125rem;
+                                    color: $gray-600;
+                                    cursor: pointer;
+                                    margin: 0;
+                                }
+                            }
+                        }
+
+                        .commission-input {
+                            position: relative;
+
+                            input {
+                                padding-right: 2rem;
+                            }
+
+                            .commission-unit {
+                                position: absolute;
+                                right: 0.75rem;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                font-size: 0.875rem;
+                                color: $gray-500;
+                                font-weight: 500;
+                                pointer-events: none;
+                            }
+                        }
+
+                        .commission-default {
+                            padding: 0.75rem;
+                            background: rgba(34, 197, 94, 0.1);
+                            border-radius: $radius-md;
+                            border: 1px solid rgba(34, 197, 94, 0.2);
+
+                            span {
+                                font-size: 0.875rem;
+                                color: #059669;
+                                font-weight: 500;
+                            }
+                        }
                     }
                 }
             }
@@ -890,6 +1007,16 @@
                         .category-description {
                             font-size: 0.8125rem;
                         }
+
+                        .category-meta {
+                            gap: 0.5rem;
+                            flex-wrap: wrap;
+
+                            .commission-badge {
+                                font-size: 0.6875rem;
+                                padding: 0.1875rem 0.625rem;
+                            }
+                        }
                     }
                 }
 
@@ -1010,6 +1137,12 @@
 
                         .category-meta {
                             gap: 0.5rem;
+                            flex-wrap: wrap;
+
+                            .commission-badge {
+                                font-size: 0.6875rem;
+                                padding: 0.1875rem 0.5rem;
+                            }
                         }
                     }
                 }
@@ -1057,6 +1190,17 @@
                                 .subcategory-names {
                                     width: 100%;
                                     gap: 0.375rem;
+                                }
+
+                                .subcategory-badges {
+                                    flex-direction: row;
+                                    align-items: center;
+                                    gap: 0.5rem;
+
+                                    .commission-badge {
+                                        font-size: 0.625rem;
+                                        padding: 0.125rem 0.375rem;
+                                    }
                                 }
                             }
                         }
@@ -1120,6 +1264,20 @@
                             font-size: 16px;
                             padding: 0.875rem;
                         }
+
+                        &.commission-group {
+                            .commission-header {
+                                flex-direction: column;
+                                align-items: flex-start;
+                                gap: 0.75rem;
+
+                                .commission-toggle {
+                                    label {
+                                        font-size: 0.875rem;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -1160,6 +1318,13 @@
                     .category-info {
                         .category-meta {
                             justify-content: center;
+                            flex-wrap: wrap;
+                            gap: 0.375rem;
+
+                            .commission-badge {
+                                font-size: 0.625rem;
+                                padding: 0.125rem 0.375rem;
+                            }
                         }
                     }
                 }
@@ -1189,6 +1354,10 @@
                                     .subcategory-name-ar {
                                         text-align: right;
                                     }
+                                }
+
+                                .subcategory-badges {
+                                    justify-content: flex-end;
                                 }
                             }
                         }
@@ -1246,6 +1415,13 @@
                         .category-description {
                             font-size: 0.75rem;
                         }
+
+                        .category-meta {
+                            .commission-badge {
+                                font-size: 0.5625rem;
+                                padding: 0.125rem 0.25rem;
+                            }
+                        }
                     }
                 }
 
@@ -1276,6 +1452,13 @@
 
                                     .subcategory-name-ar {
                                         font-size: 0.75rem;
+                                    }
+                                }
+
+                                .subcategory-badges {
+                                    .commission-badge {
+                                        font-size: 0.5625rem;
+                                        padding: 0.125rem 0.25rem;
                                     }
                                 }
                             }
@@ -1347,6 +1530,10 @@
                                         .sub-subcategory-name-ar {
                                             font-size: 0.5rem;
                                         }
+
+                                        .sub-subcategory-commission {
+                                            font-size: 0.5rem;
+                                        }
                                     }
                                 }
                             }
@@ -1386,6 +1573,13 @@
 
                                 .subcategory-name-ar {
                                     font-size: 0.6875rem;
+                                }
+                            }
+
+                            .subcategory-badges {
+                                .commission-badge {
+                                    font-size: 0.5rem;
+                                    padding: 0.0625rem 0.1875rem;
                                 }
                             }
                         }
