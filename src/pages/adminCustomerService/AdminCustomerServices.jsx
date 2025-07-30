@@ -1,5 +1,21 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import {
+    Package,
+    Truck,
+    Store,
+    User,
+    Search,
+    Plus,
+    ChevronLeft,
+    ChevronRight,
+    X,
+    AlertTriangle,
+    Clock,
+    CheckCircle,
+    FileText,
+    Users
+} from 'lucide-react'
 import AdminCustomerServiceNavbar from '../../components/adminCustomerService/adminCustomerServiceNavbar/AdminCustomerServiceNavbar'
 import AdminCustomerServiceSidebar from '../../components/adminCustomerService/adminCustomerServiceSidebar/AdminCustomerServiceSidebar'
 import AdminOrderDetails from './adminOrderDetails/AdminOrderDetails'
@@ -12,16 +28,20 @@ const AdminCustomerServices = () => {
     const [searchTerm, setSearchTerm] = useState('')
     const [statusFilter, setStatusFilter] = useState('all')
     const [ticketFilter, setTicketFilter] = useState('all')
+    const [createdByFilter, setCreatedByFilter] = useState('all') // New filter
+    const [prioritySort, setPrioritySort] = useState('all') // New sort
     const [currentPage, setCurrentPage] = useState(1)
     const [ordersPerPage] = useState(10)
     const [showCreateTicketModal, setShowCreateTicketModal] = useState(false)
+    const [activeSection, setActiveSection] = useState('all') // New state for sections
     const [newTicketForm, setNewTicketForm] = useState({
         orderNumber: '',
         reason: '',
-        customReason: '', // Add custom reason field
+        customReason: '',
         description: '',
         priority: 'medium',
-        createdBy: 'customerService'
+        createdBy: 'customerService',
+        assignedTo: 'buyer' // New field to determine who handles the ticket
     })
 
     // Sidebar state management
@@ -90,7 +110,7 @@ const AdminCustomerServices = () => {
         }
     }
 
-    // Sample orders data - now with delivery drivers
+    // Sample orders data - enhanced with assignedTo field for tickets
     const [orders, setOrders] = useState([
         {
             id: 'ORD-001',
@@ -131,6 +151,7 @@ const AdminCustomerServices = () => {
                 status: 'open',
                 description: 'Apples were not fresh as expected',
                 priority: 'medium',
+                assignedTo: 'seller', // Who needs to handle this ticket
                 createdAt: '2024-01-16',
                 messages: [
                     {
@@ -141,6 +162,49 @@ const AdminCustomerServices = () => {
                         type: 'inbound'
                     }
                 ]
+            }
+        },
+        {
+            id: 'ORD-002',
+            orderNumber: '12346',
+            seller: {
+                id: 'S002',
+                name: 'Tech Solutions Ltd.',
+                phone: '+1-555-0124',
+                email: 'support@techsolutions.com',
+                address: '456 Tech St, San Francisco',
+                businessType: 'Electronics'
+            },
+            customer: {
+                id: 'C002',
+                name: 'Jane Smith',
+                phone: '+1-555-0457',
+                email: 'jane.smith@email.com',
+                address: '456 Oak St, Los Angeles, CA 90001'
+            },
+            deliveryDriver: {
+                id: 'D002',
+                name: 'Sarah Chen',
+                phone: '+1-555-0234',
+                vehicleType: 'Van'
+            },
+            items: [
+                { name: 'Wireless Headphones', quantity: 1, price: 99.99 }
+            ],
+            totalAmount: 99.99,
+            status: 'delivered',
+            orderDate: '2024-01-17',
+            deliveryDate: '2024-01-18',
+            ticket: {
+                id: 'T-002',
+                createdBy: 'customer',
+                reason: 'Late delivery',
+                status: 'open',
+                description: 'Package arrived 2 hours late, caused inconvenience',
+                priority: 'low',
+                assignedTo: 'delivery-driver',
+                createdAt: '2024-01-18',
+                messages: []
             }
         },
         {
@@ -182,6 +246,7 @@ const AdminCustomerServices = () => {
                 status: 'resolved',
                 description: 'Item unavailable, refund processed',
                 priority: 'high',
+                assignedTo: 'buyer',
                 createdAt: '2024-01-18',
                 resolvedAt: '2024-01-19',
                 messages: [
@@ -193,6 +258,49 @@ const AdminCustomerServices = () => {
                         type: 'system'
                     }
                 ]
+            }
+        },
+        {
+            id: 'ORD-004',
+            orderNumber: '12348',
+            seller: {
+                id: 'S001',
+                name: 'Fresh Market Co.',
+                phone: '+1-555-0123',
+                email: 'contact@freshmarket.com',
+                address: '324 Main St, Damascus',
+                businessType: 'Grocery Store'
+            },
+            customer: {
+                id: 'C004',
+                name: 'Emily Davis',
+                phone: '+1-555-0459',
+                email: 'emily.davis@email.com',
+                address: '321 Elm St, Boston, MA 02101'
+            },
+            deliveryDriver: {
+                id: 'D004',
+                name: 'Carlos Garcia',
+                phone: '+1-555-0890',
+                vehicleType: 'Bicycle'
+            },
+            items: [
+                { name: 'Fresh Vegetables', quantity: 1, price: 15.99 }
+            ],
+            totalAmount: 15.99,
+            status: 'processing',
+            orderDate: '2024-01-19',
+            deliveryDate: null,
+            ticket: {
+                id: 'T-004',
+                createdBy: 'customerService',
+                reason: 'Delivery address issue',
+                status: 'open',
+                description: 'Customer address is incomplete, need clarification',
+                priority: 'high',
+                assignedTo: 'delivery-driver',
+                createdAt: '2024-01-19',
+                messages: []
             }
         },
         {
@@ -234,6 +342,7 @@ const AdminCustomerServices = () => {
                 status: 'open',
                 description: 'One of the books arrived with torn pages',
                 priority: 'low',
+                assignedTo: 'seller',
                 createdAt: '2024-01-26',
                 messages: [
                     {
@@ -246,7 +355,7 @@ const AdminCustomerServices = () => {
                 ]
             }
         },
-        // Add more sample orders with tickets
+        // Add more sample orders with diverse ticket types
         ...Array.from({ length: 8 }, (_, i) => ({
             id: `ORD-${String(i + 6).padStart(3, '0')}`,
             orderNumber: `1235${i + 0}`,
@@ -266,7 +375,7 @@ const AdminCustomerServices = () => {
                 address: `${i + 600} Customer Ave, State ${i + 10001}`
             },
             deliveryDriver: {
-                id: `D00${i + 4}`,
+                id: `D00${i + 5}`,
                 name: ['John Smith', 'Emma Wilson', 'Carlos Garcia', 'Lisa Martinez'][i % 4],
                 phone: `+1-555-0${String(i + 700).slice(-3)}`,
                 vehicleType: ['Motorcycle', 'Car', 'Van', 'Bicycle'][i % 4]
@@ -285,6 +394,7 @@ const AdminCustomerServices = () => {
                 status: ['open', 'resolved', 'closed'][i % 3],
                 description: `Sample ticket description ${i + 1}`,
                 priority: ['low', 'medium', 'high'][i % 3],
+                assignedTo: ['seller', 'delivery-driver', 'buyer'][i % 3],
                 createdAt: `2024-01-${String(i + 10).padStart(2, '0')}`,
                 messages: []
             }
@@ -293,6 +403,17 @@ const AdminCustomerServices = () => {
 
     // Filter orders to only show those with tickets
     const ordersWithTickets = orders.filter(order => order.ticket !== null)
+
+    // Function to determine ticket assignment based on reason
+    const getTicketAssignment = (reason) => {
+        const deliveryIssues = ['Late delivery', 'Delivery problem', 'Delivery address issue', 'Wrong delivery location']
+        const sellerIssues = ['Product quality issue', 'Wrong item', 'Damaged item', 'Out of stock']
+        const buyerIssues = ['Refund request', 'Customer complaint', 'General inquiry']
+
+        if (deliveryIssues.includes(reason)) return 'delivery-driver'
+        if (sellerIssues.includes(reason)) return 'seller'
+        return 'buyer'
+    }
 
     const getStatusBadge = (status) => {
         const statusConfig = {
@@ -319,6 +440,32 @@ const AdminCustomerServices = () => {
         return <span className={`ticket-badge ${config.class}`}>{config.text}</span>
     }
 
+    const getPriorityBadge = (priority) => {
+        const priorityConfig = {
+            low: { class: 'priority-low', text: 'Low' },
+            medium: { class: 'priority-medium', text: 'Medium' },
+            high: { class: 'priority-high', text: 'High' }
+        }
+        const config = priorityConfig[priority] || { class: 'priority-medium', text: priority }
+        return <span className={`priority-badge ${config.class}`}>{config.text}</span>
+    }
+
+    const getAssignedToBadge = (assignedTo) => {
+        const assignedConfig = {
+            'delivery-driver': { class: 'assigned-driver', text: 'Driver', icon: <Truck size={14} /> },
+            'seller': { class: 'assigned-seller', text: 'Seller', icon: <Store size={14} /> },
+            'buyer': { class: 'assigned-cs', text: 'Buyer', icon: <User size={14} /> }
+        }
+        const config = assignedConfig[assignedTo] || { class: 'assigned-unknown', text: assignedTo, icon: <AlertTriangle size={14} /> }
+        return (
+            <span className={`assigned-badge ${config.class}`}>
+                <span className="assigned-icon">{config.icon}</span>
+                {config.text}
+            </span>
+        )
+    }
+
+    // Enhanced filtering function
     const filteredOrders = ordersWithTickets.filter(order => {
         const matchesSearch = order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
             order.seller.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -342,14 +489,41 @@ const AdminCustomerServices = () => {
                 matchesTicket = true
         }
 
-        return matchesSearch && matchesStatus && matchesTicket
+        const matchesCreatedBy = createdByFilter === 'all' || (order.ticket && order.ticket.createdBy === createdByFilter)
+
+        const matchesPriority = prioritySort === 'all' || (order.ticket && order.ticket.priority === prioritySort)
+
+        const matchesSection = activeSection === 'all' || (order.ticket && order.ticket.assignedTo === activeSection)
+
+        return matchesSearch && matchesStatus && matchesTicket && matchesCreatedBy && matchesPriority && matchesSection
+    })
+
+    // Sort by priority if specified
+    const sortedOrders = [...filteredOrders].sort((a, b) => {
+        if (prioritySort !== 'all') {
+            const priorityOrder = { high: 3, medium: 2, low: 1 }
+            return priorityOrder[b.ticket.priority] - priorityOrder[a.ticket.priority]
+        }
+        return 0
     })
 
     // Pagination logic
     const indexOfLastOrder = currentPage * ordersPerPage
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage
-    const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder)
-    const totalPages = Math.ceil(filteredOrders.length / ordersPerPage)
+    const currentOrders = sortedOrders.slice(indexOfFirstOrder, indexOfLastOrder)
+    const totalPages = Math.ceil(sortedOrders.length / ordersPerPage)
+
+    // Section statistics
+    const getSectionStats = () => {
+        return {
+            all: ordersWithTickets.length,
+            'delivery-driver': ordersWithTickets.filter(o => o.ticket?.assignedTo === 'delivery-driver').length,
+            'seller': ordersWithTickets.filter(o => o.ticket?.assignedTo === 'seller').length,
+            'buyer': ordersWithTickets.filter(o => o.ticket?.assignedTo === 'buyer').length
+        }
+    }
+
+    const sectionStats = getSectionStats()
 
     const handleViewDetails = (order) => {
         setSelectedOrder(order)
@@ -387,37 +561,34 @@ const AdminCustomerServices = () => {
             customReason: '',
             description: '',
             priority: 'medium',
-            createdBy: 'customerService'
+            createdBy: 'customerService',
+            assignedTo: 'buyer'
         })
     }
 
-    // Fixed form change handler - simplified without preventDefault
     const handleFormChange = (e) => {
         const { name, value } = e.target
         setNewTicketForm(prev => ({
             ...prev,
             [name]: value,
-            // Clear custom reason if reason is not "Other"
-            ...(name === 'reason' && value !== 'Other' && { customReason: '' })
+            ...(name === 'reason' && value !== 'Other' && { customReason: '' }),
+            ...(name === 'reason' && { assignedTo: getTicketAssignment(value) })
         }))
     }
 
     const handleSubmitTicket = (e) => {
         e.preventDefault()
 
-        // Validate form
         if (!newTicketForm.orderNumber || !newTicketForm.reason || !newTicketForm.description) {
             alert('Please fill in all required fields!')
             return
         }
 
-        // If reason is "Other", validate custom reason
         if (newTicketForm.reason === 'Other' && !newTicketForm.customReason.trim()) {
             alert('Please specify the custom reason!')
             return
         }
 
-        // Find the order by order number
         const targetOrder = orders.find(order => order.orderNumber === newTicketForm.orderNumber)
 
         if (!targetOrder) {
@@ -430,7 +601,6 @@ const AdminCustomerServices = () => {
             return
         }
 
-        // Create new ticket
         const ticketReason = newTicketForm.reason === 'Other' ? newTicketForm.customReason : newTicketForm.reason
 
         const newTicket = {
@@ -440,11 +610,11 @@ const AdminCustomerServices = () => {
             status: 'open',
             description: newTicketForm.description,
             priority: newTicketForm.priority,
+            assignedTo: newTicketForm.assignedTo,
             createdAt: new Date().toISOString().split('T')[0],
             messages: []
         }
 
-        // Update the order with the new ticket
         const updatedOrder = {
             ...targetOrder,
             ticket: newTicket
@@ -515,9 +685,7 @@ const AdminCustomerServices = () => {
                     className="pagination-btn"
                     onClick={() => handlePageChange(currentPage - 1)}
                 >
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
+                    <ChevronLeft size={16} />
                 </button>
             )
         }
@@ -575,9 +743,7 @@ const AdminCustomerServices = () => {
                     className="pagination-btn"
                     onClick={() => handlePageChange(currentPage + 1)}
                 >
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                    <ChevronRight size={16} />
                 </button>
             )
         }
@@ -595,27 +761,23 @@ const AdminCustomerServices = () => {
                 <div className="dashboard-header">
                     <div className="header-title">
                         <h1>Admin Customer Service Dashboard</h1>
-                        <p>Manage orders with support tickets</p>
+                        <p>Manage orders with support tickets organized by responsibility</p>
                     </div>
 
                     <div className="dashboard-stats">
                         <div className="stat-card">
                             <div className="stat-icon">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                </svg>
+                                <Package size={24} />
                             </div>
                             <div className="stat-content">
                                 <div className="stat-number">{ordersWithTickets.length}</div>
-                                <div className="stat-label">Orders with Tickets</div>
+                                <div className="stat-label">Total Tickets</div>
                             </div>
                         </div>
 
                         <div className="stat-card">
                             <div className="stat-icon">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                                </svg>
+                                <FileText size={24} />
                             </div>
                             <div className="stat-content">
                                 <div className="stat-number">{ordersWithTickets.filter(o => o.ticket && o.ticket.status === 'open').length}</div>
@@ -625,47 +787,92 @@ const AdminCustomerServices = () => {
 
                         <div className="stat-card">
                             <div className="stat-icon">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                                <Clock size={24} />
+                            </div>
+                            <div className="stat-content">
+                                <div className="stat-number">{ordersWithTickets.filter(o => o.ticket && o.ticket.priority === 'high').length}</div>
+                                <div className="stat-label">High Priority</div>
+                            </div>
+                        </div>
+
+                        <div className="stat-card">
+                            <div className="stat-icon">
+                                <CheckCircle size={24} />
                             </div>
                             <div className="stat-content">
                                 <div className="stat-number">{ordersWithTickets.filter(o => o.ticket && o.ticket.status === 'resolved').length}</div>
                                 <div className="stat-label">Resolved</div>
                             </div>
                         </div>
-
-                        <div className="stat-card">
-                            <div className="stat-icon">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div className="stat-content">
-                                <div className="stat-number">{ordersWithTickets.filter(o => o.ticket && o.ticket.status === 'closed').length}</div>
-                                <div className="stat-label">Closed Tickets</div>
-                            </div>
-                        </div>
                     </div>
+                </div>
+
+                {/* Section Tabs */}
+                <div className="section-tabs">
+                    <button
+                        className={`section-tab ${activeSection === 'all' ? 'active' : ''}`}
+                        onClick={() => {
+                            setActiveSection('all')
+                            handleFiltersChange()
+                        }}
+                    >
+                        <span className="tab-icon"><FileText size={18} /></span>
+                        <span className="tab-text">All Tickets</span>
+                        <span className="tab-count">{sectionStats.all}</span>
+                    </button>
+                    <button
+                        className={`section-tab ${activeSection === 'delivery-driver' ? 'active' : ''}`}
+                        onClick={() => {
+                            setActiveSection('delivery-driver')
+                            handleFiltersChange()
+                        }}
+                    >
+                        <span className="tab-icon"><Truck size={18} /></span>
+                        <span className="tab-text">Driver Issues</span>
+                        <span className="tab-count">{sectionStats['delivery-driver']}</span>
+                    </button>
+                    <button
+                        className={`section-tab ${activeSection === 'seller' ? 'active' : ''}`}
+                        onClick={() => {
+                            setActiveSection('seller')
+                            handleFiltersChange()
+                        }}
+                    >
+                        <span className="tab-icon"><Store size={18} /></span>
+                        <span className="tab-text">Seller Issues</span>
+                        <span className="tab-count">{sectionStats.seller}</span>
+                    </button>
+                    <button
+                        className={`section-tab ${activeSection === 'buyer' ? 'active' : ''}`}
+                        onClick={() => {
+                            setActiveSection('buyer')
+                            handleFiltersChange()
+                        }}
+                    >
+                        <span className="tab-icon"><User size={18} /></span>
+                        <span className="tab-text">Buyer Issues</span>
+                        <span className="tab-count">{sectionStats.buyer}</span>
+                    </button>
                 </div>
 
                 <div className="orders-section">
                     <div className="section-header">
-                        <h2>Orders with Tickets</h2>
+                        <h2>
+                            {activeSection === 'all' && 'All Tickets'}
+                            {activeSection === 'delivery-driver' && 'Delivery Driver Tickets'}
+                            {activeSection === 'seller' && 'Seller Tickets'}
+                            {activeSection === 'buyer' && 'Buyer Tickets'}
+                        </h2>
 
                         <div className="header-actions">
                             <button className="create-ticket-btn" onClick={handleCreateTicket}>
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                                </svg>
+                                <Plus size={18} />
                                 Create New Ticket
                             </button>
 
                             <div className="filters">
                                 <div className="search-box">
-                                    <svg className="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
+                                    <Search className="search-icon" size={18} />
                                     <input
                                         type="text"
                                         placeholder="Search orders, sellers, customers, drivers..."
@@ -705,6 +912,34 @@ const AdminCustomerServices = () => {
                                     <option value="resolved-ticket">Resolved Tickets</option>
                                     <option value="closed-ticket">Closed Tickets</option>
                                 </select>
+
+                                <select
+                                    value={createdByFilter}
+                                    onChange={(e) => {
+                                        setCreatedByFilter(e.target.value)
+                                        handleFiltersChange()
+                                    }}
+                                    className="created-by-filter"
+                                >
+                                    <option value="all">Created By All</option>
+                                    <option value="deliverydriver">Delivery Driver</option>
+                                    <option value="seller">Seller</option>
+                                    <option value="buyer">Buyer</option>
+                                </select>
+
+                                <select
+                                    value={prioritySort}
+                                    onChange={(e) => {
+                                        setPrioritySort(e.target.value)
+                                        handleFiltersChange()
+                                    }}
+                                    className="priority-sort"
+                                >
+                                    <option value="all">All Priorities</option>
+                                    <option value="high">High Priority</option>
+                                    <option value="medium">Medium Priority</option>
+                                    <option value="low">Low Priority</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -718,7 +953,8 @@ const AdminCustomerServices = () => {
                                 <div className="header-cell">Driver</div>
                                 <div className="header-cell">Amount</div>
                                 <div className="header-cell">Status</div>
-                                <div className="header-cell">Ticket</div>
+                                <div className="header-cell">Priority</div>
+                                <div className="header-cell">Assigned To</div>
                                 <div className="header-cell">Actions</div>
                             </div>
 
@@ -762,7 +998,11 @@ const AdminCustomerServices = () => {
                                         </div>
 
                                         <div className="table-cell">
-                                            {getTicketBadge(order.ticket)}
+                                            {order.ticket && getPriorityBadge(order.ticket.priority)}
+                                        </div>
+
+                                        <div className="table-cell">
+                                            {order.ticket && getAssignedToBadge(order.ticket.assignedTo)}
                                         </div>
 
                                         <div className="table-cell">
@@ -783,7 +1023,7 @@ const AdminCustomerServices = () => {
                     {totalPages > 1 && (
                         <div className="pagination-container">
                             <div className="pagination-info">
-                                Showing {indexOfFirstOrder + 1} to {Math.min(indexOfLastOrder, filteredOrders.length)} of {filteredOrders.length} orders
+                                Showing {indexOfFirstOrder + 1} to {Math.min(indexOfLastOrder, sortedOrders.length)} of {sortedOrders.length} orders
                             </div>
                             <div className="pagination">
                                 {renderPagination()}
@@ -791,14 +1031,12 @@ const AdminCustomerServices = () => {
                         </div>
                     )}
 
-                    {filteredOrders.length === 0 && (
+                    {sortedOrders.length === 0 && (
                         <div className="no-results">
                             <div className="no-results-icon">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
+                                <FileText size={32} />
                             </div>
-                            <h3>No orders found</h3>
+                            <h3>No tickets found</h3>
                             <p>Try adjusting your search or filter criteria</p>
                         </div>
                     )}
@@ -837,7 +1075,7 @@ const AdminCustomerServices = () => {
                 </Routes>
             </div>
 
-            {/* MOVE THE MODAL HERE - At the top level of AdminCustomerServices component */}
+            {/* Enhanced Create Ticket Modal */}
             {showCreateTicketModal && (
                 <div className="modal-overlay" onClick={handleModalOverlayClick}>
                     <div className="modal-content" onClick={handleModalContentClick}>
@@ -848,9 +1086,7 @@ const AdminCustomerServices = () => {
                                 onClick={handleCloseModal}
                                 type="button"
                             >
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
+                                <X size={20} />
                             </button>
                         </div>
 
@@ -884,8 +1120,10 @@ const AdminCustomerServices = () => {
                                     <option value="Wrong item">Wrong item</option>
                                     <option value="Damaged item">Damaged item</option>
                                     <option value="Late delivery">Late delivery</option>
+                                    <option value="Delivery address issue">Delivery address issue</option>
                                     <option value="Refund request">Refund request</option>
                                     <option value="Customer complaint">Customer complaint</option>
+                                    <option value="Out of stock">Out of stock</option>
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
