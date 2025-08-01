@@ -1,0 +1,482 @@
+@use '../../../assets/styles/vars.scss' as *;
+
+.dashboard {
+    max-width: 1400px;
+    margin: 0 auto;
+
+    .dashboard-header {
+        margin-bottom: 2rem;
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+    }
+
+    // Metrics Grid
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+
+        .metric-card {
+            background: $white;
+            border-radius: $radius-lg;
+            padding: 1.5rem;
+            box-shadow: $shadow-sm;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: $transition-all;
+
+            &:hover {
+                box-shadow: $shadow-md;
+                transform: translateY(-2px);
+            }
+
+            .metric-icon {
+                width: 60px;
+                height: 60px;
+                border-radius: $radius-lg;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+
+                svg {
+                    width: 28px;
+                    height: 28px;
+                    color: $white;
+                }
+            }
+
+            .metric-content {
+                flex: 1;
+
+                h3 {
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    color: #6b7280;
+                    margin-bottom: 0.5rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                }
+
+                .metric-value {
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: #1f2937;
+                    margin-bottom: 0.25rem;
+                }
+
+                .metric-label {
+                    font-size: 0.875rem;
+                    color: #9ca3af;
+                }
+            }
+
+            &.revenue .metric-icon {
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            }
+
+            &.commissions .metric-icon {
+                background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            }
+
+            &.orders .metric-icon {
+                background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            }
+
+            &.pending .metric-icon {
+                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            }
+        }
+    }
+
+    // Dashboard Sections
+    .dashboard-section {
+        background: $white;
+        border-radius: $radius-lg;
+        padding: 2rem;
+        box-shadow: $shadow-sm;
+        border: 1px solid #e5e7eb;
+        margin-bottom: 2rem;
+
+        .section-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 1rem;
+
+            h2 {
+                font-size: 1.375rem;
+                font-weight: 600;
+                color: #1f2937;
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                color: #6b7280;
+                font-size: 0.875rem;
+            }
+        }
+    }
+
+    // Payment Breakdown
+    .payment-breakdown {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+
+        .breakdown-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: $radius-md;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+
+            h4 {
+                font-size: 1rem;
+                font-weight: 600;
+                color: #374151;
+                margin-bottom: 1rem;
+            }
+
+            .breakdown-amount {
+                font-size: 1.875rem;
+                font-weight: 700;
+                color: #10b981;
+                margin-bottom: 0.5rem;
+            }
+
+            .breakdown-percentage {
+                font-size: 0.875rem;
+                color: #6b7280;
+            }
+        }
+    }
+
+    // Transaction Types
+    .transaction-types {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+
+        .transaction-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: #fafafa;
+            border-radius: $radius-md;
+            border: 1px solid #e5e7eb;
+
+            .transaction-icon {
+                width: 50px;
+                height: 50px;
+                border-radius: $radius-md;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+
+                svg {
+                    width: 24px;
+                    height: 24px;
+                    color: $white;
+                }
+
+                &.shampay {
+                    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                }
+
+                &.cash {
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                }
+            }
+
+            .transaction-content {
+                flex: 1;
+
+                h4 {
+                    font-size: 1rem;
+                    font-weight: 600;
+                    color: #374151;
+                    margin-bottom: 0.5rem;
+                }
+
+                .transaction-count {
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    color: #1f2937;
+                    margin-bottom: 0.25rem;
+                }
+
+                .transaction-note {
+                    font-size: 0.875rem;
+                    color: #6b7280;
+                }
+            }
+        }
+    }
+
+    // Tax Summary
+    .tax-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+
+        .tax-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: $radius-md;
+            padding: 1.5rem;
+            border: 1px solid #f59e0b;
+            text-align: center;
+
+            h4 {
+                font-size: 1rem;
+                font-weight: 600;
+                color: #92400e;
+                margin-bottom: 1rem;
+            }
+
+            .tax-amount {
+                font-size: 1.875rem;
+                font-weight: 700;
+                color: #d97706;
+                margin-bottom: 0.5rem;
+            }
+
+            .tax-note {
+                font-size: 0.875rem;
+                color: #a16207;
+            }
+        }
+    }
+
+    // Recent Orders Table
+    .recent-orders {
+        .orders-table {
+            .table-header {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+                gap: 1rem;
+                padding: 1rem;
+                background: #f9fafb;
+                border-radius: $radius-md;
+                margin-bottom: 1rem;
+                font-weight: 600;
+                color: #374151;
+                font-size: 0.875rem;
+            }
+
+            .table-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+                gap: 1rem;
+                padding: 1rem;
+                border-bottom: 1px solid #e5e7eb;
+                align-items: center;
+                transition: $transition-all;
+
+                &:hover {
+                    background: #f9fafb;
+                }
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                .order-number {
+                    font-weight: 600;
+                    color: #1f2937;
+                }
+
+                .store-number {
+                    color: #6b7280;
+                }
+
+                .order-date {
+                    color: #6b7280;
+                    font-size: 0.875rem;
+                }
+
+                .order-amount {
+                    font-weight: 600;
+                    color: #10b981;
+                }
+
+                .payment-method {
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    padding: 0.25rem 0.75rem;
+                    border-radius: $radius-full;
+                    text-align: center;
+
+                    &.shampay {
+                        background: #dbeafe;
+                        color: #1d4ed8;
+                    }
+
+                    &.cash {
+                        background: #d1fae5;
+                        color: #059669;
+                    }
+                }
+            }
+        }
+    }
+
+    // Monthly Stats
+    .monthly-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: $radius-md;
+            border: 1px solid #e2e8f0;
+
+            .stat-label {
+                font-size: 0.875rem;
+                color: #6b7280;
+                font-weight: 500;
+            }
+
+            .stat-value {
+                font-size: 1.125rem;
+                font-weight: 700;
+                color: #1f2937;
+            }
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .dashboard {
+        .metrics-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .dashboard-section {
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-breakdown,
+        .transaction-types,
+        .tax-summary {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .recent-orders {
+            .orders-table {
+
+                .table-header,
+                .table-row {
+                    grid-template-columns: 1fr;
+                    gap: 0.5rem;
+                    text-align: left;
+                }
+
+                .table-header {
+                    display: none; // Hide header on mobile
+                }
+
+                .table-row {
+                    background: #f9fafb;
+                    border-radius: $radius-md;
+                    margin-bottom: 1rem;
+                    border: 1px solid #e5e7eb;
+                    padding: 1rem;
+
+                    >span {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 0.5rem;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+
+                        &::before {
+                            content: attr(data-label);
+                            font-weight: 600;
+                            color: #374151;
+                            font-size: 0.875rem;
+                        }
+
+                        &.order-number::before {
+                            content: 'Order #:';
+                        }
+
+                        &.store-number::before {
+                            content: 'Store #:';
+                        }
+
+                        &.order-date::before {
+                            content: 'Date:';
+                        }
+
+                        &.order-amount::before {
+                            content: 'Amount:';
+                        }
+
+                        &.payment-method::before {
+                            content: 'Payment:';
+                        }
+                    }
+                }
+            }
+        }
+
+        .monthly-stats {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard {
+        .dashboard-header {
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .metric-card {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+
+            .metric-content {
+                .metric-value {
+                    font-size: 1.5rem;
+                }
+            }
+        }
+
+        .transaction-card {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+    }
+}

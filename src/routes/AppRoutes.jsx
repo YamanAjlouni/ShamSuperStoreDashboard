@@ -8,6 +8,7 @@ import AdminDelivery from '../pages/adminDelivery/AdminDelivery'
 import WebsiteAdmin from '../pages/websiteAdmin/WebsiteAdmin'
 import CustomerServices from '../pages/customerServices/CustomerServices'
 import AdminCustomerServices from '../pages/adminCustomerService/AdminCustomerServices'
+import Accountant from '../pages/accountant/Accountant'
 
 const AppRoutes = () => {
     const location = useLocation()
@@ -28,6 +29,7 @@ const AppRoutes = () => {
         if (userRole === 'websiteAdmin') return <Navigate to="/websiteAdmin/intro-section" replace />
         if (userRole === 'customerService') return <Navigate to="/customerService" replace />
         if (userRole === 'adminCustomerService') return <Navigate to="/adminCustomerService" replace />
+        if (userRole === 'accountant') return <Navigate to="/accountant" replace />
     }
 
     return (
@@ -40,6 +42,7 @@ const AppRoutes = () => {
             <Route path="/websiteAdmin/*" element={<WebsiteAdmin />} />
             <Route path="/customerService/*" element={<CustomerServices />} />
             <Route path="/adminCustomerService/*" element={<AdminCustomerServices />} />
+            <Route path="/accountant/*" element={<Accountant />} />
 
             {/* Default redirects */}
             <Route
@@ -53,7 +56,8 @@ const AppRoutes = () => {
                                         userRole === 'websiteAdmin' ? <Navigate to="/websiteAdmin/intro-section" replace /> :
                                             userRole === 'customerService' ? <Navigate to="/customerService" replace /> :
                                                 userRole === 'adminCustomerService' ? <Navigate to="/adminCustomerService" replace /> :
-                                                    <Navigate to="/login" replace />
+                                                    userRole === 'accountant' ? <Navigate to="/accountant" replace /> :
+                                                        <Navigate to="/login" replace />
                     ) : (
                         <Navigate to="/login" replace />
                     )

@@ -1,0 +1,341 @@
+import { useState } from 'react'
+import './AccountantOrdersReports.scss'
+
+const AccountantOrdersReports = () => {
+    // Sample orders data - in real app this would come from API
+    const [ordersData] = useState([
+        { id: 1, orderNumber: 'ORD-2025-001', storeNumber: 'STR-001', storeName: 'Electronics Hub', date: '2025-01-15', amount: 299.99, paymentMethod: 'ShamPay', status: 'Completed', commission: 44.99 },
+        { id: 2, orderNumber: 'ORD-2025-002', storeNumber: 'STR-003', storeName: 'Fashion Store', date: '2025-01-15', amount: 150.00, paymentMethod: 'Cash', status: 'Completed', commission: 22.50 },
+        { id: 3, orderNumber: 'ORD-2025-003', storeNumber: 'STR-002', storeName: 'Home & Garden', date: '2025-01-14', amount: 75.50, paymentMethod: 'ShamPay', status: 'Completed', commission: 11.33 },
+        { id: 4, orderNumber: 'ORD-2025-004', storeNumber: 'STR-001', storeName: 'Electronics Hub', date: '2025-01-14', amount: 425.00, paymentMethod: 'Cash', status: 'Completed', commission: 63.75 },
+        { id: 5, orderNumber: 'ORD-2025-005', storeNumber: 'STR-004', storeName: 'Sports Corner', date: '2025-01-13', amount: 89.99, paymentMethod: 'ShamPay', status: 'Completed', commission: 13.50 },
+        { id: 6, orderNumber: 'ORD-2025-006', storeNumber: 'STR-002', storeName: 'Home & Garden', date: '2025-01-13', amount: 220.00, paymentMethod: 'ShamPay', status: 'Pending', commission: 33.00 },
+        { id: 7, orderNumber: 'ORD-2025-007', storeNumber: 'STR-003', storeName: 'Fashion Store', date: '2025-01-12', amount: 175.50, paymentMethod: 'Cash', status: 'Completed', commission: 26.33 },
+        { id: 8, orderNumber: 'ORD-2025-008', storeNumber: 'STR-001', storeName: 'Electronics Hub', date: '2025-01-12', amount: 350.00, paymentMethod: 'ShamPay', status: 'Completed', commission: 52.50 },
+        { id: 9, orderNumber: 'ORD-2025-009', storeNumber: 'STR-004', storeName: 'Sports Corner', date: '2025-01-11', amount: 125.75, paymentMethod: 'Cash', status: 'Completed', commission: 18.86 },
+        { id: 10, orderNumber: 'ORD-2025-010', storeNumber: 'STR-002', storeName: 'Home & Garden', date: '2025-01-11', amount: 95.00, paymentMethod: 'ShamPay', status: 'Completed', commission: 14.25 }
+    ])
+
+    const [filters, setFilters] = useState({
+        dateRange: 'all',
+        paymentMethod: 'all',
+        status: 'all',
+        storeNumber: 'all',
+        search: ''
+    })
+
+    const [currentPage, setCurrentPage] = useState(1)
+    const [itemsPerPage] = useState(10)
+    const [activeTab, setActiveTab] = useState('orders')
+
+    // Filter orders based on current filters
+    const filteredOrders = ordersData.filter(order => {
+        const matchesSearch = order.orderNumber.toLowerCase().includes(filters.search.toLowerCase()) ||
+            order.storeNumber.toLowerCase().includes(filters.search.toLowerCase()) ||
+            order.storeName.toLowerCase().includes(filters.search.toLowerCase())
+
+        const matchesPaymentMethod = filters.paymentMethod === 'all' || order.paymentMethod === filters.paymentMethod
+        const matchesStatus = filters.status === 'all' || order.status === filters.status
+        const matchesStore = filters.storeNumber === 'all' || order.storeNumber === filters.storeNumber
+
+        return matchesSearch && matchesPaymentMethod && matchesStatus && matchesStore
+    })
+
+    // Calculate summary statistics
+    const summaryStats = {
+        totalOrders: filteredOrders.length,
+        totalRevenue: filteredOrders.reduce((sum, order) => sum + order.amount, 0),
+        totalCommissions: filteredOrders.reduce((sum, order) => sum + order.commission, 0),
+        shamPayOrders: filteredOrders.filter(order => order.paymentMethod === 'ShamPay').length,
+        cashOrders: filteredOrders.filter(order => order.paymentMethod === 'Cash').length,
+        completedOrders: filteredOrders.filter(order => order.status === 'Completed').length,
+        pendingOrders: filteredOrders.filter(order => order.status === 'Pending').length
+    }
+
+    // Pagination
+    const totalPages = Math.ceil(filteredOrders.length / itemsPerPage)
+    const startIndex = (currentPage - 1) * itemsPerPage
+    const paginatedOrders = filteredOrders.slice(startIndex, startIndex + itemsPerPage)
+
+    // Store-wise summary
+    const storeWiseSummary = ordersData.reduce((acc, order) => {
+        if (!acc[order.storeNumber]) {
+            acc[order.storeNumber] = {
+                storeNumber: order.storeNumber,
+                storeName: order.storeName,
+                totalOrders: 0,
+                totalRevenue: 0,
+                totalCommissions: 0
+            }
+        }
+        acc[order.storeNumber].totalOrders++
+        acc[order.storeNumber].totalRevenue += order.amount
+        acc[order.storeNumber].totalCommissions += order.commission
+        return acc
+    }, {})
+
+    const handleFilterChange = (filterName, value) => {
+        setFilters(prev => ({
+            ...prev,
+            [filterName]: value
+        }))
+        setCurrentPage(1) // Reset to first page when filtering
+    }
+
+    const handleExportReport = () => {
+        // In real app, this would generate and download a report
+        alert('Report export functionality would be implemented here')
+    }
+
+    const handlePrint = () => {
+        window.print()
+    }
+
+    return (
+        <div className="accountant-orders-reports">
+            <div className="page-header">
+                <div className="header-content">
+                    <h1>Orders & Sales Reports</h1>
+                    <p>View order data and generate sales reports (read-only access)</p>
+                </div>
+
+                <div className="header-actions">
+                    <button className="btn btn-secondary" onClick={handlePrint}>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        </svg>
+                        Print
+                    </button>
+                    <button className="btn btn-primary" onClick={handleExportReport}>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Export Report
+                    </button>
+                </div>
+            </div>
+
+            {/* Summary Statistics */}
+            <div className="summary-stats">
+                <div className="stat-card">
+                    <div className="stat-icon orders">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                    </div>
+                    <div className="stat-content">
+                        <h3>Total Orders</h3>
+                        <p className="stat-value">{summaryStats.totalOrders.toLocaleString()}</p>
+                        <span className="stat-detail">
+                            {summaryStats.completedOrders} completed, {summaryStats.pendingOrders} pending
+                        </span>
+                    </div>
+                </div>
+
+                <div className="stat-card">
+                    <div className="stat-icon revenue">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                        </svg>
+                    </div>
+                    <div className="stat-content">
+                        <h3>Total Revenue</h3>
+                        <p className="stat-value">${summaryStats.totalRevenue.toLocaleString()}</p>
+                        <span className="stat-detail">Across all payment methods</span>
+                    </div>
+                </div>
+
+                <div className="stat-card">
+                    <div className="stat-icon commissions">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <div className="stat-content">
+                        <h3>Site Commissions</h3>
+                        <p className="stat-value">${summaryStats.totalCommissions.toLocaleString()}</p>
+                        <span className="stat-detail">Taxable income</span>
+                    </div>
+                </div>
+
+                <div className="stat-card">
+                    <div className="stat-icon methods">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                    </div>
+                    <div className="stat-content">
+                        <h3>Payment Methods</h3>
+                        <p className="stat-value">{summaryStats.shamPayOrders + summaryStats.cashOrders}</p>
+                        <span className="stat-detail">
+                            {summaryStats.shamPayOrders} ShamPay, {summaryStats.cashOrders} Cash
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Tabs */}
+            <div className="tabs-container">
+                <div className="tabs">
+                    <button
+                        className={`tab ${activeTab === 'orders' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('orders')}
+                    >
+                        Orders List
+                    </button>
+                    <button
+                        className={`tab ${activeTab === 'stores' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('stores')}
+                    >
+                        Store Summary
+                    </button>
+                </div>
+            </div>
+
+            {/* Filters */}
+            <div className="filters-section">
+                <div className="filters-grid">
+                    <div className="filter-group">
+                        <label>Search</label>
+                        <div className="search-input">
+                            <svg className="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            <input
+                                type="text"
+                                placeholder="Search orders, store numbers..."
+                                value={filters.search}
+                                onChange={(e) => handleFilterChange('search', e.target.value)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="filter-group">
+                        <label>Payment Method</label>
+                        <select
+                            value={filters.paymentMethod}
+                            onChange={(e) => handleFilterChange('paymentMethod', e.target.value)}
+                        >
+                            <option value="all">All Methods</option>
+                            <option value="ShamPay">ShamPay</option>
+                            <option value="Cash">Cash</option>
+                        </select>
+                    </div>
+
+                    <div className="filter-group">
+                        <label>Status</label>
+                        <select
+                            value={filters.status}
+                            onChange={(e) => handleFilterChange('status', e.target.value)}
+                        >
+                            <option value="all">All Status</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+
+                    <div className="filter-group">
+                        <label>Store</label>
+                        <select
+                            value={filters.storeNumber}
+                            onChange={(e) => handleFilterChange('storeNumber', e.target.value)}
+                        >
+                            <option value="all">All Stores</option>
+                            <option value="STR-001">STR-001 - Electronics Hub</option>
+                            <option value="STR-002">STR-002 - Home & Garden</option>
+                            <option value="STR-003">STR-003 - Fashion Store</option>
+                            <option value="STR-004">STR-004 - Sports Corner</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            {/* Content based on active tab */}
+            {activeTab === 'orders' ? (
+                <div className="orders-content">
+                    {/* Orders Table */}
+                    <div className="orders-table-container">
+                        <div className="table-header">
+                            <span>Order #</span>
+                            <span>Store #</span>
+                            <span>Store Name</span>
+                            <span>Date</span>
+                            <span>Amount</span>
+                            <span>Payment Method</span>
+                            <span>Status</span>
+                            <span>Commission</span>
+                        </div>
+
+                        {paginatedOrders.map((order) => (
+                            <div key={order.id} className="table-row">
+                                <span className="order-number">{order.orderNumber}</span>
+                                <span className="store-number">{order.storeNumber}</span>
+                                <span className="store-name">{order.storeName}</span>
+                                <span className="order-date">{order.date}</span>
+                                <span className="order-amount">${order.amount.toFixed(2)}</span>
+                                <span className={`payment-method ${order.paymentMethod.toLowerCase()}`}>
+                                    {order.paymentMethod}
+                                </span>
+                                <span className={`status ${order.status.toLowerCase()}`}>
+                                    {order.status}
+                                </span>
+                                <span className="commission">${order.commission.toFixed(2)}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Pagination */}
+                    {totalPages > 1 && (
+                        <div className="pagination">
+                            <button
+                                className="pagination-btn"
+                                disabled={currentPage === 1}
+                                onClick={() => setCurrentPage(currentPage - 1)}
+                            >
+                                Previous
+                            </button>
+
+                            <div className="pagination-info">
+                                Page {currentPage} of {totalPages} ({filteredOrders.length} total orders)
+                            </div>
+
+                            <button
+                                className="pagination-btn"
+                                disabled={currentPage === totalPages}
+                                onClick={() => setCurrentPage(currentPage + 1)}
+                            >
+                                Next
+                            </button>
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <div className="stores-content">
+                    {/* Store Summary Table */}
+                    <div className="stores-table-container">
+                        <div className="table-header">
+                            <span>Store #</span>
+                            <span>Store Name</span>
+                            <span>Total Orders</span>
+                            <span>Total Revenue</span>
+                            <span>Total Commissions</span>
+                        </div>
+
+                        {Object.values(storeWiseSummary).map((store) => (
+                            <div key={store.storeNumber} className="table-row">
+                                <span className="store-number">{store.storeNumber}</span>
+                                <span className="store-name">{store.storeName}</span>
+                                <span className="orders-count">{store.totalOrders}</span>
+                                <span className="revenue-amount">${store.totalRevenue.toFixed(2)}</span>
+                                <span className="commission-amount">${store.totalCommissions.toFixed(2)}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+        </div>
+    )
+}
+
+export default AccountantOrdersReports

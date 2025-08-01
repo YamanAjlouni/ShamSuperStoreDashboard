@@ -1,0 +1,62 @@
+.accountant-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.accountant-content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+
+    .main-content {
+        flex: 1;
+        padding: 2rem;
+        overflow-y: auto;
+        background-color: #f8fafc;
+        transition: margin-left 0.3s ease;
+
+        &--mobile {
+            margin-left: 0;
+            padding: 1rem;
+        }
+    }
+}
+
+.mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: block;
+
+    @media (min-width: 769px) {
+        display: none;
+    }
+}
+
+.page-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+
+    .placeholder-content {
+        text-align: center;
+
+        h2 {
+            font-size: 2rem;
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #6b7280;
+            font-size: 1.125rem;
+        }
+    }
+}
