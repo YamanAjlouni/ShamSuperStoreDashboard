@@ -4,7 +4,6 @@
     max-width: 1400px;
     margin: 0 auto;
 
-    // Page Header
     .page-header {
         display: flex;
         justify-content: space-between;
@@ -72,7 +71,6 @@
         }
     }
 
-    // Profile Summary
     .profile-summary {
         background: $white;
         border-radius: $radius-lg;
@@ -167,7 +165,6 @@
         }
     }
 
-    // Tabs
     .tabs-container {
         margin-bottom: 2rem;
 
@@ -202,7 +199,6 @@
         }
     }
 
-    // Tab Content
     .tab-content {
         background: $white;
         border-radius: $radius-lg;
@@ -363,7 +359,6 @@
             }
         }
 
-        // Security Content Specific
         .security-content {
             .security-overview {
                 margin-bottom: 2rem;
@@ -489,7 +484,6 @@
         }
     }
 
-    // Read-Only Notice
     .readonly-notice {
         margin-top: 2rem;
         background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
@@ -536,7 +530,6 @@
     }
 }
 
-// Responsive Design
 @media (max-width: 1024px) {
     .accountant-settings {
         .page-header {
@@ -692,7 +685,6 @@
     }
 }
 
-// Print Styles
 @media print {
     .accountant-settings {
 
