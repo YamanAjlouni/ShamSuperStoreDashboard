@@ -2,36 +2,16 @@ import { useState } from 'react'
 import './AccountantSettings.scss'
 
 const AccountantSettings = () => {
-    // Sample settings data - in real app this would come from API
+
     const [settingsData] = useState({
         profile: {
             name: 'Sarah Johnson',
             email: 'accountant@accountant.accountant',
-            role: 'Accountant',
-            department: 'Finance',
             employeeId: 'EMP-2025-001',
             joinDate: '2024-03-15',
             lastLogin: '2025-01-15 09:30 AM',
-            status: 'Active'
-        },
-        taxSettings: {
-            businessType: 'LLC',
-            taxYear: 2025,
-            federalTaxRate: 0.21,
-            stateTaxRate: 0.04,
-            totalTaxRate: 0.25,
-            fiscalYearStart: 'January',
-            quarterlyFilingEnabled: true,
-            autoCalculationEnabled: true
-        },
-        reportPreferences: {
-            defaultCurrency: 'USD',
-            dateFormat: 'MM/DD/YYYY',
-            numberFormat: 'US',
-            reportLanguage: 'English',
-            exportFormat: 'PDF',
-            includeCharts: true,
-            autoGenerateReports: false
+            status: 'Active',
+            taxRate: '25.0%'
         },
         systemPreferences: {
             theme: 'Light',
@@ -41,22 +21,11 @@ const AccountantSettings = () => {
             autoSaveEnabled: true,
             sessionTimeout: 8
         },
-        accessPermissions: {
-            ordersReports: 'Read Only',
-            paymentReports: 'Read Only',
-            taxInformation: 'Read Only',
-            userManagement: 'No Access',
-            systemSettings: 'No Access',
-            dataExport: 'Allowed',
-            reportGeneration: 'Allowed'
-        },
         securityInfo: {
             lastPasswordChange: '2024-12-01',
             twoFactorEnabled: true,
-            loginAttempts: 0,
             accountLocked: false,
             securityQuestions: 3,
-            deviceTrust: 'Current Device Trusted'
         }
     })
 
@@ -113,7 +82,6 @@ const AccountantSettings = () => {
                 </div>
                 <div className="profile-info">
                     <h2>{settingsData.profile.name}</h2>
-                    <p className="profile-role">{settingsData.profile.role} - {settingsData.profile.department}</p>
                     <p className="profile-email">{settingsData.profile.email}</p>
                     <div className="profile-stats">
                         <div className="stat-item">
@@ -142,18 +110,6 @@ const AccountantSettings = () => {
                         onClick={() => setActiveTab('profile')}
                     >
                         Profile
-                    </button>
-                    <button
-                        className={`tab ${activeTab === 'tax' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('tax')}
-                    >
-                        Tax Settings
-                    </button>
-                    <button
-                        className={`tab ${activeTab === 'reports' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('reports')}
-                    >
-                        Report Preferences
                     </button>
                     <button
                         className={`tab ${activeTab === 'security' ? 'active' : ''}`}
@@ -190,20 +146,6 @@ const AccountantSettings = () => {
                                 </div>
 
                                 <div className="setting-item">
-                                    <label>Role</label>
-                                    <div className="setting-value readonly">
-                                        {settingsData.profile.role}
-                                    </div>
-                                </div>
-
-                                <div className="setting-item">
-                                    <label>Department</label>
-                                    <div className="setting-value readonly">
-                                        {settingsData.profile.department}
-                                    </div>
-                                </div>
-
-                                <div className="setting-item">
                                     <label>Employee ID</label>
                                     <div className="setting-value readonly">
                                         {settingsData.profile.employeeId}
@@ -216,159 +158,11 @@ const AccountantSettings = () => {
                                         {formatDate(settingsData.profile.joinDate)}
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {activeTab === 'tax' && (
-                    <div className="tax-content">
-                        <div className="settings-section">
-                            <div className="section-header">
-                                <h3>Tax Configuration</h3>
-                                <p>Tax rates and calculation settings</p>
-                            </div>
-
-                            <div className="settings-grid">
-                                <div className="setting-item">
-                                    <label>Business Type</label>
-                                    <div className="setting-value readonly">
-                                        {settingsData.taxSettings.businessType}
-                                    </div>
-                                </div>
 
                                 <div className="setting-item">
-                                    <label>Tax Year</label>
-                                    <div className="setting-value readonly">
-                                        {settingsData.taxSettings.taxYear}
-                                    </div>
-                                </div>
-
-                                <div className="setting-item">
-                                    <label>Federal Tax Rate</label>
-                                    <div className="setting-value readonly">
-                                        {(settingsData.taxSettings.federalTaxRate * 100).toFixed(1)}%
-                                    </div>
-                                </div>
-
-                                <div className="setting-item">
-                                    <label>State Tax Rate</label>
-                                    <div className="setting-value readonly">
-                                        {(settingsData.taxSettings.stateTaxRate * 100).toFixed(1)}%
-                                    </div>
-                                </div>
-
-                                <div className="setting-item">
-                                    <label>Total Tax Rate</label>
+                                    <label>Tax Rate</label>
                                     <div className="setting-value readonly highlight">
-                                        {(settingsData.taxSettings.totalTaxRate * 100).toFixed(1)}%
-                                    </div>
-                                </div>
-
-                                <div className="setting-item">
-                                    <label>Fiscal Year Start</label>
-                                    <div className="setting-value readonly">
-                                        {settingsData.taxSettings.fiscalYearStart}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="toggle-settings">
-                                <div className="toggle-item">
-                                    <div className="toggle-info">
-                                        <h4>Quarterly Filing</h4>
-                                        <p>Automatic quarterly tax calculations</p>
-                                    </div>
-                                    <div className={`toggle readonly ${settingsData.taxSettings.quarterlyFilingEnabled ? 'enabled' : 'disabled'}`}>
-                                        <span className="toggle-status">
-                                            {settingsData.taxSettings.quarterlyFilingEnabled ? 'Enabled' : 'Disabled'}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div className="toggle-item">
-                                    <div className="toggle-info">
-                                        <h4>Auto Calculation</h4>
-                                        <p>Automatically calculate tax liability</p>
-                                    </div>
-                                    <div className={`toggle readonly ${settingsData.taxSettings.autoCalculationEnabled ? 'enabled' : 'disabled'}`}>
-                                        <span className="toggle-status">
-                                            {settingsData.taxSettings.autoCalculationEnabled ? 'Enabled' : 'Disabled'}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {activeTab === 'reports' && (
-                    <div className="reports-content">
-                        <div className="settings-section">
-                            <div className="section-header">
-                                <h3>Report Generation Preferences</h3>
-                                <p>Default settings for reports and exports</p>
-                            </div>
-
-                            <div className="settings-grid">
-                                <div className="setting-item">
-                                    <label>Default Currency</label>
-                                    <div className="setting-value readonly">
-                                        {settingsData.reportPreferences.defaultCurrency}
-                                    </div>
-                                </div>
-
-                                <div className="setting-item">
-                                    <label>Date Format</label>
-                                    <div className="setting-value readonly">
-                                        {settingsData.reportPreferences.dateFormat}
-                                    </div>
-                                </div>
-
-                                <div className="setting-item">
-                                    <label>Number Format</label>
-                                    <div className="setting-value readonly">
-                                        {settingsData.reportPreferences.numberFormat}
-                                    </div>
-                                </div>
-
-                                <div className="setting-item">
-                                    <label>Report Language</label>
-                                    <div className="setting-value readonly">
-                                        {settingsData.reportPreferences.reportLanguage}
-                                    </div>
-                                </div>
-
-                                <div className="setting-item">
-                                    <label>Default Export Format</label>
-                                    <div className="setting-value readonly">
-                                        {settingsData.reportPreferences.exportFormat}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="toggle-settings">
-                                <div className="toggle-item">
-                                    <div className="toggle-info">
-                                        <h4>Include Charts</h4>
-                                        <p>Add visual charts to reports</p>
-                                    </div>
-                                    <div className={`toggle readonly ${settingsData.reportPreferences.includeCharts ? 'enabled' : 'disabled'}`}>
-                                        <span className="toggle-status">
-                                            {settingsData.reportPreferences.includeCharts ? 'Enabled' : 'Disabled'}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div className="toggle-item">
-                                    <div className="toggle-info">
-                                        <h4>Auto Generate Reports</h4>
-                                        <p>Automatically generate monthly reports</p>
-                                    </div>
-                                    <div className={`toggle readonly ${settingsData.reportPreferences.autoGenerateReports ? 'enabled' : 'disabled'}`}>
-                                        <span className="toggle-status">
-                                            {settingsData.reportPreferences.autoGenerateReports ? 'Enabled' : 'Disabled'}
-                                        </span>
+                                        {settingsData.profile.taxRate}
                                     </div>
                                 </div>
                             </div>
@@ -413,37 +207,8 @@ const AccountantSettings = () => {
                                         {settingsData.securityInfo.twoFactorEnabled ? 'Enabled' : 'Disabled'}
                                     </div>
                                 </div>
-
-                                <div className="setting-item">
-                                    <label>Failed Login Attempts</label>
-                                    <div className="setting-value readonly">
-                                        {settingsData.securityInfo.loginAttempts}
-                                    </div>
-                                </div>
-
-                                <div className="setting-item">
-                                    <label>Device Trust Status</label>
-                                    <div className="setting-value readonly trusted">
-                                        {settingsData.securityInfo.deviceTrust}
-                                    </div>
-                                </div>
                             </div>
 
-                            <div className="permissions-section">
-                                <h4>Access Permissions</h4>
-                                <div className="permissions-grid">
-                                    {Object.entries(settingsData.accessPermissions).map(([permission, level]) => (
-                                        <div key={permission} className="permission-item">
-                                            <span className="permission-name">
-                                                {permission.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                                            </span>
-                                            <span className={`permission-level ${level.toLowerCase().replace(' ', '-')}`}>
-                                                {level}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
                         </div>
                     </div>
                 )}

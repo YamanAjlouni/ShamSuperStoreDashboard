@@ -207,8 +207,6 @@
         overflow: hidden;
 
         .profile-content,
-        .tax-content,
-        .reports-content,
         .security-content {
             padding: 2rem;
         }
@@ -295,68 +293,6 @@
                     }
                 }
             }
-
-            .toggle-settings {
-                display: grid;
-                gap: 1rem;
-
-                .toggle-item {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 1rem;
-                    background: #f8fafc;
-                    border-radius: $radius-md;
-                    border: 1px solid #e2e8f0;
-
-                    .toggle-info {
-                        flex: 1;
-
-                        h4 {
-                            font-size: 1rem;
-                            font-weight: 600;
-                            color: #1f2937;
-                            margin-bottom: 0.25rem;
-                        }
-
-                        p {
-                            font-size: 0.875rem;
-                            color: #6b7280;
-                        }
-                    }
-
-                    .toggle {
-                        flex-shrink: 0;
-                        padding: 0.5rem 1rem;
-                        border-radius: $radius-full;
-                        font-size: 0.875rem;
-                        font-weight: 600;
-                        cursor: not-allowed;
-
-                        &.readonly {
-                            position: relative;
-
-                            &::after {
-                                content: '🔒';
-                                margin-left: 0.5rem;
-                                font-size: 0.75rem;
-                            }
-                        }
-
-                        &.enabled {
-                            background: #d1fae5;
-                            color: #059669;
-                            border: 1px solid #10b981;
-                        }
-
-                        &.disabled {
-                            background: #fef2f2;
-                            color: #dc2626;
-                            border: 1px solid #ef4444;
-                        }
-                    }
-                }
-            }
         }
 
         .security-content {
@@ -425,62 +361,6 @@
                 }
             }
 
-            .permissions-section {
-                margin-top: 2rem;
-                padding-top: 2rem;
-                border-top: 1px solid #e5e7eb;
-
-                h4 {
-                    font-size: 1.125rem;
-                    font-weight: 600;
-                    color: #1f2937;
-                    margin-bottom: 1rem;
-                }
-
-                .permissions-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                    gap: 1rem;
-
-                    .permission-item {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        padding: 0.75rem;
-                        background: #f8fafc;
-                        border-radius: $radius-md;
-                        border: 1px solid #e2e8f0;
-
-                        .permission-name {
-                            font-size: 0.875rem;
-                            color: #374151;
-                            font-weight: 500;
-                        }
-
-                        .permission-level {
-                            font-size: 0.875rem;
-                            font-weight: 600;
-                            padding: 0.25rem 0.75rem;
-                            border-radius: $radius-full;
-
-                            &.read-only {
-                                background: #e0e7ff;
-                                color: #3730a3;
-                            }
-
-                            &.no-access {
-                                background: #fef2f2;
-                                color: #dc2626;
-                            }
-
-                            &.allowed {
-                                background: #d1fae5;
-                                color: #059669;
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -560,14 +440,6 @@
                     gap: 1rem;
                 }
             }
-
-            .security-content {
-                .permissions-section {
-                    .permissions-grid {
-                        grid-template-columns: 1fr;
-                    }
-                }
-            }
         }
     }
 }
@@ -601,8 +473,6 @@
         .tab-content {
 
             .profile-content,
-            .tax-content,
-            .reports-content,
             .security-content {
                 padding: 1.5rem;
             }
@@ -611,15 +481,6 @@
                 .section-header {
                     h3 {
                         font-size: 1.125rem;
-                    }
-                }
-
-                .toggle-settings {
-                    .toggle-item {
-                        flex-direction: column;
-                        align-items: stretch;
-                        gap: 1rem;
-                        text-align: center;
                     }
                 }
             }
@@ -676,8 +537,6 @@
         .tab-content {
 
             .profile-content,
-            .tax-content,
-            .reports-content,
             .security-content {
                 padding: 1rem;
             }

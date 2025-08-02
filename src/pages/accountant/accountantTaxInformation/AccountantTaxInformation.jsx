@@ -59,14 +59,18 @@ const AccountantTaxInformation = () => {
             { month: 'May 2025', commissionIncome: 8234.17, estimatedTax: 2058.54 },
             { month: 'June 2025', commissionIncome: 7066.36, estimatedTax: 1766.59 }
         ],
+        weeklyBreakdown: [
+            { week: 'Week 1 - Aug 2025', commissionIncome: 2234.67, estimatedTax: 558.67 },
+            { week: 'Week 2 - Aug 2025', commissionIncome: 1895.43, estimatedTax: 473.86 },
+            { week: 'Week 3 - Aug 2025', commissionIncome: 2567.89, estimatedTax: 641.97 },
+            { week: 'Week 4 - Aug 2025', commissionIncome: 2123.45, estimatedTax: 530.86 }
+        ],
         yearlyComparison: [
             { year: 2023, commissionIncome: 65432.10, taxPaid: 16358.03, effectiveRate: 0.25 },
             { year: 2024, commissionIncome: 78956.45, taxPaid: 19739.11, effectiveRate: 0.25 },
             { year: 2025, commissionIncome: 41271.33, taxPaid: 4703.65, effectiveRate: 0.25 }
         ],
         taxSettings: {
-            federalTaxRate: 0.21,
-            stateTaxRate: 0.04,
             totalTaxRate: 0.25,
             businessType: 'LLC',
             taxYear: 2025
@@ -110,6 +114,21 @@ const AccountantTaxInformation = () => {
             month: 'short',
             day: 'numeric'
         })
+    }
+
+    const getFilteredData = () => {
+        switch (selectedPeriod) {
+            case 'weekly':
+                return taxData.weeklyBreakdown
+            case 'monthly':
+                return taxData.monthlyBreakdown
+            case 'quarterly':
+                return taxData.quarters
+            case 'yearly':
+                return taxData.yearlyComparison
+            default:
+                return taxData.quarters
+        }
     }
 
     return (
@@ -191,31 +210,39 @@ const AccountantTaxInformation = () => {
                 </div>
             </div>
 
-            {/* Tax Rate Breakdown */}
+            {/* Tax Rate Section */}
             <div className="tax-rate-section">
                 <div className="section-header">
-                    <h2>Tax Rate Breakdown</h2>
-                    <p>Current tax rates applied to commission income</p>
+                    <h2>Current Tax Rate</h2>
+                    <p>Tax rate applied to commission income</p>
                 </div>
 
-                <div className="tax-rates">
-                    <div className="rate-card federal">
-                        <h4>Federal Tax Rate</h4>
-                        <p className="rate-value">{(taxData.taxSettings.federalTaxRate * 100).toFixed(1)}%</p>
-                        <span className="rate-detail">Corporate income tax</span>
-                    </div>
-
-                    <div className="rate-card state">
-                        <h4>State Tax Rate</h4>
-                        <p className="rate-value">{(taxData.taxSettings.stateTaxRate * 100).toFixed(1)}%</p>
-                        <span className="rate-detail">State business tax</span>
-                    </div>
-
-                    <div className="rate-card total">
-                        <h4>Total Tax Rate</h4>
+                <div className="tax-rate-display">
+                    <div className="rate-card">
+                        <h4>Tax Rate</h4>
                         <p className="rate-value">{(taxData.taxSettings.totalTaxRate * 100).toFixed(1)}%</p>
-                        <span className="rate-detail">Combined rate</span>
+                        <span className="rate-detail">Applied to all commission income</span>
                     </div>
+                </div>
+            </div>
+
+            {/* Period Filter */}
+            <div className="filter-section">
+                <div className="filter-header">
+                    <h3>View Taxable Income By Period</h3>
+                    <p>Select time period to view detailed breakdown</p>
+                </div>
+                <div className="filter-controls">
+                    <select
+                        value={selectedPeriod}
+                        onChange={(e) => setSelectedPeriod(e.target.value)}
+                        className="period-select"
+                    >
+                        <option value="weekly">Weekly View</option>
+                        <option value="monthly">Monthly View</option>
+                        <option value="quarterly">Quarterly View</option>
+                        <option value="yearly">Yearly View</option>
+                    </select>
                 </div>
             </div>
 
@@ -229,22 +256,10 @@ const AccountantTaxInformation = () => {
                         Tax Overview
                     </button>
                     <button
-                        className={`tab ${activeTab === 'quarterly' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('quarterly')}
+                        className={`tab ${activeTab === 'filtered' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('filtered')}
                     >
-                        Quarterly Reports
-                    </button>
-                    <button
-                        className={`tab ${activeTab === 'monthly' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('monthly')}
-                    >
-                        Monthly Breakdown
-                    </button>
-                    <button
-                        className={`tab ${activeTab === 'yearly' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('yearly')}
-                    >
-                        Year Comparison
+                        {selectedPeriod.charAt(0).toUpperCase() + selectedPeriod.slice(1)} Reports
                     </button>
                 </div>
             </div>
@@ -277,121 +292,59 @@ const AccountantTaxInformation = () => {
                             </div>
                         </div>
                     </div>
-
-                    <div className="overview-section">
-                        <div className="section-header">
-                            <h3>Current Tax Status</h3>
-                            <p>Summary of tax obligations for {taxData.currentYear}</p>
-                        </div>
-
-                        <div className="status-grid">
-                            <div className="status-item">
-                                <span className="status-label">Business Type:</span>
-                                <span className="status-value">{taxData.taxSettings.businessType}</span>
-                            </div>
-                            <div className="status-item">
-                                <span className="status-label">Tax Year:</span>
-                                <span className="status-value">{taxData.taxSettings.taxYear}</span>
-                            </div>
-                            <div className="status-item">
-                                <span className="status-label">Filing Status:</span>
-                                <span className="status-value">Current</span>
-                            </div>
-                            <div className="status-item">
-                                <span className="status-label">Next Payment Due:</span>
-                                <span className="status-value">{formatDate(nextDueDate)}</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             )}
 
-            {activeTab === 'quarterly' && (
-                <div className="quarterly-content">
-                    <div className="quarterly-table-container">
+            {activeTab === 'filtered' && (
+                <div className="filtered-content">
+                    <div className="filtered-table-container">
                         <div className="table-header">
-                            <span>Quarter</span>
                             <span>Period</span>
                             <span>Commission Income</span>
-                            <span>Tax Rate</span>
-                            <span>Tax Due</span>
-                            <span>Tax Paid</span>
-                            <span>Status</span>
-                            <span>Due Date</span>
+                            <span>Estimated Tax</span>
+                            {selectedPeriod === 'quarterly' && <span>Status</span>}
+                            {selectedPeriod === 'quarterly' && <span>Due Date</span>}
+                            {selectedPeriod !== 'yearly' && <span>Progress</span>}
+                            {selectedPeriod === 'yearly' && <span>Growth</span>}
                         </div>
 
-                        {taxData.quarters.map((quarter, index) => (
+                        {getFilteredData().map((item, index) => (
                             <div key={index} className="table-row">
-                                <span className="quarter-name">{quarter.quarter}</span>
-                                <span className="quarter-period">{quarter.period}</span>
-                                <span className="commission-income">{formatCurrency(quarter.commissionIncome)}</span>
-                                <span className="tax-rate">{(quarter.estimatedTaxRate * 100).toFixed(1)}%</span>
-                                <span className="tax-due">{formatCurrency(quarter.estimatedTax)}</span>
-                                <span className="tax-paid">{formatCurrency(quarter.taxPaid)}</span>
-                                <span className={`status ${quarter.status.toLowerCase()}`}>
-                                    {quarter.status}
+                                <span className="period-name">
+                                    {item.quarter || item.month || item.week || item.year}
                                 </span>
-                                <span className="due-date">{formatDate(quarter.dueDate)}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
-
-            {activeTab === 'monthly' && (
-                <div className="monthly-content">
-                    <div className="monthly-table-container">
-                        <div className="table-header">
-                            <span>Month</span>
-                            <span>Commission Income</span>
-                            <span>Estimated Tax (25%)</span>
-                            <span>Progress</span>
-                        </div>
-
-                        {taxData.monthlyBreakdown.map((month, index) => (
-                            <div key={index} className="table-row">
-                                <span className="month-name">{month.month}</span>
-                                <span className="commission-income">{formatCurrency(month.commissionIncome)}</span>
-                                <span className="estimated-tax">{formatCurrency(month.estimatedTax)}</span>
-                                <span className="progress">
-                                    <div className="progress-bar">
-                                        <div
-                                            className="progress-fill"
-                                            style={{ width: `${Math.min((month.commissionIncome / 10000) * 100, 100)}%` }}
-                                        ></div>
-                                    </div>
+                                <span className="commission-income">
+                                    {formatCurrency(item.commissionIncome)}
                                 </span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
-
-            {activeTab === 'yearly' && (
-                <div className="yearly-content">
-                    <div className="yearly-table-container">
-                        <div className="table-header">
-                            <span>Year</span>
-                            <span>Commission Income</span>
-                            <span>Tax Paid</span>
-                            <span>Effective Tax Rate</span>
-                            <span>Growth</span>
-                        </div>
-
-                        {taxData.yearlyComparison.map((year, index) => (
-                            <div key={index} className="table-row">
-                                <span className="year-name">{year.year}</span>
-                                <span className="commission-income">{formatCurrency(year.commissionIncome)}</span>
-                                <span className="tax-paid">{formatCurrency(year.taxPaid)}</span>
-                                <span className="effective-rate">{(year.effectiveRate * 100).toFixed(1)}%</span>
-                                <span className="growth">
-                                    {index > 0 && (
-                                        <span className={`growth-indicator ${year.commissionIncome > taxData.yearlyComparison[index - 1].commissionIncome ? 'positive' : 'negative'}`}>
-                                            {year.commissionIncome > taxData.yearlyComparison[index - 1].commissionIncome && '+'}
-                                            {(((year.commissionIncome - taxData.yearlyComparison[index - 1].commissionIncome) / taxData.yearlyComparison[index - 1].commissionIncome) * 100).toFixed(1)}%
+                                <span className="estimated-tax">
+                                    {formatCurrency(item.estimatedTax || item.taxPaid || item.commissionIncome * 0.25)}
+                                </span>
+                                {selectedPeriod === 'quarterly' && (
+                                    <span className={`status ${item.status?.toLowerCase()}`}>
+                                        {item.status}
+                                    </span>
+                                )}
+                                {selectedPeriod === 'quarterly' && (
+                                    <span className="due-date">{formatDate(item.dueDate)}</span>
+                                )}
+                                {selectedPeriod !== 'yearly' && (
+                                    <span className="progress">
+                                        <div className="progress-bar">
+                                            <div
+                                                className="progress-fill"
+                                                style={{ width: `${Math.min((item.commissionIncome / 10000) * 100, 100)}%` }}
+                                            ></div>
+                                        </div>
+                                    </span>
+                                )}
+                                {selectedPeriod === 'yearly' && index > 0 && (
+                                    <span className="growth">
+                                        <span className={`growth-indicator ${item.commissionIncome > getFilteredData()[index - 1].commissionIncome ? 'positive' : 'negative'}`}>
+                                            {item.commissionIncome > getFilteredData()[index - 1].commissionIncome && '+'}
+                                            {(((item.commissionIncome - getFilteredData()[index - 1].commissionIncome) / getFilteredData()[index - 1].commissionIncome) * 100).toFixed(1)}%
                                         </span>
-                                    )}
-                                </span>
+                                    </span>
+                                )}
                             </div>
                         ))}
                     </div>

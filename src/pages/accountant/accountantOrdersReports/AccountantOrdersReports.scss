@@ -193,7 +193,7 @@
 
         .filters-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1.5rem;
 
             .filter-group {
@@ -246,11 +246,16 @@
                     font-size: 0.875rem;
                     background: $white;
                     transition: $transition-all;
+                    cursor: pointer;
 
                     &:focus {
                         outline: none;
                         border-color: #10b981;
                         box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+                    }
+
+                    &:hover {
+                        border-color: #9ca3af;
                     }
                 }
             }
@@ -368,7 +373,7 @@
         .stores-table-container {
             .table-header {
                 display: grid;
-                grid-template-columns: 1fr 2fr 1fr 1.5r 1.5fr;
+                grid-template-columns: 1fr 2fr 1fr 1.5fr 1.5fr;
                 gap: 1rem;
                 padding: 1rem 1.5rem;
                 background: #f9fafb;
@@ -508,8 +513,51 @@
                         margin-bottom: 0;
                     }
 
+                    &.order-number::before {
+                        content: "Order #: ";
+                    }
+
+                    &.store-number::before {
+                        content: "Store #: ";
+                    }
+
+                    &.store-name::before {
+                        content: "Store: ";
+                    }
+
+                    &.order-date::before {
+                        content: "Date: ";
+                    }
+
+                    &.order-amount::before {
+                        content: "Amount: ";
+                    }
+
+                    &.payment-method::before {
+                        content: "Payment: ";
+                    }
+
+                    &.status::before {
+                        content: "Status: ";
+                    }
+
+                    &.commission::before {
+                        content: "Commission: ";
+                    }
+
+                    &.orders-count::before {
+                        content: "Orders: ";
+                    }
+
+                    &.revenue-amount::before {
+                        content: "Revenue: ";
+                    }
+
+                    &.commission-amount::before {
+                        content: "Commission: ";
+                    }
+
                     &::before {
-                        content: attr(data-label);
                         font-weight: 600;
                         color: #374151;
                         font-size: 0.75rem;

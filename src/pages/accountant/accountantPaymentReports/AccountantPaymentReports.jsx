@@ -13,26 +13,54 @@ const AccountantPaymentReports = () => {
         { id: 7, orderNumber: 'ORD-2025-007', date: '2025-01-12', totalAmount: 175.50, sellerPayment: 0, deliveryPayment: 0, commission: 26.33, paymentMethod: 'Cash', status: 'Commission Only', batchId: 'N/A' },
         { id: 8, orderNumber: 'ORD-2025-008', date: '2025-01-12', totalAmount: 350.00, sellerPayment: 250.50, deliveryPayment: 47.00, commission: 52.50, paymentMethod: 'ShamPay', status: 'Paid', batchId: 'BTH-002' },
         { id: 9, orderNumber: 'ORD-2025-009', date: '2025-01-11', totalAmount: 125.75, sellerPayment: 0, deliveryPayment: 0, commission: 18.86, paymentMethod: 'Cash', status: 'Commission Only', batchId: 'N/A' },
-        { id: 10, orderNumber: 'ORD-2025-010', date: '2025-01-11', totalAmount: 95.00, sellerPayment: 68.05, deliveryPayment: 12.70, commission: 14.25, paymentMethod: 'ShamPay', status: 'Paid', batchId: 'BTH-002' }
+        { id: 10, orderNumber: 'ORD-2025-010', date: '2025-01-11', totalAmount: 95.00, sellerPayment: 68.05, deliveryPayment: 12.70, commission: 14.25, paymentMethod: 'ShamPay', status: 'Paid', batchId: 'BTH-002' },
+        // Additional sample data for different months and years
+        { id: 11, orderNumber: 'ORD-2024-011', date: '2024-12-28', totalAmount: 199.99, sellerPayment: 143.19, deliveryPayment: 26.80, commission: 29.99, paymentMethod: 'ShamPay', status: 'Paid', batchId: 'BTH-004' },
+        { id: 12, orderNumber: 'ORD-2024-012', date: '2024-12-25', totalAmount: 89.50, sellerPayment: 0, deliveryPayment: 0, commission: 13.43, paymentMethod: 'Cash', status: 'Commission Only', batchId: 'N/A' },
+        { id: 13, orderNumber: 'ORD-2025-013', date: '2025-02-01', totalAmount: 145.00, sellerPayment: 103.85, deliveryPayment: 19.40, commission: 21.75, paymentMethod: 'ShamPay', status: 'Paid', batchId: 'BTH-005' },
+        { id: 14, orderNumber: 'ORD-2025-014', date: '2025-02-03', totalAmount: 267.80, sellerPayment: 0, deliveryPayment: 0, commission: 40.17, paymentMethod: 'Cash', status: 'Commission Only', batchId: 'N/A' }
     ])
 
     // Sample payment batches for tracking
     const [paymentBatches] = useState([
         { id: 'BTH-001', date: '2025-01-15', totalSellerPayments: 269.10, totalDeliveryPayments: 50.00, ordersCount: 2, status: 'Completed' },
         { id: 'BTH-002', date: '2025-01-13', totalSellerPayments: 383.04, totalDeliveryPayments: 71.70, ordersCount: 3, status: 'Completed' },
-        { id: 'BTH-003', date: '2025-01-13', totalSellerPayments: 157.60, totalDeliveryPayments: 29.40, ordersCount: 1, status: 'Pending' }
+        { id: 'BTH-003', date: '2025-01-13', totalSellerPayments: 157.60, totalDeliveryPayments: 29.40, ordersCount: 1, status: 'Pending' },
+        { id: 'BTH-004', date: '2024-12-28', totalSellerPayments: 143.19, totalDeliveryPayments: 26.80, ordersCount: 1, status: 'Completed' },
+        { id: 'BTH-005', date: '2025-02-01', totalSellerPayments: 103.85, totalDeliveryPayments: 19.40, ordersCount: 1, status: 'Completed' }
     ])
 
     const [filters, setFilters] = useState({
         dateRange: 'all',
         paymentMethod: 'all',
         status: 'all',
-        search: ''
+        search: '',
+        timePeriod: 'all'
     })
 
     const [currentPage, setCurrentPage] = useState(1)
     const [itemsPerPage] = useState(10)
     const [activeTab, setActiveTab] = useState('payments')
+
+    // Helper function to get week number
+    const getWeekNumber = (date) => {
+        const d = new Date(date)
+        const yearStart = new Date(d.getFullYear(), 0, 1)
+        const weekNo = Math.ceil((((d - yearStart) / 86400000) + yearStart.getDay() + 1) / 7)
+        return `${d.getFullYear()}-W${weekNo.toString().padStart(2, '0')}`
+    }
+
+    // Helper function to get month
+    const getMonth = (date) => {
+        const d = new Date(date)
+        return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}`
+    }
+
+    // Helper function to get year
+    const getYear = (date) => {
+        const d = new Date(date)
+        return d.getFullYear().toString()
+    }
 
     // Filter payments based on current filters
     const filteredPayments = paymentData.filter(payment => {
@@ -42,25 +70,97 @@ const AccountantPaymentReports = () => {
         const matchesPaymentMethod = filters.paymentMethod === 'all' || payment.paymentMethod === filters.paymentMethod
         const matchesStatus = filters.status === 'all' || payment.status === filters.status
 
-        return matchesSearch && matchesPaymentMethod && matchesStatus
+        // Date/time period filtering
+        let matchesTimePeriod = true
+        if (filters.timePeriod !== 'all') {
+            const currentDate = new Date()
+            const paymentDate = new Date(payment.date)
+
+            switch (filters.timePeriod) {
+                case 'this-week':
+                    const currentWeek = getWeekNumber(currentDate)
+                    const paymentWeek = getWeekNumber(paymentDate)
+                    matchesTimePeriod = currentWeek === paymentWeek
+                    break
+                case 'this-month':
+                    const currentMonth = getMonth(currentDate)
+                    const paymentMonth = getMonth(paymentDate)
+                    matchesTimePeriod = currentMonth === paymentMonth
+                    break
+                case 'this-year':
+                    const currentYear = getYear(currentDate)
+                    const paymentYear = getYear(paymentDate)
+                    matchesTimePeriod = currentYear === paymentYear
+                    break
+                case 'last-month':
+                    const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+                    const lastMonthStr = getMonth(lastMonth)
+                    const paymentMonthStr = getMonth(paymentDate)
+                    matchesTimePeriod = lastMonthStr === paymentMonthStr
+                    break
+                case 'last-year':
+                    const lastYear = (currentDate.getFullYear() - 1).toString()
+                    const paymentYearStr = getYear(paymentDate)
+                    matchesTimePeriod = lastYear === paymentYearStr
+                    break
+                default:
+                    matchesTimePeriod = true
+            }
+        }
+
+        return matchesSearch && matchesPaymentMethod && matchesStatus && matchesTimePeriod
     })
 
-    // Calculate summary statistics
+    // Calculate summary statistics based on filtered data
     const summaryStats = {
-        totalSellerPayments: paymentData.reduce((sum, payment) => sum + payment.sellerPayment, 0),
-        totalDeliveryPayments: paymentData.reduce((sum, payment) => sum + payment.deliveryPayment, 0),
-        totalCommissions: paymentData.reduce((sum, payment) => sum + payment.commission, 0),
-        totalSiteIncome: paymentData.reduce((sum, payment) => sum + payment.commission, 0), // Only commissions count as site income
-        shamPayTransactions: paymentData.filter(payment => payment.paymentMethod === 'ShamPay').length,
-        cashTransactions: paymentData.filter(payment => payment.paymentMethod === 'Cash').length,
-        pendingPayments: paymentData.filter(payment => payment.status === 'Pending').reduce((sum, payment) => sum + payment.sellerPayment + payment.deliveryPayment, 0),
-        processedPayments: paymentData.filter(payment => payment.status === 'Paid').reduce((sum, payment) => sum + payment.sellerPayment + payment.deliveryPayment, 0)
+        totalSellerPayments: filteredPayments.reduce((sum, payment) => sum + payment.sellerPayment, 0),
+        totalDeliveryPayments: filteredPayments.reduce((sum, payment) => sum + payment.deliveryPayment, 0),
+        totalCommissions: filteredPayments.reduce((sum, payment) => sum + payment.commission, 0),
+        totalSiteIncome: filteredPayments.reduce((sum, payment) => sum + payment.commission, 0), // Only commissions count as site income
+        shamPayTransactions: filteredPayments.filter(payment => payment.paymentMethod === 'ShamPay').length,
+        cashTransactions: filteredPayments.filter(payment => payment.paymentMethod === 'Cash').length,
+        pendingPayments: filteredPayments.filter(payment => payment.status === 'Pending').reduce((sum, payment) => sum + payment.sellerPayment + payment.deliveryPayment, 0),
+        processedPayments: filteredPayments.filter(payment => payment.status === 'Paid').reduce((sum, payment) => sum + payment.sellerPayment + payment.deliveryPayment, 0)
     }
 
     // Pagination
     const totalPages = Math.ceil(filteredPayments.length / itemsPerPage)
     const startIndex = (currentPage - 1) * itemsPerPage
     const paginatedPayments = filteredPayments.slice(startIndex, startIndex + itemsPerPage)
+
+    // Filter batches based on time period
+    const filteredBatches = paymentBatches.filter(batch => {
+        if (filters.timePeriod === 'all') return true
+
+        const currentDate = new Date()
+        const batchDate = new Date(batch.date)
+
+        switch (filters.timePeriod) {
+            case 'this-week':
+                const currentWeek = getWeekNumber(currentDate)
+                const batchWeek = getWeekNumber(batchDate)
+                return currentWeek === batchWeek
+            case 'this-month':
+                const currentMonth = getMonth(currentDate)
+                const batchMonth = getMonth(batchDate)
+                return currentMonth === batchMonth
+            case 'this-year':
+                const currentYear = getYear(currentDate)
+                const batchYear = getYear(batchDate)
+                return currentYear === batchYear
+            case 'last-month':
+                const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+                const lastMonthStr = getMonth(lastMonth)
+                const batchMonthStr = getMonth(batchDate)
+                return lastMonthStr === batchMonthStr
+            case 'last-year':
+                const lastYear = (currentDate.getFullYear() - 1).toString()
+                const batchYearStr = getYear(batchDate)
+                return lastYear === batchYearStr
+            default:
+                return true
+        }
+    })
 
     const handleFilterChange = (filterName, value) => {
         setFilters(prev => ({
@@ -76,6 +176,24 @@ const AccountantPaymentReports = () => {
 
     const handlePrint = () => {
         window.print()
+    }
+
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        }).format(amount)
+    }
+
+    const getTimePeriodLabel = () => {
+        switch (filters.timePeriod) {
+            case 'this-week': return 'This Week'
+            case 'this-month': return 'This Month'
+            case 'this-year': return 'This Year'
+            case 'last-month': return 'Last Month'
+            case 'last-year': return 'Last Year'
+            default: return 'All Time'
+        }
     }
 
     return (
@@ -102,7 +220,6 @@ const AccountantPaymentReports = () => {
                 </div>
             </div>
 
-            {/* Summary Statistics */}
             <div className="summary-stats">
                 <div className="stat-card seller-payments">
                     <div className="stat-icon">
@@ -111,8 +228,8 @@ const AccountantPaymentReports = () => {
                         </svg>
                     </div>
                     <div className="stat-content">
-                        <h3>Seller Payments</h3>
-                        <p className="stat-value">${summaryStats.totalSellerPayments.toLocaleString()}</p>
+                        <h3>Seller Payments ({getTimePeriodLabel()})</h3>
+                        <p className="stat-value">{formatCurrency(summaryStats.totalSellerPayments)}</p>
                         <span className="stat-detail">Paid to store owners</span>
                     </div>
                 </div>
@@ -125,7 +242,7 @@ const AccountantPaymentReports = () => {
                     </div>
                     <div className="stat-content">
                         <h3>Delivery Payments</h3>
-                        <p className="stat-value">${summaryStats.totalDeliveryPayments.toLocaleString()}</p>
+                        <p className="stat-value">{formatCurrency(summaryStats.totalDeliveryPayments)}</p>
                         <span className="stat-detail">Paid to delivery drivers</span>
                     </div>
                 </div>
@@ -138,26 +255,12 @@ const AccountantPaymentReports = () => {
                     </div>
                     <div className="stat-content">
                         <h3>Site Commissions</h3>
-                        <p className="stat-value">${summaryStats.totalCommissions.toLocaleString()}</p>
+                        <p className="stat-value">{formatCurrency(summaryStats.totalCommissions)}</p>
                         <span className="stat-detail">Our taxable income</span>
-                    </div>
-                </div>
-
-                <div className="stat-card pending">
-                    <div className="stat-icon">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div className="stat-content">
-                        <h3>Pending Payments</h3>
-                        <p className="stat-value">${summaryStats.pendingPayments.toLocaleString()}</p>
-                        <span className="stat-detail">Awaiting processing</span>
                     </div>
                 </div>
             </div>
 
-            {/* Payment Method Analysis */}
             <div className="payment-analysis">
                 <div className="analysis-header">
                     <h2>Payment Method Impact on Site Income</h2>
@@ -227,7 +330,7 @@ const AccountantPaymentReports = () => {
                 <div className="income-summary">
                     <div className="income-card">
                         <h4>Total Site Income (Taxable)</h4>
-                        <p className="income-amount">${summaryStats.totalSiteIncome.toLocaleString()}</p>
+                        <p className="income-amount">{formatCurrency(summaryStats.totalSiteIncome)}</p>
                         <span className="income-note">Commission from all payment methods</span>
                     </div>
                 </div>
@@ -254,6 +357,21 @@ const AccountantPaymentReports = () => {
             {/* Filters */}
             <div className="filters-section">
                 <div className="filters-grid">
+                    <div className="filter-group">
+                        <label>Time Period</label>
+                        <select
+                            value={filters.timePeriod}
+                            onChange={(e) => handleFilterChange('timePeriod', e.target.value)}
+                        >
+                            <option value="all">All Time</option>
+                            <option value="this-week">This Week</option>
+                            <option value="this-month">This Month</option>
+                            <option value="this-year">This Year</option>
+                            <option value="last-month">Last Month</option>
+                            <option value="last-year">Last Year</option>
+                        </select>
+                    </div>
+
                     <div className="filter-group">
                         <label>Search</label>
                         <div className="search-input">
@@ -316,14 +434,14 @@ const AccountantPaymentReports = () => {
                             <div key={payment.id} className="table-row">
                                 <span className="order-number">{payment.orderNumber}</span>
                                 <span className="payment-date">{payment.date}</span>
-                                <span className="total-amount">${payment.totalAmount.toFixed(2)}</span>
+                                <span className="total-amount">{formatCurrency(payment.totalAmount)}</span>
                                 <span className="seller-payment">
-                                    {payment.sellerPayment > 0 ? `$${payment.sellerPayment.toFixed(2)}` : 'N/A'}
+                                    {payment.sellerPayment > 0 ? formatCurrency(payment.sellerPayment) : 'N/A'}
                                 </span>
                                 <span className="delivery-payment">
-                                    {payment.deliveryPayment > 0 ? `$${payment.deliveryPayment.toFixed(2)}` : 'N/A'}
+                                    {payment.deliveryPayment > 0 ? formatCurrency(payment.deliveryPayment) : 'N/A'}
                                 </span>
-                                <span className="commission">${payment.commission.toFixed(2)}</span>
+                                <span className="commission">{formatCurrency(payment.commission)}</span>
                                 <span className={`payment-method ${payment.paymentMethod.toLowerCase()}`}>
                                     {payment.paymentMethod}
                                 </span>
@@ -373,14 +491,14 @@ const AccountantPaymentReports = () => {
                             <span>Status</span>
                         </div>
 
-                        {paymentBatches.map((batch) => (
+                        {filteredBatches.map((batch) => (
                             <div key={batch.id} className="table-row">
                                 <span className="batch-id">{batch.id}</span>
                                 <span className="batch-date">{batch.date}</span>
                                 <span className="orders-count">{batch.ordersCount}</span>
-                                <span className="seller-payments">${batch.totalSellerPayments.toFixed(2)}</span>
-                                <span className="delivery-payments">${batch.totalDeliveryPayments.toFixed(2)}</span>
-                                <span className="total-paid">${(batch.totalSellerPayments + batch.totalDeliveryPayments).toFixed(2)}</span>
+                                <span className="seller-payments">{formatCurrency(batch.totalSellerPayments)}</span>
+                                <span className="delivery-payments">{formatCurrency(batch.totalDeliveryPayments)}</span>
+                                <span className="total-paid">{formatCurrency(batch.totalSellerPayments + batch.totalDeliveryPayments)}</span>
                                 <span className={`status ${batch.status.toLowerCase()}`}>
                                     {batch.status}
                                 </span>

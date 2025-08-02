@@ -8,7 +8,6 @@ const Dashboard = () => {
         totalRevenue: 125430.50,
         totalCommissions: 18814.58,
         totalOrders: 1247,
-        pendingPayments: 5630.25,
 
         // Payment Breakdown
         sellerPayments: 89750.30,
@@ -84,19 +83,6 @@ const Dashboard = () => {
                         <h3>Total Orders</h3>
                         <p className="metric-value">{dashboardData.totalOrders.toLocaleString()}</p>
                         <span className="metric-label">All time</span>
-                    </div>
-                </div>
-
-                <div className="metric-card pending">
-                    <div className="metric-icon">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div className="metric-content">
-                        <h3>Pending Payments</h3>
-                        <p className="metric-value">${dashboardData.pendingPayments.toLocaleString()}</p>
-                        <span className="metric-label">To be processed</span>
                     </div>
                 </div>
             </div>

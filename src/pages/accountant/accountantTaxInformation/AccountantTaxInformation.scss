@@ -178,81 +178,96 @@
             }
         }
 
-        .tax-rates {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+        .tax-rate-display {
+            display: flex;
+            justify-content: center;
 
             .rate-card {
-                background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
                 border-radius: $radius-lg;
-                padding: 1.5rem;
-                border: 1px solid #f59e0b;
+                padding: 2rem;
+                border: 1px solid #10b981;
                 text-align: center;
                 transition: $transition-all;
+                min-width: 300px;
 
                 &:hover {
                     transform: translateY(-2px);
                     box-shadow: $shadow-md;
                 }
 
-                &.federal {
-                    border-color: #3b82f6;
-                    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-
-                    .rate-value {
-                        color: #1d4ed8;
-                    }
-
-                    .rate-detail {
-                        color: #1e40af;
-                    }
-                }
-
-                &.state {
-                    border-color: #8b5cf6;
-                    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-
-                    .rate-value {
-                        color: #7c3aed;
-                    }
-
-                    .rate-detail {
-                        color: #6d28d9;
-                    }
-                }
-
-                &.total {
-                    border-color: #10b981;
-                    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-
-                    .rate-value {
-                        color: #059669;
-                    }
-
-                    .rate-detail {
-                        color: #047857;
-                    }
-                }
-
                 h4 {
-                    font-size: 1rem;
+                    font-size: 1.125rem;
                     font-weight: 600;
-                    color: #92400e;
+                    color: #047857;
                     margin-bottom: 1rem;
                 }
 
                 .rate-value {
-                    font-size: 2rem;
+                    font-size: 2.5rem;
                     font-weight: 700;
-                    color: #d97706;
+                    color: #059669;
                     margin-bottom: 0.5rem;
                 }
 
                 .rate-detail {
                     font-size: 0.875rem;
-                    color: #a16207;
+                    color: #047857;
                     font-weight: 500;
+                }
+            }
+        }
+    }
+
+    .filter-section {
+        background: $white;
+        border-radius: $radius-lg;
+        padding: 1.5rem 2rem;
+        box-shadow: $shadow-sm;
+        border: 1px solid #e5e7eb;
+        margin-bottom: 2rem;
+
+        .filter-header {
+            margin-bottom: 1.5rem;
+
+            h3 {
+                font-size: 1.125rem;
+                font-weight: 600;
+                color: #1f2937;
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                color: #6b7280;
+                font-size: 0.875rem;
+            }
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+
+            .period-select {
+                padding: 0.75rem 1rem;
+                border: 1px solid #d1d5db;
+                border-radius: $radius-md;
+                background: $white;
+                color: #374151;
+                font-size: 0.875rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: $transition-all;
+                min-width: 200px;
+
+                &:focus {
+                    outline: none;
+                    border-color: #f59e0b;
+                    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+                }
+
+                &:hover {
+                    border-color: #9ca3af;
                 }
             }
         }
@@ -293,9 +308,7 @@
     }
 
     .overview-content,
-    .quarterly-content,
-    .monthly-content,
-    .yearly-content {
+    .filtered-content {
         background: $white;
         border-radius: $radius-lg;
         box-shadow: $shadow-sm;
@@ -433,9 +446,7 @@
         }
     }
 
-    .quarterly-table-container,
-    .monthly-table-container,
-    .yearly-table-container {
+    .filtered-table-container {
         .table-header {
             display: grid;
             gap: 1rem;
@@ -445,6 +456,7 @@
             font-weight: 600;
             color: #374151;
             font-size: 0.875rem;
+            grid-template-columns: 1.5fr 1.5fr 1.2fr 1fr 1.2fr 1fr;
         }
 
         .table-row {
@@ -455,6 +467,7 @@
             align-items: center;
             transition: $transition-all;
             font-size: 0.875rem;
+            grid-template-columns: 1.5fr 1.5fr 1.2fr 1fr 1.2fr 1fr;
 
             &:hover {
                 background: #f9fafb;
@@ -464,29 +477,15 @@
                 border-bottom: none;
             }
 
-            .quarter-name,
-            .month-name,
-            .year-name {
+            .period-name {
                 font-weight: 600;
                 color: #1f2937;
             }
 
-            .quarter-period {
-                color: #6b7280;
-            }
-
             .commission-income,
-            .tax-due,
-            .tax-paid,
             .estimated-tax {
                 font-weight: 600;
                 color: #10b981;
-            }
-
-            .tax-rate,
-            .effective-rate {
-                font-weight: 500;
-                color: #6b7280;
             }
 
             .status {
@@ -495,6 +494,7 @@
                 border-radius: $radius-full;
                 text-align: center;
                 font-size: 0.75rem;
+                justify-self: center;
 
                 &.paid {
                     background: #d1fae5;
@@ -518,6 +518,9 @@
             }
 
             .progress {
+                justify-self: center;
+                width: 80%;
+
                 .progress-bar {
                     width: 100%;
                     height: 8px;
@@ -534,6 +537,8 @@
             }
 
             .growth {
+                justify-self: center;
+
                 .growth-indicator {
                     font-weight: 600;
                     font-size: 0.8125rem;
@@ -547,30 +552,6 @@
                     }
                 }
             }
-        }
-    }
-
-    .quarterly-table-container {
-
-        .table-header,
-        .table-row {
-            grid-template-columns: 1fr 1.5fr 1.5fr 0.8fr 1.2fr 1.2fr 1fr 1.2fr;
-        }
-    }
-
-    .monthly-table-container {
-
-        .table-header,
-        .table-row {
-            grid-template-columns: 1.5fr 1.5fr 1.5fr 1fr;
-        }
-    }
-
-    .yearly-table-container {
-
-        .table-header,
-        .table-row {
-            grid-template-columns: 1fr 1.5fr 1.5fr 1fr 1fr;
         }
     }
 
@@ -636,9 +617,21 @@
             gap: 1rem;
         }
 
-        .tax-rate-section .tax-rates {
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+        .tax-rate-section .tax-rate-display .rate-card {
+            min-width: auto;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .filter-section {
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+
+                .period-select {
+                    min-width: auto;
+                }
+            }
         }
 
         .overview-content {
@@ -656,9 +649,7 @@
             }
         }
 
-        .quarterly-table-container,
-        .monthly-table-container,
-        .yearly-table-container {
+        .filtered-table-container {
 
             .table-header,
             .table-row {
@@ -689,14 +680,54 @@
                         margin-bottom: 0;
                     }
 
+                    &.period-name::before {
+                        content: "Period: ";
+                    }
+
+                    &.commission-income::before {
+                        content: "Income: ";
+                    }
+
+                    &.estimated-tax::before {
+                        content: "Tax: ";
+                    }
+
+                    &.status::before {
+                        content: "Status: ";
+                    }
+
+                    &.due-date::before {
+                        content: "Due: ";
+                    }
+
+                    &.progress::before {
+                        content: "Progress: ";
+                    }
+
+                    &.growth::before {
+                        content: "Growth: ";
+                    }
+
                     &::before {
-                        content: attr(data-label);
                         font-weight: 600;
                         color: #374151;
                         font-size: 0.75rem;
                         text-transform: uppercase;
                         letter-spacing: 0.05em;
                     }
+                }
+
+                .progress {
+                    width: 100%;
+                    justify-self: stretch;
+                }
+
+                .status {
+                    justify-self: flex-end;
+                }
+
+                .growth {
+                    justify-self: flex-end;
                 }
             }
         }
@@ -715,8 +746,12 @@
             }
         }
 
-        .tax-rate-section .tax-rates {
-            grid-template-columns: 1fr;
+        .tax-rate-section .tax-rate-display .rate-card {
+            padding: 1.5rem;
+
+            .rate-value {
+                font-size: 2rem;
+            }
         }
 
         .tabs .tab {
@@ -764,12 +799,16 @@
             font-size: 1.5rem;
         }
 
-        .tax-rate-section .tax-rates .rate-card .rate-value {
+        .tax-rate-section .tax-rate-display .rate-card .rate-value {
             font-size: 1.75rem;
         }
 
         .overview-content {
             padding: 1rem;
+        }
+
+        .filter-section {
+            padding: 1rem 1.5rem;
         }
     }
 }
@@ -778,7 +817,8 @@
     .accountant-tax-information {
 
         .page-header .header-actions,
-        .tabs-container {
+        .tabs-container,
+        .filter-section {
             display: none !important;
         }
 
@@ -788,9 +828,7 @@
             page-break-inside: avoid;
         }
 
-        .quarterly-table-container,
-        .monthly-table-container,
-        .yearly-table-container {
+        .filtered-table-container {
             .table-row {
                 break-inside: avoid;
             }
