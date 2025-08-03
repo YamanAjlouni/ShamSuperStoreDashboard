@@ -36,6 +36,9 @@ import ReportsManagement from './reportsManagement/ReportsManagement'
 // Import Settings Management Components
 import SettingsManagement from './settingsManagement/SettingsManagement'
 
+// Import Accountant Users Management Components
+import AccountantUsersManagement from './accountantUsersManagement/AccountantUsersManagement'
+
 import './Admin.scss'
 import DriverResetPassword from './driversManagement/driverResetPassword/DriverResetPassowrd'
 
@@ -150,6 +153,9 @@ const Admin = () => {
                         <Route path="/drivers" element={<DriversManagement />} />
                         <Route path="/drivers/details/:id" element={<DriverDetails />} />
                         <Route path="/drivers/reset-password/:id" element={<DriverResetPassword />} />
+
+                        {/* Accountant Users Management */}
+                        <Route path="/accountants" element={<AccountantUsersManagement />} />
 
                         {/* Order Management */}
                         <Route path="/orders" element={<OrdersManagement />} />

@@ -89,6 +89,7 @@ const AdminNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
         if (path.includes('/sellers')) return 'Seller Management'
         if (path.includes('/drivers/details/')) return 'Driver Details'
         if (path.includes('/drivers')) return 'Delivery Drivers'
+        if (path.includes('/accountants')) return 'Accountant Management'
         if (path.includes('/orders/details/')) return 'Order Details'
         if (path.includes('/orders/analytics')) return 'Order Analytics'
         if (path.includes('/orders')) return 'Order Management'
