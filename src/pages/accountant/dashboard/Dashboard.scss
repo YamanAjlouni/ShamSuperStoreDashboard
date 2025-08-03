@@ -230,136 +230,34 @@
 
     // Tax Summary
     .tax-summary {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
+        display: flex;
+        justify-content: center;
 
         .tax-card {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             border-radius: $radius-md;
-            padding: 1.5rem;
+            padding: 2rem;
             border: 1px solid #f59e0b;
             text-align: center;
+            width: 100%;
 
             h4 {
-                font-size: 1rem;
+                font-size: 1.125rem;
                 font-weight: 600;
                 color: #92400e;
-                margin-bottom: 1rem;
+                margin-bottom: 1.5rem;
             }
 
             .tax-amount {
-                font-size: 1.875rem;
+                font-size: 2.25rem;
                 font-weight: 700;
                 color: #d97706;
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.75rem;
             }
 
             .tax-note {
                 font-size: 0.875rem;
                 color: #a16207;
-            }
-        }
-    }
-
-    // Recent Orders Table
-    .recent-orders {
-        .orders-table {
-            .table-header {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-                gap: 1rem;
-                padding: 1rem;
-                background: #f9fafb;
-                border-radius: $radius-md;
-                margin-bottom: 1rem;
-                font-weight: 600;
-                color: #374151;
-                font-size: 0.875rem;
-            }
-
-            .table-row {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-                gap: 1rem;
-                padding: 1rem;
-                border-bottom: 1px solid #e5e7eb;
-                align-items: center;
-                transition: $transition-all;
-
-                &:hover {
-                    background: #f9fafb;
-                }
-
-                &:last-child {
-                    border-bottom: none;
-                }
-
-                .order-number {
-                    font-weight: 600;
-                    color: #1f2937;
-                }
-
-                .store-number {
-                    color: #6b7280;
-                }
-
-                .order-date {
-                    color: #6b7280;
-                    font-size: 0.875rem;
-                }
-
-                .order-amount {
-                    font-weight: 600;
-                    color: #10b981;
-                }
-
-                .payment-method {
-                    font-size: 0.875rem;
-                    font-weight: 500;
-                    padding: 0.25rem 0.75rem;
-                    border-radius: $radius-full;
-                    text-align: center;
-
-                    &.shampay {
-                        background: #dbeafe;
-                        color: #1d4ed8;
-                    }
-
-                    &.cash {
-                        background: #d1fae5;
-                        color: #059669;
-                    }
-                }
-            }
-        }
-    }
-
-    // Monthly Stats
-    .monthly-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
-
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background: #f8fafc;
-            border-radius: $radius-md;
-            border: 1px solid #e2e8f0;
-
-            .stat-label {
-                font-size: 0.875rem;
-                color: #6b7280;
-                font-weight: 500;
-            }
-
-            .stat-value {
-                font-size: 1.125rem;
-                font-weight: 700;
-                color: #1f2937;
             }
         }
     }
@@ -379,76 +277,15 @@
         }
 
         .payment-breakdown,
-        .transaction-types,
-        .tax-summary {
+        .transaction-types {
             grid-template-columns: 1fr;
             gap: 1rem;
         }
 
-        .recent-orders {
-            .orders-table {
-
-                .table-header,
-                .table-row {
-                    grid-template-columns: 1fr;
-                    gap: 0.5rem;
-                    text-align: left;
-                }
-
-                .table-header {
-                    display: none; // Hide header on mobile
-                }
-
-                .table-row {
-                    background: #f9fafb;
-                    border-radius: $radius-md;
-                    margin-bottom: 1rem;
-                    border: 1px solid #e5e7eb;
-                    padding: 1rem;
-
-                    >span {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        margin-bottom: 0.5rem;
-
-                        &:last-child {
-                            margin-bottom: 0;
-                        }
-
-                        &::before {
-                            content: attr(data-label);
-                            font-weight: 600;
-                            color: #374151;
-                            font-size: 0.875rem;
-                        }
-
-                        &.order-number::before {
-                            content: 'Order #:';
-                        }
-
-                        &.store-number::before {
-                            content: 'Store #:';
-                        }
-
-                        &.order-date::before {
-                            content: 'Date:';
-                        }
-
-                        &.order-amount::before {
-                            content: 'Amount:';
-                        }
-
-                        &.payment-method::before {
-                            content: 'Payment:';
-                        }
-                    }
-                }
+        .tax-summary {
+            .tax-card {
+                max-width: none;
             }
-        }
-
-        .monthly-stats {
-            grid-template-columns: 1fr;
         }
     }
 }
@@ -477,6 +314,16 @@
             flex-direction: column;
             text-align: center;
             gap: 1rem;
+        }
+
+        .tax-summary {
+            .tax-card {
+                padding: 1.5rem;
+
+                .tax-amount {
+                    font-size: 1.875rem;
+                }
+            }
         }
     }
 }

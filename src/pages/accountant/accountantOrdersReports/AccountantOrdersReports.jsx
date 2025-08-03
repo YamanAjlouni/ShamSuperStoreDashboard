@@ -25,14 +25,12 @@ const AccountantOrdersReports = () => {
         dateRange: 'all',
         paymentMethod: 'all',
         status: 'all',
-        storeNumber: 'all',
         search: '',
         timePeriod: 'all'
     })
 
     const [currentPage, setCurrentPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const [activeTab, setActiveTab] = useState('orders')
 
     // Helper function to get week number
     const getWeekNumber = (date) => {
@@ -62,7 +60,6 @@ const AccountantOrdersReports = () => {
 
         const matchesPaymentMethod = filters.paymentMethod === 'all' || order.paymentMethod === filters.paymentMethod
         const matchesStatus = filters.status === 'all' || order.status === filters.status
-        const matchesStore = filters.storeNumber === 'all' || order.storeNumber === filters.storeNumber
 
         // Date/time period filtering
         let matchesTimePeriod = true
@@ -102,7 +99,7 @@ const AccountantOrdersReports = () => {
             }
         }
 
-        return matchesSearch && matchesPaymentMethod && matchesStatus && matchesStore && matchesTimePeriod
+        return matchesSearch && matchesPaymentMethod && matchesStatus && matchesTimePeriod
     })
 
     // Calculate summary statistics
@@ -110,8 +107,6 @@ const AccountantOrdersReports = () => {
         totalOrders: filteredOrders.length,
         totalRevenue: filteredOrders.reduce((sum, order) => sum + order.amount, 0),
         totalCommissions: filteredOrders.reduce((sum, order) => sum + order.commission, 0),
-        shamPayOrders: filteredOrders.filter(order => order.paymentMethod === 'ShamPay').length,
-        cashOrders: filteredOrders.filter(order => order.paymentMethod === 'Cash').length,
         completedOrders: filteredOrders.filter(order => order.status === 'Completed').length,
         pendingOrders: filteredOrders.filter(order => order.status === 'Pending').length
     }
@@ -120,23 +115,6 @@ const AccountantOrdersReports = () => {
     const totalPages = Math.ceil(filteredOrders.length / itemsPerPage)
     const startIndex = (currentPage - 1) * itemsPerPage
     const paginatedOrders = filteredOrders.slice(startIndex, startIndex + itemsPerPage)
-
-    // Store-wise summary based on filtered data
-    const storeWiseSummary = filteredOrders.reduce((acc, order) => {
-        if (!acc[order.storeNumber]) {
-            acc[order.storeNumber] = {
-                storeNumber: order.storeNumber,
-                storeName: order.storeName,
-                totalOrders: 0,
-                totalRevenue: 0,
-                totalCommissions: 0
-            }
-        }
-        acc[order.storeNumber].totalOrders++
-        acc[order.storeNumber].totalRevenue += order.amount
-        acc[order.storeNumber].totalCommissions += order.commission
-        return acc
-    }, {})
 
     const handleFilterChange = (filterName, value) => {
         setFilters(prev => ({
@@ -239,39 +217,6 @@ const AccountantOrdersReports = () => {
                         <span className="stat-detail">Taxable income</span>
                     </div>
                 </div>
-
-                <div className="stat-card">
-                    <div className="stat-icon methods">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                        </svg>
-                    </div>
-                    <div className="stat-content">
-                        <h3>Payment Methods</h3>
-                        <p className="stat-value">{summaryStats.shamPayOrders + summaryStats.cashOrders}</p>
-                        <span className="stat-detail">
-                            {summaryStats.shamPayOrders} ShamPay, {summaryStats.cashOrders} Cash
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            {/* Tabs */}
-            <div className="tabs-container">
-                <div className="tabs">
-                    <button
-                        className={`tab ${activeTab === 'orders' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('orders')}
-                    >
-                        Orders List
-                    </button>
-                    <button
-                        className={`tab ${activeTab === 'stores' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('stores')}
-                    >
-                        Store Summary
-                    </button>
-                </div>
             </div>
 
             {/* Filters */}
@@ -330,107 +275,67 @@ const AccountantOrdersReports = () => {
                             <option value="Pending">Pending</option>
                         </select>
                     </div>
-
-                    <div className="filter-group">
-                        <label>Store</label>
-                        <select
-                            value={filters.storeNumber}
-                            onChange={(e) => handleFilterChange('storeNumber', e.target.value)}
-                        >
-                            <option value="all">All Stores</option>
-                            <option value="STR-001">STR-001 - Electronics Hub</option>
-                            <option value="STR-002">STR-002 - Home & Garden</option>
-                            <option value="STR-003">STR-003 - Fashion Store</option>
-                            <option value="STR-004">STR-004 - Sports Corner</option>
-                        </select>
-                    </div>
                 </div>
             </div>
 
-            {/* Content based on active tab */}
-            {activeTab === 'orders' ? (
-                <div className="orders-content">
-                    {/* Orders Table */}
-                    <div className="orders-table-container">
-                        <div className="table-header">
-                            <span>Order #</span>
-                            <span>Store #</span>
-                            <span>Store Name</span>
-                            <span>Date</span>
-                            <span>Amount</span>
-                            <span>Payment Method</span>
-                            <span>Status</span>
-                            <span>Commission</span>
-                        </div>
-
-                        {paginatedOrders.map((order) => (
-                            <div key={order.id} className="table-row">
-                                <span className="order-number">{order.orderNumber}</span>
-                                <span className="store-number">{order.storeNumber}</span>
-                                <span className="store-name">{order.storeName}</span>
-                                <span className="order-date">{order.date}</span>
-                                <span className="order-amount">{formatCurrency(order.amount)}</span>
-                                <span className={`payment-method ${order.paymentMethod.toLowerCase()}`}>
-                                    {order.paymentMethod}
-                                </span>
-                                <span className={`status ${order.status.toLowerCase()}`}>
-                                    {order.status}
-                                </span>
-                                <span className="commission">{formatCurrency(order.commission)}</span>
-                            </div>
-                        ))}
+            {/* Orders Content */}
+            <div className="orders-content">
+                {/* Orders Table */}
+                <div className="orders-table-container">
+                    <div className="table-header">
+                        <span>Order #</span>
+                        <span>Store #</span>
+                        <span>Store Name</span>
+                        <span>Date</span>
+                        <span>Amount</span>
+                        <span>Payment Method</span>
+                        <span>Status</span>
+                        <span>Commission</span>
                     </div>
 
-                    {/* Pagination */}
-                    {totalPages > 1 && (
-                        <div className="pagination">
-                            <button
-                                className="pagination-btn"
-                                disabled={currentPage === 1}
-                                onClick={() => setCurrentPage(currentPage - 1)}
-                            >
-                                Previous
-                            </button>
-
-                            <div className="pagination-info">
-                                Page {currentPage} of {totalPages} ({filteredOrders.length} total orders)
-                            </div>
-
-                            <button
-                                className="pagination-btn"
-                                disabled={currentPage === totalPages}
-                                onClick={() => setCurrentPage(currentPage + 1)}
-                            >
-                                Next
-                            </button>
+                    {paginatedOrders.map((order) => (
+                        <div key={order.id} className="table-row">
+                            <span className="order-number">{order.orderNumber}</span>
+                            <span className="store-number">{order.storeNumber}</span>
+                            <span className="store-name">{order.storeName}</span>
+                            <span className="order-date">{order.date}</span>
+                            <span className="order-amount">{formatCurrency(order.amount)}</span>
+                            <span className={`payment-method ${order.paymentMethod.toLowerCase()}`}>
+                                {order.paymentMethod}
+                            </span>
+                            <span className={`status ${order.status.toLowerCase()}`}>
+                                {order.status}
+                            </span>
+                            <span className="commission">{formatCurrency(order.commission)}</span>
                         </div>
-                    )}
+                    ))}
                 </div>
-            ) : (
-                <div className="stores-content">
-                    {/* Store Summary Table */}
-                    <div className="stores-table-container">
-                        <div className="table-header">
-                            <span>Store #</span>
-                            <span>Store Name</span>
-                            <span>Total Orders</span>
-                            <span>Total Revenue</span>
-                            <span>Total Commissions</span>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                    <div className="pagination">
+                        <button
+                            className="pagination-btn"
+                            disabled={currentPage === 1}
+                            onClick={() => setCurrentPage(currentPage - 1)}
+                        >
+                            Previous
+                        </button>
+
+                        <div className="pagination-info">
+                            Page {currentPage} of {totalPages} ({filteredOrders.length} total orders)
                         </div>
 
-                        {Object.values(storeWiseSummary).map((store) => (
-                            <div key={store.storeNumber} className="table-row">
-                                <span className="store-number">{store.storeNumber}</span>
-                                <span className="store-name">{store.storeName}</span>
-                                <span className="orders-count">{store.totalOrders}</span>
-                                <span className="revenue-amount">{formatCurrency(store.totalRevenue)}</span>
-                                <span className="commission-amount">{formatCurrency(store.totalCommissions)}</span>
-                            </div>
-                        ))}
+                        <button
+                            className="pagination-btn"
+                            disabled={currentPage === totalPages}
+                            onClick={() => setCurrentPage(currentPage + 1)}
+                        >
+                            Next
+                        </button>
                     </div>
-                </div>
-            )}
-
+                )}
+            </div>
         </div>
     )
 }

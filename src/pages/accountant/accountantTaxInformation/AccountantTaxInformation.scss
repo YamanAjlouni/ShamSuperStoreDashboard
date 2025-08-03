@@ -72,21 +72,21 @@
     }
 
     .tax-summary {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
+        display: flex;
+        justify-content: center;
         margin-bottom: 3rem;
 
         .summary-card {
             background: $white;
             border-radius: $radius-lg;
-            padding: 1.5rem;
+            padding: 2rem;
             box-shadow: $shadow-sm;
             border: 1px solid #e5e7eb;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
             transition: $transition-all;
+            width: 100%;
 
             &:hover {
                 box-shadow: $shadow-md;
@@ -94,8 +94,8 @@
             }
 
             .summary-icon {
-                width: 60px;
-                height: 60px;
+                width: 70px;
+                height: 70px;
                 border-radius: $radius-lg;
                 display: flex;
                 align-items: center;
@@ -103,8 +103,8 @@
                 flex-shrink: 0;
 
                 svg {
-                    width: 28px;
-                    height: 28px;
+                    width: 32px;
+                    height: 32px;
                     color: $white;
                 }
 
@@ -114,35 +114,23 @@
                 background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             }
 
-            &.tax-due .summary-icon {
-                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            }
-
-            &.tax-paid .summary-icon {
-                background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            }
-
-            &.outstanding .summary-icon {
-                background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            }
-
             .summary-content {
                 flex: 1;
 
                 h3 {
-                    font-size: 0.875rem;
+                    font-size: 1rem;
                     font-weight: 600;
                     color: #6b7280;
-                    margin-bottom: 0.5rem;
+                    margin-bottom: 0.75rem;
                     text-transform: uppercase;
                     letter-spacing: 0.05em;
                 }
 
                 .summary-value {
-                    font-size: 1.75rem;
+                    font-size: 2rem;
                     font-weight: 700;
                     color: #1f2937;
-                    margin-bottom: 0.25rem;
+                    margin-bottom: 0.5rem;
                 }
 
                 .summary-detail {
@@ -273,177 +261,12 @@
         }
     }
 
-    .tabs-container {
-        margin-bottom: 2rem;
-
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            border-bottom: 1px solid #e5e7eb;
-            overflow-x: auto;
-
-            .tab {
-                padding: 1rem 1.5rem;
-                background: none;
-                border: none;
-                color: #6b7280;
-                font-size: 0.875rem;
-                font-weight: 600;
-                cursor: pointer;
-                transition: $transition-all;
-                border-bottom: 2px solid transparent;
-                white-space: nowrap;
-                flex-shrink: 0;
-
-                &:hover {
-                    color: #374151;
-                }
-
-                &.active {
-                    color: #f59e0b;
-                    border-bottom-color: #f59e0b;
-                }
-            }
-        }
-    }
-
-    .overview-content,
     .filtered-content {
         background: $white;
         border-radius: $radius-lg;
         box-shadow: $shadow-sm;
         border: 1px solid #e5e7eb;
         overflow: hidden;
-    }
-
-    .overview-content {
-        padding: 2rem;
-
-        .overview-section {
-            margin-bottom: 3rem;
-
-            &:last-child {
-                margin-bottom: 0;
-            }
-
-            .section-header {
-                margin-bottom: 1.5rem;
-
-                h3 {
-                    font-size: 1.25rem;
-                    font-weight: 600;
-                    color: #1f2937;
-                    margin-bottom: 0.5rem;
-                }
-
-                p {
-                    color: #6b7280;
-                    font-size: 0.875rem;
-                }
-            }
-
-            .calculation-explanation {
-                .explanation-card {
-                    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-                    border-radius: $radius-lg;
-                    padding: 2rem;
-                    border: 1px solid #f59e0b;
-                    display: flex;
-                    align-items: flex-start;
-                    gap: 1.5rem;
-
-                    .explanation-icon {
-                        width: 60px;
-                        height: 60px;
-                        background: #f59e0b;
-                        border-radius: $radius-lg;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        flex-shrink: 0;
-
-                        svg {
-                            width: 28px;
-                            height: 28px;
-                            color: $white;
-                        }
-                    }
-
-                    .explanation-content {
-                        flex: 1;
-
-                        h4 {
-                            font-size: 1.125rem;
-                            font-weight: 600;
-                            color: #92400e;
-                            margin-bottom: 1rem;
-                        }
-
-                        p {
-                            font-size: 0.875rem;
-                            color: #a16207;
-                            line-height: 1.6;
-                            margin-bottom: 1rem;
-                        }
-
-                        ul {
-                            list-style: none;
-                            padding: 0;
-
-                            li {
-                                font-size: 0.875rem;
-                                color: #a16207;
-                                line-height: 1.6;
-                                margin-bottom: 0.5rem;
-                                padding-left: 1rem;
-                                position: relative;
-
-                                &::before {
-                                    content: '•';
-                                    position: absolute;
-                                    left: 0;
-                                    color: #d97706;
-                                    font-weight: bold;
-                                }
-
-                                strong {
-                                    color: #92400e;
-                                    font-weight: 600;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            .status-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 1rem;
-
-                .status-item {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 1rem;
-                    background: #f8fafc;
-                    border-radius: $radius-md;
-                    border: 1px solid #e2e8f0;
-
-                    .status-label {
-                        font-size: 0.875rem;
-                        color: #6b7280;
-                        font-weight: 500;
-                    }
-
-                    .status-value {
-                        font-size: 0.875rem;
-                        color: #1f2937;
-                        font-weight: 600;
-                    }
-                }
-            }
-        }
     }
 
     .filtered-table-container {
@@ -554,51 +377,6 @@
             }
         }
     }
-
-    .compliance-notice {
-        margin-top: 2rem;
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-        border-radius: $radius-lg;
-        padding: 1.5rem;
-        border: 1px solid #3b82f6;
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-
-        .notice-icon {
-            width: 50px;
-            height: 50px;
-            background: #3b82f6;
-            border-radius: $radius-md;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-
-            svg {
-                width: 24px;
-                height: 24px;
-                color: $white;
-            }
-        }
-
-        .notice-content {
-            flex: 1;
-
-            h4 {
-                font-size: 1rem;
-                font-weight: 600;
-                color: #1e40af;
-                margin-bottom: 0.75rem;
-            }
-
-            p {
-                font-size: 0.875rem;
-                color: #1e3a8a;
-                line-height: 1.6;
-            }
-        }
-    }
 }
 
 @media (max-width: 1024px) {
@@ -613,8 +391,10 @@
         }
 
         .tax-summary {
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
+            .summary-card {
+                max-width: none;
+                width: 100%;
+            }
         }
 
         .tax-rate-section .tax-rate-display .rate-card {
@@ -630,21 +410,6 @@
 
                 .period-select {
                     min-width: auto;
-                }
-            }
-        }
-
-        .overview-content {
-            .overview-section {
-                .calculation-explanation {
-                    .explanation-card {
-                        flex-direction: column;
-                        text-align: center;
-                    }
-                }
-
-                .status-grid {
-                    grid-template-columns: 1fr;
                 }
             }
         }
@@ -737,12 +502,11 @@
 @media (max-width: 768px) {
     .accountant-tax-information {
         .tax-summary {
-            grid-template-columns: 1fr;
-
             .summary-card {
                 flex-direction: column;
                 text-align: center;
-                gap: 1rem;
+                gap: 1.5rem;
+                padding: 1.5rem;
             }
         }
 
@@ -752,28 +516,6 @@
             .rate-value {
                 font-size: 2rem;
             }
-        }
-
-        .tabs .tab {
-            padding: 0.75rem 1rem;
-            font-size: 0.8125rem;
-        }
-
-        .overview-content {
-            padding: 1.5rem;
-
-            .overview-section {
-                margin-bottom: 2rem;
-
-                .calculation-explanation .explanation-card {
-                    padding: 1.5rem;
-                }
-            }
-        }
-
-        .compliance-notice {
-            flex-direction: column;
-            text-align: center;
         }
     }
 }
@@ -795,16 +537,16 @@
             }
         }
 
-        .summary-card .summary-content .summary-value {
-            font-size: 1.5rem;
+        .tax-summary {
+            .summary-card {
+                .summary-content .summary-value {
+                    font-size: 1.75rem;
+                }
+            }
         }
 
         .tax-rate-section .tax-rate-display .rate-card .rate-value {
             font-size: 1.75rem;
-        }
-
-        .overview-content {
-            padding: 1rem;
         }
 
         .filter-section {
@@ -817,28 +559,18 @@
     .accountant-tax-information {
 
         .page-header .header-actions,
-        .tabs-container,
         .filter-section {
             display: none !important;
         }
 
         .tax-summary,
-        .tax-rate-section,
-        .compliance-notice {
+        .tax-rate-section {
             page-break-inside: avoid;
         }
 
         .filtered-table-container {
             .table-row {
                 break-inside: avoid;
-            }
-        }
-
-        .overview-content {
-
-            .calculation-explanation,
-            .status-grid {
-                page-break-inside: avoid;
             }
         }
     }

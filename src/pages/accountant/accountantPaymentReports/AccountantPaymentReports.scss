@@ -124,10 +124,6 @@
                 background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             }
 
-            &.pending .stat-icon {
-                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            }
-
             .stat-content {
                 flex: 1;
 
@@ -298,37 +294,6 @@
         }
     }
 
-    .tabs-container {
-        margin-bottom: 2rem;
-
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            border-bottom: 1px solid #e5e7eb;
-
-            .tab {
-                padding: 1rem 1.5rem;
-                background: none;
-                border: none;
-                color: #6b7280;
-                font-size: 0.875rem;
-                font-weight: 600;
-                cursor: pointer;
-                transition: $transition-all;
-                border-bottom: 2px solid transparent;
-
-                &:hover {
-                    color: #374151;
-                }
-
-                &.active {
-                    color: #10b981;
-                    border-bottom-color: #10b981;
-                }
-            }
-        }
-    }
-
     .filters-section {
         background: $white;
         border-radius: $radius-lg;
@@ -403,18 +368,17 @@
         }
     }
 
-    .payments-content,
-    .batches-content {
+    .payments-content {
         background: $white;
         border-radius: $radius-lg;
         box-shadow: $shadow-sm;
         border: 1px solid #e5e7eb;
         overflow: hidden;
 
-        .payments-table-container,
-        .batches-table-container {
+        .payments-table-container {
             .table-header {
                 display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
                 gap: 1rem;
                 padding: 1rem 1.5rem;
                 background: #f9fafb;
@@ -426,6 +390,7 @@
 
             .table-row {
                 display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
                 gap: 1rem;
                 padding: 1rem 1.5rem;
                 border-bottom: 1px solid #f3f4f6;
@@ -447,18 +412,14 @@
                     color: #1f2937;
                 }
 
-                .payment-date,
-                .batch-date {
+                .payment-date {
                     color: #6b7280;
                 }
 
                 .total-amount,
                 .seller-payment,
                 .delivery-payment,
-                .commission,
-                .seller-payments,
-                .delivery-payments,
-                .total-paid {
+                .commission {
                     font-weight: 600;
                     color: #10b981;
                 }
@@ -488,43 +449,11 @@
                     text-align: center;
                     font-size: 0.75rem;
 
-                    &.paid,
                     &.completed {
                         background: #d1fae5;
                         color: #059669;
                     }
-
-                    &.pending {
-                        background: #fef3c7;
-                        color: #d97706;
-                    }
-
-                    &.commission-only {
-                        background: #e0e7ff;
-                        color: #3730a3;
-                    }
                 }
-
-                .orders-count {
-                    font-weight: 600;
-                    color: #8b5cf6;
-                }
-            }
-        }
-
-        .payments-table-container {
-
-            .table-header,
-            .table-row {
-                grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-            }
-        }
-
-        .batches-table-container {
-
-            .table-header,
-            .table-row {
-                grid-template-columns: 1fr 1fr 1fr 1.5fr 1.5fr 1.5fr 1fr;
             }
         }
     }
@@ -562,63 +491,6 @@
             color: #6b7280;
         }
     }
-
-    .income-explanation {
-        margin-top: 2rem;
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-        border-radius: $radius-lg;
-        padding: 1.5rem;
-        border: 1px solid #3b82f6;
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-
-        .explanation-icon {
-            width: 50px;
-            height: 50px;
-            background: #3b82f6;
-            border-radius: $radius-md;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-
-            svg {
-                width: 24px;
-                height: 24px;
-                color: $white;
-            }
-        }
-
-        .explanation-content {
-            flex: 1;
-
-            h4 {
-                font-size: 1rem;
-                font-weight: 600;
-                color: #1e40af;
-                margin-bottom: 1rem;
-            }
-
-            .explanation-text {
-                p {
-                    font-size: 0.875rem;
-                    color: #1e3a8a;
-                    line-height: 1.6;
-                    margin-bottom: 0.75rem;
-
-                    &:last-child {
-                        margin-bottom: 0;
-                    }
-
-                    strong {
-                        font-weight: 600;
-                        color: #1e40af;
-                    }
-                }
-            }
-        }
-    }
 }
 
 @media (max-width: 1024px) {
@@ -649,11 +521,8 @@
             gap: 1rem;
         }
 
-        .payments-content,
-        .batches-content {
-
-            .payments-table-container,
-            .batches-table-container {
+        .payments-content {
+            .payments-table-container {
 
                 .table-header,
                 .table-row {
@@ -684,8 +553,43 @@
                             margin-bottom: 0;
                         }
 
+                        &.order-number::before {
+                            content: "Order #: ";
+                        }
+
+                        &.payment-date::before {
+                            content: "Date: ";
+                        }
+
+                        &.total-amount::before {
+                            content: "Total: ";
+                        }
+
+                        &.seller-payment::before {
+                            content: "Seller: ";
+                        }
+
+                        &.delivery-payment::before {
+                            content: "Delivery: ";
+                        }
+
+                        &.commission::before {
+                            content: "Commission: ";
+                        }
+
+                        &.payment-method::before {
+                            content: "Method: ";
+                        }
+
+                        &.status::before {
+                            content: "Status: ";
+                        }
+
+                        &.batch-id::before {
+                            content: "Batch: ";
+                        }
+
                         &::before {
-                            content: attr(data-label);
                             font-weight: 600;
                             color: #374151;
                             font-size: 0.75rem;
@@ -737,19 +641,9 @@
             grid-template-columns: 1fr;
         }
 
-        .tabs .tab {
-            padding: 0.75rem 1rem;
-            font-size: 0.8125rem;
-        }
-
         .pagination {
             flex-direction: column;
             gap: 1rem;
-            text-align: center;
-        }
-
-        .income-explanation {
-            flex-direction: column;
             text-align: center;
         }
     }
@@ -789,19 +683,16 @@
 
         .page-header .header-actions,
         .filters-section,
-        .tabs-container,
         .pagination {
             display: none !important;
         }
 
         .payment-analysis,
-        .summary-stats,
-        .income-explanation {
+        .summary-stats {
             page-break-inside: avoid;
         }
 
-        .payments-table-container,
-        .batches-table-container {
+        .payments-table-container {
             .table-row {
                 break-inside: avoid;
             }

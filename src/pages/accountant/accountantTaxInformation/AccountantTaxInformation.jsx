@@ -78,19 +78,12 @@ const AccountantTaxInformation = () => {
     })
 
     const [selectedPeriod, setSelectedPeriod] = useState('quarterly')
-    const [selectedYear, setSelectedYear] = useState(2025)
-    const [activeTab, setActiveTab] = useState('overview')
 
     // Calculate summary statistics
     const currentYearData = taxData.quarters.reduce((acc, quarter) => {
         acc.totalIncome += quarter.commissionIncome
-        acc.totalTaxDue += quarter.estimatedTax
-        acc.totalTaxPaid += quarter.taxPaid
         return acc
-    }, { totalIncome: 0, totalTaxDue: 0, totalTaxPaid: 0 })
-
-    const outstandingTax = currentYearData.totalTaxDue - currentYearData.totalTaxPaid
-    const nextDueDate = taxData.quarters.find(q => q.status === 'Pending')?.dueDate || 'N/A'
+    }, { totalIncome: 0 })
 
     const handleExportReport = () => {
         alert('Tax report export functionality would be implemented here')
@@ -169,45 +162,6 @@ const AccountantTaxInformation = () => {
                         <span className="summary-detail">Commission income only</span>
                     </div>
                 </div>
-
-                <div className="summary-card tax-due">
-                    <div className="summary-icon">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <div className="summary-content">
-                        <h3>Total Tax Due</h3>
-                        <p className="summary-value">{formatCurrency(currentYearData.totalTaxDue)}</p>
-                        <span className="summary-detail">25% of taxable income</span>
-                    </div>
-                </div>
-
-                <div className="summary-card tax-paid">
-                    <div className="summary-icon">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div className="summary-content">
-                        <h3>Tax Paid</h3>
-                        <p className="summary-value">{formatCurrency(currentYearData.totalTaxPaid)}</p>
-                        <span className="summary-detail">Quarterly payments made</span>
-                    </div>
-                </div>
-
-                <div className="summary-card outstanding">
-                    <div className="summary-icon">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div className="summary-content">
-                        <h3>Outstanding Tax</h3>
-                        <p className="summary-value">{formatCurrency(outstandingTax)}</p>
-                        <span className="summary-detail">Due: {formatDate(nextDueDate)}</span>
-                    </div>
-                </div>
             </div>
 
             {/* Tax Rate Section */}
@@ -246,126 +200,58 @@ const AccountantTaxInformation = () => {
                 </div>
             </div>
 
-            {/* Tabs */}
-            <div className="tabs-container">
-                <div className="tabs">
-                    <button
-                        className={`tab ${activeTab === 'overview' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('overview')}
-                    >
-                        Tax Overview
-                    </button>
-                    <button
-                        className={`tab ${activeTab === 'filtered' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('filtered')}
-                    >
-                        {selectedPeriod.charAt(0).toUpperCase() + selectedPeriod.slice(1)} Reports
-                    </button>
-                </div>
-            </div>
-
-            {/* Tab Content */}
-            {activeTab === 'overview' && (
-                <div className="overview-content">
-                    <div className="overview-section">
-                        <div className="section-header">
-                            <h3>Tax Calculation Method</h3>
-                            <p>How we calculate taxable income for the platform</p>
-                        </div>
-
-                        <div className="calculation-explanation">
-                            <div className="explanation-card">
-                                <div className="explanation-icon">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
-                                <div className="explanation-content">
-                                    <h4>Taxable Income = Commission Only</h4>
-                                    <p>Regardless of payment method (ShamPay or Cash), only commission amounts are considered taxable income for the platform:</p>
-                                    <ul>
-                                        <li><strong>ShamPay:</strong> We collect full payment → Pay sellers/drivers → Keep commission</li>
-                                        <li><strong>Cash:</strong> Customer pays directly → No money flow → We earn commission</li>
-                                        <li><strong>Result:</strong> In both cases, only commission counts as taxable income</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+            {/* Tax Reports Content */}
+            <div className="filtered-content">
+                <div className="filtered-table-container">
+                    <div className="table-header">
+                        <span>Period</span>
+                        <span>Commission Income</span>
+                        <span>Estimated Tax</span>
+                        {selectedPeriod === 'quarterly' && <span>Status</span>}
+                        {selectedPeriod === 'quarterly' && <span>Due Date</span>}
+                        {selectedPeriod !== 'yearly' && <span>Progress</span>}
+                        {selectedPeriod === 'yearly' && <span>Growth</span>}
                     </div>
-                </div>
-            )}
 
-            {activeTab === 'filtered' && (
-                <div className="filtered-content">
-                    <div className="filtered-table-container">
-                        <div className="table-header">
-                            <span>Period</span>
-                            <span>Commission Income</span>
-                            <span>Estimated Tax</span>
-                            {selectedPeriod === 'quarterly' && <span>Status</span>}
-                            {selectedPeriod === 'quarterly' && <span>Due Date</span>}
-                            {selectedPeriod !== 'yearly' && <span>Progress</span>}
-                            {selectedPeriod === 'yearly' && <span>Growth</span>}
+                    {getFilteredData().map((item, index) => (
+                        <div key={index} className="table-row">
+                            <span className="period-name">
+                                {item.quarter || item.month || item.week || item.year}
+                            </span>
+                            <span className="commission-income">
+                                {formatCurrency(item.commissionIncome)}
+                            </span>
+                            <span className="estimated-tax">
+                                {formatCurrency(item.estimatedTax || item.taxPaid || item.commissionIncome * 0.25)}
+                            </span>
+                            {selectedPeriod === 'quarterly' && (
+                                <span className={`status ${item.status?.toLowerCase()}`}>
+                                    {item.status}
+                                </span>
+                            )}
+                            {selectedPeriod === 'quarterly' && (
+                                <span className="due-date">{formatDate(item.dueDate)}</span>
+                            )}
+                            {selectedPeriod !== 'yearly' && (
+                                <span className="progress">
+                                    <div className="progress-bar">
+                                        <div
+                                            className="progress-fill"
+                                            style={{ width: `${Math.min((item.commissionIncome / 10000) * 100, 100)}%` }}
+                                        ></div>
+                                    </div>
+                                </span>
+                            )}
+                            {selectedPeriod === 'yearly' && index > 0 && (
+                                <span className="growth">
+                                    <span className={`growth-indicator ${item.commissionIncome > getFilteredData()[index - 1].commissionIncome ? 'positive' : 'negative'}`}>
+                                        {item.commissionIncome > getFilteredData()[index - 1].commissionIncome && '+'}
+                                        {(((item.commissionIncome - getFilteredData()[index - 1].commissionIncome) / getFilteredData()[index - 1].commissionIncome) * 100).toFixed(1)}%
+                                    </span>
+                                </span>
+                            )}
                         </div>
-
-                        {getFilteredData().map((item, index) => (
-                            <div key={index} className="table-row">
-                                <span className="period-name">
-                                    {item.quarter || item.month || item.week || item.year}
-                                </span>
-                                <span className="commission-income">
-                                    {formatCurrency(item.commissionIncome)}
-                                </span>
-                                <span className="estimated-tax">
-                                    {formatCurrency(item.estimatedTax || item.taxPaid || item.commissionIncome * 0.25)}
-                                </span>
-                                {selectedPeriod === 'quarterly' && (
-                                    <span className={`status ${item.status?.toLowerCase()}`}>
-                                        {item.status}
-                                    </span>
-                                )}
-                                {selectedPeriod === 'quarterly' && (
-                                    <span className="due-date">{formatDate(item.dueDate)}</span>
-                                )}
-                                {selectedPeriod !== 'yearly' && (
-                                    <span className="progress">
-                                        <div className="progress-bar">
-                                            <div
-                                                className="progress-fill"
-                                                style={{ width: `${Math.min((item.commissionIncome / 10000) * 100, 100)}%` }}
-                                            ></div>
-                                        </div>
-                                    </span>
-                                )}
-                                {selectedPeriod === 'yearly' && index > 0 && (
-                                    <span className="growth">
-                                        <span className={`growth-indicator ${item.commissionIncome > getFilteredData()[index - 1].commissionIncome ? 'positive' : 'negative'}`}>
-                                            {item.commissionIncome > getFilteredData()[index - 1].commissionIncome && '+'}
-                                            {(((item.commissionIncome - getFilteredData()[index - 1].commissionIncome) / getFilteredData()[index - 1].commissionIncome) * 100).toFixed(1)}%
-                                        </span>
-                                    </span>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
-
-            {/* Tax Compliance Notice */}
-            <div className="compliance-notice">
-                <div className="notice-icon">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                </div>
-                <div className="notice-content">
-                    <h4>Tax Compliance & Disclaimer</h4>
-                    <p>
-                        Tax calculations are based on current rates and commission income only.
-                        This system provides estimates for planning purposes. Please consult with a qualified
-                        tax professional for official tax preparation and filing. Tax rates and regulations
-                        may change, and individual circumstances may affect actual tax liability.
-                    </p>
+                    ))}
                 </div>
             </div>
         </div>

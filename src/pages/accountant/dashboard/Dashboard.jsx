@@ -16,26 +16,7 @@ const Dashboard = () => {
         cashTransactions: 397,
 
         // Tax Information
-        taxableIncome: 18814.58, // Only commissions count as site income
-        estimatedTax: 4703.65,
-        quarterlyTaxDue: 4703.65,
-
-        // Recent Activity
-        recentOrders: [
-            { orderNumber: 'ORD-2025-001', storeNumber: 'STR-001', date: '2025-01-15', amount: 299.99, paymentMethod: 'ShamPay' },
-            { orderNumber: 'ORD-2025-002', storeNumber: 'STR-003', date: '2025-01-15', amount: 150.00, paymentMethod: 'Cash' },
-            { orderNumber: 'ORD-2025-003', storeNumber: 'STR-002', date: '2025-01-14', amount: 75.50, paymentMethod: 'ShamPay' },
-            { orderNumber: 'ORD-2025-004', storeNumber: 'STR-001', date: '2025-01-14', amount: 425.00, paymentMethod: 'Cash' },
-            { orderNumber: 'ORD-2025-005', storeNumber: 'STR-004', date: '2025-01-13', amount: 89.99, paymentMethod: 'ShamPay' }
-        ],
-
-        // Monthly Statistics
-        monthlyStats: {
-            currentMonth: 'January 2025',
-            ordersThisMonth: 89,
-            revenueThisMonth: 12543.50,
-            commissionsThisMonth: 1881.45
-        }
+        totalSiteIncome: 18814.58, // Total site income (taxable)
     })
 
     return (
@@ -154,76 +135,15 @@ const Dashboard = () => {
             {/* Tax Information Section */}
             <div className="dashboard-section">
                 <div className="section-header">
-                    <h2>Tax Summary</h2>
-                    <p>Current tax liability based on commission income</p>
+                    <h2>Tax Information</h2>
+                    <p>Total site income subject to taxation</p>
                 </div>
 
                 <div className="tax-summary">
                     <div className="tax-card">
-                        <h4>Taxable Income</h4>
-                        <p className="tax-amount">${dashboardData.taxableIncome.toLocaleString()}</p>
+                        <h4>**Total Site Income (Taxable)**</h4>
+                        <p className="tax-amount">${dashboardData.totalSiteIncome.toLocaleString()}</p>
                         <span className="tax-note">Commission income only</span>
-                    </div>
-
-                    <div className="tax-card">
-                        <h4>Estimated Tax (25%)</h4>
-                        <p className="tax-amount">${dashboardData.estimatedTax.toLocaleString()}</p>
-                        <span className="tax-note">Quarterly liability</span>
-                    </div>
-                </div>
-            </div>
-
-            {/* Recent Orders Section */}
-            <div className="dashboard-section">
-                <div className="section-header">
-                    <h2>Recent Orders</h2>
-                    <p>Latest transactions (no personal buyer information)</p>
-                </div>
-
-                <div className="recent-orders">
-                    <div className="orders-table">
-                        <div className="table-header">
-                            <span>Order #</span>
-                            <span>Store #</span>
-                            <span>Date</span>
-                            <span>Amount</span>
-                            <span>Payment Method</span>
-                        </div>
-
-                        {dashboardData.recentOrders.map((order, index) => (
-                            <div key={index} className="table-row">
-                                <span className="order-number">{order.orderNumber}</span>
-                                <span className="store-number">{order.storeNumber}</span>
-                                <span className="order-date">{order.date}</span>
-                                <span className="order-amount">${order.amount}</span>
-                                <span className={`payment-method ${order.paymentMethod.toLowerCase()}`}>
-                                    {order.paymentMethod}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Monthly Stats */}
-            <div className="dashboard-section">
-                <div className="section-header">
-                    <h2>This Month ({dashboardData.monthlyStats.currentMonth})</h2>
-                    <p>Current month performance</p>
-                </div>
-
-                <div className="monthly-stats">
-                    <div className="stat-item">
-                        <span className="stat-label">Orders</span>
-                        <span className="stat-value">{dashboardData.monthlyStats.ordersThisMonth}</span>
-                    </div>
-                    <div className="stat-item">
-                        <span className="stat-label">Revenue</span>
-                        <span className="stat-value">${dashboardData.monthlyStats.revenueThisMonth.toLocaleString()}</span>
-                    </div>
-                    <div className="stat-item">
-                        <span className="stat-label">Commissions</span>
-                        <span className="stat-value">${dashboardData.monthlyStats.commissionsThisMonth.toLocaleString()}</span>
                     </div>
                 </div>
             </div>

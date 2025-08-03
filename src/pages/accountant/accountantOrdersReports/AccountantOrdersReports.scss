@@ -119,10 +119,6 @@
                 &.commissions {
                     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
                 }
-
-                &.methods {
-                    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-                }
             }
 
             .stat-content {
@@ -147,37 +143,6 @@
                 .stat-detail {
                     font-size: 0.875rem;
                     color: #9ca3af;
-                }
-            }
-        }
-    }
-
-    .tabs-container {
-        margin-bottom: 2rem;
-
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            border-bottom: 1px solid #e5e7eb;
-
-            .tab {
-                padding: 1rem 1.5rem;
-                background: none;
-                border: none;
-                color: #6b7280;
-                font-size: 0.875rem;
-                font-weight: 600;
-                cursor: pointer;
-                transition: $transition-all;
-                border-bottom: 2px solid transparent;
-
-                &:hover {
-                    color: #374151;
-                }
-
-                &.active {
-                    color: #10b981;
-                    border-bottom-color: #10b981;
                 }
             }
         }
@@ -363,68 +328,6 @@
         }
     }
 
-    .stores-content {
-        background: $white;
-        border-radius: $radius-lg;
-        box-shadow: $shadow-sm;
-        border: 1px solid #e5e7eb;
-        overflow: hidden;
-
-        .stores-table-container {
-            .table-header {
-                display: grid;
-                grid-template-columns: 1fr 2fr 1fr 1.5fr 1.5fr;
-                gap: 1rem;
-                padding: 1rem 1.5rem;
-                background: #f9fafb;
-                border-bottom: 1px solid #e5e7eb;
-                font-weight: 600;
-                color: #374151;
-                font-size: 0.875rem;
-            }
-
-            .table-row {
-                display: grid;
-                grid-template-columns: 1fr 2fr 1fr 1.5fr 1.5fr;
-                gap: 1rem;
-                padding: 1rem 1.5rem;
-                border-bottom: 1px solid #f3f4f6;
-                align-items: center;
-                transition: $transition-all;
-                font-size: 0.875rem;
-
-                &:hover {
-                    background: #f9fafb;
-                }
-
-                &:last-child {
-                    border-bottom: none;
-                }
-
-                .store-number {
-                    font-weight: 600;
-                    color: #6b7280;
-                }
-
-                .store-name {
-                    font-weight: 500;
-                    color: #1f2937;
-                }
-
-                .orders-count {
-                    font-weight: 600;
-                    color: #8b5cf6;
-                }
-
-                .revenue-amount,
-                .commission-amount {
-                    font-weight: 600;
-                    color: #10b981;
-                }
-            }
-        }
-    }
-
     .pagination {
         display: flex;
         justify-content: space-between;
@@ -481,8 +384,7 @@
             gap: 1rem;
         }
 
-        .orders-content .orders-table-container,
-        .stores-content .stores-table-container {
+        .orders-content .orders-table-container {
 
             .table-header,
             .table-row {
@@ -545,18 +447,6 @@
                         content: "Commission: ";
                     }
 
-                    &.orders-count::before {
-                        content: "Orders: ";
-                    }
-
-                    &.revenue-amount::before {
-                        content: "Revenue: ";
-                    }
-
-                    &.commission-amount::before {
-                        content: "Commission: ";
-                    }
-
                     &::before {
                         font-weight: 600;
                         color: #374151;
@@ -584,11 +474,6 @@
 
         .filters-section .filters-grid {
             grid-template-columns: 1fr;
-        }
-
-        .tabs .tab {
-            padding: 0.75rem 1rem;
-            font-size: 0.8125rem;
         }
 
         .pagination {
@@ -627,7 +512,6 @@
 
         .page-header .header-actions,
         .filters-section,
-        .tabs-container,
         .pagination {
             display: none !important;
         }
@@ -636,8 +520,7 @@
             page-break-inside: avoid;
         }
 
-        .orders-table-container,
-        .stores-table-container {
+        .orders-table-container {
             .table-row {
                 break-inside: avoid;
             }

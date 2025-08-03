@@ -363,51 +363,6 @@
 
         }
     }
-
-    .readonly-notice {
-        margin-top: 2rem;
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        border-radius: $radius-lg;
-        padding: 1.5rem;
-        border: 1px solid #f59e0b;
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-
-        .notice-icon {
-            width: 50px;
-            height: 50px;
-            background: #f59e0b;
-            border-radius: $radius-md;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-
-            svg {
-                width: 24px;
-                height: 24px;
-                color: $white;
-            }
-        }
-
-        .notice-content {
-            flex: 1;
-
-            h4 {
-                font-size: 1rem;
-                font-weight: 600;
-                color: #92400e;
-                margin-bottom: 0.75rem;
-            }
-
-            p {
-                font-size: 0.875rem;
-                color: #a16207;
-                line-height: 1.6;
-            }
-        }
-    }
 }
 
 @media (max-width: 1024px) {
@@ -494,11 +449,6 @@
                 }
             }
         }
-
-        .readonly-notice {
-            flex-direction: column;
-            text-align: center;
-        }
     }
 }
 
@@ -548,8 +498,7 @@
     .accountant-settings {
 
         .page-header .header-actions,
-        .tabs-container,
-        .readonly-notice {
+        .tabs-container {
             display: none !important;
         }
 

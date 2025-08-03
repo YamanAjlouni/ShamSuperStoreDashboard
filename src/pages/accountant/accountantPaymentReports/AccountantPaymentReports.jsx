@@ -4,43 +4,32 @@ import './AccountantPaymentReports.scss'
 const AccountantPaymentReports = () => {
     // Sample payment data - in real app this would come from API
     const [paymentData] = useState([
-        { id: 1, orderNumber: 'ORD-2025-001', date: '2025-01-15', totalAmount: 299.99, sellerPayment: 214.99, deliveryPayment: 40.00, commission: 45.00, paymentMethod: 'ShamPay', status: 'Paid', batchId: 'BTH-001' },
-        { id: 2, orderNumber: 'ORD-2025-002', date: '2025-01-15', totalAmount: 150.00, sellerPayment: 0, deliveryPayment: 0, commission: 22.50, paymentMethod: 'Cash', status: 'Commission Only', batchId: 'N/A' },
-        { id: 3, orderNumber: 'ORD-2025-003', date: '2025-01-14', totalAmount: 75.50, sellerPayment: 54.11, deliveryPayment: 10.00, commission: 11.39, paymentMethod: 'ShamPay', status: 'Paid', batchId: 'BTH-001' },
-        { id: 4, orderNumber: 'ORD-2025-004', date: '2025-01-14', totalAmount: 425.00, sellerPayment: 0, deliveryPayment: 0, commission: 63.75, paymentMethod: 'Cash', status: 'Commission Only', batchId: 'N/A' },
-        { id: 5, orderNumber: 'ORD-2025-005', date: '2025-01-13', totalAmount: 89.99, sellerPayment: 64.49, deliveryPayment: 12.00, commission: 13.50, paymentMethod: 'ShamPay', status: 'Paid', batchId: 'BTH-002' },
-        { id: 6, orderNumber: 'ORD-2025-006', date: '2025-01-13', totalAmount: 220.00, sellerPayment: 157.60, deliveryPayment: 29.40, commission: 33.00, paymentMethod: 'ShamPay', status: 'Pending', batchId: 'BTH-003' },
-        { id: 7, orderNumber: 'ORD-2025-007', date: '2025-01-12', totalAmount: 175.50, sellerPayment: 0, deliveryPayment: 0, commission: 26.33, paymentMethod: 'Cash', status: 'Commission Only', batchId: 'N/A' },
-        { id: 8, orderNumber: 'ORD-2025-008', date: '2025-01-12', totalAmount: 350.00, sellerPayment: 250.50, deliveryPayment: 47.00, commission: 52.50, paymentMethod: 'ShamPay', status: 'Paid', batchId: 'BTH-002' },
-        { id: 9, orderNumber: 'ORD-2025-009', date: '2025-01-11', totalAmount: 125.75, sellerPayment: 0, deliveryPayment: 0, commission: 18.86, paymentMethod: 'Cash', status: 'Commission Only', batchId: 'N/A' },
-        { id: 10, orderNumber: 'ORD-2025-010', date: '2025-01-11', totalAmount: 95.00, sellerPayment: 68.05, deliveryPayment: 12.70, commission: 14.25, paymentMethod: 'ShamPay', status: 'Paid', batchId: 'BTH-002' },
+        { id: 1, orderNumber: 'ORD-2025-001', date: '2025-01-15', totalAmount: 299.99, sellerPayment: 214.99, deliveryPayment: 40.00, commission: 45.00, paymentMethod: 'ShamPay', status: 'Completed', batchId: 'BTH-001' },
+        { id: 2, orderNumber: 'ORD-2025-002', date: '2025-01-15', totalAmount: 150.00, sellerPayment: 0, deliveryPayment: 0, commission: 22.50, paymentMethod: 'Cash', status: 'Completed', batchId: 'N/A' },
+        { id: 3, orderNumber: 'ORD-2025-003', date: '2025-01-14', totalAmount: 75.50, sellerPayment: 54.11, deliveryPayment: 10.00, commission: 11.39, paymentMethod: 'ShamPay', status: 'Completed', batchId: 'BTH-001' },
+        { id: 4, orderNumber: 'ORD-2025-004', date: '2025-01-14', totalAmount: 425.00, sellerPayment: 0, deliveryPayment: 0, commission: 63.75, paymentMethod: 'Cash', status: 'Completed', batchId: 'N/A' },
+        { id: 5, orderNumber: 'ORD-2025-005', date: '2025-01-13', totalAmount: 89.99, sellerPayment: 64.49, deliveryPayment: 12.00, commission: 13.50, paymentMethod: 'ShamPay', status: 'Completed', batchId: 'BTH-002' },
+        { id: 6, orderNumber: 'ORD-2025-006', date: '2025-01-13', totalAmount: 220.00, sellerPayment: 157.60, deliveryPayment: 29.40, commission: 33.00, paymentMethod: 'ShamPay', status: 'Completed', batchId: 'BTH-003' },
+        { id: 7, orderNumber: 'ORD-2025-007', date: '2025-01-12', totalAmount: 175.50, sellerPayment: 0, deliveryPayment: 0, commission: 26.33, paymentMethod: 'Cash', status: 'Completed', batchId: 'N/A' },
+        { id: 8, orderNumber: 'ORD-2025-008', date: '2025-01-12', totalAmount: 350.00, sellerPayment: 250.50, deliveryPayment: 47.00, commission: 52.50, paymentMethod: 'ShamPay', status: 'Completed', batchId: 'BTH-002' },
+        { id: 9, orderNumber: 'ORD-2025-009', date: '2025-01-11', totalAmount: 125.75, sellerPayment: 0, deliveryPayment: 0, commission: 18.86, paymentMethod: 'Cash', status: 'Completed', batchId: 'N/A' },
+        { id: 10, orderNumber: 'ORD-2025-010', date: '2025-01-11', totalAmount: 95.00, sellerPayment: 68.05, deliveryPayment: 12.70, commission: 14.25, paymentMethod: 'ShamPay', status: 'Completed', batchId: 'BTH-002' },
         // Additional sample data for different months and years
-        { id: 11, orderNumber: 'ORD-2024-011', date: '2024-12-28', totalAmount: 199.99, sellerPayment: 143.19, deliveryPayment: 26.80, commission: 29.99, paymentMethod: 'ShamPay', status: 'Paid', batchId: 'BTH-004' },
-        { id: 12, orderNumber: 'ORD-2024-012', date: '2024-12-25', totalAmount: 89.50, sellerPayment: 0, deliveryPayment: 0, commission: 13.43, paymentMethod: 'Cash', status: 'Commission Only', batchId: 'N/A' },
-        { id: 13, orderNumber: 'ORD-2025-013', date: '2025-02-01', totalAmount: 145.00, sellerPayment: 103.85, deliveryPayment: 19.40, commission: 21.75, paymentMethod: 'ShamPay', status: 'Paid', batchId: 'BTH-005' },
-        { id: 14, orderNumber: 'ORD-2025-014', date: '2025-02-03', totalAmount: 267.80, sellerPayment: 0, deliveryPayment: 0, commission: 40.17, paymentMethod: 'Cash', status: 'Commission Only', batchId: 'N/A' }
-    ])
-
-    // Sample payment batches for tracking
-    const [paymentBatches] = useState([
-        { id: 'BTH-001', date: '2025-01-15', totalSellerPayments: 269.10, totalDeliveryPayments: 50.00, ordersCount: 2, status: 'Completed' },
-        { id: 'BTH-002', date: '2025-01-13', totalSellerPayments: 383.04, totalDeliveryPayments: 71.70, ordersCount: 3, status: 'Completed' },
-        { id: 'BTH-003', date: '2025-01-13', totalSellerPayments: 157.60, totalDeliveryPayments: 29.40, ordersCount: 1, status: 'Pending' },
-        { id: 'BTH-004', date: '2024-12-28', totalSellerPayments: 143.19, totalDeliveryPayments: 26.80, ordersCount: 1, status: 'Completed' },
-        { id: 'BTH-005', date: '2025-02-01', totalSellerPayments: 103.85, totalDeliveryPayments: 19.40, ordersCount: 1, status: 'Completed' }
+        { id: 11, orderNumber: 'ORD-2024-011', date: '2024-12-28', totalAmount: 199.99, sellerPayment: 143.19, deliveryPayment: 26.80, commission: 29.99, paymentMethod: 'ShamPay', status: 'Completed', batchId: 'BTH-004' },
+        { id: 12, orderNumber: 'ORD-2024-012', date: '2024-12-25', totalAmount: 89.50, sellerPayment: 0, deliveryPayment: 0, commission: 13.43, paymentMethod: 'Cash', status: 'Completed', batchId: 'N/A' },
+        { id: 13, orderNumber: 'ORD-2025-013', date: '2025-02-01', totalAmount: 145.00, sellerPayment: 103.85, deliveryPayment: 19.40, commission: 21.75, paymentMethod: 'ShamPay', status: 'Completed', batchId: 'BTH-005' },
+        { id: 14, orderNumber: 'ORD-2025-014', date: '2025-02-03', totalAmount: 267.80, sellerPayment: 0, deliveryPayment: 0, commission: 40.17, paymentMethod: 'Cash', status: 'Completed', batchId: 'N/A' }
     ])
 
     const [filters, setFilters] = useState({
         dateRange: 'all',
         paymentMethod: 'all',
-        status: 'all',
         search: '',
         timePeriod: 'all'
     })
 
     const [currentPage, setCurrentPage] = useState(1)
     const [itemsPerPage] = useState(10)
-    const [activeTab, setActiveTab] = useState('payments')
 
     // Helper function to get week number
     const getWeekNumber = (date) => {
@@ -68,7 +57,6 @@ const AccountantPaymentReports = () => {
             payment.batchId.toLowerCase().includes(filters.search.toLowerCase())
 
         const matchesPaymentMethod = filters.paymentMethod === 'all' || payment.paymentMethod === filters.paymentMethod
-        const matchesStatus = filters.status === 'all' || payment.status === filters.status
 
         // Date/time period filtering
         let matchesTimePeriod = true
@@ -108,7 +96,7 @@ const AccountantPaymentReports = () => {
             }
         }
 
-        return matchesSearch && matchesPaymentMethod && matchesStatus && matchesTimePeriod
+        return matchesSearch && matchesPaymentMethod && matchesTimePeriod
     })
 
     // Calculate summary statistics based on filtered data
@@ -118,49 +106,13 @@ const AccountantPaymentReports = () => {
         totalCommissions: filteredPayments.reduce((sum, payment) => sum + payment.commission, 0),
         totalSiteIncome: filteredPayments.reduce((sum, payment) => sum + payment.commission, 0), // Only commissions count as site income
         shamPayTransactions: filteredPayments.filter(payment => payment.paymentMethod === 'ShamPay').length,
-        cashTransactions: filteredPayments.filter(payment => payment.paymentMethod === 'Cash').length,
-        pendingPayments: filteredPayments.filter(payment => payment.status === 'Pending').reduce((sum, payment) => sum + payment.sellerPayment + payment.deliveryPayment, 0),
-        processedPayments: filteredPayments.filter(payment => payment.status === 'Paid').reduce((sum, payment) => sum + payment.sellerPayment + payment.deliveryPayment, 0)
+        cashTransactions: filteredPayments.filter(payment => payment.paymentMethod === 'Cash').length
     }
 
     // Pagination
     const totalPages = Math.ceil(filteredPayments.length / itemsPerPage)
     const startIndex = (currentPage - 1) * itemsPerPage
     const paginatedPayments = filteredPayments.slice(startIndex, startIndex + itemsPerPage)
-
-    // Filter batches based on time period
-    const filteredBatches = paymentBatches.filter(batch => {
-        if (filters.timePeriod === 'all') return true
-
-        const currentDate = new Date()
-        const batchDate = new Date(batch.date)
-
-        switch (filters.timePeriod) {
-            case 'this-week':
-                const currentWeek = getWeekNumber(currentDate)
-                const batchWeek = getWeekNumber(batchDate)
-                return currentWeek === batchWeek
-            case 'this-month':
-                const currentMonth = getMonth(currentDate)
-                const batchMonth = getMonth(batchDate)
-                return currentMonth === batchMonth
-            case 'this-year':
-                const currentYear = getYear(currentDate)
-                const batchYear = getYear(batchDate)
-                return currentYear === batchYear
-            case 'last-month':
-                const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
-                const lastMonthStr = getMonth(lastMonth)
-                const batchMonthStr = getMonth(batchDate)
-                return lastMonthStr === batchMonthStr
-            case 'last-year':
-                const lastYear = (currentDate.getFullYear() - 1).toString()
-                const batchYearStr = getYear(batchDate)
-                return lastYear === batchYearStr
-            default:
-                return true
-        }
-    })
 
     const handleFilterChange = (filterName, value) => {
         setFilters(prev => ({
@@ -336,24 +288,6 @@ const AccountantPaymentReports = () => {
                 </div>
             </div>
 
-            {/* Tabs */}
-            <div className="tabs-container">
-                <div className="tabs">
-                    <button
-                        className={`tab ${activeTab === 'payments' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('payments')}
-                    >
-                        Payment Details
-                    </button>
-                    <button
-                        className={`tab ${activeTab === 'batches' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('batches')}
-                    >
-                        Payment Batches
-                    </button>
-                </div>
-            </div>
-
             {/* Filters */}
             <div className="filters-section">
                 <div className="filters-grid">
@@ -398,131 +332,71 @@ const AccountantPaymentReports = () => {
                             <option value="Cash">Cash</option>
                         </select>
                     </div>
-
-                    <div className="filter-group">
-                        <label>Status</label>
-                        <select
-                            value={filters.status}
-                            onChange={(e) => handleFilterChange('status', e.target.value)}
-                        >
-                            <option value="all">All Status</option>
-                            <option value="Paid">Paid</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Commission Only">Commission Only</option>
-                        </select>
-                    </div>
                 </div>
             </div>
 
-            {/* Content based on active tab */}
-            {activeTab === 'payments' ? (
-                <div className="payments-content">
-                    <div className="payments-table-container">
-                        <div className="table-header">
-                            <span>Order #</span>
-                            <span>Date</span>
-                            <span>Total Amount</span>
-                            <span>Seller Payment</span>
-                            <span>Delivery Payment</span>
-                            <span>Commission</span>
-                            <span>Payment Method</span>
-                            <span>Status</span>
-                            <span>Batch ID</span>
-                        </div>
-
-                        {paginatedPayments.map((payment) => (
-                            <div key={payment.id} className="table-row">
-                                <span className="order-number">{payment.orderNumber}</span>
-                                <span className="payment-date">{payment.date}</span>
-                                <span className="total-amount">{formatCurrency(payment.totalAmount)}</span>
-                                <span className="seller-payment">
-                                    {payment.sellerPayment > 0 ? formatCurrency(payment.sellerPayment) : 'N/A'}
-                                </span>
-                                <span className="delivery-payment">
-                                    {payment.deliveryPayment > 0 ? formatCurrency(payment.deliveryPayment) : 'N/A'}
-                                </span>
-                                <span className="commission">{formatCurrency(payment.commission)}</span>
-                                <span className={`payment-method ${payment.paymentMethod.toLowerCase()}`}>
-                                    {payment.paymentMethod}
-                                </span>
-                                <span className={`status ${payment.status.toLowerCase().replace(' ', '-')}`}>
-                                    {payment.status}
-                                </span>
-                                <span className="batch-id">{payment.batchId}</span>
-                            </div>
-                        ))}
+            {/* Payments Content */}
+            <div className="payments-content">
+                <div className="payments-table-container">
+                    <div className="table-header">
+                        <span>Order #</span>
+                        <span>Date</span>
+                        <span>Total Amount</span>
+                        <span>Seller Payment</span>
+                        <span>Delivery Payment</span>
+                        <span>Commission</span>
+                        <span>Payment Method</span>
+                        <span>Status</span>
+                        <span>Batch ID</span>
                     </div>
 
-                    {/* Pagination */}
-                    {totalPages > 1 && (
-                        <div className="pagination">
-                            <button
-                                className="pagination-btn"
-                                disabled={currentPage === 1}
-                                onClick={() => setCurrentPage(currentPage - 1)}
-                            >
-                                Previous
-                            </button>
-
-                            <div className="pagination-info">
-                                Page {currentPage} of {totalPages} ({filteredPayments.length} total payments)
-                            </div>
-
-                            <button
-                                className="pagination-btn"
-                                disabled={currentPage === totalPages}
-                                onClick={() => setCurrentPage(currentPage + 1)}
-                            >
-                                Next
-                            </button>
+                    {paginatedPayments.map((payment) => (
+                        <div key={payment.id} className="table-row">
+                            <span className="order-number">{payment.orderNumber}</span>
+                            <span className="payment-date">{payment.date}</span>
+                            <span className="total-amount">{formatCurrency(payment.totalAmount)}</span>
+                            <span className="seller-payment">
+                                {payment.sellerPayment > 0 ? formatCurrency(payment.sellerPayment) : 'N/A'}
+                            </span>
+                            <span className="delivery-payment">
+                                {payment.deliveryPayment > 0 ? formatCurrency(payment.deliveryPayment) : 'N/A'}
+                            </span>
+                            <span className="commission">{formatCurrency(payment.commission)}</span>
+                            <span className={`payment-method ${payment.paymentMethod.toLowerCase()}`}>
+                                {payment.paymentMethod}
+                            </span>
+                            <span className={`status ${payment.status.toLowerCase().replace(' ', '-')}`}>
+                                {payment.status}
+                            </span>
+                            <span className="batch-id">{payment.batchId}</span>
                         </div>
-                    )}
+                    ))}
                 </div>
-            ) : (
-                <div className="batches-content">
-                    <div className="batches-table-container">
-                        <div className="table-header">
-                            <span>Batch ID</span>
-                            <span>Date</span>
-                            <span>Orders Count</span>
-                            <span>Seller Payments</span>
-                            <span>Delivery Payments</span>
-                            <span>Total Paid</span>
-                            <span>Status</span>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                    <div className="pagination">
+                        <button
+                            className="pagination-btn"
+                            disabled={currentPage === 1}
+                            onClick={() => setCurrentPage(currentPage - 1)}
+                        >
+                            Previous
+                        </button>
+
+                        <div className="pagination-info">
+                            Page {currentPage} of {totalPages} ({filteredPayments.length} total payments)
                         </div>
 
-                        {filteredBatches.map((batch) => (
-                            <div key={batch.id} className="table-row">
-                                <span className="batch-id">{batch.id}</span>
-                                <span className="batch-date">{batch.date}</span>
-                                <span className="orders-count">{batch.ordersCount}</span>
-                                <span className="seller-payments">{formatCurrency(batch.totalSellerPayments)}</span>
-                                <span className="delivery-payments">{formatCurrency(batch.totalDeliveryPayments)}</span>
-                                <span className="total-paid">{formatCurrency(batch.totalSellerPayments + batch.totalDeliveryPayments)}</span>
-                                <span className={`status ${batch.status.toLowerCase()}`}>
-                                    {batch.status}
-                                </span>
-                            </div>
-                        ))}
+                        <button
+                            className="pagination-btn"
+                            disabled={currentPage === totalPages}
+                            onClick={() => setCurrentPage(currentPage + 1)}
+                        >
+                            Next
+                        </button>
                     </div>
-                </div>
-            )}
-
-            {/* Income Explanation */}
-            <div className="income-explanation">
-                <div className="explanation-icon">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <div className="explanation-content">
-                    <h4>Site Income Calculation</h4>
-                    <div className="explanation-text">
-                        <p><strong>ShamPay Transactions:</strong> Customer pays us → We pay sellers & drivers → Site income = Commission only</p>
-                        <p><strong>Cash Transactions:</strong> Customer pays seller/driver directly → We pay nothing → Site income = Commission only</p>
-                        <p><strong>Tax Reporting:</strong> Only commission amounts count as taxable income for the site, regardless of payment method.</p>
-                    </div>
-                </div>
+                )}
             </div>
         </div>
     )
