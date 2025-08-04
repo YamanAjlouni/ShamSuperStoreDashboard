@@ -51,6 +51,7 @@ const SettingsManagement = () => {
                     },
                     business: {
                         commissionRate: 8.5,
+                        taxRate: 25,
                         commissionIncluded: false,
                         shippingEnabled: true,
                         freeShippingThreshold: 50,
@@ -197,15 +198,6 @@ const SettingsManagement = () => {
                             </svg>
                             Notifications
                         </button>
-                        {/* <button
-                            className={`nav-item ${activeTab === 'security' ? 'active' : ''}`}
-                            onClick={() => setActiveTab('security')}
-                        >
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
-                            Security
-                        </button> */}
                         <button
                             className={`nav-item ${activeTab === 'business' ? 'active' : ''}`}
                             onClick={() => setActiveTab('business')}
@@ -215,24 +207,6 @@ const SettingsManagement = () => {
                             </svg>
                             Business
                         </button>
-                        {/* <button
-                            className={`nav-item ${activeTab === 'integrations' ? 'active' : ''}`}
-                            onClick={() => setActiveTab('integrations')}
-                        >
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            Integrations
-                        </button> */}
-                        {/* <button
-                            className={`nav-item ${activeTab === 'appearance' ? 'active' : ''}`}
-                            onClick={() => setActiveTab('appearance')}
-                        >
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4 4 4 0 004-4V5z" />
-                            </svg>
-                            Appearance
-                        </button> */}
                     </nav>
                 </div>
 
@@ -302,21 +276,6 @@ const SettingsManagement = () => {
                                 )}
 
                                 <div className="form-row">
-                                    {/* <div className="form-col">
-                                        {renderFormGroup(
-                                            'Timezone',
-                                            <select
-                                                value={settings.general?.timezone || 'America/New_York'}
-                                                onChange={(e) => handleInputChange('general', 'timezone', e.target.value)}
-                                            >
-                                                <option value="America/New_York">Eastern Time</option>
-                                                <option value="America/Chicago">Central Time</option>
-                                                <option value="America/Denver">Mountain Time</option>
-                                                <option value="America/Los_Angeles">Pacific Time</option>
-                                                <option value="UTC">UTC</option>
-                                            </select>
-                                        )}
-                                    </div> */}
                                     <div className="form-col">
                                         {renderFormGroup(
                                             'Language',
@@ -395,7 +354,6 @@ const SettingsManagement = () => {
                                 <div className="toggle-section">
                                     <h3>Communication Preferences</h3>
                                     {renderToggle('notifications', 'emailNotifications', 'Email Notifications', 'Receive notifications via email')}
-                                    {/* {renderToggle('notifications', 'smsNotifications', 'SMS Notifications', 'Receive notifications via text message')} */}
                                     {renderToggle('notifications', 'pushNotifications', 'Push Notifications', 'Receive browser push notifications')}
                                 </div>
 
@@ -440,107 +398,6 @@ const SettingsManagement = () => {
                         </div>
                     )}
 
-                    {activeTab === 'security' && (
-                        <div className="settings-section">
-                            <div className="section-header">
-                                <h2>Security Settings</h2>
-                                <p>Configure security policies and authentication settings</p>
-                            </div>
-                            <div className="settings-form">
-                                <div className="toggle-section">
-                                    <h3>Authentication</h3>
-                                    {renderToggle('security', 'twoFactorAuth', 'Two-Factor Authentication', 'Require 2FA for admin accounts')}
-                                    {renderToggle('security', 'allowMultipleSessions', 'Multiple Sessions', 'Allow users to be logged in from multiple devices')}
-                                    {renderToggle('security', 'forcePasswordChange', 'Force Password Change', 'Require password change on first login')}
-                                </div>
-
-                                <div className="form-row">
-                                    <div className="form-col">
-                                        {renderFormGroup(
-                                            'Minimum Password Length',
-                                            <input
-                                                type="number"
-                                                min="6"
-                                                max="32"
-                                                value={settings.security?.passwordMinLength || 8}
-                                                onChange={(e) => handleInputChange('security', 'passwordMinLength', parseInt(e.target.value))}
-                                            />
-                                        )}
-                                    </div>
-                                    <div className="form-col">
-                                        {renderFormGroup(
-                                            'Session Timeout (minutes)',
-                                            <input
-                                                type="number"
-                                                min="5"
-                                                max="1440"
-                                                value={settings.security?.sessionTimeout || 30}
-                                                onChange={(e) => handleInputChange('security', 'sessionTimeout', parseInt(e.target.value))}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className="toggle-section">
-                                    <h3>Password Requirements</h3>
-                                    {renderToggle('security', 'passwordRequireUppercase', 'Require Uppercase', 'Passwords must contain uppercase letters')}
-                                    {renderToggle('security', 'passwordRequireNumbers', 'Require Numbers', 'Passwords must contain numbers')}
-                                    {renderToggle('security', 'passwordRequireSymbols', 'Require Symbols', 'Passwords must contain special characters')}
-                                </div>
-
-                                <div className="form-row">
-                                    <div className="form-col">
-                                        {renderFormGroup(
-                                            'Max Login Attempts',
-                                            <input
-                                                type="number"
-                                                min="3"
-                                                max="10"
-                                                value={settings.security?.maxLoginAttempts || 5}
-                                                onChange={(e) => handleInputChange('security', 'maxLoginAttempts', parseInt(e.target.value))}
-                                            />
-                                        )}
-                                    </div>
-                                    <div className="form-col">
-                                        {renderFormGroup(
-                                            'Lockout Duration (minutes)',
-                                            <input
-                                                type="number"
-                                                min="5"
-                                                max="60"
-                                                value={settings.security?.lockoutDuration || 15}
-                                                onChange={(e) => handleInputChange('security', 'lockoutDuration', parseInt(e.target.value))}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className="form-actions">
-                                    <button
-                                        className="btn btn--secondary"
-                                        onClick={() => handleReset('security')}
-                                    >
-                                        Reset to Default
-                                    </button>
-                                    <button
-                                        className="btn btn--primary"
-                                        onClick={() => handleSave('security')}
-                                        disabled={saving === 'security'}
-                                    >
-                                        {saving === 'security' ? (
-                                            <>
-                                                <div className="btn-spinner"></div>
-                                                Saving...
-                                            </>
-                                        ) : (
-                                            'Save Changes'
-                                        )}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
                     {activeTab === 'business' && (
                         <div className="settings-section">
                             <div className="section-header">
@@ -562,6 +419,23 @@ const SettingsManagement = () => {
                                             />
                                         )}
                                     </div>
+                                    <div className="form-col">
+                                        {renderFormGroup(
+                                            'Tax Rate (%)',
+                                            <input
+                                                type="number"
+                                                step="0.1"
+                                                min="0"
+                                                max="100"
+                                                value={settings.business?.taxRate || 25}
+                                                onChange={(e) => handleInputChange('business', 'taxRate', parseFloat(e.target.value))}
+                                            />,
+                                            'Tax rate applied to all transactions'
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="form-row">
                                     <div className="form-col">
                                         <div className="form-group">
                                             <label className="form-label">Commission Configuration</label>
@@ -687,246 +561,6 @@ const SettingsManagement = () => {
                                         disabled={saving === 'business'}
                                     >
                                         {saving === 'business' ? (
-                                            <>
-                                                <div className="btn-spinner"></div>
-                                                Saving...
-                                            </>
-                                        ) : (
-                                            'Save Changes'
-                                        )}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {activeTab === 'integrations' && (
-                        <div className="settings-section">
-                            <div className="section-header">
-                                <h2>Integrations</h2>
-                                <p>Configure third-party services and API integrations</p>
-                            </div>
-                            <div className="settings-form">
-                                <div className="toggle-section">
-                                    <h3>Payment Gateways</h3>
-                                    {renderToggle('integrations', 'stripeEnabled', 'Stripe Integration', 'Enable Stripe payment processing')}
-                                    {renderToggle('integrations', 'paypalEnabled', 'PayPal Integration', 'Enable PayPal payment processing')}
-                                </div>
-
-                                <div className="toggle-section">
-                                    <h3>Analytics & Marketing</h3>
-                                    {renderFormGroup(
-                                        'Google Analytics ID',
-                                        <input
-                                            type="text"
-                                            value={settings.integrations?.googleAnalyticsId || ''}
-                                            onChange={(e) => handleInputChange('integrations', 'googleAnalyticsId', e.target.value)}
-                                            placeholder="UA-XXXXXXXX-X or G-XXXXXXXXXX"
-                                        />
-                                    )}
-
-                                    {renderFormGroup(
-                                        'Facebook Pixel ID',
-                                        <input
-                                            type="text"
-                                            value={settings.integrations?.facebookPixelId || ''}
-                                            onChange={(e) => handleInputChange('integrations', 'facebookPixelId', e.target.value)}
-                                            placeholder="1234567890123456"
-                                        />
-                                    )}
-
-                                    {renderFormGroup(
-                                        'Mailchimp API Key',
-                                        <input
-                                            type="password"
-                                            value={settings.integrations?.mailchimpApiKey || ''}
-                                            onChange={(e) => handleInputChange('integrations', 'mailchimpApiKey', e.target.value)}
-                                            placeholder="Enter your Mailchimp API key"
-                                        />
-                                    )}
-                                </div>
-
-                                <div className="toggle-section">
-                                    <h3>Communication & Notifications</h3>
-                                    {renderToggle('integrations', 'twilioEnabled', 'Twilio SMS', 'Enable SMS notifications via Twilio')}
-
-                                    {renderFormGroup(
-                                        'Slack Webhook URL',
-                                        <input
-                                            type="url"
-                                            value={settings.integrations?.slackWebhook || ''}
-                                            onChange={(e) => handleInputChange('integrations', 'slackWebhook', e.target.value)}
-                                            placeholder="https://hooks.slack.com/services/..."
-                                        />
-                                    )}
-                                </div>
-
-                                <div className="toggle-section">
-                                    <h3>API & Automation</h3>
-                                    {renderToggle('integrations', 'webhooksEnabled', 'Webhooks', 'Enable webhook notifications')}
-                                    {renderToggle('integrations', 'zapierEnabled', 'Zapier Integration', 'Enable Zapier automation')}
-
-                                    {renderFormGroup(
-                                        'API Rate Limit (requests/hour)',
-                                        <input
-                                            type="number"
-                                            min="100"
-                                            max="10000"
-                                            value={settings.integrations?.apiRateLimit || 1000}
-                                            onChange={(e) => handleInputChange('integrations', 'apiRateLimit', parseInt(e.target.value))}
-                                        />
-                                    )}
-                                </div>
-
-                                <div className="form-actions">
-                                    <button
-                                        className="btn btn--secondary"
-                                        onClick={() => handleReset('integrations')}
-                                    >
-                                        Reset to Default
-                                    </button>
-                                    <button
-                                        className="btn btn--primary"
-                                        onClick={() => handleSave('integrations')}
-                                        disabled={saving === 'integrations'}
-                                    >
-                                        {saving === 'integrations' ? (
-                                            <>
-                                                <div className="btn-spinner"></div>
-                                                Saving...
-                                            </>
-                                        ) : (
-                                            'Save Changes'
-                                        )}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {activeTab === 'appearance' && (
-                        <div className="settings-section">
-                            <div className="section-header">
-                                <h2>Appearance Settings</h2>
-                                <p>Customize the look and feel of your application</p>
-                            </div>
-                            <div className="settings-form">
-                                <div className="form-row">
-                                    <div className="form-col">
-                                        {renderFormGroup(
-                                            'Theme',
-                                            <select
-                                                value={settings.appearance?.theme || 'light'}
-                                                onChange={(e) => handleInputChange('appearance', 'theme', e.target.value)}
-                                            >
-                                                <option value="light">Light</option>
-                                                <option value="dark">Dark</option>
-                                                <option value="auto">Auto (System)</option>
-                                            </select>
-                                        )}
-                                    </div>
-                                    <div className="form-col">
-                                        <div className="form-group">
-                                            <label className="form-label">Display Options</label>
-                                            {renderToggle('appearance', 'compactMode', 'Compact Mode', 'Use smaller spacing and components')}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="form-row">
-                                    <div className="form-col">
-                                        {renderFormGroup(
-                                            'Primary Color',
-                                            <div className="color-input-group">
-                                                <input
-                                                    type="color"
-                                                    value={settings.appearance?.primaryColor || '#4267B2'}
-                                                    onChange={(e) => handleInputChange('appearance', 'primaryColor', e.target.value)}
-                                                />
-                                                <input
-                                                    type="text"
-                                                    value={settings.appearance?.primaryColor || '#4267B2'}
-                                                    onChange={(e) => handleInputChange('appearance', 'primaryColor', e.target.value)}
-                                                    placeholder="#4267B2"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="form-col">
-                                        {renderFormGroup(
-                                            'Secondary Color',
-                                            <div className="color-input-group">
-                                                <input
-                                                    type="color"
-                                                    value={settings.appearance?.secondaryColor || '#CE802D'}
-                                                    onChange={(e) => handleInputChange('appearance', 'secondaryColor', e.target.value)}
-                                                />
-                                                <input
-                                                    type="text"
-                                                    value={settings.appearance?.secondaryColor || '#CE802D'}
-                                                    onChange={(e) => handleInputChange('appearance', 'secondaryColor', e.target.value)}
-                                                    placeholder="#CE802D"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className="form-row">
-                                    <div className="form-col">
-                                        {renderFormGroup(
-                                            'Logo URL',
-                                            <input
-                                                type="url"
-                                                value={settings.appearance?.logoUrl || ''}
-                                                onChange={(e) => handleInputChange('appearance', 'logoUrl', e.target.value)}
-                                                placeholder="https://example.com/logo.png"
-                                            />
-                                        )}
-                                    </div>
-                                    <div className="form-col">
-                                        {renderFormGroup(
-                                            'Favicon URL',
-                                            <input
-                                                type="url"
-                                                value={settings.appearance?.faviconUrl || ''}
-                                                onChange={(e) => handleInputChange('appearance', 'faviconUrl', e.target.value)}
-                                                placeholder="https://example.com/favicon.ico"
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className="toggle-section">
-                                    <h3>Additional Options</h3>
-                                    {renderToggle('appearance', 'showBranding', 'Show Branding', 'Display your branding throughout the interface')}
-                                    {renderToggle('appearance', 'animationsEnabled', 'Enable Animations', 'Use smooth animations and transitions')}
-                                </div>
-
-                                {renderFormGroup(
-                                    'Custom CSS',
-                                    <textarea
-                                        value={settings.appearance?.customCSS || ''}
-                                        onChange={(e) => handleInputChange('appearance', 'customCSS', e.target.value)}
-                                        placeholder="/* Add your custom CSS here */"
-                                        rows={6}
-                                    />,
-                                    'Add custom CSS to override default styles'
-                                )}
-
-                                <div className="form-actions">
-                                    <button
-                                        className="btn btn--secondary"
-                                        onClick={() => handleReset('appearance')}
-                                    >
-                                        Reset to Default
-                                    </button>
-                                    <button
-                                        className="btn btn--primary"
-                                        onClick={() => handleSave('appearance')}
-                                        disabled={saving === 'appearance'}
-                                    >
-                                        {saving === 'appearance' ? (
                                             <>
                                                 <div className="btn-spinner"></div>
                                                 Saving...
