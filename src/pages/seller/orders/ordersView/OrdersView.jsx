@@ -6,7 +6,7 @@ import {
     Phone, CreditCard, Truck, Clock, CheckCircle,
     XCircle, AlertCircle, PlayCircle, FileText,
     Edit, MessageSquare, Navigation, HelpCircle,
-    Send, AlertTriangle
+    Send, AlertTriangle, RefreshCw, RotateCcw
 } from 'lucide-react'
 import './OrdersView.scss'
 import MapModal from '../../../../components/mapModal/MapModal'
@@ -20,6 +20,8 @@ const OrdersView = () => {
     const [orderNotes, setOrderNotes] = useState('')
     const [newNote, setNewNote] = useState('')
     const [showMapModal, setShowMapModal] = useState(false)
+    const [showRefundModal, setShowRefundModal] = useState(false)
+    const [refundAction, setRefundAction] = useState('')
 
     // Customer Service Ticket State
     const [ticketForm, setTicketForm] = useState({
@@ -31,11 +33,11 @@ const OrdersView = () => {
     const [isSubmittingTicket, setIsSubmittingTicket] = useState(false)
     const [existingTickets, setExistingTickets] = useState([])
 
-    // Mock order data
+    // Mock order data - updated to include refund information
     const mockOrderData = {
         id: 1,
         orderNumber: 'ORD-001',
-        status: 'processing', // Changed to processing to show the directions button
+        status: 'processing',
         items: [
             {
                 id: 1,
@@ -139,7 +141,34 @@ const OrdersView = () => {
                 date: '2025-06-20T11:15:00Z',
                 type: 'seller'
             }
-        ]
+        ],
+        // New refund information
+        refund: {
+            hasRefundRequest: true,
+            adminRefunded: false,
+            requests: [
+                {
+                    id: 'REF-001',
+                    status: 'pending',
+                    reason: 'damaged_product',
+                    amount: 199.98,
+                    requestDate: '2025-06-23T14:30:00Z',
+                    description: 'Product arrived with scratches on the screen',
+                    items: [
+                        { name: 'Wireless Bluetooth Headphones', quantity: 2 }
+                    ]
+                }
+            ],
+            history: [
+                {
+                    id: 1,
+                    action: 'refund_requested',
+                    date: '2025-06-23T14:30:00Z',
+                    description: 'Customer requested refund for damaged product',
+                    amount: 199.98
+                }
+            ]
+        }
     }
 
     // Mock existing tickets data
@@ -177,6 +206,23 @@ const OrdersView = () => {
         )
     }
 
+    const getRefundStatusBadge = (status) => {
+        const statusConfig = {
+            pending: { class: 'refund-status--pending', icon: <Clock size={12} />, text: 'Pending' },
+            approved: { class: 'refund-status--approved', icon: <CheckCircle size={12} />, text: 'Approved' },
+            rejected: { class: 'refund-status--rejected', icon: <XCircle size={12} />, text: 'Rejected' },
+            processing: { class: 'refund-status--processing', icon: <RefreshCw size={12} />, text: 'Processing' }
+        }
+
+        const config = statusConfig[status] || statusConfig.pending
+        return (
+            <span className={`refund-status-badge ${config.class}`}>
+                {config.icon}
+                {config.text}
+            </span>
+        )
+    }
+
     const handleAction = (action) => {
         setActionType(action)
         setShowActionModal(true)
@@ -194,6 +240,58 @@ const OrdersView = () => {
 
         setShowActionModal(false)
         setActionType('')
+    }
+
+    const handleRefundAction = (action) => {
+        setRefundAction(action)
+        setShowRefundModal(true)
+    }
+
+    const confirmRefundAction = () => {
+        console.log(`${refundAction} refund for order:`, orderData.orderNumber)
+
+        // Update refund status
+        if (refundAction === 'approve') {
+            setOrderData(prev => ({
+                ...prev,
+                refund: {
+                    ...prev.refund,
+                    requests: prev.refund.requests.map(req => ({ ...req, status: 'approved' })),
+                    adminRefunded: true,
+                    history: [
+                        ...prev.refund.history,
+                        {
+                            id: prev.refund.history.length + 1,
+                            action: 'refund_approved',
+                            date: new Date().toISOString(),
+                            description: 'Refund approved by seller',
+                            amount: prev.refund.requests[0].amount
+                        }
+                    ]
+                }
+            }))
+        } else if (refundAction === 'reject') {
+            setOrderData(prev => ({
+                ...prev,
+                refund: {
+                    ...prev.refund,
+                    requests: prev.refund.requests.map(req => ({ ...req, status: 'rejected' })),
+                    history: [
+                        ...prev.refund.history,
+                        {
+                            id: prev.refund.history.length + 1,
+                            action: 'refund_rejected',
+                            date: new Date().toISOString(),
+                            description: 'Refund rejected by seller',
+                            amount: prev.refund.requests[0].amount
+                        }
+                    ]
+                }
+            }))
+        }
+
+        setShowRefundModal(false)
+        setRefundAction('')
     }
 
     const addNote = () => {
@@ -539,6 +637,108 @@ const OrdersView = () => {
 
                 {/* Right Column - Sidebar */}
                 <div className="order-sidebar">
+                    {/* Refund Information Section */}
+                    {orderData.refund && (orderData.refund.hasRefundRequest || orderData.refund.adminRefunded) && (
+                        <div className="section refund-info-section">
+                            <h3>
+                                <RotateCcw size={18} />
+                                Refund Information
+                            </h3>
+                            <div className="refund-content">
+                                {/* Refund Status */}
+                                <div className="refund-status">
+                                    {orderData.refund.adminRefunded ? (
+                                        <div className="refund-alert refund-alert--completed">
+                                            <CheckCircle size={16} />
+                                            <span>Order has been refunded</span>
+                                        </div>
+                                    ) : orderData.refund.hasRefundRequest ? (
+                                        <div className="refund-alert refund-alert--pending">
+                                            <AlertCircle size={16} />
+                                            <span>Customer has requested a refund</span>
+                                        </div>
+                                    ) : null}
+                                </div>
+
+                                {/* Refund Requests */}
+                                {orderData.refund.requests && orderData.refund.requests.length > 0 && (
+                                    <div className="refund-requests">
+                                        <h4>Refund Requests</h4>
+                                        {orderData.refund.requests.map(request => (
+                                            <div key={request.id} className="refund-request">
+                                                <div className="request-header">
+                                                    <span className="request-id">#{request.id}</span>
+                                                    {getRefundStatusBadge(request.status)}
+                                                </div>
+                                                <div className="request-details">
+                                                    <div className="request-item">
+                                                        <span className="label">Amount:</span>
+                                                        <span className="value">${request.amount.toFixed(2)}</span>
+                                                    </div>
+                                                    <div className="request-item">
+                                                        <span className="label">Reason:</span>
+                                                        <span className="value">{request.reason.replace('_', ' ')}</span>
+                                                    </div>
+                                                    <div className="request-item">
+                                                        <span className="label">Date:</span>
+                                                        <span className="value">{new Date(request.requestDate).toLocaleDateString()}</span>
+                                                    </div>
+                                                    {request.description && (
+                                                        <div className="request-description">
+                                                            {request.description}
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                {/* Refund Actions */}
+                                                {request.status === 'pending' && (
+                                                    <div className="refund-actions">
+                                                        <button
+                                                            className="refund-btn refund-btn--approve"
+                                                            onClick={() => handleRefundAction('approve')}
+                                                        >
+                                                            <Check size={14} />
+                                                            Approve
+                                                        </button>
+                                                        <button
+                                                            className="refund-btn refund-btn--reject"
+                                                            onClick={() => handleRefundAction('reject')}
+                                                        >
+                                                            <X size={14} />
+                                                            Reject
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* Refund History */}
+                                {orderData.refund.history && orderData.refund.history.length > 0 && (
+                                    <div className="refund-history">
+                                        <h4>Refund History</h4>
+                                        {orderData.refund.history.map(historyItem => (
+                                            <div key={historyItem.id} className="history-item">
+                                                <div className="history-description">{historyItem.description}</div>
+                                                <div className="history-meta">
+                                                    <span className="history-date">
+                                                        {new Date(historyItem.date).toLocaleDateString()}
+                                                    </span>
+                                                    {historyItem.amount && (
+                                                        <span className="history-amount">
+                                                            ${historyItem.amount.toFixed(2)}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
                     {/* Driver Information */}
                     {orderData.driver && (
                         <div className="section driver-info-section">
@@ -817,6 +1017,34 @@ const OrdersView = () => {
                                 onClick={confirmAction}
                             >
                                 {actionType === 'accept' ? 'Accept' : 'Reject'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Refund Action Modal */}
+            {showRefundModal && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <h3>Confirm {refundAction === 'approve' ? 'Approve' : 'Reject'} Refund</h3>
+                        <p>
+                            Are you sure you want to {refundAction} the refund request?
+                            {refundAction === 'approve' && ` Amount: $${orderData.refund.requests[0]?.amount.toFixed(2)}`}
+                            {refundAction === 'reject' && ' This action will permanently reject this refund request.'}
+                        </p>
+                        <div className="modal-actions">
+                            <button
+                                className="cancel-btn"
+                                onClick={() => setShowRefundModal(false)}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className={`confirm-btn ${refundAction}-btn`}
+                                onClick={confirmRefundAction}
+                            >
+                                {refundAction === 'approve' ? 'Approve' : 'Reject'}
                             </button>
                         </div>
                     </div>

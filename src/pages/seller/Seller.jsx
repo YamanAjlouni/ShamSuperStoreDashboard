@@ -16,6 +16,7 @@ import Settings from './settings/Settings'
 
 import './Seller.scss'
 import ProductDetails from './products/productDetails/ProductDetails'
+import Refund from './refund/Refund'
 
 const PlaceholderPage = ({ pageName }) => (
     <div className="page-placeholder">
@@ -122,14 +123,10 @@ const Seller = () => {
 
                         {/* Financial Management */}
                         <Route path="/payments" element={<Payments />} />
-                        <Route path="/refund" element={<PlaceholderPage pageName="Refund Management" />} />
+                        <Route path="/refund" element={<Refund />} />
 
                         {/* Settings & Configuration */}
                         <Route path="/settings" element={<Settings />} />
-
-                        {/* User Management */}
-                        <Route path="/profile" element={<PlaceholderPage pageName="User Profile" />} />
-                        <Route path="/account" element={<PlaceholderPage pageName="Account Settings" />} />
 
                         {/* Error Pages */}
                         <Route path="/404" element={<PlaceholderPage pageName="Page Not Found" />} />
