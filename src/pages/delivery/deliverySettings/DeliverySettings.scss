@@ -6,7 +6,6 @@
     flex-direction: column;
     padding: 1rem;
 
-    // Mobile-first approach
     @media (min-width: 768px) {
         padding: 1.5rem;
     }
@@ -145,7 +144,7 @@
                 cursor: pointer;
                 transition: $transition-all;
                 box-shadow: $shadow-sm;
-                min-height: 44px; // Touch target size
+                min-height: 44px;
 
                 @media (min-width: 768px) {
                     padding: 0.75rem 1.5rem;
@@ -242,7 +241,7 @@
                     text-align: center;
                     width: 100%;
                     position: relative;
-                    min-height: 44px; // Touch target size
+                    min-height: 44px;
                     border-radius: $radius-sm;
 
                     @media (min-width: 480px) {
@@ -353,7 +352,7 @@
         .settings-main {
             order: 1;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+            -webkit-overflow-scrolling: touch;
 
             @media (min-width: 1024px) {
                 order: 2;
@@ -452,7 +451,7 @@
                                 font-size: 0.8rem;
                                 cursor: pointer;
                                 transition: $transition-all;
-                                min-height: 44px; // Touch target
+                                min-height: 44px;
 
                                 @media (min-width: 768px) {
                                     padding: 0.5rem 1rem;
@@ -530,7 +529,6 @@
                     }
                 }
 
-                // Form Grid
                 .form-grid {
                     display: flex;
                     flex-direction: column;
@@ -574,8 +572,8 @@
                             background: $white;
                             font-size: 0.875rem;
                             transition: $transition-all;
-                            min-height: 44px; // Touch target
-                            -webkit-appearance: none; // Remove iOS styling
+                            min-height: 44px;
+                            appearance: none;
 
                             @media (min-width: 768px) {
                                 padding: 0.75rem;
@@ -604,7 +602,6 @@
                     }
                 }
 
-                // Documents Grid
                 .documents-grid {
                     display: flex;
                     flex-direction: column;
@@ -922,7 +919,6 @@
                     }
                 }
 
-                // License Plate Photo Section
                 .plate-photo-section {
                     padding: 1rem;
                     border-top: 1px solid $gray-200;
@@ -1030,7 +1026,7 @@
                             font-size: 0.8rem;
                             cursor: pointer;
                             transition: $transition-all;
-                            min-height: 44px; // Touch target
+                            min-height: 44px;
 
                             @media (min-width: 768px) {
                                 padding: 0.75rem 1.5rem;
