@@ -135,14 +135,12 @@ const WebsiteAdminSidebar = ({ isCollapsed, isMobile, isOpen, onClose }) => {
         localStorage.removeItem('isAuthenticated')
         localStorage.removeItem('userRole')
         navigate('/login')
-        // Close mobile sidebar after logout
         if (isMobile && onClose) {
             onClose()
         }
     }
 
     const handleLinkClick = () => {
-        // Close mobile sidebar when any link is clicked
         if (isMobile && onClose) {
             onClose()
         }

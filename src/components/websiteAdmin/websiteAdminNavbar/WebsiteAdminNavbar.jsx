@@ -11,7 +11,6 @@ const WebsiteAdminNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
     const profileRef = useRef(null)
     const notificationsRef = useRef(null)
 
-    // Sample notifications data for website admin
     const [notificationsList] = useState([
         {
             id: 1,
@@ -55,7 +54,6 @@ const WebsiteAdminNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
         }
     ])
 
-    // Close dropdowns when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (profileRef.current && !profileRef.current.contains(event.target)) {
@@ -70,7 +68,6 @@ const WebsiteAdminNavbar = ({ onToggleSidebar, isSidebarCollapsed }) => {
         return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
 
-    // Get current page name from location
     const getCurrentPageName = () => {
         const path = location.pathname
         if (path === '/websiteAdmin' || path === '/websiteAdmin/') return 'Website Dashboard'
