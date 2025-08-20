@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import logo from '../../assets/images/shamSuperStoreLogo.jpg'
 import './Login.scss';
 
@@ -12,6 +12,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,47 +28,70 @@ const Login = () => {
         setIsLoading(true);
         setError('');
 
+        // Basic validation
+        if (!formData.email.trim() || !formData.password.trim()) {
+            setError('Please fill in all required fields');
+            setIsLoading(false);
+            return;
+        }
+
+        if (!formData.email.includes('@')) {
+            setError('Please enter a valid email address');
+            setIsLoading(false);
+            return;
+        }
+
         setTimeout(() => {
             // Check credentials and route accordingly
             if (formData.email === 'seller@seller.seller' && formData.password === '123123') {
                 localStorage.setItem('userRole', 'seller');
                 localStorage.setItem('isAuthenticated', 'true');
+                if (rememberMe) localStorage.setItem('rememberUser', 'true');
                 navigate('/seller');
             } else if (formData.email === 'admin@admin.admin' && formData.password === '123123') {
                 localStorage.setItem('userRole', 'admin');
                 localStorage.setItem('isAuthenticated', 'true');
+                if (rememberMe) localStorage.setItem('rememberUser', 'true');
                 navigate('/admin');
             } else if (formData.email === 'delivery@delivery.delivery' && formData.password === '123123') {
                 localStorage.setItem('userRole', 'delivery');
                 localStorage.setItem('isAuthenticated', 'true');
+                if (rememberMe) localStorage.setItem('rememberUser', 'true');
                 navigate('/delivery');
             } else if (formData.email === 'admindelivery@admindelivery.admindelivery' && formData.password === '123123') {
                 localStorage.setItem('userRole', 'adminDelivery');
                 localStorage.setItem('isAuthenticated', 'true');
+                if (rememberMe) localStorage.setItem('rememberUser', 'true');
                 navigate('/adminDelivery');
             } else if (formData.email === 'websiteadmin@websiteadmin.websiteadmin' && formData.password === '123123') {
                 localStorage.setItem('userRole', 'websiteAdmin');
                 localStorage.setItem('isAuthenticated', 'true');
+                if (rememberMe) localStorage.setItem('rememberUser', 'true');
                 navigate('/websiteAdmin/intro-section');
             } else if (formData.email === 'customerservice@customerservice.customerservice' && formData.password === '123123') {
                 localStorage.setItem('userRole', 'customerService');
                 localStorage.setItem('isAuthenticated', 'true');
+                if (rememberMe) localStorage.setItem('rememberUser', 'true');
                 navigate('/customerService');
             } else if (formData.email === 'admincustomerservice@admincustomerservice.admincustomerservice' && formData.password === '123123') {
                 localStorage.setItem('userRole', 'adminCustomerService');
                 localStorage.setItem('isAuthenticated', 'true');
+                if (rememberMe) localStorage.setItem('rememberUser', 'true');
                 navigate('/adminCustomerService');
             } else if (formData.email === 'accountant@accountant.accountant' && formData.password === '123123') {
                 localStorage.setItem('userRole', 'accountant');
                 localStorage.setItem('isAuthenticated', 'true');
+                if (rememberMe) localStorage.setItem('rememberUser', 'true');
                 navigate('/accountant');
             } else {
-                setError('Invalid email or password');
+                setError('Invalid email or password. Please check your credentials and try again.');
             }
 
             setIsLoading(false);
-        }, 1500);
+        }, 1800);
     };
+
+
 
     return (
         <div className="login-container">
@@ -144,7 +168,11 @@ const Login = () => {
 
                     <div className="form-options">
                         <label className="checkbox-label">
-                            <input type="checkbox" />
+                            <input
+                                type="checkbox"
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)}
+                            />
                             <span className="checkmark"></span>
                             Remember me
                         </label>
@@ -166,6 +194,31 @@ const Login = () => {
                         )}
                     </button>
                 </form>
+
+                <div className="signup-section">
+                    <h4>New to our platform?</h4>
+                    <p>Join us as a partner</p>
+                    <div className="signup-buttons">
+                        <Link
+                            to="/SellerSignup"
+                            className="signup-btn seller-signup"
+                        >
+                            <svg className="signup-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                            Seller Signup
+                        </Link>
+                        <Link
+                            to="/DeliveryDriverSignup"
+                            className="signup-btn delivery-signup"
+                        >
+                            <svg className="signup-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                            </svg>
+                            Delivery Driver Signup
+                        </Link>
+                    </div>
+                </div>
 
                 <div className="login-footer">
                     <p>Don't have an account? <a href="#">Contact Administrator</a></p>

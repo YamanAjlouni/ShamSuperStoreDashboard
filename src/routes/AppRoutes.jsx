@@ -1,5 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Login from '../pages/login/Login'
+import SellerSignup from '../pages/login/sellerSignup/SellerSignup'
+import DeliveryDriverSignup from '../pages/login/deliveryDriverSignup/DeliveryDriverSignup'
 import Seller from '../pages/seller/Seller'
 import Admin from '../pages/admin/Admin'
 import Delivery from '../pages/delivery/Delivery'
@@ -15,8 +17,12 @@ const AppRoutes = () => {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'
     const userRole = localStorage.getItem('userRole')
 
-    // If not authenticated and not on login page, redirect to login
-    if (!isAuthenticated && location.pathname !== '/login') {
+    // Public routes that don't require authentication
+    const publicRoutes = ['/login', '/SellerSignup', '/DeliveryDriverSignup']
+    const isPublicRoute = publicRoutes.includes(location.pathname)
+
+    // If not authenticated and not on a public route, redirect to login
+    if (!isAuthenticated && !isPublicRoute) {
         return <Navigate to="/login" replace />
     }
 
@@ -34,7 +40,12 @@ const AppRoutes = () => {
 
     return (
         <Routes>
+            {/* Public Routes */}
             <Route path="/login" element={<Login />} />
+            <Route path="/SellerSignup" element={<SellerSignup />} />
+            <Route path="/DeliveryDriverSignup" element={<DeliveryDriverSignup />} />
+
+            {/* Protected Routes */}
             <Route path="/seller/*" element={<Seller />} />
             <Route path="/admin/*" element={<Admin />} />
             <Route path="/adminDelivery/*" element={<AdminDelivery />} />
