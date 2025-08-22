@@ -17,13 +17,12 @@ const DeliveryDriverSignup = () => {
         address: '',
         city: '',
         country: '',
-        idDocument: ''
+        idDocuments: []
     });
 
     const [licenseAndVehicleInfo, setLicenseAndVehicleInfo] = useState({
-        licenseId: '',
-        licenseImage: null,
-        vehiclePlateNumber: '',
+        licenseImages: [],
+        vehiclePlateImages: [],
         vehicleType: ''
     });
 
@@ -45,17 +44,122 @@ const DeliveryDriverSignup = () => {
     };
 
     const handleLicenseAndVehicleChange = (e) => {
-        const { name, value, type, files } = e.target;
+        const { name, value } = e.target;
+        setLicenseAndVehicleInfo(prev => ({
+            ...prev,
+            [name]: value
+        }));
+        if (error) setError('');
+    };
 
-        if (type === 'file') {
-            setLicenseAndVehicleInfo(prev => ({
+    const handleIdFileUpload = (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+            const limitedFiles = files.slice(0, 2);
+            setPersonalInfo(prev => ({
                 ...prev,
-                [name]: files[0]
+                idDocuments: [...prev.idDocuments, ...limitedFiles].slice(0, 2)
             }));
-        } else {
+        }
+        if (error) setError('');
+    };
+
+    const handleLicenseFileUpload = (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+            const limitedFiles = files.slice(0, 2);
             setLicenseAndVehicleInfo(prev => ({
                 ...prev,
-                [name]: value
+                licenseImages: [...prev.licenseImages, ...limitedFiles].slice(0, 2)
+            }));
+        }
+        if (error) setError('');
+    };
+
+    const handleVehiclePlateFileUpload = (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+            const limitedFiles = files.slice(0, 2);
+            setLicenseAndVehicleInfo(prev => ({
+                ...prev,
+                vehiclePlateImages: [...prev.vehiclePlateImages, ...limitedFiles].slice(0, 2)
+            }));
+        }
+        if (error) setError('');
+    };
+
+    const removeIdFile = (index) => {
+        setPersonalInfo(prev => ({
+            ...prev,
+            idDocuments: prev.idDocuments.filter((_, i) => i !== index)
+        }));
+    };
+
+    const removeLicenseFile = (index) => {
+        setLicenseAndVehicleInfo(prev => ({
+            ...prev,
+            licenseImages: prev.licenseImages.filter((_, i) => i !== index)
+        }));
+    };
+
+    const removeVehiclePlateFile = (index) => {
+        setLicenseAndVehicleInfo(prev => ({
+            ...prev,
+            vehiclePlateImages: prev.vehiclePlateImages.filter((_, i) => i !== index)
+        }));
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    const handleIdDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const files = Array.from(e.dataTransfer.files);
+        const imageFiles = files.filter(file => file.type.startsWith('image/'));
+
+        if (imageFiles.length > 0) {
+            const limitedFiles = imageFiles.slice(0, 2);
+            setPersonalInfo(prev => ({
+                ...prev,
+                idDocuments: [...prev.idDocuments, ...limitedFiles].slice(0, 2)
+            }));
+        }
+        if (error) setError('');
+    };
+
+    const handleLicenseDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const files = Array.from(e.dataTransfer.files);
+        const imageFiles = files.filter(file => file.type.startsWith('image/'));
+
+        if (imageFiles.length > 0) {
+            const limitedFiles = imageFiles.slice(0, 2);
+            setLicenseAndVehicleInfo(prev => ({
+                ...prev,
+                licenseImages: [...prev.licenseImages, ...limitedFiles].slice(0, 2)
+            }));
+        }
+        if (error) setError('');
+    };
+
+    const handleVehiclePlateDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const files = Array.from(e.dataTransfer.files);
+        const imageFiles = files.filter(file => file.type.startsWith('image/'));
+
+        if (imageFiles.length > 0) {
+            const limitedFiles = imageFiles.slice(0, 2);
+            setLicenseAndVehicleInfo(prev => ({
+                ...prev,
+                vehiclePlateImages: [...prev.vehiclePlateImages, ...limitedFiles].slice(0, 2)
             }));
         }
         if (error) setError('');
@@ -63,11 +167,16 @@ const DeliveryDriverSignup = () => {
 
     const handleNextStep = () => {
         // Validate personal information
-        const requiredPersonalFields = ['firstName', 'lastName', 'email', 'phoneNumber', 'address', 'city', 'country', 'idDocument'];
+        const requiredPersonalFields = ['firstName', 'lastName', 'email', 'phoneNumber', 'address', 'city', 'country'];
         const missingFields = requiredPersonalFields.filter(field => !personalInfo[field].trim());
 
         if (missingFields.length > 0) {
             setError('Please fill in all personal information fields');
+            return;
+        }
+
+        if (personalInfo.idDocuments.length === 0) {
+            setError('Please upload at least one ID document');
             return;
         }
 
@@ -86,17 +195,20 @@ const DeliveryDriverSignup = () => {
         setError('');
 
         // Validate license and vehicle information
-        const requiredLicenseFields = ['licenseId', 'vehiclePlateNumber', 'vehicleType'];
-        const missingLicenseFields = requiredLicenseFields.filter(field => !licenseAndVehicleInfo[field].trim());
-
-        if (missingLicenseFields.length > 0) {
-            setError('Please fill in all required license and vehicle information fields');
+        if (!licenseAndVehicleInfo.vehicleType.trim()) {
+            setError('Please select a vehicle type');
             setIsLoading(false);
             return;
         }
 
-        if (!licenseAndVehicleInfo.licenseImage) {
-            setError('Please upload your license image');
+        if (licenseAndVehicleInfo.licenseImages.length === 0) {
+            setError('Please upload at least one license image');
+            setIsLoading(false);
+            return;
+        }
+
+        if (licenseAndVehicleInfo.vehiclePlateImages.length === 0) {
+            setError('Please upload at least one vehicle plate image');
             setIsLoading(false);
             return;
         }
@@ -284,20 +396,55 @@ const DeliveryDriverSignup = () => {
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="idDocument">ID Document Number *</label>
-                                <div className="input-wrapper">
-                                    <svg className="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V4a2 2 0 114 0v2m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
-                                    </svg>
-                                    <input
-                                        type="text"
-                                        id="idDocument"
-                                        name="idDocument"
-                                        value={personalInfo.idDocument}
-                                        onChange={handlePersonalInfoChange}
-                                        placeholder="Enter your ID document number"
-                                        required
-                                    />
+                                <label>ID Documents * (Upload 1-2 images)</label>
+                                <div className="file-upload-wrapper">
+                                    <div
+                                        className="file-drop-zone"
+                                        onDragOver={handleDragOver}
+                                        onDrop={handleIdDrop}
+                                    >
+                                        <svg className="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                        <p className="upload-text">
+                                            Drag & drop your ID documents here, or
+                                            <label htmlFor="idUpload" className="upload-link"> browse</label>
+                                        </p>
+                                        <p className="upload-subtext">Supports: JPG, PNG, PDF (Max 2 files)</p>
+                                        <input
+                                            type="file"
+                                            id="idUpload"
+                                            accept="image/*,.pdf"
+                                            multiple
+                                            onChange={handleIdFileUpload}
+                                            className="hidden-input"
+                                        />
+                                    </div>
+
+                                    {personalInfo.idDocuments.length > 0 && (
+                                        <div className="uploaded-files">
+                                            {personalInfo.idDocuments.map((file, index) => (
+                                                <div key={index} className="file-item">
+                                                    <div className="file-info">
+                                                        <svg className="file-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                        </svg>
+                                                        <span className="file-name">{file.name}</span>
+                                                        {/* <span className="file-size">({(file.size / 1024 / 1024).toFixed(1)} MB)</span> */}
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeIdFile(index)}
+                                                        className="remove-file"
+                                                    >
+                                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -315,62 +462,108 @@ const DeliveryDriverSignup = () => {
                             <h3>License & Vehicle Information</h3>
 
                             <div className="form-group">
-                                <label htmlFor="licenseId">License ID *</label>
-                                <div className="input-wrapper">
-                                    <svg className="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                    <input
-                                        type="text"
-                                        id="licenseId"
-                                        name="licenseId"
-                                        value={licenseAndVehicleInfo.licenseId}
-                                        onChange={handleLicenseAndVehicleChange}
-                                        placeholder="Enter your license ID"
-                                        required
-                                    />
+                                <label>License Images * (Upload 1-2 images)</label>
+                                <div className="file-upload-wrapper">
+                                    <div
+                                        className="file-drop-zone"
+                                        onDragOver={handleDragOver}
+                                        onDrop={handleLicenseDrop}
+                                    >
+                                        <svg className="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                        <p className="upload-text">
+                                            Drag & drop your license images here, or
+                                            <label htmlFor="licenseUpload" className="upload-link"> browse</label>
+                                        </p>
+                                        <p className="upload-subtext">Supports: JPG, PNG (Max 2 files)</p>
+                                        <input
+                                            type="file"
+                                            id="licenseUpload"
+                                            accept="image/*"
+                                            multiple
+                                            onChange={handleLicenseFileUpload}
+                                            className="hidden-input"
+                                        />
+                                    </div>
+
+                                    {licenseAndVehicleInfo.licenseImages.length > 0 && (
+                                        <div className="uploaded-files">
+                                            {licenseAndVehicleInfo.licenseImages.map((file, index) => (
+                                                <div key={index} className="file-item">
+                                                    <div className="file-info">
+                                                        <svg className="file-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                        </svg>
+                                                        <span className="file-name">{file.name}</span>
+                                                        {/* <span className="file-size">({(file.size / 1024 / 1024).toFixed(1)} MB)</span> */}
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeLicenseFile(index)}
+                                                        className="remove-file"
+                                                    >
+                                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="licenseImage">License Image *</label>
-                                <div className="input-wrapper file-input-wrapper">
-                                    <svg className="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    <input
-                                        type="file"
-                                        id="licenseImage"
-                                        name="licenseImage"
-                                        onChange={handleLicenseAndVehicleChange}
-                                        accept="image/*"
-                                        required
-                                    />
-                                    <label htmlFor="licenseImage" className="file-label">
-                                        {licenseAndVehicleInfo.licenseImage ?
-                                            licenseAndVehicleInfo.licenseImage.name :
-                                            'Choose license image file'
-                                        }
-                                    </label>
-                                </div>
-                                <p className="file-hint">Upload a clear image of your driving license (JPG, PNG, max 5MB)</p>
-                            </div>
+                                <label>Vehicle Plate Images * (Upload 1-2 images)</label>
+                                <div className="file-upload-wrapper">
+                                    <div
+                                        className="file-drop-zone"
+                                        onDragOver={handleDragOver}
+                                        onDrop={handleVehiclePlateDrop}
+                                    >
+                                        <svg className="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                        <p className="upload-text">
+                                            Drag & drop your vehicle plate images here, or
+                                            <label htmlFor="vehiclePlateUpload" className="upload-link"> browse</label>
+                                        </p>
+                                        <p className="upload-subtext">Supports: JPG, PNG (Max 2 files)</p>
+                                        <input
+                                            type="file"
+                                            id="vehiclePlateUpload"
+                                            accept="image/*"
+                                            multiple
+                                            onChange={handleVehiclePlateFileUpload}
+                                            className="hidden-input"
+                                        />
+                                    </div>
 
-                            <div className="form-group">
-                                <label htmlFor="vehiclePlateNumber">Vehicle Plate Number *</label>
-                                <div className="input-wrapper">
-                                    <svg className="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                                    </svg>
-                                    <input
-                                        type="text"
-                                        id="vehiclePlateNumber"
-                                        name="vehiclePlateNumber"
-                                        value={licenseAndVehicleInfo.vehiclePlateNumber}
-                                        onChange={handleLicenseAndVehicleChange}
-                                        placeholder="Enter your vehicle plate number"
-                                        required
-                                    />
+                                    {licenseAndVehicleInfo.vehiclePlateImages.length > 0 && (
+                                        <div className="uploaded-files">
+                                            {licenseAndVehicleInfo.vehiclePlateImages.map((file, index) => (
+                                                <div key={index} className="file-item">
+                                                    <div className="file-info">
+                                                        <svg className="file-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                        </svg>
+                                                        <span className="file-name">{file.name}</span>
+                                                        {/* <span className="file-size">({(file.size / 1024 / 1024).toFixed(1)} MB)</span> */}
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeVehiclePlateFile(index)}
+                                                        className="remove-file"
+                                                    >
+                                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 

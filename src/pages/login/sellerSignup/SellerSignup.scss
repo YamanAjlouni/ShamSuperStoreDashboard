@@ -245,6 +245,143 @@
                             padding-right: 2.5rem;
                         }
                     }
+
+                    .file-upload-wrapper {
+                        .file-drop-zone {
+                            border: 2px dashed $gray-200;
+                            border-radius: $radius-md;
+                            padding: 2rem 1rem;
+                            text-align: center;
+                            background: $white;
+                            transition: $transition-all;
+                            cursor: pointer;
+                            position: relative;
+
+                            &:hover {
+                                border-color: #10b981;
+                                background: rgba(16, 185, 129, 0.02);
+                                transform: translateY(-1px);
+                            }
+
+                            .upload-icon {
+                                width: 40px;
+                                height: 40px;
+                                color: $text-light;
+                                margin: 0 auto 1rem;
+                                transition: $transition-all;
+                            }
+
+                            .upload-text {
+                                color: $text-dark;
+                                font-size: 0.875rem;
+                                margin-bottom: 0.5rem;
+                                font-weight: 500;
+
+                                .upload-link {
+                                    color: #10b981;
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                    text-decoration: none;
+                                    transition: $transition-all;
+
+                                    &:hover {
+                                        color: #059669;
+                                        text-decoration: underline;
+                                    }
+                                }
+                            }
+
+                            .upload-subtext {
+                                color: $text-light;
+                                font-size: 0.75rem;
+                                margin: 0;
+                            }
+
+                            .hidden-input {
+                                position: absolute;
+                                opacity: 0;
+                                width: 0;
+                                height: 0;
+                                overflow: hidden;
+                            }
+
+                            &:hover .upload-icon {
+                                color: #10b981;
+                                transform: scale(1.1);
+                            }
+                        }
+
+                        .uploaded-files {
+                            margin-top: 1rem;
+
+                            .file-item {
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                padding: 0.75rem;
+                                background: rgba(16, 185, 129, 0.05);
+                                border: 1px solid rgba(16, 185, 129, 0.2);
+                                border-radius: $radius-md;
+                                margin-bottom: 0.5rem;
+                                transition: $transition-all;
+
+                                &:hover {
+                                    background: rgba(16, 185, 129, 0.08);
+                                    transform: translateY(-1px);
+                                }
+
+                                .file-info {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.75rem;
+                                    flex: 1;
+
+                                    .file-icon {
+                                        width: 20px;
+                                        height: 20px;
+                                        color: #10b981;
+                                        flex-shrink: 0;
+                                    }
+
+                                    .file-name {
+                                        font-size: 0.875rem;
+                                        color: $text-dark;
+                                        font-weight: 500;
+                                        word-break: break-all;
+                                    }
+
+                                    .file-size {
+                                        font-size: 0.75rem;
+                                        color: $text-light;
+                                        margin-left: 0.5rem;
+                                    }
+                                }
+
+                                .remove-file {
+                                    background: none;
+                                    border: none;
+                                    color: #dc2626;
+                                    cursor: pointer;
+                                    padding: 0.25rem;
+                                    border-radius: 50%;
+                                    transition: $transition-all;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+
+                                    &:hover {
+                                        background: rgba(220, 38, 38, 0.1);
+                                        transform: scale(1.1);
+                                    }
+
+                                    svg {
+                                        width: 16px;
+                                        height: 16px;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 .form-row {
@@ -570,6 +707,33 @@
                             flex: none;
                         }
                     }
+
+                    .form-group {
+                        .file-upload-wrapper {
+                            .file-drop-zone {
+                                padding: 1.5rem 0.75rem;
+
+                                .upload-icon {
+                                    width: 35px;
+                                    height: 35px;
+                                }
+                            }
+
+                            .uploaded-files {
+                                .file-item {
+                                    .file-info {
+                                        .file-name {
+                                            font-size: 0.8rem;
+                                        }
+
+                                        .file-size {
+                                            font-size: 0.7rem;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -631,6 +795,53 @@
                                 width: 18px;
                                 height: 18px;
                                 left: 0.75rem;
+                            }
+                        }
+
+                        .file-upload-wrapper {
+                            .file-drop-zone {
+                                padding: 1.25rem 0.5rem;
+
+                                .upload-icon {
+                                    width: 30px;
+                                    height: 30px;
+                                }
+
+                                .upload-text {
+                                    font-size: 0.8rem;
+                                }
+
+                                .upload-subtext {
+                                    font-size: 0.7rem;
+                                }
+                            }
+
+                            .uploaded-files {
+                                .file-item {
+                                    padding: 0.6rem;
+
+                                    .file-info {
+                                        gap: 0.5rem;
+
+                                        .file-icon {
+                                            width: 18px;
+                                            height: 18px;
+                                        }
+
+                                        .file-name {
+                                            font-size: 0.75rem;
+                                        }
+
+                                        .file-size {
+                                            font-size: 0.65rem;
+                                        }
+                                    }
+
+                                    .remove-file svg {
+                                        width: 14px;
+                                        height: 14px;
+                                    }
+                                }
                             }
                         }
                     }

@@ -10,12 +10,13 @@ const SellerSignup = () => {
     const [step, setStep] = useState(1);
 
     const [personalInfo, setPersonalInfo] = useState({
-        fullName: '',
+        firstName: '',
+        lastName: '',
         email: '',
         dateOfBirth: '',
         city: '',
         country: '',
-        idNumber: '',
+        idDocuments: [],
         address: '',
         phoneNumber: ''
     });
@@ -53,13 +54,60 @@ const SellerSignup = () => {
         if (error) setError('');
     };
 
+    const handleFileUpload = (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+            // Limit to 2 files maximum
+            const limitedFiles = files.slice(0, 2);
+            setPersonalInfo(prev => ({
+                ...prev,
+                idDocuments: [...prev.idDocuments, ...limitedFiles].slice(0, 2)
+            }));
+        }
+        if (error) setError('');
+    };
+
+    const removeFile = (index) => {
+        setPersonalInfo(prev => ({
+            ...prev,
+            idDocuments: prev.idDocuments.filter((_, i) => i !== index)
+        }));
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const files = Array.from(e.dataTransfer.files);
+        const imageFiles = files.filter(file => file.type.startsWith('image/'));
+
+        if (imageFiles.length > 0) {
+            const limitedFiles = imageFiles.slice(0, 2);
+            setPersonalInfo(prev => ({
+                ...prev,
+                idDocuments: [...prev.idDocuments, ...limitedFiles].slice(0, 2)
+            }));
+        }
+        if (error) setError('');
+    };
+
     const handleNextStep = () => {
         // Validate personal information
-        const requiredPersonalFields = ['fullName', 'email', 'dateOfBirth', 'city', 'country', 'idNumber', 'address', 'phoneNumber'];
+        const requiredPersonalFields = ['firstName', 'lastName', 'email', 'dateOfBirth', 'city', 'country', 'address', 'phoneNumber'];
         const missingFields = requiredPersonalFields.filter(field => !personalInfo[field].trim());
 
         if (missingFields.length > 0) {
             setError('Please fill in all personal information fields');
+            return;
+        }
+
+        if (personalInfo.idDocuments.length === 0) {
+            setError('Please upload at least one ID document');
             return;
         }
 
@@ -91,6 +139,7 @@ const SellerSignup = () => {
         setTimeout(() => {
             console.log('Personal Info:', personalInfo);
             console.log('Business Info:', businessInfo);
+            console.log('ID Documents:', personalInfo.idDocuments);
             // Here you would integrate with your backend
             setIsLoading(false);
             // Navigate to success page or login
@@ -135,21 +184,41 @@ const SellerSignup = () => {
                         <div className="form-step">
                             <h3>Personal Information</h3>
 
-                            <div className="form-group">
-                                <label htmlFor="fullName">Full Name *</label>
-                                <div className="input-wrapper">
-                                    <svg className="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                    <input
-                                        type="text"
-                                        id="fullName"
-                                        name="fullName"
-                                        value={personalInfo.fullName}
-                                        onChange={handlePersonalInfoChange}
-                                        placeholder="Enter your full name"
-                                        required
-                                    />
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label htmlFor="firstName">First Name *</label>
+                                    <div className="input-wrapper">
+                                        <svg className="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                        <input
+                                            type="text"
+                                            id="firstName"
+                                            name="firstName"
+                                            value={personalInfo.firstName}
+                                            onChange={handlePersonalInfoChange}
+                                            placeholder="Enter your first name"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="lastName">Last Name *</label>
+                                    <div className="input-wrapper">
+                                        <svg className="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                        <input
+                                            type="text"
+                                            id="lastName"
+                                            name="lastName"
+                                            value={personalInfo.lastName}
+                                            onChange={handlePersonalInfoChange}
+                                            placeholder="Enter your last name"
+                                            required
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
@@ -228,20 +297,55 @@ const SellerSignup = () => {
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="idNumber">ID Number *</label>
-                                <div className="input-wrapper">
-                                    <svg className="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V4a2 2 0 114 0v2m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
-                                    </svg>
-                                    <input
-                                        type="text"
-                                        id="idNumber"
-                                        name="idNumber"
-                                        value={personalInfo.idNumber}
-                                        onChange={handlePersonalInfoChange}
-                                        placeholder="Enter your ID number"
-                                        required
-                                    />
+                                <label>ID Documents * (Upload 1-2 images)</label>
+                                <div className="file-upload-wrapper">
+                                    <div
+                                        className="file-drop-zone"
+                                        onDragOver={handleDragOver}
+                                        onDrop={handleDrop}
+                                    >
+                                        <svg className="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                        <p className="upload-text">
+                                            Drag & drop your ID documents here, or
+                                            <label htmlFor="idUpload" className="upload-link"> browse</label>
+                                        </p>
+                                        <p className="upload-subtext">Supports: JPG, PNG, PDF (Max 2 files)</p>
+                                        <input
+                                            type="file"
+                                            id="idUpload"
+                                            accept="image/*,.pdf"
+                                            multiple
+                                            onChange={handleFileUpload}
+                                            className="hidden-input"
+                                        />
+                                    </div>
+
+                                    {personalInfo.idDocuments.length > 0 && (
+                                        <div className="uploaded-files">
+                                            {personalInfo.idDocuments.map((file, index) => (
+                                                <div key={index} className="file-item">
+                                                    <div className="file-info">
+                                                        <svg className="file-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                        </svg>
+                                                        <span className="file-name">{file.name}</span>
+                                                        {/* <span className="file-size">({(file.size / 1024 / 1024).toFixed(1)} MB)</span> */}
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeFile(index)}
+                                                        className="remove-file"
+                                                    >
+                                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
